@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>倫敦印象 ｜ SHOPLINE 商品頁交付物</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --accent:#c8502d; --accent-2:#e2693f; --accent-soft:#fbeee7;
+    --ink:#1f2632; --muted:#5b6675; --faint:#8a93a1;
+    --bg:#f4f6f9; --surface:#fff; --border:#e6eaf0;
+    --shadow:0 1px 2px rgba(20,30,50,.04),0 6px 20px rgba(20,30,50,.05);
+    --shadow-h:0 12px 30px rgba(20,30,50,.12);
+    --font-h:"Poppins","Noto Sans TC",sans-serif; --font-b:"Open Sans","Noto Sans TC",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:var(--font-b);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px clamp(18px,4vw,40px) 80px}
+  .hero{margin-bottom:36px}
+  .eyebrow{display:inline-block;font-family:var(--font-h);font-size:12px;font-weight:600;letter-spacing:2.5px;color:var(--accent);background:var(--accent-soft);padding:5px 13px;border-radius:999px;margin-bottom:16px}
+  h1{font-family:var(--font-h);font-size:clamp(28px,5vw,42px);font-weight:700;letter-spacing:-.5px;margin:0 0 10px}
+  .sub{color:var(--muted);font-size:16px;max-width:64ch;margin:0}
+  .group-h{font-family:var(--font-h);font-size:14px;font-weight:600;letter-spacing:1px;color:var(--faint);text-transform:uppercase;margin:34px 0 14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+  .card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:22px 22px 20px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .25s,box-shadow .25s;position:relative}
+  .card:hover{transform:translateY(-3px);box-shadow:var(--shadow-h)}
+  .card .tag{align-self:flex-start;font-family:var(--font-h);font-size:11px;font-weight:600;letter-spacing:.5px;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:6px;margin-bottom:12px}
+  .card h3{font-family:var(--font-h);font-size:17px;font-weight:600;margin:0 0 7px;line-height:1.4}
+  .card p{font-size:13.6px;color:var(--muted);margin:0 0 16px;flex:1}
+  .card .go{font-family:var(--font-h);font-size:13.5px;font-weight:600;color:var(--accent);display:inline-flex;align-items:center;gap:6px}
+  .card .go svg{transition:transform .2s}
+  .card:hover .go svg{transform:translateX(3px)}
+  .card.primary{background:linear-gradient(135deg,#fff,#fff8f4);border-color:#f1d8cc}
+  .asset{background:#fbfcfe}
+  .foot{margin-top:44px;padding-top:20px;border-top:1px solid var(--border);font-size:13px;color:var(--faint)}
+  .foot code{background:#eef1f6;padding:2px 7px;border-radius:6px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:#b5471f;word-break:break-all}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="hero">
+    <span class="eyebrow">LONDONIMG · SHOPLINE</span>
+    <h1>商品頁交付物目錄</h1>
+    <p class="sub">倫敦印象 SHOPLINE 商品頁優化的網頁交付物、教學頁與共用樣式。點卡片開啟。</p>
+  </header>
+
+  <h2 class="group-h">給同事 · 操作教學</h2>
+  <div class="grid">
+    <a class="card primary" href="b67-product-page-guide.html">
+      <span class="tag">教學頁 · 推薦</span>
+      <h3>B67 商品頁建置說明</h3>
+      <p>三分頁：商品頁設定（SEO）／商品頁語法（12 區塊 ✏️ 填空語法、一鍵複製）／圖片取得方式。給不懂語法的同事。</p>
+      <span class="go">開啟 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="group-h">商品描述 · 可貼成品</h2>
+  <div class="grid">
+    <a class="card" href="b67-description-inline.html">
+      <span class="tag">全 inline</span>
+      <h3>B67 商品描述 · inline 響應式版</h3>
+      <p>每元素內嵌 style，免外部 CSS，直接貼進 SHOPLINE 商品描述。SHOPLINE 濾 style 時的解法。</p>
+      <span class="go">開啟 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a class="card" href="b67-description-css-separated.html">
+      <span class="tag">CSS 分離</span>
+      <h3>B67 商品描述 · CSS 分離響應式版</h3>
+      <p>抽成 .yu-pdp class，A. CSS 放佈景主題／B. HTML 貼描述。clamp + auto-fit grid + 斷點響應式。</p>
+      <span class="go">開啟 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="group-h">原型 · 設計藍圖</h2>
+  <div class="grid">
+    <a class="card" href="b67-product-page-prototype.html">
+      <span class="tag">原型</span>
+      <h3>B67 商品頁改版對照</h3>
+      <p>改版前／後·手機／後·桌機 三切換，含 AI 情境圖。</p>
+      <span class="go">開啟 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a class="card" href="LandingPage_prototype.html">
+      <span class="tag">原型</span>
+      <h3>首頁完整原型</h3>
+      <p>首頁改版的完整可滾動 HTML 原型。</p>
+      <span class="go">開啟 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+  </div>
+
+  <h2 class="group-h">報告 · 優化建議</h2>
+  <div class="grid">
+    <a class="card" href="londonimg_optimization_handbook.html">
+      <span class="tag">報告</span>
+      <h3>全站 5 大優化執行手冊</h3>
+      <p>含程式碼片段的全站優化執行手冊。</p>
+      <span class="go">開啟 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a class="card" href="londonimg_homepage_audit.html">
+      <span class="tag">報告</span>
+      <h3>首頁專屬優化建議書</h3>
+      <p>首頁的視覺化優化建議報告。</p>
+      <span class="go">開啟 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+  </div>
+
+  <div class="foot">
+    共用樣式：<code>yu-pdp.css</code>　·　jsDelivr 載入：<code>https://cdn.jsdelivr.net/gh/anita791122/londonimg@main/yu-pdp.css</code>
+  </div>
+</div>
+</body>
+</html>
