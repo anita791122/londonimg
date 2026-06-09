@@ -32,6 +32,8 @@ IC = {
   "check": svg('<polyline points="20 6 9 17 4 12"/>'),
   "eye": svg('<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>'),
   "bulb": svg('<path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/>'),
+  "skill": svg('<path d="M12 3l1.6 4.9a2 2 0 0 0 1.3 1.3L19.8 11l-4.9 1.6a2 2 0 0 0-1.3 1.3L12 19.8l-1.6-4.9a2 2 0 0 0-1.3-1.3L4.2 12l4.9-1.6a2 2 0 0 0 1.3-1.3L12 3z"/>'),
+  "download": svg('<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>'),
 }
 
 meta = [
@@ -218,6 +220,46 @@ images_page = f'''
     </ul>
   </div>'''
 
+skill_page = f'''
+  <div class="hero">
+    <span class="hero-eyebrow">CLAUDE SKILL</span>
+    <h1 class="hero-title">Claude Skill</h1>
+    <p class="hero-sub">用 Claude skill 自動產生／更新商品頁內容。下載 → 安裝 → 使用三步驟。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h">{IC["download"]}下載區</h3>
+    <p>下載檔案：<code>【請填入 skill 檔名，例：londonimg-pdp-skill.zip】</code></p>
+    <p><a class="dl-btn" href="【請填入 skill 下載連結】">{IC["download"]}<span>下載 Skill</span></a></p>
+    <p class="fhint">下載後解壓縮，會得到一個 skill 資料夾（內含 <code>SKILL.md</code> 等檔案）。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h">{IC["settings"]}安裝方式</h3>
+    <ol class="steps">
+      <li>把解壓縮後的 <b>skill 資料夾</b>放到 Claude 的 skills 目錄：
+        <ul>
+          <li>個人全域：<code>~/.claude/skills/</code></li>
+          <li>或專案內：<code>專案資料夾/.claude/skills/</code></li>
+        </ul>
+      </li>
+      <li>重新開啟（或重新載入）Claude，skill 就會出現在可用清單。</li>
+      <li>確認方式：輸入 <code>/</code> 或詢問可用 skills，應能看到 <code>【請填入 skill 名稱】</code>。</li>
+    </ol>
+    <p class="tipbox">{IC["bulb"]}<span>實際安裝路徑／步驟依你提供的 skill 為準；若是 claude.ai 網頁版 skill，改為依該平台的「新增 skill」流程操作。此處 <code>【…】</code> 與步驟請依實際情況調整。</span></p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h">{IC["skill"]}使用方式</h3>
+    <ol class="steps">
+      <li>在 Claude 對話輸入觸發語，例如：<code>【請填入觸發語，例：產生 B67 商品頁描述】</code>。</li>
+      <li>依 skill 提示提供必要資訊（例如商品名、賣點、圖片網址、影片代碼）。</li>
+      <li>Claude 會依 skill 產生商品頁 HTML／填好的語法，複製後貼進 SHOPLINE「商品描述 → HTML 原始碼」。</li>
+      <li>需要調整時，把要改的地方告訴 Claude 再請它重出即可。</li>
+    </ol>
+    <p class="tipbox">{IC["info"]}<span>產出的語法一樣遵守本說明的規則：單位用 px、圖片用 SHOPLINE 圖床網址、描述欄位勿貼 <code>&lt;style&gt;</code>。</span></p>
+  </div>'''
+
 doc = f'''<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -330,6 +372,10 @@ doc = f'''<!DOCTYPE html>
   .copy-btn:focus-visible{{outline:2px solid #fff;outline-offset:2px}}
   .copy-btn.ok{{background:linear-gradient(135deg,#1f9d6b,#23b377)}}
   .copy-btn.sm{{padding:6px 11px;font-size:12.5px}}
+  .dl-btn{{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;text-decoration:none;border-radius:10px;padding:11px 20px;font-family:var(--font-h);font-size:14.5px;font-weight:600;box-shadow:0 6px 16px rgba(110,92,182,.28);transition:transform .15s,filter .2s}}
+  .dl-btn:hover{{filter:brightness(1.07);transform:translateY(-1px)}}
+  .dl-btn:focus-visible{{outline:2px solid var(--accent);outline-offset:2px}}
+  .steps ul{{margin:7px 0 0;padding-left:20px}} .steps ul li{{margin:0 0 5px;font-size:13.8px;color:var(--muted)}}
 
   @media(max-width:820px){{
     .layout{{flex-direction:column}}
@@ -356,6 +402,7 @@ doc = f'''<!DOCTYPE html>
       <a data-t="p1" class="active" onclick="show('p1')">{IC["settings"]}<span>商品頁設定</span><span class="step">01</span></a>
       <a data-t="p2" onclick="show('p2')">{IC["code"]}<span>商品頁語法</span><span class="step">02</span></a>
       <a data-t="p3" onclick="show('p3')">{IC["image"]}<span>圖片取得方式</span><span class="step">03</span></a>
+      <a data-t="p4" onclick="show('p4')">{IC["skill"]}<span>Claude Skill</span><span class="step">04</span></a>
     </nav>
     <div class="side-foot">標 <b style="color:var(--accent)">✏️【…】</b> 的地方都是填空處。<br>填好再貼進 SHOPLINE 商品描述。</div>
   </aside>
@@ -380,6 +427,9 @@ doc = f'''<!DOCTYPE html>
     </section>
 
     <section id="p3" class="page">{images_page}
+    </section>
+
+    <section id="p4" class="page">{skill_page}
     </section>
   </main>
 </div>
