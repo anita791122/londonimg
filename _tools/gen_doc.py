@@ -211,15 +211,16 @@ images_page = f'''
   <div class="card">
     <h3 class="card-h">{IC["image"]}各區塊建議圖片比例</h3>
     <table class="sizetab">
-      <thead><tr><th>區塊</th><th>建議比例</th><th>說明</th></tr></thead>
+      <thead><tr><th>區塊</th><th>建議尺寸</th><th>說明</th></tr></thead>
       <tbody>
-        <tr><td>影音實測</td><td>影片（9:16 直式）</td><td>用 YouTube 影片代碼，非圖片</td></tr>
-        <tr><td>首屏 Hero、功能特色、對照表</td><td>直式長圖</td><td>圖上會疊白色文字，選背景單純的圖</td></tr>
-        <tr><td>360°／背板／MagSafe 圖庫</td><td>1:1 正方形</td><td>系統會自動裁成正方形</td></tr>
-        <tr><td>3.0 雙向吸圖說</td><td>4:3 橫式</td><td>—</td></tr>
-        <tr><td>情境（多種玩法）</td><td>1:1 正方形</td><td>—</td></tr>
+        <tr><td>影音實測</td><td>—（用影片）</td><td>用 YouTube 影片代碼，非圖片；影片本身為直式 9:16</td></tr>
+        <tr><td>首屏 Hero、功能特色、對照表</td><td><b>1080 × 1350 px</b>（直式 4:5）</td><td>圖上會疊白色文字，選背景單純的圖</td></tr>
+        <tr><td>360°／背板／MagSafe 圖庫</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>系統會自動裁成正方形</td></tr>
+        <tr><td>3.0 雙向吸圖說</td><td><b>1000 × 750 px</b>（橫式 4:3）</td><td>—</td></tr>
+        <tr><td>情境（多種玩法）</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>—</td></tr>
       </tbody>
     </table>
+    <p class="fhint">尺寸是「建議值」，大一點沒關係（系統會壓縮）；重點是<b>比例正確</b>，比例對了就不會被裁掉或變形。格式 JPG 或 PNG 皆可。</p>
   </div>
   <div class="card warn">
     <h3 class="card-h">{IC["alert"]}兩個常見錯誤</h3>
