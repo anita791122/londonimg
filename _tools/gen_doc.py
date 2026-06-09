@@ -169,8 +169,14 @@ settings_page = f'''
     <h1 class="hero-title">商品頁設定</h1>
     <p class="hero-sub">後台位置：<b>商品 → 編輯該商品 → 網路搜尋最佳化（SEO）</b>。把下面四欄分別複製貼上即可。</p>
   </div>
+  <div class="howto">
+    <div class="howto-h">{IC["skill"]}要做「其他商品」嗎？先用 Claude Skill 產生</div>
+    下面四欄是 <b class="key">B67 的範例值</b>，<b>不是每個商品都一樣</b>。換別的商品時，到第 4 頁
+    <b>「Claude Skill」</b>，對 Claude 說「<i>幫 [商品名] 寫商品頁文案</i>」，它會產出<b>該商品專屬</b>的標題／簡介／關鍵字／描述性URL，複製回來貼即可。<br>
+    （這頁的 B67 範例可當作「正確長相」的參考對照。）
+  </div>
   <div class="card">
-    <h3 class="card-h">{IC["settings"]}網路搜尋最佳化（繁體中文分頁）</h3>
+    <h3 class="card-h">{IC["settings"]}網路搜尋最佳化（以 B67 為例）</h3>
     {field("標題", "YU iPhone 360°無段支架手機殼｜MagSafe 防摔殼 12-16 系列【B67】", "Google 搜尋結果的藍色大標。促銷字（任選兩件88折）不要寫進標題。")}
     {field("簡介", meta_desc, "搜尋結果標題下方的灰色說明文字，約 150 字。")}
     {field("關鍵字", keywords, "以半形逗號分隔。")}
