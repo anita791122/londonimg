@@ -244,7 +244,7 @@ skill_page = f'''
 
   <div class="card">
     <h3 class="card-h">{IC["download"]}下載區</h3>
-    <p>檔案：<code>londonimg-copy-skill.zip</code>　·　用途：輸入商品資訊，自動產出 SHOPLINE 商品頁的 <b>SEO 後台四欄</b>（標題／簡介／關鍵字／描述性URL）＋<b>商品描述文案</b>（定義句／H2／FAQ）。</p>
+    <p>檔案：<code>londonimg-copy-skill.zip</code>　·　用途：輸入商品資訊，自動產出 SHOPLINE 商品頁的 <b>SEO 後台四欄</b>（標題／簡介／關鍵字／描述性URL）＋<b>商品描述文案</b>（定義句／段落標題／常見問答）。</p>
     <p><a class="dl-btn" href="londonimg-copy-skill.zip" download>{IC["download"]}<span>下載 Skill（.zip）</span></a></p>
     <p class="fhint">下載後不用解壓縮也行，下一步直接上傳這個 zip 即可。</p>
   </div>
@@ -264,7 +264,7 @@ skill_page = f'''
     <h3 class="card-h">{IC["skill"]}使用方式</h3>
     <ol class="steps">
       <li>在 Claude 對話直接說：<code>幫 [商品名] 寫商品頁文案</code>。<br>例：<i>幫 YU 360°無段支架手機殼 B67 寫商品頁文案，賣點是 360 支架、MagSafe、防摔，適用 iPhone 12–16</i>。</li>
-      <li>Claude 會（必要時）反問商品資訊，然後依序產出：標題 → 簡介 → 關鍵字 → 描述性URL → 定義句 → H2 → FAQ，每項都可一鍵複製。</li>
+      <li>Claude 會（必要時）反問商品資訊，然後依序產出：標題 → 簡介 → 關鍵字 → 描述性URL → 定義句 → 段落標題 → 常見問答，每項都可一鍵複製。</li>
       <li>把各欄位分別貼到後台：SEO 四欄貼「網路搜尋最佳化」；文案貼商品描述。</li>
       <li>想要連「可貼 SHOPLINE 的 HTML」也一起出 → 跟 Claude 說「也給我可貼的 HTML」。</li>
     </ol>
