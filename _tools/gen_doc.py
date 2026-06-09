@@ -229,7 +229,7 @@ doc = f'''<!DOCTYPE html>
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root{{
-    --accent:#c8502d; --accent-2:#e2693f; --accent-soft:#fbeee7;
+    --accent:#6e5cb6; --accent-2:#9484d4; --accent-soft:#f1edfb;
     --ink:#1f2632; --muted:#5b6675; --faint:#8a93a1;
     --bg:#f4f6f9; --surface:#ffffff; --border:#e6eaf0; --border-2:#eef1f5;
     --code-bg:#1b2230; --ok:#1f9d6b; --warn-bg:#fff7f3; --warn-bd:#f3d3c4;
@@ -241,14 +241,14 @@ doc = f'''<!DOCTYPE html>
   html{{scroll-behavior:smooth}}
   body{{margin:0;font-family:var(--font-b);color:var(--ink);background:var(--bg);line-height:1.65;-webkit-font-smoothing:antialiased}}
   .ic{{flex:none;vertical-align:middle}}
-  code{{background:#eef1f6;padding:1.5px 6px;border-radius:6px;font-size:.86em;font-family:ui-monospace,Menlo,Consolas,monospace;color:#b5471f;word-break:break-all}}
+  code{{background:#eef1f6;padding:1.5px 6px;border-radius:6px;font-size:.86em;font-family:ui-monospace,Menlo,Consolas,monospace;color:#6f5cb6;word-break:break-all}}
   b{{font-weight:700}}
 
   .layout{{display:flex;min-height:100vh}}
   /* ---- 側邊欄 ---- */
   .sidebar{{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;padding:22px 16px;display:flex;flex-direction:column}}
   .brand{{display:flex;align-items:center;gap:12px;padding:6px 8px 18px;margin-bottom:10px;border-bottom:1px solid var(--border-2)}}
-  .brand .mark{{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;font-size:17px;box-shadow:0 6px 16px rgba(200,80,45,.32)}}
+  .brand .mark{{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;font-size:17px;box-shadow:0 6px 16px rgba(110,92,182,.32)}}
   .brand .txt{{font-family:var(--font-h);font-weight:600;font-size:15px;line-height:1.25}}
   .brand .txt small{{display:block;font-family:var(--font-b);font-weight:400;font-size:11.5px;color:var(--faint);letter-spacing:.3px;margin-top:2px}}
   .nav{{display:flex;flex-direction:column;gap:4px;margin-top:6px}}
@@ -256,7 +256,7 @@ doc = f'''<!DOCTYPE html>
   .nav a .ic{{color:var(--faint);transition:color .2s}}
   .nav a:hover{{background:var(--bg);color:var(--ink)}}
   .nav a:focus-visible{{outline:2px solid var(--accent);outline-offset:2px}}
-  .nav a.active{{background:var(--accent-soft);color:var(--accent);border-color:#f1d8cc}}
+  .nav a.active{{background:var(--accent-soft);color:var(--accent);border-color:#ddd3f1}}
   .nav a.active .ic{{color:var(--accent)}}
   .nav .step{{margin-left:auto;font-size:11px;font-weight:700;color:var(--faint)}}
   .nav a.active .step{{color:var(--accent)}}
@@ -306,7 +306,7 @@ doc = f'''<!DOCTYPE html>
   .block{{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px 22px 24px;margin:0 0 22px;box-shadow:var(--shadow);transition:box-shadow .25s,transform .25s}}
   .block:hover{{box-shadow:var(--shadow-h);transform:translateY(-2px)}}
   .block-head{{display:flex;align-items:center;gap:12px;margin-bottom:13px}}
-  .block-head .num{{font-family:var(--font-h);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:700;font-size:13px;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(200,80,45,.28)}}
+  .block-head .num{{font-family:var(--font-h);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;font-weight:700;font-size:13px;width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(110,92,182,.28)}}
   .block-head h3{{margin:0;font-family:var(--font-h);font-size:17px;font-weight:600;color:var(--ink)}}
   .note{{display:flex;gap:9px;align-items:flex-start;background:#f7f9fc;border:1px solid var(--border-2);border-radius:12px;padding:12px 14px;font-size:13.6px;color:var(--muted);margin:0 0 16px;line-height:1.72}}
   .note .ic{{color:var(--accent);margin-top:2px}}
