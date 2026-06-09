@@ -177,9 +177,14 @@ settings_page = f'''
   <div class="card">
     <h3 class="card-h">{IC["settings"]}網路搜尋最佳化（以 B67 為例）</h3>
     {field("標題", "YU iPhone 360°無段支架手機殼｜MagSafe 防摔殼 12-16 系列【B67】", "Google 搜尋結果的藍色大標。促銷字（任選兩件88折）不要寫進標題。")}
-    {field("簡介", meta_desc, "搜尋結果標題下方的灰色說明文字，約 150 字。")}
+    {field("簡介", meta_desc, "⚠️ 這是給 Google 的 meta，只出現在搜尋結果、不會顯示在商品頁上（使用者逛頁面看不到）。約 150 字是為了 SEO，放長一點沒關係、不影響閱讀。")}
     {field("關鍵字", keywords, "以半形逗號分隔。")}
     {field("描述性URL", "yu-iphone-360-ring-stand-case", "只能用英文與數字，不能有空格、中文、° 符號。")}
+  </div>
+  <div class="card">
+    <h3 class="card-h">{IC["info"]}頁面上「使用者看得到」的簡短介紹放哪？</h3>
+    <p>上面的「簡介」是給 Google 的（頁面看不到）。<b>使用者在商品頁價格上方看到的那段簡短介紹／促銷</b>（例：「驚喜賣場！任選 2 件 88 折」）是另一回事。</p>
+    <p class="tipbox">{IC["bulb"]}<span><b>原則：頁面簡短介紹要「短」</b>——一句賣點＋優惠重點就好，讓使用者一眼看到優惠。<b>詳細的賣點、規格、使用情境全部放 STEP 3「商品敘述」</b>，不要塞進簡短介紹。需要時請 Claude Skill「幫我寫頁面簡短介紹」即可產出短版。</span></p>
   </div>
   <div class="card warn">
     <h3 class="card-h">{IC["alert"]}改網址後一定要做的事</h3>
