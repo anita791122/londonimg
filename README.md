@@ -17,10 +17,10 @@
 
 ## 透過 jsDelivr 載入 yu-pdp.css
 
-把本 repo 設為 **public** 後，在 SHOPLINE「頁首自訂程式碼」加入：
+本 repo 為 **public**，在 SHOPLINE「頁首自訂程式碼」加入：
 
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/<帳號>/<repo>@main/yu-pdp.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/anita791122/londonimg@main/yu-pdp.css">
 ```
 
 > 改檔後 jsDelivr 快取最長約 12 小時；可打 git tag 或用 purge.jsdelivr.net 強制刷新。
