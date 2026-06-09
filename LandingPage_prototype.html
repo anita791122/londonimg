@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>倫敦印象｜Hero 區塊原型</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0b0b0f;
+    --ink-soft:#5b5b66;
+    --line:#e8e8ee;
+    --bg:#ffffff;
+    --accent:#0a84ff;          /* Apple 系藍 */
+    --accent-ink:#0066d6;
+    --chip:#f5f5f7;
+    --chip-hover:#ececf1;
+    --radius:18px;
+    --maxw:1180px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+
+  /* ── 公告細條 ── */
+  .ann{
+    background:var(--ink);color:#fff;font-size:13.5px;font-weight:500;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    padding:9px 16px;letter-spacing:.02em;position:relative;
+  }
+  .ann b{color:#7ec0ff}
+  .ann .x{position:absolute;right:14px;cursor:pointer;opacity:.55;font-size:15px}
+  .ann .x:hover{opacity:1}
+
+  /* ── 頂部固定組合（促銷條 + Header 一起 sticky）── */
+  .topbar{position:sticky;top:0;z-index:30}
+
+  /* ── Header ── */
+  header{
+    background:rgba(255,255,255,.92);
+    backdrop-filter:saturate(180%) blur(18px);border-bottom:1px solid var(--line);
+  }
+  .nav{max-width:var(--maxw);margin:0 auto;height:62px;padding:0 22px;
+    display:flex;align-items:center;gap:28px}
+  .logo{font-weight:900;font-size:20px;letter-spacing:.04em;white-space:nowrap}
+  .logo span{color:var(--accent)}
+  .nav ul{display:flex;gap:20px;list-style:none;font-size:14.5px;font-weight:500}
+  .nav ul a{color:var(--ink);text-decoration:none;opacity:.78;transition:.15s}
+  .nav ul a:hover{opacity:1;color:var(--accent)}
+  .nav ul a.promo{color:#ff3d4f;opacity:1;font-weight:700}
+  .nav ul a.promo:hover{color:#e0202f}
+  .nav .right{margin-left:auto;display:flex;align-items:center;gap:18px;
+    font-size:18px;color:var(--ink-soft)}
+  .nav .right span{cursor:pointer;transition:.15s}
+  .nav .right span:hover{color:var(--accent)}
+
+  /* ── Mega-menu（依機型 ▾，hover 展開）── */
+  header{position:relative}
+  .nav ul li{position:relative}
+  .nav ul li.has-mega{position:static}
+  .mega{position:absolute;left:0;right:0;top:100%;z-index:25;
+    background:#fff;border-top:1px solid var(--line);
+    box-shadow:0 14px 32px rgba(20,20,40,.08);
+    padding:28px 22px 24px;
+    opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity .18s,transform .18s,visibility 0s linear .18s}
+  .has-mega:hover .mega,.has-mega:focus-within .mega{
+    opacity:1;visibility:visible;transform:translateY(0);
+    transition:opacity .18s,transform .18s,visibility 0s}
+  .mega-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px;
+    max-width:var(--maxw);margin:0 auto}
+  .mega-col h4{font-size:12px;font-weight:800;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink);margin-bottom:14px;
+    padding-bottom:10px;border-bottom:1px solid var(--line)}
+  .mega-col a{display:block;font-size:13.5px;font-weight:500;
+    color:var(--ink);text-decoration:none;padding:5px 0;opacity:.85;
+    transition:.15s}
+  .mega-col a:hover{color:var(--accent);opacity:1;padding-left:4px}
+  .mega-col .g-label{font-size:10.5px;font-weight:700;color:var(--ink-soft);
+    letter-spacing:.08em;margin-top:12px;margin-bottom:2px}
+  .mega-col a.more{font-size:12.5px;font-weight:700;color:var(--accent);
+    margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+  .mega-foot{max-width:var(--maxw);margin:20px auto 0;padding-top:18px;
+    border-top:1px dashed var(--line);font-size:13px;color:var(--ink-soft);
+    text-align:center}
+  .mega-foot a{color:var(--accent);text-decoration:none;font-weight:700;margin-left:4px}
+  .mega-foot a:hover{color:var(--accent-ink)}
+
+  /* ── 選購指南下拉（純文字單欄，SHOPLINE 原生可實現；圖片預覽改放 hub 頁）── */
+  .nav ul li.has-dropdown{position:relative}
+  .dropdown{position:absolute;top:100%;left:0;z-index:25;
+    min-width:200px;background:#fff;
+    border-top:1px solid var(--line);border-radius:0 0 14px 14px;
+    box-shadow:0 14px 32px rgba(20,20,40,.08);
+    padding:14px 18px;
+    opacity:0;visibility:hidden;transform:translateY(-6px);
+    transition:opacity .18s,transform .18s,visibility 0s linear .18s}
+  .has-dropdown:hover .dropdown,.has-dropdown:focus-within .dropdown{
+    opacity:1;visibility:visible;transform:translateY(0);
+    transition:opacity .18s,transform .18s,visibility 0s}
+  .dropdown-list a{display:block;font-size:13.5px;font-weight:500;color:var(--ink);
+    white-space:nowrap;text-decoration:none;padding:6px 0;opacity:.85;transition:.15s}
+  .dropdown-list a:hover{color:var(--accent);opacity:1;padding-left:4px}
+  .dropdown-list a.feat{font-weight:700;color:var(--accent);
+    border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:4px}
+
+  /* ── Hero ── */
+  .hero{position:relative;overflow:hidden}
+  .hero-bg{
+    position:absolute;inset:0;z-index:0;
+    background:
+      radial-gradient(1100px 520px at 78% -8%, #e9f3ff 0%, rgba(233,243,255,0) 60%),
+      radial-gradient(900px 480px at 12% 110%, #f3f0ff 0%, rgba(243,240,255,0) 55%),
+      var(--bg);
+  }
+  .hero-inner{
+    position:relative;z-index:1;max-width:var(--maxw);margin:0 auto;
+    padding:64px 22px 30px;
+    display:grid;grid-template-columns:1.02fr .98fr;gap:56px;align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;
+    color:var(--accent-ink);background:#e7f1ff;padding:6px 13px;border-radius:999px;
+    letter-spacing:.03em;margin-bottom:20px;
+  }
+  .eyebrow i{width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block}
+  h1{font-size:46px;line-height:1.18;font-weight:900;letter-spacing:-.01em;margin-bottom:18px}
+  h1 em{font-style:normal;background:linear-gradient(120deg,var(--accent),#7b61ff);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:17px;color:var(--ink-soft);max-width:430px;margin-bottom:26px}
+
+  /* 機型選購引導器 */
+  .picker-label{font-size:13.5px;font-weight:700;color:var(--ink-soft);
+    margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .picker-label::before{content:"01";font-size:11px;background:var(--ink);color:#fff;
+    width:20px;height:20px;border-radius:5px;display:grid;place-items:center;font-weight:700}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px;max-width:440px}
+  .chip{
+    background:var(--chip);border:1.5px solid transparent;border-radius:14px;
+    padding:15px 12px;cursor:pointer;text-align:center;transition:.18s;
+    display:flex;flex-direction:column;gap:3px;align-items:center;
+  }
+  .chip:hover{background:#fff;border-color:var(--accent);transform:translateY(-2px);
+    box-shadow:0 8px 22px rgba(10,132,255,.13)}
+  .chip.full{background:var(--ink);color:#fff}
+  .chip.full:hover{background:#000;border-color:var(--ink)}
+  .chip b{font-size:15px;font-weight:700}
+  .chip small{font-size:11px;color:var(--ink-soft)}
+  .chip.full small{color:#b9b9c4}
+  .chip .arrow{font-size:15px}
+
+  /* 視覺右欄 */
+  .visual{position:relative;height:430px}
+  .device{
+    position:absolute;border-radius:34px;background:#fff;
+    box-shadow:0 30px 70px rgba(20,20,40,.16);overflow:hidden;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .device.main{width:230px;height:430px;left:30%;top:0;border:7px solid #111;z-index:2}
+  .device.back{width:200px;height:380px;left:2%;top:36px;border:6px solid #2b2b33;
+    z-index:1;opacity:.92;transform:rotate(-7deg)}
+  .device.watch{width:118px;height:140px;right:-4px;bottom:24px;border:6px solid #1c1c22;
+    border-radius:30px;z-index:3}
+  .scr{width:100%;height:100%;display:grid;place-items:center;font-weight:900;
+    letter-spacing:.04em;text-align:center;line-height:1.4}
+  .scr.a{background:linear-gradient(160deg,#0a84ff,#7b61ff);color:#fff;font-size:18px}
+  .scr.b{background:linear-gradient(160deg,#ff7a59,#ff3d77);color:#fff;font-size:15px}
+  .scr.c{background:linear-gradient(160deg,#34c759,#0a84ff);color:#fff;font-size:12px}
+  .badge{
+    position:absolute;z-index:4;background:#fff;border:1px solid var(--line);
+    border-radius:13px;padding:9px 13px;font-size:12.5px;font-weight:700;
+    box-shadow:0 12px 30px rgba(20,20,40,.12);display:flex;align-items:center;gap:7px;
+  }
+  .badge.t{top:8px;left:-6px}
+  .badge.b{bottom:60px;right:30px}
+  .badge .dot{width:8px;height:8px;border-radius:50%;background:#34c759}
+  .badge .star{color:#ff9f0a}
+
+  /* ── 輪播 Hero ── */
+  .carousel{position:relative;max-width:var(--maxw);margin:0 auto;padding:22px 22px 0}
+  .slides{position:relative;border-radius:22px;overflow:hidden;height:380px}
+  .slide{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;
+    display:flex;align-items:center;padding:0 8%;color:#fff}
+  .slide.on{opacity:1}
+  .slide .stxt{position:relative;z-index:2;max-width:480px}
+  /* Hero 編輯式品牌策展風（不喊折扣，僅做品牌敘事） */
+  .slide .skick{font-size:11px;font-weight:800;letter-spacing:.22em;opacity:.78;
+    margin-bottom:16px;text-transform:uppercase}
+  .slide h2{font-size:46px;font-weight:700;line-height:1.1;margin-bottom:16px;letter-spacing:-.02em}
+  .slide p{font-size:15px;opacity:.82;margin-bottom:28px;line-height:1.65;max-width:380px}
+  .slide .sbtn{display:inline-block;background:transparent;color:#fff;text-decoration:none;
+    font-weight:600;font-size:13px;letter-spacing:.10em;padding:12px 24px;
+    border:1.5px solid rgba(255,255,255,.55);border-radius:0;transition:.2s}
+  .slide .sbtn:hover{background:#fff;color:var(--ink);border-color:#fff}
+  /* 六張背景：編輯式攝影（左側深色漸層遮罩確保文字可讀，深色 sl 用深遮罩，奶米 sl4 用淺遮罩）*/
+  .sl1{background:
+    linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.20) 45%,rgba(0,0,0,0) 70%),
+    url('images/hero-iphone17_20260531_004825.png') center/cover no-repeat,
+    linear-gradient(135deg,#f4a896 0%,#c25a4d 100%)}
+  .sl2{background:
+    linear-gradient(90deg,rgba(0,0,0,.65) 0%,rgba(0,0,0,.30) 50%,rgba(0,0,0,0) 75%),
+    url('images/hero-londonimg_20260531_004830.png') center/cover no-repeat,
+    linear-gradient(135deg,#2a1f17 0%,#4a3a2a 100%)}
+  .sl3{background:
+    linear-gradient(90deg,rgba(0,0,0,.60) 0%,rgba(0,0,0,.25) 50%,rgba(0,0,0,0) 75%),
+    url('images/hero-curation_20260531_004823.png') center/cover no-repeat,
+    linear-gradient(135deg,#1a2e1f 0%,#3d5a3a 100%)}
+  .sl4{background:
+    linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.20) 50%,rgba(0,0,0,0) 75%),
+    url('images/hero-yu_20260531_004823.png') center/cover no-repeat,
+    linear-gradient(135deg,#0a1a2f 0%,#2c3a5f 100%)}
+  .sl5{background:
+    linear-gradient(90deg,rgba(255,253,247,.78) 0%,rgba(255,253,247,.35) 45%,rgba(255,253,247,0) 70%),
+    url('images/hero-jarch_20260531_004819.png') center/cover no-repeat,
+    linear-gradient(135deg,#efe5d2 0%,#d4c4a0 100%);color:#1c1c22}
+  .sl6{background:
+    linear-gradient(90deg,rgba(0,0,0,.55) 0%,rgba(0,0,0,.20) 50%,rgba(0,0,0,0) 75%),
+    url('images/hero-power_20260531_004817.png') center/cover no-repeat,
+    linear-gradient(135deg,#0e3540 0%,#2c7a8f 100%)}
+  /* sl5 米色底反轉文字色 */
+  .sl5 .skick{color:#1c1c22;opacity:.6}
+  .sl5 .sbtn{color:#1c1c22;border-color:rgba(0,0,0,.45)}
+  .sl5 .sbtn:hover{background:#1c1c22;color:#fff;border-color:#1c1c22}
+  .c-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;
+    width:42px;height:42px;border-radius:50%;background:rgba(255,255,255,.85);
+    border:none;cursor:pointer;font-size:18px;color:var(--ink);display:grid;place-items:center;
+    box-shadow:0 4px 14px rgba(0,0,0,.15);transition:.15s}
+  .c-arrow:hover{background:#fff}
+  .c-arrow.prev{left:36px}.c-arrow.next{right:36px}
+  .dots{position:absolute;bottom:18px;left:50%;transform:translateX(-50%);z-index:5;
+    display:flex;gap:8px}
+  .dots b{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.5);cursor:pointer;transition:.2s}
+  .dots b.on{background:#fff;width:24px;border-radius:5px}
+
+  /* 機型選購列（輪播下方） */
+  .picker-bar{max-width:var(--maxw);margin:0 auto;padding:18px 22px 4px;
+    display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .picker-bar .pl{font-size:14px;font-weight:800;color:var(--ink);white-space:nowrap;
+    display:flex;align-items:center;gap:8px}
+  .picker-bar .pl-block{display:flex;flex-direction:column;gap:3px}
+  .picker-bar .pl-sub{font-size:12px;color:var(--ink-soft);font-weight:500;padding-left:28px;line-height:1.4}
+  .picker-bar .pl span{font-size:11px;background:var(--ink);color:#fff;width:20px;height:20px;
+    border-radius:5px;display:grid;place-items:center}
+  .pbar-chips{display:flex;gap:9px;flex-wrap:wrap;flex:1}
+  .pbar-chips .c{background:var(--chip);border:1.5px solid transparent;border-radius:11px;
+    padding:9px 16px;font-size:14px;font-weight:700;cursor:pointer;transition:.15s}
+  .pbar-chips .c:hover{background:#fff;border-color:var(--accent);color:var(--accent-ink);
+    box-shadow:0 6px 16px rgba(10,132,255,.12)}
+  .pbar-chips .c.full{background:var(--ink);color:#fff}
+  .pbar-chips .c.full:hover{background:#000;color:#fff}
+
+  /* ── 信任條 ── */
+  .trust{position:relative;z-index:1;border-top:1px solid var(--line);background:rgba(255,255,255,.6)}
+  .trust-inner{max-width:var(--maxw);margin:0 auto;padding:18px 22px;
+    display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  .ti{display:flex;align-items:center;gap:11px;font-size:14px;font-weight:600}
+  .ti .ic{font-size:20px;width:40px;height:40px;border-radius:11px;background:var(--chip);
+    display:grid;place-items:center;flex:none;overflow:hidden}
+  .ti .ic img{width:26px;height:26px;object-fit:contain;mix-blend-mode:multiply}
+  .ti small{display:block;font-size:12px;color:var(--ink-soft);font-weight:500}
+
+  /* ── 通用區塊 ── */
+  .sec{max-width:var(--maxw);margin:0 auto;padding:58px 22px}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:26px;gap:16px}
+  .sec-head h2{font-size:27px;font-weight:900;letter-spacing:-.01em}
+  .sec-head p{font-size:14px;color:var(--ink-soft);margin-top:5px}
+  .sec-head a{font-size:14px;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap}
+  .sec-head a:hover{color:var(--accent-ink)}
+
+  /* 商品卡 */
+  .cards{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+  /* 商品卡 ‧ 橫向滑動版（熱銷排行用） */
+  .cards.scroll{display:flex;grid-template-columns:none;gap:14px;
+    overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    padding:4px 2px 16px;
+    scrollbar-width:thin;scrollbar-color:#d8d8e2 transparent}
+  .cards.scroll::-webkit-scrollbar{height:6px}
+  .cards.scroll::-webkit-scrollbar-thumb{background:#d8d8e2;border-radius:3px}
+  .cards.scroll::-webkit-scrollbar-thumb:hover{background:#b3b3bd}
+  .cards.scroll .card{flex:0 0 260px;scroll-snap-align:start}
+  .card{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    background:#fff;transition:.18s;cursor:pointer;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(20,20,40,.1);border-color:#d8d8e2}
+  .card .img{height:170px;display:grid;place-items:center;font-weight:900;color:#fff;
+    font-size:15px;text-align:center;line-height:1.4;position:relative}
+  .card .tag{position:absolute;top:10px;left:10px;background:#ff3d77;color:#fff;
+    font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px}
+  .g1{background:linear-gradient(150deg,#0a84ff,#7b61ff)}
+  .g2{background:linear-gradient(150deg,#ff7a59,#ff3d77)}
+  .g3{background:linear-gradient(150deg,#34c759,#0a84ff)}
+  .g4{background:linear-gradient(150deg,#ff9f0a,#ff3d77)}
+  .card .body{padding:13px 14px 16px}
+  .card .brand{font-size:11.5px;color:var(--ink-soft);font-weight:600}
+  .card .name{font-size:14px;font-weight:700;margin:2px 0 7px;line-height:1.4}
+  .card .rate{font-size:12px;color:var(--ink-soft);margin-bottom:8px}
+  .card .rate b{color:#ff9f0a}
+  .card .price{font-size:17px;font-weight:900}
+  .card .price s{font-size:12px;color:#b3b3bd;font-weight:500;margin-left:6px}
+
+  /* 真實開箱（社會證明 ‧ 橫向滑動） */
+  .unbox{display:flex;gap:14px;overflow-x:auto;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    padding:4px 2px 16px;
+    scrollbar-width:thin;scrollbar-color:#d8d8e2 transparent}
+  .unbox::-webkit-scrollbar{height:6px}
+  .unbox::-webkit-scrollbar-thumb{background:#d8d8e2;border-radius:3px}
+  .ub{flex:0 0 260px;scroll-snap-align:start;
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    background:#fff;display:flex;flex-direction:column;transition:.18s;cursor:pointer}
+  .ub:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(20,20,40,.10);border-color:#d8d8e2}
+  .ub .uphoto{height:180px;background-size:cover;background-position:center;
+    position:relative}
+  .ub .uphoto .uquoteq{position:absolute;top:14px;left:14px;
+    font-size:36px;font-weight:900;line-height:.8;color:rgba(255,255,255,.5)}
+  .ub .ubody{padding:16px 18px 18px;display:flex;flex-direction:column;gap:8px;flex:1}
+  .ub .ustar{color:#ff9f0a;font-size:13px;font-weight:700;letter-spacing:.04em}
+  .ub .uquote{font-size:13.5px;font-weight:600;line-height:1.55;color:var(--ink)}
+  .ub .uitem{font-size:11.5px;color:var(--accent-ink);font-weight:700;
+    background:#e7f1ff;padding:3px 9px;border-radius:7px;align-self:flex-start}
+  .ub .uwho{font-size:12px;color:var(--ink-soft);display:flex;align-items:center;gap:7px;margin-top:auto}
+  .ub .uwho .uav{width:24px;height:24px;border-radius:50%;background:var(--chip);
+    display:grid;place-items:center;font-size:13px;flex:none}
+
+  /* 組合下殺（橫向滑動 ‧ 紅標促銷 ‧ 含圖片） */
+  .bundles{display:flex;gap:14px;overflow-x:auto;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    padding:4px 2px 16px;
+    scrollbar-width:thin;scrollbar-color:#d8d8e2 transparent}
+  .bundles::-webkit-scrollbar{height:6px}
+  .bundles::-webkit-scrollbar-thumb{background:#d8d8e2;border-radius:3px}
+  .bundles::-webkit-scrollbar-thumb:hover{background:#b3b3bd}
+  .bundle{flex:0 0 260px;scroll-snap-align:start;
+    border:1px solid var(--line);border-radius:var(--radius);
+    background:#fff;overflow:hidden;
+    display:flex;flex-direction:column;
+    position:relative;transition:.18s;cursor:pointer}
+  .bundle:hover{transform:translateY(-3px);border-color:#ffd1d6;
+    box-shadow:0 14px 30px rgba(224,32,47,.10)}
+  .bundle .pic{height:160px;background-size:cover;background-position:center;
+    position:relative}
+  .bundle .save{position:absolute;top:14px;right:14px;z-index:2;
+    background:linear-gradient(135deg,#ff3d4f,#e0202f);color:#fff;
+    font-size:12px;font-weight:800;padding:5px 11px;border-radius:999px;
+    letter-spacing:.02em;box-shadow:0 4px 12px rgba(224,32,47,.30)}
+  .bundle .body{padding:16px 18px 20px;display:flex;flex-direction:column;gap:8px;flex:1;
+    background:linear-gradient(180deg,#fff 60%,#fff5f5 100%)}
+  .bundle h3{font-size:16px;font-weight:800;line-height:1.35;margin-top:2px}
+  .bundle .items{font-size:12.5px;color:var(--ink-soft);line-height:1.55;min-height:40px}
+  .bundle .price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;margin-top:2px}
+  .bundle .pr{font-size:24px;font-weight:900;color:#e0202f;letter-spacing:-.01em}
+  .bundle .ori{font-size:13px;color:#b3b3bd;font-weight:500;text-decoration:line-through}
+  .bundle .btn{margin-top:8px;align-self:flex-start;
+    background:var(--ink);color:#fff;border:none;
+    padding:10px 18px;border-radius:11px;
+    font-weight:700;font-size:13.5px;cursor:pointer;transition:.15s}
+  .bundle .btn:hover{background:#000;transform:translateX(2px)}
+
+  /* 限時優惠 ‧ 橫向滑動 banner */
+  .promos{display:flex;gap:14px;overflow-x:auto;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;
+    padding:4px 2px 16px;
+    scrollbar-width:thin;scrollbar-color:#d8d8e2 transparent}
+  .promos::-webkit-scrollbar{height:6px}
+  .promos::-webkit-scrollbar-thumb{background:#d8d8e2;border-radius:3px}
+  .promo{flex:0 0 280px;scroll-snap-align:start;
+    border-radius:18px;overflow:hidden;
+    position:relative;height:220px;cursor:pointer;transition:.2s;
+    color:#fff}
+  .promo:hover{transform:translateY(-4px);box-shadow:0 20px 40px rgba(20,20,40,.20)}
+  .promo .pbg{position:absolute;inset:0;z-index:0}
+  .promo .pcnt{position:relative;z-index:2;padding:22px;height:100%;
+    display:flex;flex-direction:column;justify-content:space-between;gap:10px}
+  .promo .ptag{font-size:11.5px;font-weight:800;letter-spacing:.06em;
+    background:rgba(255,255,255,.22);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    color:#fff;padding:4px 11px;border-radius:999px;align-self:flex-start}
+  .promo .pmain{display:flex;flex-direction:column;gap:4px}
+  .promo .pttl{font-size:15px;font-weight:700;line-height:1.3;opacity:.95}
+  .promo .pbig{font-size:38px;font-weight:900;line-height:1;letter-spacing:-.02em;color:#ffd54a}
+  .promo .pbig.md{font-size:26px;letter-spacing:0}
+  .promo .pbig.sm{font-size:22px}
+  .promo .pbig small{font-size:18px;font-weight:700;color:#fff;margin-left:2px}
+  .promo .psub{font-size:12px;font-weight:600;opacity:.85;line-height:1.45}
+  .promo .pcta{font-size:13px;font-weight:800;letter-spacing:.04em;
+    background:#fff;color:var(--ink);padding:9px 16px;border-radius:10px;
+    align-self:flex-start;text-decoration:none;transition:.15s}
+  .promo .pcta:hover{background:var(--ink);color:#fff;transform:translateX(2px)}
+  /* 各 banner 背景（編輯式攝影 + 深色漸層讓文字可讀）*/
+  .pbg.p1{background:
+    linear-gradient(180deg,rgba(0,0,0,.35) 0%,rgba(0,0,0,.55) 100%),
+    url('images/promo-yu_20260531_010612.png') center/cover no-repeat,
+    linear-gradient(135deg,#0a2540,#1e3a5f)}
+  .pbg.p2{background:
+    linear-gradient(180deg,rgba(0,0,0,.30) 0%,rgba(0,0,0,.55) 100%),
+    url('images/promo-iceshield_20260531_010636.png') center/cover no-repeat,
+    linear-gradient(135deg,#5e6b58,#3d473c)}
+  .pbg.p3{background:
+    linear-gradient(180deg,rgba(0,0,0,.30) 0%,rgba(0,0,0,.50) 100%),
+    url('images/promo-mili_20260531_010609.png') center/cover no-repeat,
+    linear-gradient(135deg,#9caa6c,#7d8a55)}
+  .pbg.p4{background:
+    linear-gradient(180deg,rgba(0,0,0,.40) 0%,rgba(0,0,0,.60) 100%),
+    url('images/promo-thanks_20260531_010611.png') center/cover no-repeat,
+    linear-gradient(135deg,#1c1c22,#3a3a48)}
+  .pbg.p5{background:
+    linear-gradient(180deg,rgba(0,0,0,.25) 0%,rgba(0,0,0,.60) 100%),
+    url('images/promo-dualguard_20260601_145008.png') center/cover no-repeat,
+    linear-gradient(135deg,#6b3a1f,#9c5530)}
+
+  /* 品牌牆 */
+  .brands{display:grid;grid-template-columns:repeat(9,1fr);gap:12px}
+  .brand-c{display:flex;flex-direction:column;align-items:center;gap:10px;
+    cursor:pointer;transition:.15s;text-align:center}
+  .brand-c .lp{width:100%;aspect-ratio:1/1;border-radius:18px;
+    background:linear-gradient(135deg,#f5f5f7,#ececf1);
+    border:1px solid var(--line);
+    color:#5b5b66;font-size:18px;font-weight:900;letter-spacing:.04em;
+    display:grid;place-items:center;transition:.15s}
+  .brand-c:hover .lp{border-color:var(--accent);background:#fff;
+    box-shadow:0 10px 24px rgba(10,132,255,.12);transform:translateY(-3px)}
+  .brand-c b{display:block;font-size:13px;font-weight:700;line-height:1.35;color:var(--ink)}
+  .brand-c small{font-size:11px;color:var(--ink-soft)}
+  /* 自有品牌（金色強調） */
+  .brand-c .lp.own{background:linear-gradient(135deg,#fffdf2,#fbeec6);
+    border:1.5px solid #d4a017;color:#8a6d00;font-size:14px;letter-spacing:-.02em}
+  .brand-c:hover .lp.own{border-color:#b87a11;
+    box-shadow:0 10px 24px rgba(184,122,17,.20)}
+  .brand-c .own-tag{display:inline-block;margin-top:2px;
+    font-size:10px;font-weight:800;letter-spacing:.04em;
+    color:#8a6d00;background:#fbeec6;padding:2px 8px;border-radius:999px}
+
+  /* 網紅實搭 ‧ IG 風格大圖牆 */
+  .iggrid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .igc{position:relative;aspect-ratio:1/1;border-radius:18px;overflow:hidden;
+    cursor:pointer;transition:.25s;background:#1c1c22}
+  .igc:hover{transform:translateY(-3px);box-shadow:0 20px 40px rgba(20,20,40,.22)}
+  .igc .igimg{position:absolute;inset:0;background-size:cover;background-position:center;
+    transition:transform .35s ease}
+  .igc:hover .igimg{transform:scale(1.06)}
+  /* 漸層遮罩讓底部標籤更易讀 */
+  .igc::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(0,0,0,0) 50%,rgba(0,0,0,.55) 100%);
+    pointer-events:none}
+  .igc .ighandle{position:absolute;top:12px;left:12px;z-index:3;
+    display:flex;align-items:center;gap:6px;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    padding:5px 11px 5px 8px;border-radius:999px;
+    font-size:12px;font-weight:800;color:var(--ink)}
+  .igc .ighandle .ighav{width:20px;height:20px;border-radius:50%;
+    background:var(--chip);display:grid;place-items:center;font-size:12px;flex:none}
+  .igc .igicon{position:absolute;top:12px;right:12px;z-index:3;
+    width:30px;height:30px;border-radius:50%;
+    background:rgba(255,255,255,.92);backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    display:grid;place-items:center;font-size:14px;color:#e0202f}
+  .igc .igtags{position:absolute;bottom:12px;left:12px;right:12px;z-index:3;
+    display:flex;flex-wrap:wrap;gap:5px}
+  .igc .igtag{background:rgba(255,255,255,.95);backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    font-size:11.5px;font-weight:700;color:var(--ink);
+    padding:5px 9px;border-radius:8px;
+    box-shadow:0 4px 12px rgba(0,0,0,.18);
+    transition:.18s;display:inline-flex;align-items:center;gap:5px;
+    transform:translateY(8px);opacity:0}
+  .igc:hover .igtag{transform:translateY(0);opacity:1}
+  .igc .igtag:hover{background:var(--ink);color:#fff}
+  .igc .igtag .igprice{color:#e0202f;font-weight:800}
+  .igc .igtag:hover .igprice{color:#ff9f0a}
+  /* 觸控裝置：永遠顯示商品標籤 */
+  @media(hover:none){
+    .igc .igtag{transform:none;opacity:1}
+  }
+
+  /* 會員禮遇 */
+  .mvip{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;
+    background:linear-gradient(135deg,#fffdf7,#fff)}
+  .mvip-in{padding:30px 28px}
+  .mvip-top{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+  .mvip-top h3{font-size:22px;font-weight:900;letter-spacing:-.01em}
+  .mvip-top h3 em{font-style:normal;background:linear-gradient(120deg,#d4a017,#b87a11);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .mvip-top p{font-size:14px;color:var(--ink-soft);margin-top:5px}
+  .mvip-top a.more{font-size:14px;font-weight:700;color:var(--accent);text-decoration:none;white-space:nowrap}
+  .mvip-top a.more:hover{color:var(--accent-ink)}
+  .tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+  .tier{border:1.5px solid var(--line);border-radius:14px;padding:18px 16px;background:#fff;
+    display:flex;flex-direction:column;gap:6px;transition:.18s;position:relative}
+  .tier:hover{border-color:#d4a017;transform:translateY(-3px);box-shadow:0 14px 30px rgba(212,160,23,.12)}
+  .tier .lv{font-size:11.5px;font-weight:800;color:var(--ink-soft);letter-spacing:.06em}
+  .tier .pct{font-size:32px;font-weight:900;line-height:1;letter-spacing:-.02em}
+  .tier .pct small{font-size:13px;font-weight:700;color:var(--ink-soft);margin-left:4px}
+  .tier .nm{font-size:15px;font-weight:800;margin-top:2px}
+  .tier .desc{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+  .tier.top{border-color:#d4a017;background:linear-gradient(180deg,#fffdf2,#fff)}
+  .tier.top .pct{color:#b87a11}
+  .tier.top::after{content:"最高回饋";position:absolute;top:-9px;right:14px;
+    background:linear-gradient(120deg,#d4a017,#b87a11);color:#fff;
+    font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px}
+  .perks{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;
+    padding-top:18px;border-top:1px dashed #ebe5d0;margin-bottom:20px}
+  .perk{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700}
+  .perk .pi{width:36px;height:36px;border-radius:10px;background:#fdf3d8;color:#b87a11;
+    display:grid;place-items:center;font-size:17px;flex:none;overflow:hidden}
+  .perk .pi img{width:22px;height:22px;object-fit:contain;mix-blend-mode:multiply}
+  .perk small{display:block;font-size:11.5px;color:var(--ink-soft);font-weight:500;margin-top:1px}
+  .mvip-cta{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .mvip-cta .btn{background:var(--ink);color:#fff;text-decoration:none;padding:12px 22px;
+    border-radius:12px;font-weight:800;font-size:14.5px;transition:.15s}
+  .mvip-cta .btn:hover{background:#000;transform:translateY(-2px)}
+  .mvip-cta .note{font-size:12px;color:var(--ink-soft)}
+
+  /* 指南 */
+  .guides{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .guide{border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:.18s}
+  .guide:hover{box-shadow:0 14px 32px rgba(20,20,40,.09);transform:translateY(-3px)}
+  .guide .gi{height:140px;background-size:cover;background-position:center}
+  .guide .gb{padding:16px}
+  .guide .gb small{font-size:11.5px;color:var(--accent);font-weight:700}
+  .guide .gb h3{font-size:15.5px;font-weight:700;margin-top:5px;line-height:1.45}
+
+  /* FAQ */
+  .faq-sec{background:#f7f7fa}
+  .faq{max-width:780px;margin:0 auto}
+  .qa{background:#fff;border:1px solid var(--line);border-radius:13px;margin-bottom:11px;
+    padding:16px 18px;cursor:pointer}
+  .qa summary{font-size:15px;font-weight:700;list-style:none;display:flex;justify-content:space-between;align-items:center}
+  .qa summary::-webkit-details-marker{display:none}
+  .qa summary::after{content:"+";font-size:21px;color:var(--accent);font-weight:400}
+  .qa[open] summary::after{content:"−"}
+  .qa p{font-size:14px;color:var(--ink-soft);margin-top:11px}
+
+  /* CTA 訂閱 */
+  .cta{background:linear-gradient(120deg,#0a84ff,#7b61ff);color:#fff;text-align:center}
+  .cta-in{max-width:var(--maxw);margin:0 auto;padding:54px 22px}
+  .cta h2{font-size:28px;font-weight:900}
+  .cta p{opacity:.9;margin:8px 0 22px;font-size:15px}
+  .cta .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .cta .b1{background:#06c755;color:#fff}
+  .cta .b2{background:#fff;color:var(--ink)}
+  .cta .btns a{padding:13px 26px;border-radius:12px;font-weight:800;text-decoration:none;font-size:15px;transition:.15s}
+  .cta .btns a:hover{transform:translateY(-2px)}
+
+  /* Footer */
+  footer{background:var(--ink);color:#c9c9d3;font-size:13.5px}
+  .ft{max-width:var(--maxw);margin:0 auto;padding:46px 22px 30px;
+    display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:30px}
+  .ft h4{color:#fff;font-size:14px;margin-bottom:14px;font-weight:700}
+  .ft a{display:block;color:#a8a8b4;text-decoration:none;margin-bottom:8px;transition:.15s}
+  .ft a:hover{color:#fff}
+  .ft .logo{font-size:19px;font-weight:900;color:#fff;margin-bottom:10px}
+  .ft .logo span{color:#7ec0ff}
+  .ft-bottom{border-top:1px solid #26262e;text-align:center;padding:16px;font-size:12px;color:#73737f}
+
+  /* 浮動 LINE 客服 */
+  .fab{position:fixed;right:22px;bottom:84px;z-index:50;
+    display:flex;flex-direction:column;align-items:flex-end;gap:10px}
+  .fab-bubble{background:#fff;border:1px solid var(--line);border-radius:14px;
+    padding:11px 30px 11px 14px;box-shadow:0 8px 26px rgba(20,20,40,.16);max-width:220px;
+    font-size:13.5px;font-weight:700;line-height:1.45;position:relative}
+  .fab-bubble small{display:block;font-size:12px;color:var(--ink-soft);font-weight:500;margin-top:2px}
+  .fab-bubble .bx{position:absolute;top:5px;right:8px;cursor:pointer;color:#bbb;font-size:14px}
+  .fab-bubble .bx:hover{color:var(--ink)}
+  .fab-bubble::after{content:"";position:absolute;right:22px;bottom:-7px;
+    border:7px solid transparent;border-top-color:#fff}
+  .fab.collapsed .fab-bubble{display:none}
+  .fab-btn{width:60px;height:60px;border-radius:50%;background:#06c755;color:#fff;
+    display:grid;place-items:center;font-size:13px;font-weight:900;cursor:pointer;flex:none;
+    box-shadow:0 8px 24px rgba(6,199,85,.45);transition:.18s;text-align:center;line-height:1.1}
+  .fab-btn:hover{transform:scale(1.06)}
+  @media(max-width:880px){
+    .fab{right:14px;bottom:124px}
+    .fab-btn{width:50px;height:50px;font-size:11px}
+    .fab-bubble{max-width:160px;font-size:12.5px;padding:9px 12px}
+  }
+
+  /* 回到頂部 */
+  .top-btn{position:fixed;right:22px;bottom:24px;z-index:49;width:46px;height:46px;
+    border-radius:50%;background:#fff;border:1px solid var(--line);color:var(--ink);
+    font-size:20px;cursor:pointer;display:grid;place-items:center;
+    box-shadow:0 6px 18px rgba(20,20,40,.14);opacity:0;visibility:hidden;
+    transform:translateY(8px);transition:.25s}
+  .top-btn.show{opacity:1;visibility:visible;transform:translateY(0)}
+  .top-btn:hover{border-color:var(--accent);color:var(--accent)}
+  @media(max-width:880px){
+    .top-btn{right:14px;bottom:78px;width:42px;height:42px;font-size:18px}
+  }
+
+  /* 手機版 sticky 底部操作列 */
+  .mbar{display:none}
+  @media(max-width:880px){
+    .mbar{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+      position:fixed;left:0;right:0;bottom:0;z-index:48;
+      background:rgba(255,255,255,.96);backdrop-filter:saturate(180%) blur(14px);
+      border-top:1px solid var(--line);box-shadow:0 -4px 18px rgba(20,20,40,.08);
+      padding:6px 8px;padding-bottom:calc(6px + env(safe-area-inset-bottom));
+    }
+    .mbar a{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+      min-height:48px;text-decoration:none;color:var(--ink);
+      font-size:11.5px;font-weight:700;border-radius:12px;transition:.15s;
+    }
+    .mbar a:active{background:var(--chip)}
+    .mbar a .mi{font-size:20px;line-height:1}
+    .mbar a.main{background:#ff3d4f;color:#fff}
+    body{padding-bottom:62px}
+  }
+
+  /* 註解標籤 */
+  .note{max-width:var(--maxw);margin:26px auto 50px;padding:0 22px}
+  .note-card{background:#fffdf2;border:1px solid #f0e6b8;border-radius:14px;
+    padding:16px 20px;font-size:13.5px;color:#6b5d1a}
+  .note-card b{color:#8a6d00}
+  /* SHOPLINE 可行性對照卡 */
+  .feas-card{background:#f4f8ff;border:1px solid #cfe0ff;border-radius:14px;
+    padding:18px 20px;font-size:13px;color:#274060;margin-top:14px}
+  .feas-card h4{font-size:14.5px;color:#163a66;margin-bottom:6px}
+  .feas-card .legend{font-size:12px;color:#5a7099;margin-bottom:12px}
+  .feas-card ul{list-style:none;display:grid;gap:7px}
+  .feas-card li{display:flex;gap:9px;align-items:baseline;line-height:1.5}
+  .feas-card .t{flex:none;font-weight:800;font-size:11.5px;padding:1px 8px;border-radius:7px;white-space:nowrap}
+  .feas-card .ok{background:#e3f6e8;color:#1c7a3a}
+  .feas-card .mid{background:#fff0d6;color:#9a6a00}
+  .feas-card .lim{background:#ffe1e1;color:#b3271f}
+  .feas-card small{color:#5a7099}
+
+  /* ── RWD ── */
+  @media(max-width:880px){
+    .nav ul{display:none}
+    .hero-inner{grid-template-columns:1fr;gap:34px;padding:40px 20px 24px}
+    h1{font-size:34px}
+    .visual{height:330px;order:-1}
+    .device.main{width:170px;height:320px;left:34%}
+    .device.back{width:150px;height:285px;top:30px}
+    .device.watch{width:92px;height:108px}
+    .grid{grid-template-columns:repeat(2,1fr);max-width:none}
+    .trust-inner{grid-template-columns:repeat(2,1fr);gap:14px}
+    .slides{height:300px}
+    .slide{padding:0 28px}
+    .slide h2{font-size:27px}
+    .slide p{font-size:14px}
+    .c-arrow{display:none}
+    .picker-bar{gap:10px}
+    .pbar-chips{gap:7px}
+    .pbar-chips .c{padding:8px 13px;font-size:13px}
+    .cards{grid-template-columns:repeat(2,1fr)}
+    .bundle,.cards.scroll .card,.promo,.ub{flex-basis:78vw;max-width:300px}
+    .promo{height:200px}
+    .promo .pbig{font-size:32px}
+    .brands{grid-template-columns:repeat(2,1fr)}
+    .guides{grid-template-columns:1fr}
+    .tiers{grid-template-columns:1fr}
+    .perks{grid-template-columns:repeat(2,1fr)}
+    .mvip-in{padding:24px 20px}
+    .ft{grid-template-columns:1fr 1fr}
+    .sec-head h2{font-size:22px}
+  }
+
+  /* 網紅實搭 IG 牆：平板 / 手機 2×2 */
+  @media(max-width:1080px){
+    .iggrid{grid-template-columns:repeat(2,1fr);gap:10px}
+  }
+  @media(max-width:880px){
+    .iggrid{gap:8px}
+    .igc .igimg{font-size:42px}
+    .igc .ighandle{font-size:11px;padding:4px 9px 4px 6px}
+    .igc .igtag{transform:none;opacity:1;font-size:11px;padding:4px 8px}
+  }
+
+  /* 品牌牆：平板（881–1080px）3 欄（9 個 = 3×3 整齊），避免 PC 9 欄在窄螢幕擠成一團 */
+  @media(min-width:881px) and (max-width:1080px){
+    .brands{grid-template-columns:repeat(3,1fr)}
+  }
+</style>
+</head>
+<body>
+
+<!-- 公告細條 + Header：sticky 一組，捲動時固定在頂部 -->
+<div class="topbar">
+<div class="ann" role="region" aria-label="促銷公告">
+  倫印感謝祭 滿 <b>NT$599</b>即享超取 🚚 免運 ｜ 加入會員再享<a href="https://www.londonimg.tw/pages/membership-vip" style="color:#7ec0ff;">回饋</a>
+</div>
+
+<!-- Header -->
+<header>
+  <nav class="nav">
+    <div class="logo">倫敦<span>印象</span></div>
+    <ul>
+      <li><a href="#" class="promo">🔥 優惠專區 ▾</a></li>
+      <li><a href="#">最新商品</a></li>
+      <li class="has-mega"><a href="#">依機型 ▾</a>
+        <div class="mega">
+          <div class="mega-grid">
+            <div class="mega-col">
+              <h4>📱 iPhone（現役）</h4>
+              <div class="g-label">— 17 系列 —</div>
+              <a href="#">iPhone 17 Pro Max</a>
+              <a href="#">iPhone 17 Pro</a>
+              <a href="#">iPhone 17 Air</a>
+              <a href="#">iPhone 17</a>
+              <a href="#">iPhone 17e</a>
+              <div class="g-label">— 16 系列 —</div>
+              <a href="#">iPhone 16 Pro Max</a>
+              <a href="#">iPhone 16 Pro</a>
+              <a href="#">iPhone 16 Plus</a>
+              <a href="#">iPhone 16</a>
+              <a href="#">iPhone 16e</a>
+              <a class="more" href="#">全部 iPhone →</a>
+            </div>
+            <div class="mega-col">
+              <h4>📱 歷代 iPhone</h4>
+              <a href="#">iPhone 15 系列</a>
+              <a href="#">iPhone 14 系列</a>
+              <a href="#">iPhone 13 系列</a>
+              <a href="#">iPhone 12 系列</a>
+              <a href="#">iPhone 11 系列</a>
+              <a href="#">iPhone X 系列</a>
+              <a href="#">iPhone SE / 7 / 8</a>
+            </div>
+            <div class="mega-col">
+              <h4>⌚ Apple Watch</h4>
+              <a href="#">Ultra 2（49mm）</a>
+              <a href="#">Series 10（42 / 46mm）</a>
+              <a href="#">Series 9-7（41 / 45mm）</a>
+              <a href="#">SE（40 / 44mm）</a>
+              <a href="#">舊款（Series 6-4）</a>
+              <a class="more" href="#">全部 Apple Watch →</a>
+            </div>
+            <div class="mega-col">
+              <h4>🎧 AirPods</h4>
+              <a href="#">AirPods Pro 3</a>
+              <a href="#">AirPods Pro 2</a>
+              <a href="#">AirPods 4</a>
+              <a href="#">AirPods 3</a>
+              <a href="#">AirPods 1 / 2</a>
+              <a class="more" href="#">全部 AirPods →</a>
+            </div>
+          </div>
+          <div class="mega-foot">
+            💡 不確定相容機型？<a href="#">加 LINE 問真人客服 →</a>
+          </div>
+        </div>
+      </li>
+      <li><a href="#">手機殼 ▾</a></li>
+      <li><a href="#">Apple Watch ▾</a></li>
+      <li><a href="#">周邊與零配件 ▾</a></li>
+      <li><a href="#">品牌嚴選 ▾</a></li>
+      <li class="has-dropdown"><a href="#">選購指南 ▾</a>
+        <div class="dropdown">
+          <div class="dropdown-list">
+            <a class="feat" href="/pages/content-hub">📚 內容總覽</a>
+            <a href="/blogs">📖 部落格 / 選購指南</a>
+            <a href="/pages/unboxing">📦 倫印好物開箱趣</a>
+            <a href="/pages/videowall">🎬 影片專區</a>
+            <a href="/pages/tips">💡 倫印3C小技巧</a>
+          </div>
+        </div>
+      </li>
+    </ul>
+    <div class="right">
+      <span role="button" tabindex="0" aria-label="搜尋">🔍</span><span role="button" tabindex="0" aria-label="會員帳戶">👤</span><span role="button" tabindex="0" aria-label="購物車">🛒</span>
+    </div>
+  </nav>
+</header>
+</div><!-- /.topbar -->
+
+<!-- Hero 輪播 -->
+<section class="hero">
+  <div class="carousel">
+    <div class="slides" id="slides" role="region" aria-roledescription="輪播" aria-label="主視覺輪播">
+      <div class="slide sl1 on">
+        <div class="stxt">
+          <div class="skick">Apple ‧ iPhone 17</div>
+          <h2>Made for the<br>new iPhone.</h2>
+          <p>殼、貼、MagSafe — 為新機而生，第一時間到貨。</p>
+          <a href="#" class="sbtn">探索 iPhone 17 配件 →</a>
+        </div>
+      </div>
+      <div class="slide sl2">
+        <div class="stxt">
+          <div class="skick">Londonimg ‧ Original</div>
+          <h2>Engineered for<br>every detail.</h2>
+          <p>精選 3C 精品與手機配件，讓每個細節都無懈可擊。</p>
+          <a href="#" class="sbtn">探索LONDONIMG →</a>
+        </div>
+      </div>
+      <div class="slide sl3">
+        <div class="stxt">
+          <div class="skick">LDNIMG ‧ Curation</div>
+          <h2>40+ Brands.<br>One curation.</h2>
+          <p>從犀牛盾到 NatGeo，我們替你選好了。</p>
+          <a href="#" class="sbtn">探索品牌 →</a>
+        </div>
+      </div>
+      <div class="slide sl4">
+        <div class="stxt">
+          <div class="skick">YU ‧ Capsule</div>
+          <h2>Wear it<br>differently.</h2>
+          <p>360° 指環、磁吸質感系，把日常戴出個性。</p>
+          <a href="#" class="sbtn">探索 YU 系列 →</a>
+        </div>
+      </div>
+      <div class="slide sl5">
+        <div class="stxt">
+          <div class="skick">J/arch. ‧ Collection</div>
+          <h2>Mobile accessory,<br>reimagined.</h2>
+          <p>珍珠 × 結構金屬，把手機配件變成穿搭的主角。</p>
+          <a href="#" class="sbtn">探索 J/arch. →</a>
+        </div>
+      </div>
+      <div class="slide sl6">
+        <div class="stxt">
+          <div class="skick">Power ‧ Essentials</div>
+          <h2>Stay charged,<br>always ready.</h2>
+          <p>PD 快充、MagSafe、行動電源 — 新機 USB-C 一站備齊。</p>
+          <a href="#" class="sbtn">探索充電配件 →</a>
+        </div>
+      </div>
+    </div>
+    <button class="c-arrow prev" onclick="go(-1)" aria-label="上一張">‹</button>
+    <button class="c-arrow next" onclick="go(1)" aria-label="下一張">›</button>
+    <div class="dots" id="dots" role="tablist" aria-label="選擇輪播張數">
+      <b class="on" role="tab" tabindex="0" aria-label="第 1 張" onclick="to(0)"></b><b role="tab" tabindex="0" aria-label="第 2 張" onclick="to(1)"></b><b role="tab" tabindex="0" aria-label="第 3 張" onclick="to(2)"></b><b role="tab" tabindex="0" aria-label="第 4 張" onclick="to(3)"></b><b role="tab" tabindex="0" aria-label="第 5 張" onclick="to(4)"></b><b role="tab" tabindex="0" aria-label="第 6 張" onclick="to(5)"></b>
+    </div>
+  </div>
+
+  <!-- 機型選購列（輪播下方，保留分流轉換 ‧ 副標明示「賣什麼」給新客）-->
+  <div class="picker-bar" id="picker">
+    <div class="pl-block">
+      <div class="pl"><span>01</span>選擇你的機型</div>
+      <div class="pl-sub">找適配 iPhone 17 / 16 / 15 的殼、貼、MagSafe</div>
+    </div>
+    <div class="pbar-chips">
+      <div class="c">iPhone 17 系列</div>
+      <div class="c">iPhone 16 系列</div>
+      <div class="c">iPhone 15 系列</div>
+      <div class="c">iPhone SE 系列</div>
+      <div class="c">Apple Watch</div>
+      <div class="c full">全部機型 →</div>
+    </div>
+  </div>
+
+  <!-- 信任條 -->
+  <div class="trust">
+    <div class="trust-inner">
+      <div class="ti"><div class="ic"><img src="images/icon-trust-authentic_20260531_004510.png" alt=""></div><div>原廠授權經銷<small>正品保證</small></div></div>
+      <div class="ti"><div class="ic"><img src="images/icon-trust-armor_20260531_004515.png" alt=""></div><div>軍規防摔認證<small>通過實測</small></div></div>
+      <div class="ti"><div class="ic"><img src="images/icon-trust-return_20260531_004513.png" alt=""></div><div>7 天鑑賞退換<small>買錯免擔心</small></div></div>
+      <div class="ti"><div class="ic"><img src="images/icon-trust-chat_20260531_004513.png" alt=""></div><div>LINE 真人客服<small>相容性即時問</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ④b 限時優惠 ‧ 整併原首頁散落的促銷 banner（橫向滑動） -->
+<section class="sec">
+  <div class="sec-head">
+    <div><h2>限時優惠</h2><p>當期主打促銷，左右滑動看更多</p></div>
+    <a href="/categories/promotion">更多優惠 →</a>
+  </div>
+  <div class="promos" role="region" aria-label="限時優惠輪播">
+    <div class="promo">
+      <div class="pbg p1"></div>
+      <div class="pcnt">
+        <span class="ptag">任選兩件</span>
+        <div class="pmain">
+          <div class="pttl">YU 360° 指環手機殼</div>
+          <div class="pbig">88<small>折</small></div>
+        </div>
+        <a class="pcta" href="#">SHOP NOW →</a>
+      </div>
+    </div>
+    <div class="promo">
+      <div class="pbg p2"></div>
+      <div class="pcnt">
+        <span class="ptag">超值入手</span>
+        <div class="pmain">
+          <div class="pttl">極地冰盾貼</div>
+          <div class="pbig">買1送1</div>
+          <div class="psub">一片只要 NT$295</div>
+        </div>
+        <a class="pcta" href="#">SHOP NOW →</a>
+      </div>
+    </div>
+    <div class="promo">
+      <div class="pbg p3"></div>
+      <div class="pcnt">
+        <span class="ptag">防丟神器</span>
+        <div class="pmain">
+          <div class="pttl">MiLi 智慧防丟器</div>
+          <div class="pbig md">買越多 折越多</div>
+          <div class="psub">2 入折 50 ｜ 3 入折 150 ｜ 4 入折 280</div>
+        </div>
+        <a class="pcta" href="#">SHOP NOW →</a>
+      </div>
+    </div>
+    <div class="promo">
+      <div class="pbg p4"></div>
+      <div class="pcnt">
+        <span class="ptag">全館限量</span>
+        <div class="pmain">
+          <div class="pttl">倫印感謝祭</div>
+          <div class="pbig md">1件 85<small>折</small> 2件 7<small>折</small></div>
+          <div class="psub">手速慢了，賣掉沒輒</div>
+        </div>
+        <a class="pcta" href="#">立即逛街 →</a>
+      </div>
+    </div>
+    <div class="promo">
+      <div class="pbg p5"></div>
+      <div class="pcnt">
+        <span class="ptag">免運帶回家 ‧ 超值組合</span>
+        <div class="pmain">
+          <div class="pttl">雙重防護</div>
+          <div class="pbig">$999</div>
+          <div class="psub">明岳殼 × 極地冰盾貼</div>
+        </div>
+        <a class="pcta" href="#">SHOP NOW →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑤ 當季主打 iPhone 17 -->
+<section class="sec">
+  <div class="sec-head">
+    <div><h2>iPhone 17 系列 ‧ 新機登場</h2><p>新機上市，第一時間為它穿上防護</p></div>
+    <a href="#">更多新機配件 →</a>
+  </div>
+  <div class="cards">
+    <div class="card"><div class="img g1"><span class="tag">新品</span>犀牛盾<br>SolidSuit</div>
+      <div class="body"><div class="brand">RhinoShield</div><div class="name">iPhone 17 防摔保護殼</div>
+        <div class="rate"><b>★ 4.9</b>（318）‧ 已售 1,200+</div><div class="price">NT$890 <s>NT$1,180</s></div></div></div>
+    <div class="card"><div class="img g2"><span class="tag">熱銷</span>滿版<br>玻璃貼</div>
+      <div class="body"><div class="brand">imos</div><div class="name">iPhone 17 9H 滿版保護貼</div>
+        <div class="rate"><b>★ 4.8</b>（204）‧ 已售 900+</div><div class="price">NT$590 <s>NT$790</s></div></div></div>
+    <div class="card"><div class="img g3">鏡頭<br>保護環</div>
+      <div class="body"><div class="brand">DEVILCASE</div><div class="name">iPhone 17 鏡頭保護貼</div>
+        <div class="rate"><b>★ 4.7</b>（156）‧ 已售 760+</div><div class="price">NT$380 <s>NT$520</s></div></div></div>
+    <div class="card"><div class="img g4">MagSafe<br>磁吸殼</div>
+      <div class="body"><div class="brand">UAG</div><div class="name">iPhone 17 軍規磁吸殼</div>
+        <div class="rate"><b>★ 4.9</b>（241）‧ 已售 880+</div><div class="price">NT$1,180 <s>NT$1,480</s></div></div></div>
+  </div>
+</section>
+
+<!-- ⑥ 熱銷排行 -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-head">
+    <div><h2>熱銷排行</h2><p>真實評價與銷量，買得安心</p></div>
+  </div>
+  <div class="cards scroll" role="region" aria-label="本週熱銷商品輪播">
+    <div class="card"><div class="img g3"><span class="tag" style="background:#ff9f0a">No.1</span>運動<br>矽膠錶帶</div>
+      <div class="body"><div class="brand">Apple Watch</div><div class="name">運動型矽膠錶帶 多色</div>
+        <div class="rate"><b>★ 4.9</b>（1,024）‧ 已售 5,300+</div><div class="price">NT$390 <s>NT$590</s></div></div></div>
+    <div class="card"><div class="img g1"><span class="tag" style="background:#ff9f0a">No.2</span>PD 快充<br>傳輸線</div>
+      <div class="body"><div class="brand">PerfektLink</div><div class="name">USB-C PD 快充編織線 1.5m</div>
+        <div class="rate"><b>★ 4.8</b>（876）‧ 已售 4,100+</div><div class="price">NT$290 <s>NT$420</s></div></div></div>
+    <div class="card"><div class="img g4"><span class="tag" style="background:#ff9f0a">No.3</span>磁吸<br>行動電源</div>
+      <div class="body"><div class="brand">LAPO</div><div class="name">MagSafe 磁吸行動電源 10000mAh</div>
+        <div class="rate"><b>★ 4.7</b>（612）‧ 已售 3,200+</div><div class="price">NT$990 <s>NT$1,290</s></div></div></div>
+    <div class="card"><div class="img g2"><span class="tag" style="background:#ff9f0a">No.4</span>透明<br>防摔殼</div>
+      <div class="body"><div class="brand">Spigen</div><div class="name">iPhone 16 輕薄透明防摔殼</div>
+        <div class="rate"><b>★ 4.8</b>（708）‧ 已售 2,900+</div><div class="price">NT$590 <s>NT$790</s></div></div></div>
+    <div class="card"><div class="img g3"><span class="tag" style="background:#ff9f0a">No.5</span>滿版<br>玻璃貼</div>
+      <div class="body"><div class="brand">imos</div><div class="name">iPhone 17 9H 滿版保護貼</div>
+        <div class="rate"><b>★ 4.8</b>（524）‧ 已售 2,600+</div><div class="price">NT$590 <s>NT$790</s></div></div></div>
+    <div class="card"><div class="img g1"><span class="tag" style="background:#ff9f0a">No.6</span>SolidSuit<br>防摔殼</div>
+      <div class="body"><div class="brand">RhinoShield</div><div class="name">iPhone 16 防摔保護殼 多色</div>
+        <div class="rate"><b>★ 4.9</b>（496）‧ 已售 2,300+</div><div class="price">NT$890 <s>NT$1,180</s></div></div></div>
+    <div class="card"><div class="img g4"><span class="tag" style="background:#ff9f0a">No.7</span>防撞<br>錶殼</div>
+      <div class="body"><div class="brand">SwitchEasy</div><div class="name">Apple Watch 全包覆防撞錶殼</div>
+        <div class="rate"><b>★ 4.7</b>（412）‧ 已售 2,100+</div><div class="price">NT$590 <s>NT$790</s></div></div></div>
+    <div class="card"><div class="img g2"><span class="tag" style="background:#ff9f0a">No.8</span>矽膠<br>保護殼</div>
+      <div class="body"><div class="brand">Catalyst</div><div class="name">AirPods Pro 矽膠防摔保護殼</div>
+        <div class="rate"><b>★ 4.8</b>（388）‧ 已售 1,900+</div><div class="price">NT$490 <s>NT$690</s></div></div></div>
+    <div class="card"><div class="img g2"><span class="tag" style="background:#ff9f0a">No.9</span>矽膠<br>保護殼</div>
+      <div class="body"><div class="brand">Catalyst</div><div class="name">AirPods Pro 矽膠防摔保護殼</div>
+        <div class="rate"><b>★ 4.8</b>（388）‧ 已售 1,900+</div><div class="price">NT$490 <s>NT$690</s></div></div></div>
+    <div class="card"><div class="img g2"><span class="tag" style="background:#ff9f0a">No.10</span>矽膠<br>保護殼</div>
+      <div class="body"><div class="brand">Catalyst</div><div class="name">AirPods Pro 矽膠防摔保護殼</div>
+        <div class="rate"><b>★ 4.8</b>（388）‧ 已售 1,900+</div><div class="price">NT$490 <s>NT$690</s></div></div></div>
+  </div>
+</section>
+
+<!-- ⑥b 真實開箱 ‧ 客戶實照（社會證明） -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-head">
+    <div><h2>真實開箱 ‧ 產品實照</h2><p>來自倫印好物開箱趣的最新分享</p></div>
+    <a href="/pages/unboxing">更多開箱 →</a>
+  </div>
+  <div class="unbox" role="region" aria-label="真實開箱輪播">
+    <div class="ub">
+      <div class="uphoto" style="background-image:url('images/ugc-rhinoshield_20260531_010115.png')"><span class="uquoteq">"</span></div>
+      <div class="ubody">
+        <div class="ustar">★★★★★</div>
+        <div class="uquote">iPhone 17 Pro Max 戴上犀牛盾，質感比想像中更好，鏡頭環貼好後完全融入機身。</div>
+        <span class="uitem">犀牛盾 SolidSuit</span>
+      </div>
+    </div>
+    <div class="ub">
+      <div class="uphoto" style="background-image:url('images/ugc-watchband_20260531_010105.png')"><span class="uquoteq">"</span></div>
+      <div class="ubody">
+        <div class="ustar">★★★★★</div>
+        <div class="uquote">運動時錶帶不會滑掉了，顏色超搭我綠色 Apple Watch Series 10。</div>
+        <span class="uitem">運動矽膠錶帶</span>
+      </div>
+    </div>
+    <div class="ub">
+      <div class="uphoto" style="background-image:url('images/ugc-powerbank_20260531_010107.png')"><span class="uquoteq">"</span></div>
+      <div class="ubody">
+        <div class="ustar">★★★★★</div>
+        <div class="uquote">MagSafe 行動電源吸力很穩，出國一台就夠，回飯店再充也快。</div>
+        <span class="uitem">LAPO 磁吸行動電源</span>
+      </div>
+    </div>
+    <div class="ub">
+      <div class="uphoto" style="background-image:url('images/ugc-lensring_20260531_010107.png')"><span class="uquoteq">"</span></div>
+      <div class="ubody">
+        <div class="ustar">★★★★☆</div>
+        <div class="uquote">鏡頭環很薄完全沒影響拍照，反而幫鏡頭擋了好幾次桌面刮痕。</div>
+        <span class="uitem">DEVILCASE 鏡頭環</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑥c 口碑推薦 ‧ KOL 實搭（IG 風格大圖牆，點圖看同款） -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-head">
+    <div><h2>口碑推薦 ‧ KOL 實搭</h2><p>看大家怎麼搭，點圖看同款</p></div>
+    <a href="/pages/口碑推薦">更多口碑 →</a>
+  </div>
+  <div class="iggrid" role="region" aria-label="口碑推薦 IG 牆">
+    <a class="igc" href="https://www.instagram.com/london_apple/" target="_blank" rel="noopener">
+      <div class="igimg" style="background-image:url('images/kol-sport_20260531_010107.png')"></div>
+      <div class="ighandle"><span class="ighav">🏃</span>@a_che_fit</div>
+      <div class="igicon" aria-label="Instagram">📷</div>
+      <div class="igtags">
+        <span class="igtag">UAG 軍規殼 <span class="igprice">$1,180</span></span>
+        <span class="igtag">矽膠錶帶 <span class="igprice">$390</span></span>
+      </div>
+    </a>
+    <a class="igc" href="https://www.instagram.com/london_apple/" target="_blank" rel="noopener">
+      <div class="igimg" style="background-image:url('images/kol-business_20260531_010116.png')"></div>
+      <div class="ighandle"><span class="ighav">💼</span>@lin_select</div>
+      <div class="igicon" aria-label="Instagram">📷</div>
+      <div class="igtags">
+        <span class="igtag">Spigen 輕薄殼 <span class="igprice">$590</span></span>
+        <span class="igtag">真皮錶帶 <span class="igprice">$890</span></span>
+      </div>
+    </a>
+    <a class="igc" href="https://www.instagram.com/london_apple/" target="_blank" rel="noopener">
+      <div class="igimg" style="background-image:url('images/kol-travel_20260531_010111.png')"></div>
+      <div class="ighandle"><span class="ighav">📷</span>@mia_travel</div>
+      <div class="igicon" aria-label="Instagram">📷</div>
+      <div class="igtags">
+        <span class="igtag">鏡頭保護環 <span class="igprice">$380</span></span>
+        <span class="igtag">MagSafe 行動電源 <span class="igprice">$990</span></span>
+      </div>
+    </a>
+    <a class="igc" href="https://www.instagram.com/london_apple/" target="_blank" rel="noopener">
+      <div class="igimg" style="background-image:url('images/kol-fashion_20260531_010107.png')"></div>
+      <div class="ighandle"><span class="ighav">👗</span>@coco_daily</div>
+      <div class="igicon" aria-label="Instagram">📷</div>
+      <div class="igtags">
+        <span class="igtag">透明防摔殼 <span class="igprice">$590</span></span>
+        <span class="igtag">編織錶帶 <span class="igprice">$450</span></span>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ⑦ 組合下殺 ‧ 整套更省（橫向滑動可看更多） -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-head">
+    <div><h2>組合下殺 ‧ 整套更省</h2><p>搭配組合最高省 1,200 元，一次到位免再挑</p></div>
+    <a href="/categories/bundle">更多組合 →</a>
+  </div>
+  <div class="bundles" role="region" aria-label="組合下殺商品輪播">
+    <div class="bundle">
+      <span class="save">省 NT$1,241</span>
+      <div class="pic" style="background-image:url('images/bundle-ultimate_20260531_010612.png')"></div>
+      <div class="body">
+        <h3>終極防護套組</h3>
+        <div class="items">極地冰岩殼 + 瞬貼無痕冰盾貼 + 玻璃鏡頭環 + YU 本織長掛繩</div>
+        <div class="price-row"><span class="pr">NT$1,219</span><span class="ori">NT$2,460</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+    <div class="bundle">
+      <span class="save">省 NT$871</span>
+      <div class="pic" style="background-image:url('images/bundle-newphone_20260531_010610.png')"></div>
+      <div class="body">
+        <h3>新機必備套組</h3>
+        <div class="items">極地冰岩殼 + 玻璃鏡頭環 + 瞬貼無痕冰盾貼</div>
+        <div class="price-row"><span class="pr">NT$999</span><span class="ori">NT$1,870</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+    <div class="bundle">
+      <span class="save">省 NT$690</span>
+      <div class="pic" style="background-image:url('images/bundle-magsafe_20260531_010608.png')"></div>
+      <div class="body">
+        <h3>MagSafe 雙件組</h3>
+        <div class="items">iPhone 17 磁吸防摔殼 + MagSafe 磁吸行動電源 10000mAh</div>
+        <div class="price-row"><span class="pr">NT$1,490</span><span class="ori">NT$2,180</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+    <div class="bundle">
+      <span class="save">省 NT$490</span>
+      <div class="pic" style="background-image:url('images/bundle-charging_20260531_010612.png')"></div>
+      <div class="body">
+        <h3>充電全套</h3>
+        <div class="items">PD 快充頭 + 編織快充線 1.5m + 桌面磁吸快充座</div>
+        <div class="price-row"><span class="pr">NT$890</span><span class="ori">NT$1,380</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+    <div class="bundle">
+      <span class="save">省 NT$440</span>
+      <div class="pic" style="background-image:url('images/bundle-protection_20260531_010610.png')"></div>
+      <div class="body">
+        <h3>新機防摔三件組</h3>
+        <div class="items">極地冰岩殼 + 玻璃貼 + 瞬貼無痕冰盾貼</div>
+        <div class="price-row"><span class="pr">NT$840</span><span class="ori">NT$1,280</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+    <div class="bundle">
+      <span class="save">省 NT$440</span>
+      <div class="pic" style="background-image:url('images/bundle-watch_20260531_010610.png')"></div>
+      <div class="body">
+        <h3>Apple Watch 換新組</h3>
+        <div class="items">同色系矽膠錶帶 + 防撞錶殼 + 螢幕保護貼</div>
+        <div class="price-row"><span class="pr">NT$980</span><span class="ori">NT$1,420</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+    <div class="bundle">
+      <span class="save">省 NT$410</span>
+      <div class="pic" style="background-image:url('images/bundle-watchstrap_20260531_010609.png')"></div>
+      <div class="body">
+        <h3>未來錶 錶帶+錶框組</h3>
+        <div class="items">F&amp;W 未來錶 Apple Watch 金屬錶帶 + 同款錶框</div>
+        <div class="price-row"><span class="pr">NT$1,080</span><span class="ori">NT$1,490</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+    <div class="bundle">
+      <span class="save">省 NT$300</span>
+      <div class="pic" style="background-image:url('images/bundle-airpods_20260531_010609.png')"></div>
+      <div class="body">
+        <h3>AirPods Pro 保護套組</h3>
+        <div class="items">矽膠保護殼 + 防丟掛繩 + 七合一清潔工具</div>
+        <div class="price-row"><span class="pr">NT$590</span><span class="ori">NT$890</span></div>
+        <button class="btn">組合選購 →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑧ 精選品牌 -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-head"><div><h2>精選品牌</h2><p>40+ 原廠授權品牌 ‧ 自有設計</p></div></div>
+  <div class="brands">
+    <div class="brand-c"><div class="lp" aria-hidden="true">RS</div><b>犀牛盾</b></div>
+    <div class="brand-c"><div class="lp" aria-hidden="true">UAG</div><b>UAG</b></div>
+    <div class="brand-c"><div class="lp" aria-hidden="true">DC</div><b>DEVILCASE</b></div>
+    <div class="brand-c"><div class="lp" aria-hidden="true">NG</div><b>NatGeo<br>國家地理頻道</b></div>
+    <div class="brand-c"><div class="lp" aria-hidden="true">SE</div><b>SwitchEasy</b></div>
+    <div class="brand-c"><div class="lp" aria-hidden="true">LP</div><b>LAPO</b></div>
+    <div class="brand-c"><div class="lp" aria-hidden="true">JT</div><b>JTLEGEND</b></div>
+    <div class="brand-c"><div class="lp" aria-hidden="true">CL</div><b>CATALYST</b></div>
+    <div class="brand-c"><div class="lp own" aria-hidden="true">J/<br>arch.</div><b>J/arch.</div>
+  </div>
+</section>
+
+<!-- ⑨b 會員禮遇（買越多省越多） -->
+<section class="sec" style="padding-top:0">
+  <div class="mvip">
+    <div class="mvip-in">
+      <div class="mvip-top">
+        <div>
+          <h3>會員禮遇 ‧ <em>買越多省越多</em></h3>
+          <p>成為倫敦印象會員，自動累積購物金、生日驚喜、12 個月會籍循環</p>
+        </div>
+        <a class="more" href="/pages/membership-vip">了解更多 →</a>
+      </div>
+
+      <div class="tiers">
+        <div class="tier">
+          <div class="lv">Lv.1</div>
+          <div class="pct">3<small>%</small></div>
+          <div class="nm">一般會員</div>
+          <div class="desc">註冊即享 ‧ 每消費 NT$1 累積 3% 購物金</div>
+        </div>
+        <div class="tier">
+          <div class="lv">Lv.2</div>
+          <div class="pct">4<small>%</small></div>
+          <div class="nm">進階會員</div>
+          <div class="desc">12 個月內達指定累積金額自動升級</div>
+        </div>
+        <div class="tier top">
+          <div class="lv">Lv.3</div>
+          <div class="pct">5<small>%</small></div>
+          <div class="nm">VIP 會員</div>
+          <div class="desc">最高購物金回饋 ‧ 生日購物金更多</div>
+        </div>
+      </div>
+
+      <div class="perks">
+        <div class="perk"><div class="pi"><img src="images/icon-vip-coin_20260531_004552.png" alt=""></div><div>購物金回饋<small>NT$1 = 1 元現金</small></div></div>
+        <div class="perk"><div class="pi"><img src="images/icon-vip-birthday_20260531_004546.png" alt=""></div><div>生日購物金<small>當月 1 日自動發送</small></div></div>
+        <div class="perk"><div class="pi"><img src="images/icon-vip-hourglass_20260531_004545.png" alt=""></div><div>效期 90 天<small>下次購物折抵</small></div></div>
+        <div class="perk"><div class="pi"><img src="images/icon-vip-cycle_20260531_004546.png" alt=""></div><div>會籍 12 個月<small>達標自動續會</small></div></div>
+        <div class="perk"><div class="pi"><img src="images/icon-vip-referral_20260601_141648.png" alt=""></div><div>介紹好友<small>雙方各得 NT$100 購物金</small></div></div>
+      </div>
+
+      <div class="mvip-cta">
+        <a class="btn" href="/pages/membership-vip">立即加入會員</a>
+        <span class="note">單筆訂單最高折抵訂單總金額 30%。等級名稱以後台為準。</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ⑩ 選購指南 -->
+<section class="sec" style="padding-top:0">
+  <div class="sec-head"><div><h2>不知道怎麼選？看選購指南</h2><p>專業選物建議，買對不買貴</p></div><a href="#">更多文章 →</a></div>
+  <div class="guides">
+    <div class="guide"><div class="gi" style="background-image:url('images/guide-cases_20260531_012243.png')"></div><div class="gb"><small>選購指南</small><h3>iPhone 17 手機殼怎麼挑？防摔 vs 輕薄全比較</h3></div></div>
+    <div class="guide"><div class="gi" style="background-image:url('images/guide-magsafe_20260531_012234.png')"></div><div class="gb"><small>相容性</small><h3>MagSafe 配件全攻略：相容性一次搞懂</h3></div></div>
+    <div class="guide"><div class="gi" style="background-image:url('images/guide-watchbands_20260531_012227.png')"></div><div class="gb"><small>Apple Watch</small><h3>錶帶材質與場合對照表，挑出你的本命款</h3></div></div>
+  </div>
+</section>
+
+<!-- CTA 訂閱 -->
+<section class="cta"><div class="cta-in">
+  <h2>加入 LINE，搶先掌握新機配件</h2>
+  <p>新品上市優先通知 ‧ 首購享優惠 ‧ 相容性即時諮詢</p>
+  <div class="btns"><a href="#" class="b1">加入 LINE 好友</a><a href="#" class="b2">訂閱電子報</a></div>
+</div></section>
+
+<!-- ⑬ Footer -->
+<footer>
+  <div class="ft">
+    <div>
+      <div class="logo">倫敦<span>印象</span></div>
+      <p style="color:#a8a8b4;max-width:240px">iPhone、Apple Watch 原廠授權配件專賣店，40+ 品牌精選，正品有保障。</p>
+    </div>
+    <div><h4>關於我們</h4><a href="#">關於倫敦印象</a><a href="#">會員禮遇</a><a href="#">選購指南</a><a href="#">隱私權政策</a></div>
+    <div><h4>選購</h4><a href="#">最新商品</a><a href="#">依機型選購</a><a href="#">手機殼</a><a href="#">Apple Watch</a><a href="#">周邊與零配件</a><a href="#">品牌嚴選</a></div>
+    <div><h4>購物須知</h4><a href="#">運送政策</a><a href="#">退換貨政策</a><a href="#">發票資訊</a><a href="#">購物 Q&amp;A（FAQ）</a><a href="#">LINE 客服</a></div>
+  </div>
+  <div class="ft-bottom">© 2026 倫敦印象 London Impression ‧ 本頁為改版設計原型</div>
+</footer>
+
+<!-- 手機版 sticky 底部操作列（拇指熱區，觸控目標 ≥48px） -->
+<nav class="mbar" aria-label="快速操作">
+  <a href="#picker" aria-label="選擇機型"><span class="mi" aria-hidden="true">📱</span>選機型</a>
+  <a href="#" class="main" aria-label="前往優惠專區"><span class="mi" aria-hidden="true">🔥</span>優惠專區</a>
+  <a href="#" aria-label="前往購物車"><span class="mi" aria-hidden="true">🛒</span>購物車</a>
+</nav>
+
+<!-- 浮動 LINE 客服鈕 -->
+<div class="fab" id="fab">
+  <div class="fab-bubble">
+    <span class="bx" role="button" tabindex="0" aria-label="收合提示" onclick="document.getElementById('fab').classList.add('collapsed')">✕</span>
+    不確定相容機型？
+    <small>加 LINE 問真人客服</small>
+  </div>
+  <div class="fab-btn" role="button" tabindex="0" aria-label="加 LINE 客服" onclick="document.getElementById('fab').classList.remove('collapsed')">LINE<br>客服</div>
+</div>
+
+<!-- 回到最上面 -->
+<button class="top-btn" id="topBtn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="回到最上面">↑</button>
+
+<!-- 給你看的設計說明（非網站內容） -->
+<div class="note">
+  <div class="note-card">
+    <b>完整首頁原型說明：</b>本頁依改版藍圖實作——<b>公告促銷條（與導覽列一起 sticky 固定在頂部，不可關閉）</b> → <b>Hero 編輯式品牌輪播（Beams 風 ‧ 6 張：iPhone 17 / LONDONIMG 自有品牌殼 / YU / J/arch. / 嚴選哲學 / 充電配件，不喊折扣，承擔品牌敘事 ‧ 可暫停/可滑/reduce-motion）</b> + 機型選購列 → 信任條 → <b>限時優惠（橫向滑動，整併原首頁散落 banner：YU 88折、冰盾貼買1送1、MiLi 階梯折、感謝祭）</b> →
+    iPhone 17 主打 → 熱銷排行（社會證明 1 ‧ 銷量）→ <b>真實開箱（社會證明 2 ‧ 同儕 UGC，連 /pages/unboxing）</b> → <b>口碑推薦 KOL IG 牆（社會證明 3 ‧ 嚮往策展，連 /pages/口碑推薦）</b> → <b>組合下殺 ‧ 整套更省（橫向滑動，最高省 1,241 元）</b> → 精選品牌 →
+    <b>會員禮遇（3/4/5% 購物金分級 + 生日禮 + 12 個月會籍）</b> → 選購指南（SEO/GEO）→ LINE 訂閱（沉澱複購）→ 完整頁尾。<b>手機版新增 sticky 底部操作列（選機型／優惠／購物車，拇指熱區 ≥48px）</b>；互動元件補上 aria 無障礙標記。FAQ 已移至獨立頁，由頁尾「常見問題」連結進入。
+    商品、價格、評價數為示意資料；連結為靜態。建議下一步：獨立 FAQ 頁（含 FAQ schema）+ 商品頁 Product schema。
+  </div>
+
+  <!-- SHOPLINE 可行性對照（目前主題：Ultra Chic，支援 SHOP Builder） -->
+  <div class="feas-card">
+    <h4>🛠️ SHOPLINE 實作可行性（目前主題：Ultra Chic ✅ 支援 SHOP Builder）</h4>
+    <div class="legend">
+      <span class="t ok">原生</span> 拖拉元件可做 ｜
+      <span class="t mid">自訂</span> 需自訂程式碼，平台更新可能失效（自負風險）｜
+      <span class="t lim">受限</span> 原生做不到 / 需 App
+    </div>
+    <ul>
+      <li><span class="t ok">原生</span>公告細條、信任條、品牌牆（含自有品牌）、組合下殺（商品輪播列表元件指向 /categories/bundle）、限時優惠（圖文組合 / 輪播元件，banner 整併）、真實開箱（圖文組合 / 部落格元件指向 /pages/unboxing）、LINE CTA、Footer</li>
+      <li><span class="t ok">原生</span>Hero 輪播（箭頭/圓點、手機滑動內建）、機型選購列、商品列表（含熱銷排序）、選購指南（部落格）</li>
+      <li><span class="t ok">原生</span>會員禮遇區 — 圖文組合 + 按鈕；資料連動 /pages/membership-vip。等級名稱以後台為準</li>
+      <li><span class="t lim">受限</span>輪播「滑鼠移入暫停 / reduce-motion」— 原生做不到，<b>建議放棄</b>，不值得為此自建輪播</li>
+      <li><span class="t lim">受限</span>商品卡星等評分 — 需裝評價 App 且主題支援列表顯示（執行清單第 5 項）</li>
+      <li><span class="t lim">受限</span>互動元件 aria 無障礙 — 只能套在自訂區塊，原生模組為 SHOPLINE 出廠值</li>
+      <li><span class="t mid">自訂</span>手機版 sticky 底部操作列 — 需全站注入 HTML/CSS/JS，高維護風險，待決定做 or 不做</li>
+      <li><span class="t ok">原生</span>口碑推薦 KOL IG 牆 — `page_builder_widget_instagram` 元件，商品標籤用「圖片組合」做標註連結</li>
+      <li><span class="t mid">自訂</span>浮動 LINE 鈕、回到頂端 — 視主題有無內建，否則自訂程式碼</li>
+    </ul>
+    <small>詳見 執行/SHOPLINE實作對照表.md。本原型為設計藍圖，非「照刻即一致」。</small>
+  </div>
+</div>
+
+<script>
+  const slidesEl=document.getElementById('slides');
+  const slides=document.querySelectorAll('#slides .slide');
+  const dots=document.querySelectorAll('#dots b');
+  let i=0,timer,paused=false;
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function show(n){
+    slides.forEach((s,k)=>{const on=k===n;s.classList.toggle('on',on);s.setAttribute('aria-hidden',String(!on));});
+    dots.forEach((d,k)=>{const on=k===n;d.classList.toggle('on',on);d.setAttribute('aria-selected',String(on));});
+    i=n;
+  }
+  function go(d){show((i+d+slides.length)%slides.length);reset();}
+  function to(n){show(n);reset();}
+  function reset(){clearInterval(timer);if(reduceMotion||paused)return;timer=setInterval(()=>show((i+1)%slides.length),6500);}
+  function pause(){paused=true;clearInterval(timer);}
+  function resume(){paused=false;reset();}
+  show(0);reset();
+
+  // 滑鼠移入暫停、移出恢復；切到背景分頁也暫停
+  slidesEl.addEventListener('mouseenter',pause);
+  slidesEl.addEventListener('mouseleave',resume);
+  document.addEventListener('visibilitychange',()=>document.hidden?pause():resume());
+
+  // 觸控左右滑動切換
+  let sx=0,dx=0;
+  slidesEl.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;dx=0;pause();},{passive:true});
+  slidesEl.addEventListener('touchmove',e=>{dx=e.touches[0].clientX-sx;},{passive:true});
+  slidesEl.addEventListener('touchend',()=>{if(Math.abs(dx)>40){go(dx<0?1:-1);}paused=false;reset();});
+
+  // 圓點鍵盤可操作
+  dots.forEach((d,k)=>d.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();to(k);}}));
+
+  const topBtn=document.getElementById('topBtn');
+  window.addEventListener('scroll',()=>{
+    topBtn.classList.toggle('show',window.scrollY>500);
+  });
+</script>
+
+</body>
+</html>

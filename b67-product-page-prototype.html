@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B67 商品頁改版對照原型｜倫敦印象</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --sub:#6b6b6b; --line:#e8e8e8; --bg:#f4f4f5;
+    --brand:#1a1a1a; --accent:#c8502d; --gold:#e8a33d; --green:#2e7d52;
+    --bad:#d23f3f; --badbg:#fdecec; --goodbg:#edf7f1;
+    --radius:14px; --shadow:0 2px 18px rgba(0,0,0,.08);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang TC","Noto Sans TC",Segoe UI,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img{display:block;max-width:100%}
+
+  /* top bar */
+  .topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);
+    backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 16px;
+    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .topbar h1{font-size:15px;font-weight:700;letter-spacing:.3px}
+  .topbar .desc{font-size:12px;color:var(--sub)}
+  .toggle{display:inline-flex;background:#ececed;border-radius:999px;padding:4px;gap:2px;flex-wrap:wrap}
+  .toggle button{border:0;background:transparent;padding:8px 14px;border-radius:999px;
+    font-size:13px;font-weight:600;cursor:pointer;color:var(--sub);transition:.2s}
+  .toggle button.active{background:#fff;color:var(--ink);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  .toggle button.active[data-v="before"]{color:var(--bad)}
+  .toggle button.active[data-v="mobile"],.toggle button.active[data-v="desktop"]{color:var(--green)}
+
+  .stage{max-width:1180px;margin:0 auto;padding:24px 16px 80px;display:grid;gap:22px}
+  .legend{font-size:12.5px;color:var(--sub);text-align:center}
+  .legend b{color:var(--ink)}
+
+  /* phone frame */
+  .phonewrap{display:flex;justify-content:center}
+  .phone{width:412px;max-width:100%;background:#fff;border-radius:30px;
+    box-shadow:var(--shadow);overflow:hidden;border:1px solid var(--line)}
+  .scroll{height:760px;overflow-y:auto;scroll-behavior:smooth}
+  .scroll::-webkit-scrollbar{width:0}
+
+  /* shared product UI */
+  .pnav{padding:10px 14px;font-size:11.5px;color:var(--sub);border-bottom:1px solid var(--line)}
+  .gallery{position:relative;background:#f1efec}
+  .gallery img{width:100%;aspect-ratio:1;object-fit:cover}
+  .badge{position:absolute;top:12px;left:12px;background:var(--accent);color:#fff;
+    font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;z-index:2}
+  .thumbs{display:flex;gap:6px;padding:8px 14px;overflow-x:auto}
+  .thumbs img{width:54px;height:54px;border-radius:8px;object-fit:cover;border:1px solid var(--line)}
+  .thumbs img.on{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .body{padding:16px 16px 24px}
+  .ptitle{font-size:18px;font-weight:700;line-height:1.4;margin:0}
+  .pdesc{font-size:13px;color:#555;line-height:1.65;margin:8px 0 0;font-weight:600}
+  .price{display:flex;align-items:baseline;gap:10px;margin:10px 0 2px}
+  .price .now{font-size:26px;font-weight:800;color:var(--ink)}
+  .price .was{font-size:15px;color:var(--sub);text-decoration:line-through}
+  .rating{display:flex;align-items:center;gap:6px;font-size:14px;margin:2px 0 4px}
+  .stars{color:var(--gold);letter-spacing:1px}
+  .rating .rcount{color:var(--sub);font-size:13px}
+  .rating a{color:var(--sub);text-decoration:underline;font-size:12px}
+  /* 優惠訊息框（參考 SHOPLINE 商店促銷樣式） */
+  .promobox{border:0;border-left:3px solid #c79a5e;border-radius:0;padding:2px 0 2px 14px;margin:14px 0;font-size:12.5px;line-height:1.75;color:#5b5b5b}
+  .promo-line{display:block}
+  .promo-line + .promo-line{margin-top:6px}
+  .promo-line b{color:#2a2a2a;font-weight:700}
+  .promo-extra[hidden]{display:none}
+  .viewmore{display:block;margin:9px auto 0;border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 18px;font-size:12px;color:#666;cursor:pointer}
+  .lbl{font-size:12.5px;color:var(--sub)}
+  .opts{margin:8px 0 14px;display:flex;flex-wrap:wrap;gap:8px}
+  .chip{border:1px solid var(--line);border-radius:8px;padding:7px 12px;font-size:13px;cursor:pointer;background:#fff}
+  .chip.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .cta{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);
+    padding:12px 14px;display:flex;gap:10px}
+  .cta button{flex:1;border:0;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer}
+  .cta .add{background:var(--ink);color:#fff;flex:2}
+  .cta .fav{background:#f1f1f2;color:var(--ink)}
+  h2.sec{font-size:25px;font-weight:700;margin:22px 0 10px;padding-top:18px;color:var(--accent)}
+  .feat{display:flex;gap:10px;margin:12px 0}
+  .feat .ic{width:46px;height:46px;border-radius:10px;background:#f1efec;flex:none;
+    display:flex;align-items:center;justify-content:center;font-size:20px}
+  .feat b{font-size:14px}.feat p{font-size:12.5px;color:var(--sub)}
+  .featimg{width:100%;border-radius:10px;margin:6px 0 2px;object-fit:cover;aspect-ratio:16/10}
+  table.compat{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0}
+  table.compat td{border:1px solid var(--line);padding:7px 9px}
+  table.compat td:last-child{text-align:center;width:48px;font-weight:700}
+  .yes{color:var(--green)}.no{color:var(--bad)}
+  .bundle{background:var(--goodbg);border:1px solid #cde9d8;border-radius:10px;
+    padding:12px;font-size:13px;margin:10px 0}
+  .faq{border-bottom:1px solid var(--line)}
+  .faq>summary{font-size:14px;font-weight:600;list-style:none;cursor:pointer;padding:14px 30px 14px 0;position:relative;display:block;color:var(--ink)}
+  .faq>summary::-webkit-details-marker{display:none}
+  .faq>summary::after{content:"+";position:absolute;right:2px;top:50%;transform:translateY(-50%);font-size:20px;line-height:1;color:var(--sub);font-weight:300;transition:transform .2s}
+  .faq[open]>summary::after{content:"−"}
+  .faq .fa{padding:0 2px 15px 0}
+  .faq .fa p{font-size:13.5px;color:var(--sub);line-height:1.85;margin:0 0 9px}
+  .faq .fa p:last-child{margin-bottom:0}
+  .honest{background:#fff8ec;border-left:3px solid var(--gold);padding:8px 10px;border-radius:0 6px 6px 0;margin-top:4px}
+  .honest p{color:#7a5a10}
+  .rev{display:flex;gap:8px;padding:10px 0;}
+  .rev .av{width:30px;height:30px;border-radius:50%;background:#dcd5cc;flex:none}
+  .rev small{color:var(--sub)}
+  .cross{display:flex;gap:10px;overflow-x:auto;padding:4px 0}
+  .cross .c{flex:none;width:104px}
+  .cross .c img{height:104px;width:104px;border-radius:10px;object-fit:cover}
+  .cross .c p{font-size:11px;margin-top:4px}.cross .c span{font-size:11px;color:var(--accent);font-weight:700}
+
+  /* before-specific */
+  .raw-title{font-size:16px;font-weight:700;line-height:1.45;color:#222}
+  .flag{background:var(--badbg);border:1px dashed var(--bad);border-radius:8px;
+    padding:8px 10px;font-size:11.5px;color:#9a2a2a;margin:8px 0;display:flex;gap:6px}
+  .flag::before{content:"⚠";flex:none}
+  .bullet{font-size:13px;color:#333;margin:5px 0;padding-left:16px;position:relative}
+  .bullet::before{content:"•";position:absolute;left:2px}
+  .muted-rating{font-size:12px;color:#bbb;margin:6px 0}
+
+  /* DESKTOP product layout */
+  .desktop{background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+  .desk-nav{padding:12px 28px;font-size:12px;color:var(--sub);border-bottom:1px solid var(--line)}
+  .desk-top{display:grid;grid-template-columns:1.1fr 1fr;gap:32px;padding:28px}
+  .desk-gallery{display:flex;gap:12px;align-items:flex-start}
+  .desk-gallery .thumbs{display:flex;flex-direction:column;gap:8px;padding:0;flex:none;width:64px;overflow:visible}
+  .desk-gallery .thumbs img{width:64px;height:64px}
+  .desk-gallery .main{flex:1;min-width:0;position:relative;border-radius:12px;overflow:hidden;background:#f1efec}
+  .desk-gallery .main img{width:100%;aspect-ratio:1;object-fit:cover}
+  .desk-info .ptitle{font-size:24px}
+  .desk-info .price .now{font-size:30px}
+  .desk-bottom{padding:8px 28px 32px;display:grid;grid-template-columns:1fr 1fr;gap:0 40px}
+  .desk-bottom .full{grid-column:1/-1}
+  .desk-cta{display:flex;gap:12px;margin-top:18px}
+  .desk-cta button{flex:1;border:0;border-radius:10px;padding:14px 20px;font-size:15px;font-weight:700;cursor:pointer;color:#fff;background:#bf9b6e}
+  .favlink{display:block;text-align:center;margin:11px 0 0;font-size:14px;color:#555;background:none;border:0;text-decoration:none;cursor:pointer}
+  .buybar{position:sticky;bottom:0;background:#fff;border-top:1px solid var(--line);padding:10px 14px;z-index:5}
+  .buybar-row{display:flex;gap:10px}
+  .buybar-row button{flex:1;border:0;border-radius:10px;padding:13px;font-size:15px;font-weight:700;color:#fff;background:#bf9b6e;cursor:pointer}
+  .buybar .favlink{margin-top:7px;font-size:13px}
+
+  /* annotation rail */
+  .notes{max-width:860px;margin:0 auto;background:#fff;border-radius:var(--radius);
+    box-shadow:var(--shadow);padding:18px 22px}
+  .notes h3{font-size:14px;margin-bottom:10px}
+  .notes ul{list-style:none;display:grid;gap:8px}
+  .notes li{font-size:13px;display:flex;gap:8px;align-items:flex-start}
+  .tag{flex:none;font-size:10.5px;font-weight:700;padding:2px 7px;border-radius:5px;margin-top:2px}
+  .t-bad{background:var(--badbg);color:var(--bad)}
+  .t-good{background:var(--goodbg);color:var(--green)}
+  /* video showcase (直式影片 ‧ 文字在上、兩支並排) */
+  .vwrap{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:14px 0}
+  .vcard{display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center}
+  .vcard .vmeta{max-width:300px}
+  .vcard .vmeta b{font-size:17px}
+  .vcard .vmeta p{font-size:16px;color:var(--sub);margin-top:3px}
+  .vplayer{position:relative;width:100%;max-width:260px;margin:0 auto;aspect-ratio:9/16;border-radius:14px;overflow:hidden;background:#111}
+  .vplayer img{width:100%;height:100%;object-fit:cover;opacity:.92}
+  .vplayer .play{position:absolute;inset:0;margin:auto;width:54px;height:54px;border-radius:50%;
+    background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center}
+  .vplayer .play::after{content:"▶";color:#fff;font-size:18px;margin-left:3px}
+  .vplayer .vtag{position:absolute;top:10px;left:10px;font-size:12px;color:#fff;
+    background:rgba(0,0,0,.5);padding:3px 8px;border-radius:6px}
+  /* product intro converted from long image */
+  .intro h3{font-size:15px;font-weight:700;margin:18px 0 6px}
+  .intro p{font-size:13px;color:#444;margin-bottom:8px}
+  .intro .ph{width:100%;border-radius:10px;aspect-ratio:16/10;object-fit:cover;margin:6px 0}
+  /* 對照表：推薦欄整欄高亮卡片 + 左側綠勾 */
+  .cmp{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px;margin:16px 0}
+  .cmp th,.cmp td{padding:13px 12px;text-align:center;border-bottom:1px solid #ece8e1}
+  .cmp thead th{font-weight:800;font-size:14px;color:#1c1b19;border-bottom:1px solid #e0dace}
+  .cmp tbody tr:last-child td{border-bottom:0}
+  .cmp th:first-child,.cmp td:first-child{text-align:left;font-weight:600;width:42%}
+  .cmp tbody td:first-child{position:relative;padding-left:32px}
+  .cmp tbody td:first-child::before{content:"✓";position:absolute;left:6px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#2e7d52;color:#fff;font-size:11px;line-height:18px;text-align:center;font-weight:700}
+  .cmp .col-pro{background:#eef7f1;border-left:1px solid #cde9d8;border-right:1px solid #cde9d8}
+  .cmp thead .col-pro{color:#2e7d52;border-top:3px solid #2e7d52;border-bottom-color:#cde9d8;border-radius:12px 12px 0 0}
+  .cmp tbody tr:last-child .col-pro{border-bottom:1px solid #cde9d8;border-radius:0 0 12px 12px}
+  .cmp .pill{display:inline-block;margin-left:5px;font-size:10.5px;font-weight:700;color:#fff;background:#2e7d52;border-radius:999px;padding:1px 7px;vertical-align:middle}
+  .cmp .hi{color:#2e7d52;font-weight:700}
+  .cmp .x{color:#c4bdb0}
+  .intro .lead{text-align:center;padding:18px 12px;background:#f7f5f2;border-radius:12px;margin:6px 0 4px}
+  .intro .lead .br{font-size:12px;letter-spacing:3px;color:var(--sub)}
+  .intro .lead h3{font-size:20px;margin:4px 0 2px}
+  .intro .lead p{font-size:13px;color:var(--sub);margin:0}
+  .introrow3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0}
+  .introrow3 img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px}
+  .vs2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+  .vs2 figure{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .vs2 img{width:100%;aspect-ratio:1;object-fit:cover}
+  .vs2 figcaption{padding:8px 10px}
+  .vs2 figcaption b{font-size:13px;display:block}
+  .vs2 figcaption span{font-size:11.5px;color:var(--sub)}
+  .vs2 .tag2{display:inline-block;font-size:10.5px;font-weight:700;padding:1px 6px;border-radius:4px;margin-bottom:3px}
+  .vs2 .t-base{background:#eee;color:#666}
+  .vs2 .t-pro{background:var(--goodbg);color:var(--green)}
+  /* 桌機影音卡間距略放大 */
+  .desktop .vwrap{gap:24px}
+  /* 購買區塊：款式 / 顏色色塊 / 機型展開分組 */
+  .buylbl{font-size:12.5px;color:var(--sub);margin:14px 0 6px;font-weight:600}
+  .styles{display:flex;gap:8px;flex-wrap:wrap}
+  .stylechip{border:1px solid var(--line);border-radius:10px;padding:9px 13px;font-size:13px;cursor:pointer;background:#fff;display:inline-flex;align-items:center;gap:6px}
+  .stylechip.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+  .stylechip em{font-style:normal;font-size:11.5px;color:var(--accent);font-weight:700}
+  .swatches{display:flex;gap:12px;flex-wrap:wrap}
+  .swatches[hidden]{display:none}
+  .sw{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;font-size:11px;color:var(--sub);width:40px;text-align:center}
+  .sw .dot{width:30px;height:30px;border-radius:50%;border:1px solid rgba(0,0,0,.12)}
+  .sw.sel{color:var(--ink)}
+  .sw.sel .dot{outline:2px solid var(--ink);outline-offset:2px}
+  .mgroup{margin:2px 0 8px}
+  .mgroup .gt{font-size:11px;color:#aaa;margin:9px 0 5px;letter-spacing:.5px}
+  .mchips{display:flex;gap:6px;flex-wrap:wrap}
+  .mchip{border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-size:12.5px;cursor:pointer;background:#fff;white-space:nowrap}
+  .mchip.sel{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink);font-weight:600}
+  /* inline 加購模組（SHOPLINE 原生「以優惠價加購商品」樣式） */
+  .addon{border:1px solid var(--line);border-radius:8px;margin:16px 0;background:#fff;overflow:hidden}
+  .addon-h{font-size:13px;font-weight:700;padding:11px 12px;border-bottom:1px solid var(--line);background:#faf9f7;color:var(--ink)}
+  .addon-item{display:grid;grid-template-columns:18px 52px 1fr;gap:11px;align-items:start;padding:12px;border-bottom:1px solid #f0ede7;margin:0}
+  .addon-item input{width:18px;height:18px;accent-color:#1a1a1a;margin-top:3px;cursor:pointer}
+  .ai-img{width:52px;height:52px;border-radius:6px;background:#ece8e1;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:zoom-in;object-fit:cover}
+  .ai-info{min-width:0}
+  .ai-info b{font-size:13px;font-weight:600;line-height:1.5;display:block}
+  .ai-step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-top:9px}
+  .ai-step button{width:42px;height:34px;border:0;background:#fff;font-size:18px;line-height:1;cursor:pointer;color:#333}
+  .ai-step .q{min-width:56px;text-align:center;font-size:14px;line-height:34px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+  .ai-price{display:block;font-size:13px;color:var(--sub);margin-top:9px}
+  .addon-more{display:block;text-align:center;padding:11px;font-size:12.5px;color:var(--sub);text-decoration:underline;text-underline-offset:2px;border-top:1px solid #f0ede7}
+  /* 加購商品圖片放大燈箱（點縮圖開啟） */
+  .ailb{position:fixed;inset:0;background:rgba(0,0,0,.62);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px}
+  .ailb[hidden]{display:none}
+  .ailb-box{position:relative;background:#fff;border-radius:16px;max-width:460px;width:100%;padding:46px 26px 30px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+  .ailb-done{position:absolute;top:12px;right:12px;border:1px solid var(--line);background:#fff;border-radius:8px;padding:7px 16px;font-size:13px;font-weight:600;cursor:pointer;letter-spacing:1px}
+  .ailb-img{width:100%;aspect-ratio:1;border-radius:12px;background:#f1efec;display:flex;align-items:center;justify-content:center;font-size:120px}
+  .ailb-cap{font-size:15px;font-weight:600;margin-top:16px;color:var(--ink);line-height:1.5}
+  /* 內容分頁 tab（參考 SHOPLINE 原生商品頁） */
+  .tabbar{display:flex;border-bottom:1px solid var(--line);margin:0 0 14px;overflow-x:auto}
+  .tabbtn{flex:1 0 auto;min-width:max-content;padding:13px 18px;font-size:15px;font-weight:600;color:var(--sub);background:none;border:0;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-1px}
+  .tabbtn.on{color:var(--ink);border-bottom-color:var(--ink)}
+  .tabpanel[hidden]{display:none}
+  .desk-bottom .tabbar,.desk-bottom .tabpanel{grid-column:1/-1}
+  .speclist{margin:8px 0 18px;padding-left:18px}
+  .speclist li{font-size:14px;line-height:1.95;color:#444}
+  .specnote{font-size:13px;color:var(--sub);margin-top:2px}
+  /* ===== 商品描述 v2 編輯式（.yu-pdp） ===== */
+  .yu-pdp{--ink2:#1c1b19;--muted2:#8a8377;--line2:#e7e3dc;--soft2:#f6f4ef;--accent2:#c2502e;--pro2:#2e7d52;
+    color:#1c1b19;line-height:1.8;letter-spacing:.2px}
+  .yu-pdp img{display:block;width:100%;border-radius:16px;object-fit:cover}
+  .yu-pdp section{padding:34px 4px}
+  .yu-pdp section > img,.yu-pdp .hero img{max-height:400px;object-fit:cover}
+  .yu-pdp .eyebrow{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);text-align:center;margin-bottom:8px}
+  .yu-pdp h2{font-size:24px;font-weight:800;text-align:center;line-height:1.35;margin:0 0 10px}
+  .yu-pdp .sub{text-align:center;color:var(--muted2);font-size:16px;max-width:46ch;margin:0 auto 16px}
+  .yu-pdp .hero{position:relative;border-radius:18px;overflow:hidden;padding:0;text-align:center;border-top:0;background:#0d0f0c}
+  .yu-pdp .hero img{width:100%;display:block;border-radius:18px;max-height:none;margin:0}
+  .yu-pdp .hero .hero-cap{position:absolute;left:0;right:0;top:6%;padding:0 16px;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.32)}
+  .yu-pdp .hero .brand{display:inline-block;font-size:15px;font-weight:800;letter-spacing:3px;color:#fff;background:rgba(0,0,0,.5);padding:4px 11px;border-radius:6px;margin-bottom:10px}
+  .yu-pdp .hero .hh{font-size:40px;font-weight:800;letter-spacing:1px;margin:0 0 5px;color:#fff;display:block}
+  .yu-pdp .hero p{font-size:20px;margin:0;color:#fff;letter-spacing:1px}
+  .yu-pdp .pdef{text-align:center;color:#4a463f;font-size:16px;line-height:1.85;max-width:54ch;margin:18px auto 2px;padding:0 6px}
+  .yu-pdp .ph-wide{aspect-ratio:16/10}.yu-pdp .ph-sq{aspect-ratio:1/1}.yu-pdp .ph-tall{aspect-ratio:1/1}
+  .yu-pdp .ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;background:var(--soft2);border:1px dashed #cfc8bd;border-radius:16px;color:#a89f90;font-size:13px;letter-spacing:1px;padding:14px}
+  .yu-pdp .ph b{color:#8a8377;font-weight:700}.yu-pdp .ph span{font-size:12px}
+  .yu-pdp .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .yu-pdp .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}
+  .yu-pdp .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+  .yu-pdp .g3 img{aspect-ratio:1/1;object-fit:cover;margin:0}
+  .yu-pdp .g2img{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .yu-pdp .g2img img{aspect-ratio:4/3;object-fit:cover;margin:0}
+  .yu-pdp .g2cap{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;margin-top:14px}
+  .yu-pdp .g2cap figure{margin:0}
+  .yu-pdp .g2cap img{aspect-ratio:4/3;object-fit:cover;margin:0;border-radius:16px}
+  .yu-pdp .g2cap figcaption{margin-top:10px;text-align:center;color:var(--muted2);font-size:16px;line-height:1.7}
+  /* 對照表：推薦欄整欄高亮卡片 + 左側綠勾（附圖風格） */
+  .yu-pdp table{width:100%;border-collapse:separate;border-spacing:0;font-size:16px;margin:16px 0}
+  .yu-pdp th,.yu-pdp td{padding:13px 12px;text-align:center;border-bottom:1px solid #ece8e1}
+  .yu-pdp thead th{font-weight:800;font-size:16.5px;color:#1c1b19;border-bottom:1px solid #e0dace}
+  .yu-pdp tbody tr:last-child td{border-bottom:0}
+  .yu-pdp th:first-child,.yu-pdp td:first-child{text-align:left;font-weight:600;width:42%}
+  .yu-pdp tbody td:first-child{position:relative;padding-left:32px}
+  .yu-pdp tbody td:first-child::before{content:"✓";position:absolute;left:4px;top:50%;transform:translateY(-50%);width:18px;height:18px;border-radius:50%;background:#2e7d52;color:#fff;font-size:11px;line-height:18px;text-align:center;font-weight:700}
+  .yu-pdp .col-pro{background:#eef7f1;border-left:1px solid #cde9d8;border-right:1px solid #cde9d8}
+  .yu-pdp thead .col-pro{color:#2e7d52;border-top:3px solid #2e7d52;border-bottom-color:#cde9d8;border-radius:12px 12px 0 0}
+  .yu-pdp tbody tr:last-child .col-pro{border-bottom:1px solid #cde9d8;border-radius:0 0 12px 12px}
+  .yu-pdp .pill{display:inline-block;margin-left:5px;font-size:12px;font-weight:700;color:#fff;background:#2e7d52;border-radius:999px;padding:1px 7px;vertical-align:middle}
+  .yu-pdp .hi{color:#2e7d52;font-weight:700}
+  .yu-pdp .x{color:#c4bdb0}
+  .yu-pdp .hi{color:var(--pro2);font-weight:700}.yu-pdp .x{color:#bbb}
+  /* 對照表：背景照 + 深色半透明表格疊層（附圖風格） */
+  .yu-pdp .cmp-hero{position:relative;width:calc(100% + 8px);margin:6px -4px 0;border-radius:18px;overflow:hidden;border-top:0;padding:0}
+  /* 功能特色：背景照 + 標題與條列疊層（附圖風格） */
+  .yu-pdp .feathero{position:relative;width:calc(100% + 8px);margin:6px -4px 0;border-radius:18px;overflow:hidden;border-top:0;padding:0;background:#0d0f0c}
+  .yu-pdp .feathero>img{width:100%;display:block;border-radius:18px;max-height:none;margin:0}
+  .yu-pdp .feathero .fh-cap{position:absolute;left:0;right:0;top:7%;padding:0 8%;text-align:center;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5)}
+  .yu-pdp .feathero .fh-eyebrow{font-size:14px;font-weight:800;letter-spacing:3px;margin-bottom:4px;color:#fff}
+  .yu-pdp .feathero h2{font-size:34px;font-weight:800;color:#fff;margin:0 0 12px;text-align:center;line-height:1.2}
+  .yu-pdp .feathero p{font-size:16px;line-height:1.75;color:#fff;margin:3px 0;text-align:center}
+  .yu-pdp .cmp-hero>img{width:100%;display:block;border-radius:18px;max-height:none;margin:0}
+  .yu-pdp .cmp-over{position:absolute;top:0;left:0;right:0;padding:7% 5% 0;text-align:center}
+  .yu-pdp .cmp-h{margin:0 0 6% ;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5);text-align:center}
+  .yu-pdp .cmp-h .sup{display:block;font-size:12px;font-weight:600;letter-spacing:1px;color:#e7ece6;margin-bottom:2px}
+  .yu-pdp .cmp-h .t1{display:block;font-size:23px;font-weight:800;line-height:1.2}
+  .yu-pdp .cmp-h .t2{display:block;font-size:32px;font-weight:800;line-height:1.2;margin-top:2px}
+  .yu-pdp table.cmp-dark{width:100%;border-collapse:separate;border-spacing:0;font-size:14px;margin:0;background:rgba(18,20,18,.5);border-radius:10px;overflow:hidden;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+  .yu-pdp table.cmp-dark th,.yu-pdp table.cmp-dark td{padding:11px 8px;text-align:center;border:1px solid rgba(255,255,255,.2);color:#fff;font-weight:600;text-shadow:none;width:auto}
+  .yu-pdp table.cmp-dark thead th{font-weight:800;font-size:15px;background:rgba(0,0,0,.3);color:#fff;border-radius:0}
+  .yu-pdp table.cmp-dark td:first-child,.yu-pdp table.cmp-dark th:first-child{text-align:left;font-weight:700;width:38%}
+  .yu-pdp table.cmp-dark tbody td:first-child{position:static;padding-left:10px}
+  .yu-pdp table.cmp-dark tbody td:first-child::before{content:none;display:none}
+  .yu-pdp table.cmp-dark .ok{color:#7fe0a3;font-weight:700}
+  .yu-pdp table.cmp-dark .no{color:#ff8f8f;font-weight:700}
+  .yu-pdp table.cmp-dark .dot::before{content:"●";font-size:9px;vertical-align:middle;margin-right:4px}
+  .yu-pdp .cmp-cap{position:absolute;left:5%;right:5%;bottom:10%;margin:0;text-align:center;color:var(--muted2);font-size:14px;line-height:1.75}
+  .yu-pdp .vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+  .yu-pdp .vs figure{position:relative;margin:0;border:1px solid var(--line2);border-radius:16px;overflow:hidden}
+  .yu-pdp .vs img{border-radius:0;aspect-ratio:1/1;object-fit:cover}
+  .yu-pdp .vs figcaption{padding:11px 13px}
+  .yu-pdp .vs .tag{position:absolute;top:10px;left:10px;z-index:2;display:inline-block;font-size:20px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:8px;margin:0;box-shadow:0 1px 6px rgba(0,0,0,.18)}
+  .yu-pdp .vs .t-base{background:#efece6;color:#7a7367}.yu-pdp .vs .t-pro{background:#e6f3ec;color:var(--pro2)}
+  .yu-pdp .vs b{display:block;font-size:16px;margin-bottom:2px}.yu-pdp .vs small{color:var(--muted2);font-size:16px;line-height:1.6}
+  .yu-pdp .uc{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;margin:20px 0}
+  .yu-pdp .uc .num{font-size:14px;font-weight:800;letter-spacing:2px;color:var(--accent2)}
+  .yu-pdp .uc h3{font-size:22px;font-weight:800;margin:6px 0 8px}
+  .yu-pdp .uc p{color:#4a463f;font-size:16px;margin:0}
+  .yu-pdp .sum{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;text-align:center}
+  .yu-pdp .sum .item{padding:16px 10px;background:var(--soft2);border-radius:14px}
+  .yu-pdp .sum .ic{font-size:24px}.yu-pdp .sum b{display:block;font-size:16px;margin:6px 0 2px}.yu-pdp .sum small{color:var(--muted2);font-size:16px;line-height:1.6}
+  .pdp-narrow .uc,.pdp-narrow .vs,.pdp-narrow .sum{grid-template-columns:1fr}
+  /* 手機版：情境文字一律置於圖片上方（桌機維持左右交錯） */
+  .pdp-narrow .uc .txt{order:-1}
+  /* 手機版：功能特色背景照加上方漸層遮罩，確保白字對比 */
+  .pdp-narrow .feathero::after{content:"";position:absolute;left:0;right:0;top:0;height:80%;background:linear-gradient(to bottom,rgba(0,0,0,.62) 0%,rgba(0,0,0,.5) 55%,rgba(0,0,0,0) 100%);z-index:1;pointer-events:none}
+  .pdp-narrow .feathero .fh-cap{z-index:2}
+  /* 手機版：商品描述首屏 hero 背景照加上方漸層遮罩（涵蓋標題與標語） */
+  .pdp-narrow .hero::after{content:"";position:absolute;left:0;right:0;top:0;height:50%;background:linear-gradient(to bottom,rgba(0,0,0,.55) 0%,rgba(0,0,0,.4) 55%,rgba(0,0,0,0) 100%);z-index:1;pointer-events:none}
+  .pdp-narrow .hero .hero-cap{z-index:2}
+  .pdp-narrow .grid3{grid-template-columns:1fr 1fr}
+  .pdp-narrow .g2cap{grid-template-columns:1fr}
+  /* 電腦版（非 pdp-narrow）：大標題 40px、內文 20px */
+  .yu-pdp:not(.pdp-narrow) h2:not(.cmp-h){font-size:40px}
+  .yu-pdp:not(.pdp-narrow) .sub,
+  .yu-pdp:not(.pdp-narrow) .uc p,
+  .yu-pdp:not(.pdp-narrow) .feathero p{font-size:20px}
+  .yu-pdp .g2cap figcaption{font-size:16px}
+  /* 電腦版：對照表內文 20px + 間距等比放大 */
+  #desktop table.cmp-dark{font-size:20px}
+  #desktop table.cmp-dark th,#desktop table.cmp-dark td{padding:16px 11px}
+  #desktop table.cmp-dark thead th{font-size:21px}
+  #desktop table.cmp-dark .dot::before{font-size:13px;margin-right:6px}
+  /* 電腦版：常見 QA 文字 20px */
+  #desktop .faq>summary{font-size:20px}
+  #desktop .faq .fa p{font-size:20px}
+  .hide{display:none}
+  @media(max-width:820px){
+    .desk-top{grid-template-columns:1fr;gap:20px;padding:18px}
+    .desk-bottom{grid-template-columns:1fr;padding:0 18px 24px}
+  }
+  @media(max-width:480px){.scroll{height:640px}.phone{border-radius:0;border-left:0;border-right:0}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div>
+    <h1>B67 商品頁改版對照原型</h1>
+    <div class="desc">YU 360°無段支架手機殼｜情境圖為 AI 示意</div>
+  </div>
+  <div class="toggle">
+    <button data-v="before" onclick="sw('before')">改版前</button>
+    <button data-v="mobile" class="active" onclick="sw('mobile')">改版後·手機</button>
+    <button data-v="desktop" onclick="sw('desktop')">改版後·桌機</button>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="legend" id="legend"></div>
+
+  <!-- ===================== AFTER · MOBILE ===================== -->
+  <div id="mobile">
+    <div class="phonewrap"><div class="phone"><div class="scroll">
+      <div class="pnav">首頁 › iPhone 配件 › 支架手機殼 › YU 360°支架殼</div>
+      <div class="gallery">
+        <span class="badge">任選 2 件 88 折</span>
+        <img src="prototype-assets/b67_product_main_20260602_113144.png" alt="YU iPhone 360 度支架手機殼 石墨黑 主圖">
+      </div>
+      <div class="thumbs">
+        <img class="on" src="prototype-assets/b67_product_main_20260602_113144.png" alt="產品主圖">
+        <img src="prototype-assets/b67_scene_kickstand_20260602_112508.png" alt="支架追劇情境">
+        <img src="prototype-assets/b67_scene_drop_20260602_112538.png" alt="防摔細節">
+        <img src="prototype-assets/b67_scene_magsafe_20260602_112604.png" alt="MagSafe 磁吸">
+      </div>
+      <div class="body">
+        <h1 class="ptitle">YU iPhone 360°無段支架手機殼<br>MagSafe 防摔殼（ iPhone 12–16 系列）【B67】</h1>
+        <div class="pdesc">YU 自有品牌．一殼搞定 360° 無段支架、MagSafe 磁吸與四角防摔，適用 iPhone 12–16 全系列（mini 除外）。</div>
+        <div class="promobox">
+          <div class="promo-line">🎁 驚喜賣場！<b>任選 2 件享 88 折</b>（不含加購品）</div>
+          <div class="promo-line">🚚 倫印感謝祭<b>滿 NT$599 享超取免運！</b></div>
+          <div class="promo-line">🚚 湊免運嗎？<b><a href="https://www.londonimg.tw/pages/add">加價購</a>好物一起帶！</b></div>
+          <div class="promo-extra" hidden>
+            <div class="promo-line">🛡 7 天鑑賞期，不滿意可退換</div>
+            <div class="promo-line">💬 不確定相容機型？加 LINE 問真人客服幫你挑對型號</div>
+          </div>
+        </div>
+        <button class="viewmore" type="button">查看更多 ⌄</button>
+        <div class="price"><span class="now">NT$490</span></div>
+        <div class="rating"><span class="stars">★★★★★</span> <b>4.9</b> <span class="rcount">( 195 評價 )</span></div>
+        <div class="buybox">
+        <div class="buylbl">款式</div>
+        <div class="styles">
+          <button class="stylechip sel" data-style="std" data-price="490">一般款</button>
+          <button class="stylechip" data-style="dual" data-price="590">雙向吸 3.0 <em>+NT$100</em></button>
+        </div>
+
+        <div class="buylbl">顏色</div>
+        <div class="swatches" data-colors="std">
+          <div class="sw sel"><span class="dot" style="background:#2a2a2a"></span>黑</div>
+          <div class="sw"><span class="dot" style="background:#8d8d8d"></span>鈦灰</div>
+          <div class="sw"><span class="dot" style="background:#33493b"></span>墨綠</div>
+          <div class="sw"><span class="dot" style="background:#3c5a86"></span>藍</div>
+          <div class="sw"><span class="dot" style="background:#6a5b86"></span>紫</div>
+        </div>
+        <div class="swatches" data-colors="dual" hidden>
+          <div class="sw sel"><span class="dot" style="background:#2a2a2a"></span>黑</div>
+          <div class="sw"><span class="dot" style="background:#8d8d8d"></span>鈦灰</div>
+          <div class="sw"><span class="dot" style="background:#33493b"></span>墨綠</div>
+        </div>
+
+        <div class="buylbl">機型（點選確認相容）</div>
+        <div class="mgroup"><div class="gt">iPhone 16 系列</div><div class="mchips"><span class="mchip">16 Pro Max</span><span class="mchip sel">16 Pro</span><span class="mchip">16 Plus</span><span class="mchip">16</span><span class="mchip">16e</span></div></div>
+        <div class="mgroup"><div class="gt">iPhone 15 系列</div><div class="mchips"><span class="mchip">15 Pro Max</span><span class="mchip">15 Pro</span><span class="mchip">15 Plus</span><span class="mchip">15</span></div></div>
+        <div class="mgroup"><div class="gt">iPhone 14 系列</div><div class="mchips"><span class="mchip">14 Pro Max</span><span class="mchip">14 Pro</span><span class="mchip">14 Plus</span><span class="mchip">14</span></div></div>
+        <div class="mgroup"><div class="gt">iPhone 13 系列</div><div class="mchips"><span class="mchip">13 Pro Max</span><span class="mchip">13 Pro</span><span class="mchip">13</span></div></div>
+        <div class="mgroup"><div class="gt">iPhone 12 系列</div><div class="mchips"><span class="mchip">12 Pro Max</span><span class="mchip">12 / 12 Pro</span></div></div>
+        </div>
+
+        <div class="addon">
+          <div class="addon-h">✦ 以優惠價加購商品</div>
+          <div class="addon-item"><input type="checkbox" checked>
+            <span class="ai-img" data-name="瞬貼冰盾貼 9H 鋼化玻璃貼">🛡</span>
+            <span class="ai-info"><b>【加購優惠 / 原價 690】瞬貼冰盾貼 9H 鋼化玻璃貼 ★附貼膜神器、0 失敗</b>
+              <span class="ai-step"><button type="button" class="dec">−</button><span class="q">1</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$490</span></span></div>
+          <div class="addon-item"><input type="checkbox">
+            <span class="ai-img" data-name="鏡頭玻璃金屬環">◎</span>
+            <span class="ai-info"><b>【加購優惠 / 原價 590】鏡頭玻璃金屬環 鋁合金框 ★防刮鏡頭、提升質感</b>
+              <span class="ai-step"><button type="button" class="dec">−</button><span class="q">0</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$350</span></span></div>
+          <div class="addon-item"><input type="checkbox">
+            <span class="ai-img" data-name="IceRen 手機掛繩">🪢</span>
+            <span class="ai-info"><b>【加購優惠 / 原價 690】IceRen 手機掛繩 可拆夾片 ★免換殼、不挖孔</b>
+              <span class="ai-step"><button type="button" class="dec">−</button><span class="q">0</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$200</span></span></div>
+          <div class="addon-item"><input type="checkbox">
+            <span class="ai-img" data-name="15W MagSafe 無線充電">🔌</span>
+            <span class="ai-info"><b>【加購優惠 / 原價 590】15W MagSafe 無線充電 ★磁吸對位免找角度</b>
+              <span class="ai-step"><button type="button" class="dec">−</button><span class="q">0</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$299</span></span></div>
+          <a class="addon-more" href="https://www.londonimg.tw/pages/add" target="_blank" rel="noopener">更多加購商品 →</a>
+        </div>
+
+        <div class="tabbar">
+          <button class="tabbtn on" type="button" data-tab="desc">商品描述</button>
+          <button class="tabbtn" type="button" data-tab="ship">送貨/付款</button>
+          <button class="tabbtn" type="button" data-tab="review">顧客評價</button>
+          <button class="tabbtn" type="button" data-tab="spec">規格/保固</button>
+        </div>
+        <div class="tabpanel" data-tab="desc">
+        <h2 class="sec">影音實測</h2>
+        <div class="vwrap">
+          <div class="vcard">
+            <div class="vmeta"><b>MagSafe 磁吸實測</b><p>任何有磁力的金屬面都能馬上吸住，吸力一次看懂。</p></div>
+            <div class="vplayer"><span class="vtag">倫敦印象</span>
+              <img src="prototype-assets/b67_scene_magsafe_20260602_112604.png" alt="MagSafe 磁吸實測影片"><span class="play"></span></div>
+          </div>
+          <div class="vcard">
+            <div class="vmeta"><b>360° 隱藏支架</b><p>背板隱藏式金屬支架，不用時完全平整，要用時一翻即立。</p></div>
+            <div class="vplayer"><span class="vtag">倫敦印象</span>
+              <img src="prototype-assets/b67_scene_kickstand_20260602_112508.png" alt="360 度隱藏支架實測影片"><span class="play"></span></div>
+          </div>
+        </div>
+
+        <h2 class="sec">商品描述</h2>
+        <div class="yu-pdp pdp-narrow">
+          <section class="hero">
+            <img src="images/B67-6.png" alt="YU 360° 支架手機殼，一個殼解決所有痛點">
+            <div class="hero-cap"><div class="brand">YU</div><div class="hh">360° 支架手機殼</div><p>一個殼，解決所有痛點！</p></div>
+          </section>
+          <p class="pdef">YU 360°無段支架手機殼是一款內建金屬指環支架、支援 MagSafe 磁吸、適用 iPhone 12–16 系列（mini 除外）的防摔手機殼，可任意角度直立／橫放，一殼搞定追劇、視訊與防摔。</p>
+          <section>
+            <div class="eyebrow">Stable Stand</div><h2>360° 環繞支架 ‧ 持久耐用</h2>
+            <p class="sub">直立追劇、橫放滑 IG 都隨心所欲；金屬轉軸承始終穩定，長期使用不鬆軟，手機立得穩、看得久。</p>
+            <div class="g3">
+              <img src="images/B67-7.png" alt="YU 360 度支架斜立追劇角度">
+              <img src="images/B67-8.png" alt="YU 360 度支架桌面直立視角">
+              <img src="images/B67-9.png" alt="YU 透明殼 MagSafe 磁吸單手握持背面">
+            </div>
+          </section>
+          <section>
+            <div class="eyebrow">Flat Back</div><h2>背板平整優化</h2>
+            <p class="sub">手機平放穩固，邊框與鏡頭框墊高有效保護鏡頭，從而提供全面的安全保障。</p>
+            <div class="grid2">
+              <div class="ph ph-sq"><b>背板平整</b><span>700 × 700</span></div>
+              <img class="ph-sq" src="prototype-assets/b67_scene_drop_20260602_112538.png" alt="鏡頭墊高保護">
+            </div>
+          </section>
+          <section>
+            <div class="eyebrow">MagSafe</div><h2>MagSafe 功能進化</h2>
+            <p class="sub">支援 MagSafe 無線充電，隨時隨地為手機補足電量。</p>
+            <div class="grid2">
+              <img class="ph-sq" src="prototype-assets/b67_scene_magsafe_20260602_112604.png" alt="MagSafe 無線充電">
+              <div class="ph ph-sq"><b>MagSafe 磁吸配件</b><span>700 × 700</span></div>
+            </div>
+          </section>
+          <section>
+            <div class="eyebrow">Compare</div>
+            <div class="cmp-hero">
+              <img src="images/B67-12.png" alt="一般款與雙向吸進化 3.0 支架手機殼差別比較">
+              <div class="cmp-over">
+                <h2 class="cmp-h"><span class="sup">（進化 3.0）</span><span class="t1">一般款？雙向吸？</span><span class="t2">差別在哪呢？</span></h2>
+                <table class="cmp-dark">
+                  <thead><tr><th></th><th>一般款</th><th>雙向吸</th></tr></thead>
+                  <tbody>
+                    <tr><td>直立／橫放支撐</td><td class="ok dot">支援</td><td class="ok dot">支援</td></tr>
+                    <tr><td>無段式角度調整</td><td class="ok dot">支援</td><td class="ok dot">支援</td></tr>
+                    <tr><td>雙向吸附</td><td class="no dot">無</td><td class="ok dot">可雙向吸附金屬</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </section>
+          <section>
+            <div class="eyebrow">Two Versions</div><h2>一般款 vs 3.0 超進化</h2>
+            <div class="vs">
+              <figure><img src="images/B67-2.jpeg" alt="一般款 360° 環繞支架手機殼"><span class="tag t-base">一般款</span>
+                <figcaption><b>360° 環繞支架</b><small>基礎直立／橫放支撐</small></figcaption></figure>
+              <figure><img src="images/B67-3.jpeg" alt="3.0 超進化雙向吸支架手機殼"><span class="tag t-pro">3.0 超進化</span>
+                <figcaption><b>雙向吸支架</b><small>360° 環繞支架 ＋ 升級金屬磁吸，固定於任何磁性平面</small></figcaption></figure>
+            </div>
+          </section>
+          <section>
+            <div class="eyebrow">Dual-Grip 3.0</div><h2>3.0 超進化雙向吸</h2>
+            <p class="sub">支架內嵌高強度吸附金屬，提供超強抓握力，吸附在垂直的金屬表面也能長時間保持穩固不滑落。</p>
+            <div class="g2cap">
+              <figure>
+                <img src="images/B67-10.png" alt="雙向吸支架吸附於垂直金屬冰箱門面">
+                <figcaption>將手機吸附在冰箱門或金屬廚櫃上，邊看影片邊下廚，不佔用檯面空間。</figcaption>
+              </figure>
+              <figure>
+                <img src="images/B67-11.png" alt="手機吸附金屬廚櫃邊看影片邊下廚">
+                <figcaption>固定在健身房重訓器材上錄影確認姿勢，進化 3.0 都給你絕對的信心！</figcaption>
+              </figure>
+            </div>
+          </section>
+          <section>
+            <div class="eyebrow">Use Cases</div><h2>一個支架，多種玩法</h2>
+            <div class="uc">
+              <img class="ph-tall" src="images/B67-13.png" alt="情境一：隨身自拍神器，野餐聚會戶外旅行完美角度">
+              <div class="txt"><div class="num">情境 01</div><h3>隨身自拍神器</h3><p>輕鬆升級為隨身自拍神器，野餐、聚會、戶外旅行，完美角度輕鬆 Get！</p></div>
+            </div>
+            <div class="uc rev">
+              <div class="txt"><div class="num">情境 02</div><h3>變身增高支架</h3><p>可巧妙卡入寶特瓶、飲料瓶，讓螢幕與視線齊平；長時間使用手機也能保持最舒適的姿勢。</p></div>
+              <img class="ph-tall" src="images/B67-14.png" alt="情境二：變身增高支架，卡入寶特瓶讓螢幕與視線齊平">
+            </div>
+            <div class="uc">
+              <img class="ph-tall" src="images/B67-15.png" alt="情境三：卡在行李箱拉桿上拍 Vlog 與團體自拍">
+              <div class="txt"><div class="num">情境 03</div><h3>行李箱卡位</h3><p>可穩固卡在行李箱拉桿上，旅行時拍 Vlog、團體自拍不再求人。</p></div>
+            </div>
+            <div class="uc rev">
+              <div class="txt"><div class="num">情境 04</div><h3>無桌板追劇神器</h3><p>利用支架的夾持特性，卡住垂直或橫向的縫隙，把手機架高、改善低頭角度，長時間觀影更舒適。</p></div>
+              <img class="ph-tall" src="images/B67-16.png" alt="情境四：卡住縫隙把手機架高，無桌板也能追劇">
+            </div>
+          </section>
+          <section>
+            <div class="feathero">
+              <img src="images/B67-17.png" alt="支架手機殼：360° 旋轉支架、邊框精準墊高、PU 觸感表面">
+              <div class="fh-cap">
+                <div class="fh-eyebrow">360° 輕鬆追劇</div>
+                <h2>支架手機殼</h2>
+                <p>360° 旋轉支架，無論直拍橫看，追劇、視訊都能隨心調整角度</p>
+                <p>邊框精準墊高，鏡頭全面防護不怕磨</p>
+                <p>PU 觸感表面防汙抗指紋，乾淨俐落更耐看</p>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="bundle">💡 <b>湊單更划算</b>：本支架殼<b>任選 2 件享 88 折</b>（限支架殼本身、不含加購品）；訂單滿 $599 超取免運。</div>
+
+        <h2 class="sec">常見 QA</h2>
+        <details class="faq" open><summary>什麼是雙向吸？</summary><div class="fa"><p>雙向吸的部分在磁吸指環上採用雙向吸附設計，在傳統磁吸指環的基礎上額外增加了一塊圓環。雖然這塊圓環本身不具磁性，但能讓磁力分布更均勻，進一步提升吸附的穩定性；同時讓手機背殼本身可吸附在其他磁性表面（例如冰箱或鐵製物品），實用性更高。</p></div></details>
+        <details class="faq"><summary>支援哪些 iPhone 機型？</summary><div class="fa"><p>適用 iPhone 12～16 全系列，含 Pro／Pro Max／Plus；各系列 mini 不適用。</p></div></details>
+        <details class="faq"><summary>支架用久了會鬆掉站不住嗎？</summary><div class="fa"><p>我們採用強化的高品質轉軸，經過多次開合與旋轉測試，支撐力穩定持久，請安心使用。</p></div></details>
+        <details class="faq"><summary>裝了這款殼還可以貼鏡頭貼嗎？</summary><div class="fa"><p>可以的！鏡頭孔位處有預留空間，只要不是過於厚重的特殊款式，基本上都能完美相容。</p></div></details>
+        <details class="faq"><summary>第一代和第二代（雙向吸）差在哪？</summary><div class="fa"><p>第一代磁吸支架手機殼內建基本磁吸功能，可搭配 MagSafe 配件使用，滿足日常需求。</p><p>第二代「雙向吸」則在此基礎上升級為雙向吸設計，不僅支援磁吸配件，還能吸附在鐵製表面（例如冰箱），讓你邊看手機邊做菜更方便，功能更全面！</p></div></details>
+        </div><!-- /tabpanel desc -->
+
+        <div class="tabpanel" data-tab="ship" hidden>
+          <h2 class="sec">送貨方式</h2>
+          <ul class="speclist"><li>超商取貨（7-11／全家）</li><li>宅配到府（黑貓宅急便）</li><li>訂單滿 NT$599 享超取免運</li></ul>
+          <h2 class="sec">付款方式</h2>
+          <ul class="speclist"><li>信用卡一次付清</li><li>ATM／網路銀行轉帳</li><li>超商取貨付款（貨到付款）</li></ul>
+          <p class="specnote">付款完成後 1–3 個工作天出貨，例假日順延。</p>
+        </div>
+
+        <div class="tabpanel" data-tab="review" hidden>
+        <h2 class="sec">真實評價 <span style="font-weight:400;color:var(--sub);font-size:12px">4.9 ★ · 195 則</span></h2>
+        <div class="rev"><div class="av"></div><div><div class="stars" style="font-size:12px">★★★★★</div><small>支架超好用，追劇再也不用手扶！</small></div></div>
+        <div class="rev"><div class="av"></div><div><div class="stars" style="font-size:12px">★★★★★</div><small>質感比想像好，邊框墊高有安全感。</small></div></div>
+        </div>
+
+        <div class="tabpanel" data-tab="spec" hidden>
+          <h2 class="sec">商品規格</h2>
+          <ul class="speclist"><li>材質：TPU + PC 複合</li><li>支架：360° 無段金屬轉軸</li><li>充電：支援 MagSafe 磁吸</li><li>適用機型：iPhone 12–16 全系列（mini 除外）</li><li>顏色：黑／鈦灰／墨綠／藍／紫（雙向吸款為 3 色）</li></ul>
+          <h2 class="sec">保固說明</h2>
+          <ul class="speclist"><li>7 天鑑賞期（非試用期），保持商品完整可退換</li><li>商品瑕疵 30 天內提供換貨</li><li>支架轉軸結構保固，正常使用下故障請聯繫客服</li></ul>
+        </div>
+
+      </div>
+      <div class="buybar">
+        <div class="buybar-row"><button class="add">加入購物車</button><button class="buy">🛍 立即購買</button></div>
+        <a class="favlink" href="#">♡ 加入追蹤清單</a>
+      </div>
+    </div></div></div>
+
+    <div class="notes" id="goodnotes">
+      <h3>✅ 改版後做對的事（對照範本黃金結構）</h3>
+      <ul>
+        <li><span class="tag t-good">UX</span>乾淨 H1：品牌+機型+功能，促銷改用獨立 badge</li>
+        <li><span class="tag t-good">UX</span>4.9★ / 195 則評價前置到價格上方（最大轉換槓桿）</li>
+        <li><span class="tag t-good">UX</span>機型用可選 chip，選後顯示 ✓ 相容</li>
+        <li><span class="tag t-good">UX</span>體感賣點配情境圖，不再是乾 bullet</li>
+        <li><span class="tag t-good">GEO</span>機型相容「表格」+ FAQ Q&A → AI 易引用</li>
+        <li><span class="tag t-good">商業</span>機型相容表清楚 → 降買錯、降退貨</li>
+        <li><span class="tag t-good">商業</span>湊單提示主動算給用戶 → 推升 AOV</li>
+        <li><span class="tag t-good">商業</span>同機型交叉銷售（貼/環/掛繩）</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===================== AFTER · DESKTOP ===================== -->
+  <div id="desktop" class="hide">
+    <div class="desktop">
+      <div class="desk-nav">首頁 › iPhone 配件 › 支架手機殼 › YU 360°無段支架手機殼 B67</div>
+      <div class="desk-top">
+        <div class="desk-gallery">
+          <div class="thumbs">
+            <img class="on" src="prototype-assets/b67_product_main_20260602_113144.png" alt="主圖">
+            <img src="prototype-assets/b67_scene_kickstand_20260602_112508.png" alt="追劇情境">
+            <img src="prototype-assets/b67_scene_drop_20260602_112538.png" alt="防摔">
+            <img src="prototype-assets/b67_scene_magsafe_20260602_112604.png" alt="MagSafe">
+          </div>
+          <div class="main"><span class="badge">任選 2 件 88 折</span>
+            <img src="prototype-assets/b67_product_main_20260602_113144.png" alt="YU 360 度支架手機殼 主圖"></div>
+        </div>
+        <div class="desk-info">
+          <h1 class="ptitle">YU iPhone 360°無段支架手機殼｜MagSafe 防摔殼（ iPhon 12–16 系列）【B67】</h1>
+          <div class="pdesc">YU 自有品牌．一殼搞定 360° 無段支架、MagSafe 磁吸與四角防摔，適用 iPhone 12–16 全系列（mini 除外）。</div>
+          <div class="promobox">
+            <div class="promo-line">🎁 驚喜賣場！<b>任選 2 件享 88 折</b>（不含加購品）</div>
+            <div class="promo-line">🚚 倫印感謝祭<b>滿 NT$599 享超取免運！</b></div>
+            <div class="promo-line">🚚 湊免運嗎？<b><a href="https://www.londonimg.tw/pages/add">加價購</a>好物一起帶！</b></div>
+            <div class="promo-extra" hidden>
+              <div class="promo-line">🛡 7 天鑑賞期，不滿意可退換</div>
+              <div class="promo-line">💬 不確定相容機型？加 LINE 問真人客服幫你挑對型號</div>
+            </div>
+          </div>
+          <button class="viewmore" type="button">查看更多 ⌄</button>
+          <div class="price"><span class="now">NT$490</span></div>
+          <div class="rating"><span class="stars">★★★★★</span> <b>4.9</b> <span class="rcount">( 195 評價 )</span></div>
+          <div class="buybox">
+          <div class="buylbl">款式</div>
+          <div class="styles">
+            <button class="stylechip sel" data-style="std" data-price="490">一般款</button>
+            <button class="stylechip" data-style="dual" data-price="590">雙向吸 3.0 <em>+NT$100</em></button>
+          </div>
+          <div class="buylbl">顏色</div>
+          <div class="swatches" data-colors="std">
+            <div class="sw sel"><span class="dot" style="background:#2a2a2a"></span>黑</div>
+            <div class="sw"><span class="dot" style="background:#8d8d8d"></span>鈦灰</div>
+            <div class="sw"><span class="dot" style="background:#33493b"></span>墨綠</div>
+            <div class="sw"><span class="dot" style="background:#3c5a86"></span>藍</div>
+            <div class="sw"><span class="dot" style="background:#6a5b86"></span>紫</div>
+          </div>
+          <div class="swatches" data-colors="dual" hidden>
+            <div class="sw sel"><span class="dot" style="background:#2a2a2a"></span>黑</div>
+            <div class="sw"><span class="dot" style="background:#8d8d8d"></span>鈦灰</div>
+            <div class="sw"><span class="dot" style="background:#33493b"></span>墨綠</div>
+          </div>
+          <div class="buylbl">機型（點選確認相容）</div>
+          <div class="mgroup"><div class="gt">iPhone 16 系列</div><div class="mchips"><span class="mchip">16 Pro Max</span><span class="mchip sel">16 Pro</span><span class="mchip">16 Plus</span><span class="mchip">16</span><span class="mchip">16e</span></div></div>
+          <div class="mgroup"><div class="gt">iPhone 15 系列</div><div class="mchips"><span class="mchip">15 Pro Max</span><span class="mchip">15 Pro</span><span class="mchip">15 Plus</span><span class="mchip">15</span></div></div>
+          <div class="mgroup"><div class="gt">iPhone 14 系列</div><div class="mchips"><span class="mchip">14 Pro Max</span><span class="mchip">14 Pro</span><span class="mchip">14 Plus</span><span class="mchip">14</span></div></div>
+          <div class="mgroup"><div class="gt">iPhone 13 系列</div><div class="mchips"><span class="mchip">13 Pro Max</span><span class="mchip">13 Pro</span><span class="mchip">13</span></div></div>
+          <div class="mgroup"><div class="gt">iPhone 12 系列</div><div class="mchips"><span class="mchip">12 Pro Max</span><span class="mchip">12 / 12 Pro</span></div></div>
+          </div>
+          <div class="addon">
+            <div class="addon-h">✦ 以優惠價加購商品</div>
+            <div class="addon-item"><input type="checkbox" checked>
+              <span class="ai-img" data-name="瞬貼冰盾貼 9H 鋼化玻璃貼">🛡</span>
+              <span class="ai-info"><b>【加購優惠 / 原價 690】瞬貼冰盾貼 9H 鋼化玻璃貼 ★附貼膜神器、0 失敗</b>
+                <span class="ai-step"><button type="button" class="dec">−</button><span class="q">1</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$490</span></span></div>
+            <div class="addon-item"><input type="checkbox">
+              <span class="ai-img" data-name="鏡頭玻璃金屬環">◎</span>
+              <span class="ai-info"><b>【加購優惠 / 原價 590】鏡頭玻璃金屬環 鋁合金框 ★防刮鏡頭、提升質感</b>
+                <span class="ai-step"><button type="button" class="dec">−</button><span class="q">0</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$350</span></span></div>
+            <div class="addon-item"><input type="checkbox">
+              <span class="ai-img" data-name="IceRen 手機掛繩">🪢</span>
+              <span class="ai-info"><b>【加購優惠 / 原價 690】IceRen 手機掛繩 可拆夾片 ★免換殼、不挖孔</b>
+                <span class="ai-step"><button type="button" class="dec">−</button><span class="q">0</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$200</span></span></div>
+            <div class="addon-item"><input type="checkbox">
+              <span class="ai-img" data-name="15W MagSafe 無線充電">🔌</span>
+              <span class="ai-info"><b>【加購優惠 / 原價 590】15W MagSafe 無線充電 ★磁吸對位免找角度</b>
+                <span class="ai-step"><button type="button" class="dec">−</button><span class="q">0</span><button type="button" class="inc">＋</button></span><span class="ai-price">優惠價 NT$299</span></span></div>
+            <a class="addon-more" href="https://www.londonimg.tw/pages/add" target="_blank" rel="noopener">更多加購商品 →</a>
+          </div>
+          <div class="desk-cta"><button class="add">加入購物車</button><button class="buy">🛍 立即購買</button></div>
+          <a class="favlink" href="#">♡ 加入追蹤清單</a>
+        </div>
+      </div>
+      <div class="desk-bottom">
+        <div class="tabbar">
+          <button class="tabbtn on" type="button" data-tab="desc">商品描述</button>
+          <button class="tabbtn" type="button" data-tab="ship">送貨/付款</button>
+          <button class="tabbtn" type="button" data-tab="review">顧客評價</button>
+          <button class="tabbtn" type="button" data-tab="spec">規格/保固</button>
+        </div>
+        <div class="tabpanel" data-tab="desc">
+        <div class="full"><h2 class="sec">影音實測</h2>
+          <div class="vwrap">
+            <div class="vcard">
+              <div class="vmeta"><b>MagSafe 磁吸實測</b><p>任何有磁力的金屬面都能馬上吸住，吸力一次看懂，不用看規格表也明白。</p></div>
+              <div class="vplayer"><span class="vtag">倫敦印象</span>
+                <img src="prototype-assets/b67_scene_magsafe_20260602_112604.png" alt="MagSafe 磁吸實測影片"><span class="play"></span></div>
+            </div>
+            <div class="vcard">
+              <div class="vmeta"><b>360° 隱藏支架</b><p>背板隱藏式金屬支架，不用時完全平整不卡手，要用時一翻即立。</p></div>
+              <div class="vplayer"><span class="vtag">倫敦印象</span>
+                <img src="prototype-assets/b67_scene_kickstand_20260602_112508.png" alt="360 度隱藏支架實測影片"><span class="play"></span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="full"><h2 class="sec">商品描述</h2>
+          <div class="yu-pdp">
+            <section class="hero">
+              <img src="images/B67-6.png" alt="YU 360° 支架手機殼，一個殼解決所有痛點">
+              <div class="hero-cap"><div class="brand">YU</div><div class="hh">360° 支架手機殼</div><p>一個殼，解決所有痛點！</p></div>
+            </section>
+            <p class="pdef">YU 360°無段支架手機殼是一款內建金屬指環支架、支援 MagSafe 磁吸、適用 iPhone 12–16 系列（mini 除外）的防摔手機殼，可任意角度直立／橫放，一殼搞定追劇、視訊與防摔。</p>
+            <section>
+              <div class="eyebrow">Stable Stand</div><h2>360° 環繞支架 ‧ 持久耐用</h2>
+              <p class="sub">直立追劇、橫放滑 IG 都隨心所欲；金屬轉軸承始終穩定，長期使用不鬆軟，手機立得穩、看得久。</p>
+              <div class="g3">
+              <img src="images/B67-7.png" alt="YU 360 度支架斜立追劇角度">
+              <img src="images/B67-8.png" alt="YU 360 度支架桌面直立視角">
+              <img src="images/B67-9.png" alt="YU 透明殼 MagSafe 磁吸單手握持背面">
+            </div>
+            </section>
+            <section>
+              <div class="eyebrow">Flat Back</div><h2>背板平整優化</h2>
+              <p class="sub">手機平放穩固，邊框與鏡頭框墊高有效保護鏡頭，從而提供全面的安全保障。</p>
+              <div class="grid2">
+                <div class="ph ph-sq"><b>背板平整</b><span>700 × 700</span></div>
+                <img class="ph-sq" src="prototype-assets/b67_scene_drop_20260602_112538.png" alt="鏡頭墊高保護">
+              </div>
+            </section>
+            <section>
+              <div class="eyebrow">MagSafe</div><h2>MagSafe 功能進化</h2>
+              <p class="sub">支援 MagSafe 無線充電，隨時隨地為手機補足電量。</p>
+              <div class="grid2">
+                <img class="ph-sq" src="prototype-assets/b67_scene_magsafe_20260602_112604.png" alt="MagSafe 無線充電">
+                <div class="ph ph-sq"><b>MagSafe 磁吸配件</b><span>700 × 700</span></div>
+              </div>
+            </section>
+            <section>
+              <div class="eyebrow">Compare</div>
+              <div class="cmp-hero">
+                <img src="images/B67-12.png" alt="一般款與雙向吸進化 3.0 支架手機殼差別比較">
+                <div class="cmp-over">
+                  <h2 class="cmp-h"><span class="sup">（進化 3.0）</span><span class="t1">一般款？雙向吸？</span><span class="t2">差別在哪呢？</span></h2>
+                  <table class="cmp-dark">
+                    <thead><tr><th></th><th>一般款</th><th>雙向吸</th></tr></thead>
+                    <tbody>
+                      <tr><td>直立／橫放支撐</td><td class="ok dot">支援</td><td class="ok dot">支援</td></tr>
+                      <tr><td>無段式角度調整</td><td class="ok dot">支援</td><td class="ok dot">支援</td></tr>
+                      <tr><td>雙向吸附</td><td class="no dot">無</td><td class="ok dot">可雙向吸附金屬</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </section>
+            <section>
+              <div class="eyebrow">Two Versions</div><h2>一般款 vs 3.0 超進化</h2>
+              <div class="vs">
+                <figure><img src="images/B67-2.jpeg" alt="一般款 360° 環繞支架手機殼"><span class="tag t-base">一般款</span>
+                  <figcaption><b>360° 環繞支架</b><small>基礎直立／橫放支撐</small></figcaption></figure>
+                <figure><img src="images/B67-3.jpeg" alt="3.0 超進化雙向吸支架手機殼"><span class="tag t-pro">3.0 超進化</span>
+                  <figcaption><b>雙向吸支架</b><small>360° 環繞支架 ＋ 升級金屬磁吸，固定於任何磁性平面</small></figcaption></figure>
+              </div>
+            </section>
+            <section>
+              <div class="eyebrow">Dual-Grip 3.0</div><h2>3.0 超進化雙向吸</h2>
+              <p class="sub">支架內嵌高強度吸附金屬，提供超強抓握力，吸附在垂直的金屬表面也能長時間保持穩固不滑落。</p>
+              <div class="g2cap">
+                <figure>
+                  <img src="images/B67-10.png" alt="雙向吸支架吸附於垂直金屬冰箱門面">
+                  <figcaption>將手機吸附在冰箱門或金屬廚櫃上，邊看影片邊下廚，不佔用檯面空間。</figcaption>
+                </figure>
+                <figure>
+                  <img src="images/B67-11.png" alt="手機吸附金屬廚櫃邊看影片邊下廚">
+                  <figcaption>固定在健身房重訓器材上錄影確認姿勢，進化 3.0 都給你絕對的信心！</figcaption>
+                </figure>
+              </div>
+            </section>
+            <section>
+              <div class="eyebrow">Use Cases</div><h2>一個支架，多種玩法</h2>
+              <div class="uc">
+                <img class="ph-tall" src="images/B67-13.png" alt="情境一：隨身自拍神器，野餐聚會戶外旅行完美角度">
+                <div class="txt"><div class="num">情境 01</div><h3>隨身自拍神器</h3><p>輕鬆升級為隨身自拍神器，野餐、聚會、戶外旅行，完美角度輕鬆 Get！</p></div>
+              </div>
+              <div class="uc rev">
+                <div class="txt"><div class="num">情境 02</div><h3>變身增高支架</h3><p>可巧妙卡入寶特瓶、飲料瓶，讓螢幕與視線齊平；長時間使用手機也能保持最舒適的姿勢。</p></div>
+                <img class="ph-tall" src="images/B67-14.png" alt="情境二：變身增高支架，卡入寶特瓶讓螢幕與視線齊平">
+              </div>
+              <div class="uc">
+                <img class="ph-tall" src="images/B67-15.png" alt="情境三：卡在行李箱拉桿上拍 Vlog 與團體自拍">
+                <div class="txt"><div class="num">情境 03</div><h3>行李箱卡位</h3><p>可穩固卡在行李箱拉桿上，旅行時拍 Vlog、團體自拍不再求人。</p></div>
+              </div>
+              <div class="uc rev">
+                <div class="txt"><div class="num">情境 04</div><h3>無桌板追劇神器</h3><p>利用支架的夾持特性，卡住垂直或橫向的縫隙，把手機架高、改善低頭角度，長時間觀影更舒適。</p></div>
+                <img class="ph-tall" src="images/B67-16.png" alt="情境四：卡住縫隙把手機架高，無桌板也能追劇">
+              </div>
+            </section>
+            <section>
+              <div class="feathero">
+                <img src="images/B67-17.png" alt="支架手機殼：360° 旋轉支架、邊框精準墊高、PU 觸感表面">
+                <div class="fh-cap">
+                  <div class="fh-eyebrow">360° 輕鬆追劇</div>
+                  <h2>支架手機殼</h2>
+                  <p>360° 旋轉支架，無論直拍橫看，追劇、視訊都能隨心調整角度</p>
+                  <p>邊框精準墊高，鏡頭全面防護不怕磨</p>
+                  <p>PU 觸感表面防汙抗指紋，乾淨俐落更耐看</p>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="full">
+          <h2 class="sec">常見 QA</h2>
+          <details class="faq" open><summary>什麼是雙向吸？</summary><div class="fa"><p>雙向吸的部分在磁吸指環上採用雙向吸附設計，在傳統磁吸指環的基礎上額外增加了一塊圓環。雖然這塊圓環本身不具磁性，但能讓磁力分布更均勻，進一步提升吸附的穩定性；同時讓手機背殼本身可吸附在其他磁性表面（例如冰箱或鐵製物品），實用性更高。</p></div></details>
+        <details class="faq"><summary>支援哪些 iPhone 機型？</summary><div class="fa"><p>適用 iPhone 12～16 全系列，含 Pro／Pro Max／Plus；各系列 mini 不適用。</p></div></details>
+          <details class="faq"><summary>支架用久了會鬆掉站不住嗎？</summary><div class="fa"><p>我們採用強化的高品質轉軸，經過多次開合與旋轉測試，支撐力穩定持久，請安心使用。</p></div></details>
+          <details class="faq"><summary>裝了這款殼還可以貼鏡頭貼嗎？</summary><div class="fa"><p>可以的！鏡頭孔位處有預留空間，只要不是過於厚重的特殊款式，基本上都能完美相容。</p></div></details>
+          <details class="faq"><summary>第一代和第二代（雙向吸）差在哪？</summary><div class="fa"><p>第一代磁吸支架手機殼內建基本磁吸功能，可搭配 MagSafe 配件使用，滿足日常需求。</p><p>第二代「雙向吸」則在此基礎上升級為雙向吸設計，不僅支援磁吸配件，還能吸附在鐵製表面（例如冰箱），讓你邊看手機邊做菜更方便，功能更全面！</p></div></details>
+        </div>
+
+        </div><!-- /tabpanel desc -->
+        <div class="tabpanel" data-tab="ship" hidden>
+          <div class="full">
+            <h2 class="sec">送貨方式</h2>
+            <ul class="speclist"><li>超商取貨（7-11／全家）</li><li>宅配到府（黑貓宅急便）</li><li>訂單滿 NT$599 享超取免運</li></ul>
+            <h2 class="sec">付款方式</h2>
+            <ul class="speclist"><li>信用卡一次付清</li><li>ATM／網路銀行轉帳</li><li>超商取貨付款（貨到付款）</li></ul>
+            <p class="specnote">付款完成後 1–3 個工作天出貨，例假日順延。</p>
+          </div>
+        </div>
+        <div class="tabpanel" data-tab="review" hidden>
+        <div class="full"><h2 class="sec">真實評價 <span style="font-weight:400;color:var(--sub);font-size:12px">4.9 ★ · 195 則</span></h2>
+          <div class="rev"><div class="av"></div><div><div class="stars" style="font-size:12px">★★★★★</div><small>支架超好用，追劇再也不用手扶！</small></div></div>
+          <div class="rev"><div class="av"></div><div><div class="stars" style="font-size:12px">★★★★★</div><small>質感比想像好，邊框墊高有安全感。</small></div></div>
+        </div>
+        </div>
+        <div class="tabpanel" data-tab="spec" hidden>
+          <div class="full">
+            <h2 class="sec">商品規格</h2>
+            <ul class="speclist"><li>材質：TPU + PC 複合</li><li>支架：360° 無段金屬轉軸</li><li>充電：支援 MagSafe 磁吸</li><li>適用機型：iPhone 12–16 全系列（mini 除外）</li><li>顏色：黑／鈦灰／墨綠／藍／紫（雙向吸款為 3 色）</li></ul>
+            <h2 class="sec">保固說明</h2>
+            <ul class="speclist"><li>7 天鑑賞期（非試用期），保持商品完整可退換</li><li>商品瑕疵 30 天內提供換貨</li><li>支架轉軸結構保固，正常使用下故障請聯繫客服</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== BEFORE ===================== -->
+  <div id="before" class="hide">
+    <div class="phonewrap"><div class="phone"><div class="scroll">
+      <div class="pnav">全部商品 › 品牌嚴選 › YU</div>
+      <div class="gallery"><img src="prototype-assets/b67_product_main_20260602_113144.png" alt="商品圖"></div>
+      <div class="body">
+        <div class="raw-title">【驚喜賣場，任選兩件𝟴𝟴折】YU iPhone 360度無段支架指環手機殼【B67】</div>
+        <div class="flag">標題塞滿賣場名+活動+花式 Unicode（𝟴𝟴）；螢幕閱讀器念不出、行動版爆行、傷自有品牌</div>
+        <div class="muted-rating">★★★★★（評價區位置不明 / 官網無評價）</div>
+        <div class="flag">蝦皮 4.9★ / 195 則評價沒搬上官網 → 最強社會證明被丟在站外</div>
+        <div class="price"><span class="now">NT$0</span></div>
+        <div class="flag">價格顯示 NT$0（規格未選預設外洩）→ 商品 feed 拒登、AI 誤判免費</div>
+        <div class="opts"><span class="chip">規格 ▾</span><span class="chip">數量 1</span></div>
+        <h2 class="sec" style="border:0;padding-top:6px">商品說明</h2>
+        <div class="bullet">全機邊框精心墊高，超防摔保護手機鏡頭</div>
+        <div class="bullet">360度環繞支架，追劇滑手機隨心所欲</div>
+        <div class="bullet">獨家PU觸感材質，防汙耐髒</div>
+        <div class="bullet">具備Magsafe磁吸充電，一殼多用</div>
+        <div class="flag">體感賣點只有乾 bullet、無情境圖/影片 → 說服力低</div>
+        <div class="bullet" style="margin-top:10px">適用機型：iPhone 12-16系列（mini除外）／ 材質：TPU+PC</div>
+        <div class="flag">機型藏在內文純文字、無表格 → 目標型要逐字找；AI 抓不到相容性</div>
+        <div class="flag">無 FAQ、無交叉銷售、無湊單提示 → 放掉 GEO 與 AOV</div>
+      </div>
+      <div class="cta"><button class="fav">追蹤</button><button class="add">加入購物車</button></div>
+    </div></div></div>
+
+    <div class="notes">
+      <h3>⚠️ 改版前的問題（三方向）</h3>
+      <ul>
+        <li><span class="tag t-bad">SEO</span>URL <code>b67-surprise</code>、H1 含花字、無核心關鍵字</li>
+        <li><span class="tag t-bad">SEO</span>價格 NT$0 → feed/結帳/結構化資料全壞</li>
+        <li><span class="tag t-bad">UX</span>標題認知負荷爆表、評價缺席、賣點無演示</li>
+        <li><span class="tag t-bad">UX</span>機型藏內文、無相容互動 → 買錯焦慮</li>
+        <li><span class="tag t-bad">GEO</span>無 FAQ、無機型表 → AI 無從引用</li>
+        <li><span class="tag t-bad">商業</span>清倉外衣稀釋自有品牌；195 評價漏給蝦皮</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  var legends={
+    before:'目前線上版本的還原（含問題標註）— 切換頂端看改版後',
+    mobile:'套用 <b>商品頁通用範本</b> 的手機版（台灣電商 7 成流量）',
+    desktop:'套用 <b>商品頁通用範本</b> 的桌機版（左圖右資訊兩欄）'
+  };
+  function sw(v){
+    ['before','mobile','desktop'].forEach(function(id){
+      document.getElementById(id).classList.toggle('hide',id!==v);
+    });
+    document.querySelectorAll('.toggle button').forEach(function(b){
+      b.classList.toggle('active',b.dataset.v===v);
+    });
+    document.getElementById('legend').innerHTML=legends[v];
+  }
+  sw('mobile');
+
+  // 購買區塊互動：款式切換 → 更新價格 + 對應顏色；色塊/機型單選
+  function pickStyle(btn){
+    var box=btn.closest('.buybox'); if(!box) return;
+    box.querySelectorAll('.stylechip').forEach(function(c){c.classList.remove('sel');});
+    btn.classList.add('sel');
+    var s=btn.getAttribute('data-style');
+    box.querySelectorAll('.swatches').forEach(function(g){
+      var match=g.getAttribute('data-colors')===s; g.hidden=!match;
+      if(match){g.querySelectorAll('.sw').forEach(function(x,i){x.classList.toggle('sel',i===0);});}
+    });
+    var scope=box.closest('.desk-info')||box.parentNode; var now=scope&&scope.querySelector('.now'); if(now) now.textContent='NT$'+btn.getAttribute('data-price');
+  }
+  document.addEventListener('click',function(e){
+    var t=e.target; if(!t.closest) return;
+    // 加購商品縮圖 → 放大燈箱
+    var aimg=t.closest('.ai-img'); if(aimg){var lb=document.getElementById('ailb');document.getElementById('ailb-img').textContent=(aimg.textContent||'').trim();document.getElementById('ailb-cap').textContent=aimg.getAttribute('data-name')||'';lb.removeAttribute('hidden');return;}
+    if(t.closest('.ailb-done')||t.id==='ailb'){document.getElementById('ailb').setAttribute('hidden','');return;}
+    var tb=t.closest('.tabbtn'); if(tb){var bar=tb.closest('.tabbar');var key=tb.getAttribute('data-tab');var wrap=bar.parentNode;bar.querySelectorAll('.tabbtn').forEach(function(b){b.classList.toggle('on',b===tb);});wrap.querySelectorAll(':scope > .tabpanel').forEach(function(p){if(p.getAttribute('data-tab')===key)p.removeAttribute('hidden');else p.setAttribute('hidden','');});return;}
+    var vm=t.closest('.viewmore'); if(vm){var ex=vm.parentNode.querySelector('.promo-extra'); if(ex){var hid=ex.hasAttribute('hidden'); if(hid){ex.removeAttribute('hidden');vm.textContent='收合 ⌃';}else{ex.setAttribute('hidden','');vm.textContent='查看更多 ⌄';}} return;}
+    var st=t.closest('.stylechip'); if(st){pickStyle(st);return;}
+    var sw2=t.closest('.sw'); if(sw2){var p=sw2.parentNode;p.querySelectorAll('.sw').forEach(function(x){x.classList.remove('sel');});sw2.classList.add('sel');return;}
+    var mc=t.closest('.mchip'); if(mc){var b=mc.closest('.buybox');b.querySelectorAll('.mchip').forEach(function(x){x.classList.remove('sel');});mc.classList.add('sel');return;}
+    // 加購數量加減鈕（原生「以優惠價加購商品」樣式）
+    var sbtn=t.closest('.ai-step button');
+    if(sbtn){
+      var q=sbtn.parentNode.querySelector('.q');
+      var v=(+q.textContent)+(sbtn.classList.contains('inc')?1:-1);
+      if(v<0)v=0; q.textContent=v;
+      var cb=sbtn.closest('.addon-item').querySelector('input'); cb.checked=v>0; return;
+    }
+  });
+
+  // 加購：勾選 ↔ 數量同步（勾選=至少 1 件、取消=0）
+  document.addEventListener('change',function(e){
+    if(e.target.matches&&e.target.matches('.addon-item input')){
+      var q=e.target.closest('.addon-item').querySelector('.q');
+      if(q) q.textContent = e.target.checked ? Math.max(1,+q.textContent) : 0;
+    }
+  });
+</script>
+<div class="ailb" id="ailb" hidden>
+  <div class="ailb-box">
+    <button class="ailb-done" type="button">DONE</button>
+    <div class="ailb-img" id="ailb-img">🛡</div>
+    <div class="ailb-cap" id="ailb-cap"></div>
+  </div>
+</div>
+</body>
+</html>

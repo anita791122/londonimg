@@ -1,0 +1,235 @@
+/* =========================================================================
+   倫敦印象 — 商品描述 .yu-pdp 樣式（全站共用）
+   用法：上傳到 GitHub → 用 jsDelivr 引入；或整段貼進後台「頁首自訂程式碼」。
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/帳號/repo@main/yu-pdp.css">
+   ★ 全部 scope 在 .yu-pdp，不影響佈景其他區塊。
+   ★ 桌機為基準，@media(max-width:820px) 收合手機。
+   ★ 同時相容「填寫版佔位框(.slot/.ov)」與「真實圖版(.hero/.feathero/.cmp-hero)」。
+   ========================================================================= */
+
+.yu-pdp{--muted2:#8a8377;--line2:#e7e3dc;--soft2:#f6f4ef;--accent2:#c2502e;--pro2:#2e7d52;
+  max-width:1024px;margin:0 auto;color:#1c1b19;line-height:1.8;letter-spacing:.2px;
+  font-family:-apple-system,"PingFang TC","Noto Sans TC",Segoe UI,sans-serif}
+.yu-pdp *{box-sizing:border-box}
+.yu-pdp img{display:block;width:100%;border-radius:16px;object-fit:cover}
+.yu-pdp section{padding:34px 4px}
+.yu-pdp section>img{max-height:400px;object-fit:cover}
+.yu-pdp .eyebrow{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--accent2);text-align:center;margin-bottom:8px}
+.yu-pdp h2{font-size:40px;font-weight:800;text-align:center;line-height:1.35;margin:0 0 10px}
+.yu-pdp h3{margin:0}
+.yu-pdp p{margin:0}
+.yu-pdp .sub{text-align:center;color:var(--muted2);font-size:20px;max-width:46ch;margin:0 auto 16px}
+.yu-pdp .pdef{text-align:center;color:#4a463f;font-size:16px;line-height:1.85;max-width:54ch;margin:18px auto 2px;padding:0 6px}
+.yu-pdp .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.yu-pdp .g3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.yu-pdp .g3 img{aspect-ratio:1/1;object-fit:cover;margin:0}
+.yu-pdp .g2cap{display:grid;grid-template-columns:1fr 1fr;gap:0 14px;margin-top:14px}
+.yu-pdp .g2cap figure{margin:0}
+.yu-pdp .g2cap img{aspect-ratio:4/3;object-fit:cover;margin:0;border-radius:16px}
+.yu-pdp .g2cap figcaption{margin-top:10px;text-align:center;color:var(--muted2);font-size:16px;line-height:1.7}
+.yu-pdp .ph-sq{aspect-ratio:1/1}
+.yu-pdp .ph-tall{aspect-ratio:1/1}
+.yu-pdp .ph{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;background:var(--soft2);border:1px dashed #cfc8bd;border-radius:16px;color:#a89f90;font-size:13px;letter-spacing:1px;padding:14px}
+.yu-pdp .ph b{color:#8a8377;font-weight:700}
+.yu-pdp .ph span{font-size:12px}
+
+/* 首屏 hero（真實圖版） */
+.yu-pdp .hero{position:relative;border-radius:18px;overflow:hidden;padding:0;text-align:center;background:#0d0f0c}
+.yu-pdp .hero img{width:100%;border-radius:18px;max-height:none;margin:0}
+.yu-pdp .hero .hero-cap{position:absolute;left:0;right:0;top:6%;padding:0 16px;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.32);z-index:2}
+.yu-pdp .hero .brand{display:inline-block;font-size:15px;font-weight:800;letter-spacing:3px;color:#fff;background:rgba(0,0,0,.5);padding:4px 11px;border-radius:6px;margin-bottom:10px}
+.yu-pdp .hero .hh{font-size:40px;font-weight:800;letter-spacing:1px;margin:0 0 5px;color:#fff;display:block}
+.yu-pdp .hero p{font-size:20px;margin:0;color:#fff;letter-spacing:1px}
+
+/* 功能特色 feathero（真實圖版） */
+.yu-pdp .feathero{position:relative;width:calc(100% + 8px);margin:6px -4px 0;border-radius:18px;overflow:hidden;background:#0d0f0c}
+.yu-pdp .feathero>img{width:100%;border-radius:18px;max-height:none;margin:0}
+.yu-pdp .feathero .fh-cap{position:absolute;left:0;right:0;top:7%;padding:0 8%;text-align:center;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5);z-index:2}
+.yu-pdp .feathero .fh-eyebrow{font-size:14px;font-weight:800;letter-spacing:3px;margin-bottom:4px}
+.yu-pdp .feathero h2{font-size:34px;font-weight:800;color:#fff;margin:0 0 12px;line-height:1.2}
+.yu-pdp .feathero p{font-size:20px;line-height:1.75;color:#fff;margin:3px 0}
+
+/* 對照表 cmp-hero（真實圖版） */
+.yu-pdp .cmp-hero{position:relative;width:calc(100% + 8px);margin:6px -4px 0;border-radius:18px;overflow:hidden}
+.yu-pdp .cmp-hero>img{width:100%;border-radius:18px;max-height:none;margin:0}
+.yu-pdp .cmp-over{position:absolute;top:0;left:0;right:0;padding:7% 5% 0;text-align:center}
+.yu-pdp .cmp-h{margin:0 0 6%;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5)}
+.yu-pdp .cmp-h .sup{display:block;font-size:12px;font-weight:600;letter-spacing:1px;color:#e7ece6;margin-bottom:2px}
+.yu-pdp .cmp-h .t1{display:block;font-size:23px;font-weight:800;line-height:1.2}
+.yu-pdp .cmp-h .t2{display:block;font-size:32px;font-weight:800;line-height:1.2;margin-top:2px}
+
+/* 對照表深色表格（兩版共用） */
+.yu-pdp table.cmp-dark{width:100%;border-collapse:separate;border-spacing:0;font-size:20px;margin:14px 0 0;background:rgba(18,20,18,.5);border-radius:10px;overflow:hidden}
+.yu-pdp table.cmp-dark th,.yu-pdp table.cmp-dark td{padding:16px 11px;text-align:center;border:1px solid rgba(255,255,255,.2);color:#fff;font-weight:600}
+.yu-pdp table.cmp-dark thead th{font-weight:800;font-size:21px;background:rgba(0,0,0,.3)}
+.yu-pdp table.cmp-dark td:first-child,.yu-pdp table.cmp-dark th:first-child{text-align:left;font-weight:700;width:38%}
+.yu-pdp table.cmp-dark .ok{color:#7fe0a3;font-weight:700}
+.yu-pdp table.cmp-dark .no{color:#ff8f8f;font-weight:700}
+.yu-pdp table.cmp-dark .dot::before{content:"\25CF";font-size:13px;vertical-align:middle;margin-right:6px}
+
+/* 一般款 vs 3.0 對照 */
+.yu-pdp .vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.yu-pdp .vs figure{position:relative;margin:0;border:1px solid var(--line2);border-radius:16px;overflow:hidden}
+.yu-pdp .vs img{border-radius:0;aspect-ratio:1/1;object-fit:cover}
+.yu-pdp .vs figcaption{padding:11px 13px}
+.yu-pdp .vs .tag{position:absolute;top:10px;left:10px;z-index:3;display:inline-block;font-size:20px;font-weight:700;letter-spacing:1px;padding:5px 12px;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.yu-pdp .vs .t-base{background:#efece6;color:#7a7367}
+.yu-pdp .vs .t-pro{background:#e6f3ec;color:var(--pro2)}
+.yu-pdp .vs b{display:block;font-size:16px;margin-bottom:2px}
+.yu-pdp .vs small{color:var(--muted2);font-size:16px;line-height:1.6}
+
+/* 情境左右交錯 */
+.yu-pdp .uc{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center;margin:20px 0}
+.yu-pdp .uc .num{font-size:14px;font-weight:800;letter-spacing:2px;color:var(--accent2)}
+.yu-pdp .uc h3{font-size:22px;font-weight:800;margin:6px 0 8px}
+.yu-pdp .uc p{color:#4a463f;font-size:20px;margin:0}
+
+/* 填寫版：📷 圖片佔位框（上傳真圖後換成 <img> 即不再顯示） */
+.yu-pdp .slot{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;text-align:center;background:repeating-linear-gradient(45deg,#f3f7f4,#f3f7f4 12px,#eef4f0 12px,#eef4f0 24px);border:2px dashed #2e9d6e;border-radius:16px;color:#1f7a52;padding:16px;width:100%}
+.yu-pdp .slot .ic{font-size:28px;line-height:1}
+.yu-pdp .slot b{font-size:14px;color:#176844}
+.yu-pdp .slot small{font-size:11.5px;color:#5a9b7c;line-height:1.5}
+.yu-pdp .slot.sq{aspect-ratio:1/1}
+.yu-pdp .slot.r43{aspect-ratio:4/3}
+.yu-pdp .slot.bg{aspect-ratio:3/4;border-radius:18px;justify-content:flex-end;background:#1c2b22;border-color:#3f7a5c;color:#cdeede}
+.yu-pdp .slot.bg b{color:#eafff4}
+.yu-pdp .slot.bg small{color:#9fccb4}
+.yu-pdp .ov{position:relative}
+.yu-pdp .ov .cap{position:absolute;left:0;right:0;top:7%;padding:0 8%;text-align:center;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5);z-index:2}
+.yu-pdp .ov .brand{display:inline-block;font-size:15px;font-weight:800;letter-spacing:3px;background:rgba(0,0,0,.5);padding:4px 11px;border-radius:6px;margin-bottom:8px}
+.yu-pdp .ov .hh{font-size:38px;font-weight:800;letter-spacing:1px;margin:0 0 4px;display:block}
+.yu-pdp .ov .ovp{font-size:18px;margin:2px 0}
+
+/* ===== 手機版（≤820px）收合 ===== */
+@media(max-width:820px){
+  .yu-pdp h2{font-size:24px}
+  .yu-pdp .sub,.yu-pdp .uc p,.yu-pdp .feathero p{font-size:16px}
+  .yu-pdp .uc,.yu-pdp .vs{grid-template-columns:1fr}
+  .yu-pdp .uc .txt{order:-1}
+  .yu-pdp .g3{grid-template-columns:1fr 1fr}
+  .yu-pdp .g2cap{grid-template-columns:1fr}
+  .yu-pdp table.cmp-dark{font-size:14px}
+  .yu-pdp table.cmp-dark th,.yu-pdp table.cmp-dark td{padding:11px 8px}
+  .yu-pdp table.cmp-dark thead th{font-size:15px}
+  .yu-pdp .ov .hh{font-size:30px}
+  .yu-pdp .hero .hh{font-size:30px}
+  .yu-pdp .hero::after{content:"";position:absolute;left:0;right:0;top:0;height:50%;background:linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,.4) 55%,rgba(0,0,0,0));z-index:1;pointer-events:none}
+  .yu-pdp .feathero::after{content:"";position:absolute;left:0;right:0;top:0;height:80%;background:linear-gradient(to bottom,rgba(0,0,0,.62),rgba(0,0,0,.5) 55%,rgba(0,0,0,0));z-index:1;pointer-events:none}
+}
+
+/* =========================================================================
+   v2 新系統（對應「B67 商品描述_CSS分離響應式版.html」的 .yu-* 命名）
+   ------------------------------------------------------------------------
+   ★ 與上方 v1（.hero/.uc/.vs…）並存、互不影響；新版描述 HTML 用這組。
+   ★ 新增：影音實測、定義句卡片、卡片式 FAQ、auto-fit 圖庫。
+   ★ 單位一律 px（SHOPLINE 主題根字級 62.5%，rem 會被縮小，勿用）。
+   ★ 響應式：clamp() 流體字級 + auto-fit grid + @820/@480 斷點。
+   ========================================================================= */
+
+/* 區塊通用 */
+.yu-pdp .yu-sec{padding:34px 4px}
+.yu-pdp .yu-eyebrow{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px}
+.yu-pdp .yu-h2{font-size:clamp(24px,5vw,40px);font-weight:800;text-align:center;line-height:1.35;margin:0 0 10px}
+.yu-pdp .yu-h2--accent{color:#c8502d;margin-bottom:16px}
+.yu-pdp .yu-lead{text-align:center;color:#8a8377;font-size:clamp(16px,2.4vw,20px);line-height:1.5;max-width:46ch;margin:0 auto 16px}
+
+/* 影音實測 */
+.yu-pdp .yu-videos{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;padding:34px 0 10px}
+.yu-pdp .yu-video{flex:1 1 320px;max-width:375px;text-align:center;display:flex;flex-direction:column}
+.yu-pdp .yu-video-title{font-size:17px;font-weight:700;display:block;max-width:335px;margin:0 auto}
+.yu-pdp .yu-video-desc{font-size:16px;color:#6b6b6b;line-height:1.5;margin:4px auto 12px;max-width:335px;padding:0 4px}
+.yu-pdp .yu-video-frame{margin-top:auto}
+.yu-pdp .yu-video iframe{width:100%;max-width:335px;aspect-ratio:9/16;height:auto;border:0;border-radius:14px}
+
+/* Hero / Feature 圖上疊字 */
+.yu-pdp .yu-hero{position:relative;border-radius:18px;overflow:hidden;background:#0d0f0c;text-align:center;margin:6px 0 0}
+.yu-pdp .yu-hero>img{width:100%;border-radius:18px}
+.yu-pdp .yu-hero-shade{position:absolute;left:0;right:0;top:0;height:55%;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0));z-index:1;pointer-events:none}
+.yu-pdp .yu-hero-cap{position:absolute;left:0;right:0;top:6%;padding:0 16px;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4);z-index:2}
+.yu-pdp .yu-tag{display:inline-block;font-size:15px;font-weight:800;letter-spacing:3px;background:rgba(0,0,0,.5);padding:4px 11px;border-radius:6px;margin-bottom:10px}
+.yu-pdp .yu-hero-title{font-size:clamp(28px,6vw,40px);font-weight:800;letter-spacing:1px;margin:0 0 5px}
+.yu-pdp .yu-hero-sub{font-size:clamp(15px,3vw,20px);margin:0;letter-spacing:1px}
+
+/* 定義句卡片 */
+.yu-pdp .yu-define{margin:22px 0 4px}
+.yu-pdp .yu-define-card{background:#faf8f6;border-left:4px solid #c8502d;border-radius:0 12px 12px 0;padding:22px 26px}
+.yu-pdp .yu-define-card p{margin:0;color:#5b564d;font-size:clamp(16px,2.4vw,18px);line-height:1.9;text-align:left}
+.yu-pdp .yu-define-card strong{color:#1c1b19;font-weight:700}
+
+/* 圖庫（自動換行） */
+.yu-pdp .yu-grid{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:10px}
+.yu-pdp .yu-grid--wide{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.yu-pdp .yu-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:16px}
+
+/* 對照表（疊圖上） */
+.yu-pdp .yu-compare{padding:20px 4px 8px}
+.yu-pdp .yu-compare-wrap{position:relative;border-radius:18px;overflow:hidden}
+.yu-pdp .yu-compare-wrap>img{width:100%;border-radius:18px}
+.yu-pdp .yu-compare-cap{position:absolute;top:0;left:0;right:0;padding:6% 5% 0;text-align:center}
+.yu-pdp .yu-compare-h{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5);margin-bottom:14px}
+.yu-pdp .yu-compare-h .l1{display:block;font-size:clamp(20px,4.5vw,24px);font-weight:800;line-height:1.2}
+.yu-pdp .yu-compare-h .l2{display:block;font-size:clamp(26px,6vw,34px);font-weight:800;line-height:1.2;margin-top:2px}
+.yu-pdp .yu-ctable{width:100%;border-collapse:separate;border-spacing:0;font-size:clamp(12px,2.5vw,20px);background:rgba(18,20,18,.5);border-radius:10px;overflow:hidden;color:#fff;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.yu-pdp .yu-ctable th,.yu-pdp .yu-ctable td{padding:clamp(8px,1.8vw,16px) 8px;border:1px solid rgba(255,255,255,.2)}
+.yu-pdp .yu-ctable th{background:rgba(0,0,0,.3);font-weight:800}
+.yu-pdp .yu-ctable thead th:first-child{text-align:left;width:38%}
+.yu-pdp .yu-ctable td:first-child{text-align:left;font-weight:700}
+.yu-pdp .yu-ctable td{text-align:center;font-weight:700}
+.yu-pdp .yu-ok{color:#7fe0a3}
+.yu-pdp .yu-no{color:#ff8f8f}
+
+/* 版本對照卡片 */
+.yu-pdp .yu-cards{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:10px}
+.yu-pdp .yu-card{flex:1 1 230px;max-width:360px;margin:0;border:1px solid #e7e3dc;border-radius:16px;overflow:hidden;position:relative}
+.yu-pdp .yu-card>img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.yu-pdp .yu-badge{position:absolute;top:10px;left:10px;font-size:clamp(15px,3vw,20px);font-weight:700;padding:5px 12px;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.yu-pdp .yu-badge--gray{background:#efece6;color:#7a7367}
+.yu-pdp .yu-badge--green{background:#e6f3ec;color:#2e7d52}
+.yu-pdp .yu-card figcaption{padding:11px 13px}
+.yu-pdp .yu-card figcaption b{display:block;font-size:16px;margin-bottom:2px}
+.yu-pdp .yu-card figcaption small{color:#8a8377;font-size:16px;line-height:1.5}
+
+/* 圖文配對 */
+.yu-pdp .yu-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:8px}
+.yu-pdp .yu-pair figure{flex:1 1 250px;max-width:480px;margin:0}
+.yu-pdp .yu-pair img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px}
+.yu-pdp .yu-pair figcaption{margin-top:10px;text-align:center;color:#8a8377;font-size:16px;line-height:1.5}
+
+/* 情境（桌機左右、手機上下） */
+.yu-pdp .yu-case{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:18px 0}
+.yu-pdp .yu-case.reverse{flex-direction:row-reverse}
+.yu-pdp .yu-case-body{flex:1 1 280px;min-width:0}
+.yu-pdp .yu-case-no{font-size:14px;font-weight:800;letter-spacing:2px;color:#c2502e}
+.yu-pdp .yu-case-body h3{font-size:clamp(20px,3.5vw,22px);font-weight:800;margin:6px 0 8px}
+.yu-pdp .yu-case-body p{color:#4a463f;font-size:clamp(16px,2.4vw,20px);line-height:1.5;margin:0}
+.yu-pdp .yu-case-img{flex:1 1 280px;min-width:0;aspect-ratio:1/1;object-fit:cover;border-radius:16px}
+
+/* 功能特色（疊圖上） */
+.yu-pdp .yu-feature{position:relative;border-radius:18px;overflow:hidden;background:#0d0f0c;text-align:center;margin:24px 0}
+.yu-pdp .yu-feature>img{width:100%;border-radius:18px}
+.yu-pdp .yu-feature-shade{position:absolute;left:0;right:0;top:0;height:70%;background:linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,0));z-index:1;pointer-events:none}
+.yu-pdp .yu-feature-cap{position:absolute;left:0;right:0;top:7%;padding:0 8%;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5);z-index:2}
+.yu-pdp .yu-feature-eyebrow{font-size:14px;font-weight:800;letter-spacing:3px;margin-bottom:4px}
+.yu-pdp .yu-feature-title{font-size:clamp(26px,5.5vw,34px);font-weight:800;margin:0 0 12px;line-height:1.2}
+.yu-pdp .yu-feature-cap p{font-size:clamp(13px,2.6vw,20px);line-height:1.6;margin:3px 0}
+
+/* 常見 QA（卡片式平鋪） */
+.yu-pdp .yu-faq{padding:34px 4px}
+.yu-pdp .yu-qa{background:#faf8f6;border-left:4px solid #c8502d;border-radius:0 10px 10px 0;padding:18px 18px 18px 16px;margin:0 0 14px}
+.yu-pdp .yu-qa:last-child{margin-bottom:0}
+.yu-pdp .yu-q{font-size:clamp(16px,2.6vw,20px);font-weight:700;line-height:1.5;margin:0 0 8px;color:#1a1a1a}
+.yu-pdp .yu-qbadge{display:inline-block;background:#c8502d;color:#fff;font-size:clamp(12px,2vw,14px);font-weight:700;border-radius:6px;padding:2px 8px;margin-right:8px;vertical-align:2px}
+.yu-pdp .yu-a{font-size:clamp(14px,2.4vw,18px);color:#6b6b6b;line-height:1.65;margin:0}
+.yu-pdp .yu-a+.yu-a{margin-top:8px}
+
+/* ===== v2 響應式斷點 ===== */
+@media(max-width:820px){
+  .yu-pdp .yu-sec{padding:26px 4px}
+  .yu-pdp .yu-case,.yu-pdp .yu-case.reverse{flex-direction:column;align-items:stretch}
+  .yu-pdp .yu-case-img{width:100%}
+}
+@media(max-width:480px){
+  .yu-pdp .yu-sec,.yu-pdp .yu-faq{padding:22px 2px}
+  .yu-pdp .yu-define-card{padding:18px 18px}
+  .yu-pdp .yu-grid{grid-template-columns:1fr 1fr}
+}

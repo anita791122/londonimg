@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B67 商品描述 — CSS 分離響應式版（SHOPLINE）</title>
+<!--
+  ============================================================
+  B67 商品描述 — CSS 分離 + 響應式版
+  ------------------------------------------------------------
+  ★ 與「全 inline 版」內容相同，但 CSS 抽成 .yu-pdp 命名空間。
+  ★ 單位一律 px（SHOPLINE 主題根字級 62.5%，rem 會被縮小，勿用）。
+  ★ 響應式三層：clamp() 流體字級 + auto-fit grid 自動換行 + @media 斷點收合。
+  ★ 斷點：≤820px 情境圖文改上下堆疊；≤480px 內距縮小。
+
+  ▼ SHOPLINE 部署（描述欄位會濾 <style>，故 CSS 與 HTML 要分開貼）：
+    1) 下方【A. CSS】整段 → 後台「佈景主題 → 自訂程式碼 → 頁首」用 <style>…</style> 包起來貼，
+       或加進 yu-pdp.css 上傳 jsDelivr 後以 <link> 載入。
+    2) 下方【B. HTML】<div class="yu-pdp">…</div> 整段 → 貼進「商品描述 → HTML 原始碼」。
+    （本檔把兩者放一起只為了預覽；正式上線務必拆開。）
+
+  ▼ 另一種 CSS 來源：本檔【A. CSS】的內容已同步進共用樣式表 yu-pdp.css 的「v2 新系統」區塊。
+    若全站已透過 jsDelivr 載入 yu-pdp.css，本檔的 <style> 可整段刪除、不必重複貼，
+    直接用外部 yu-pdp.css 即可（兩者規則相同，差別只在 yu-pdp.css 多了 .yu-pdp scope 前綴）。
+  ============================================================
+-->
+<style>
+/* ===================== A. CSS（放佈景主題） ===================== */
+.yu-pdp{max-width:1024px;margin:0 auto;color:#1c1b19;line-height:1.5;letter-spacing:.2px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif}
+.yu-pdp *{box-sizing:border-box}
+.yu-pdp img{display:block}
+
+/* 區塊通用 */
+.yu-sec{padding:34px 4px}
+.yu-eyebrow{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px}
+.yu-h2{font-size:clamp(24px,5vw,40px);font-weight:800;text-align:center;line-height:1.35;margin:0 0 10px}
+.yu-h2--accent{color:#c8502d;margin-bottom:16px}
+.yu-lead{text-align:center;color:#8a8377;font-size:clamp(16px,2.4vw,20px);line-height:1.5;max-width:46ch;margin:0 auto 16px}
+
+/* 影音實測 */
+.yu-videos{display:flex;flex-wrap:wrap;justify-content:center;gap:24px;padding:34px 0 10px}
+.yu-video{flex:1 1 320px;max-width:375px;text-align:center;display:flex;flex-direction:column}
+.yu-video-title{font-size:17px;font-weight:700;display:block;max-width:335px;margin:0 auto}
+.yu-video-desc{font-size:16px;color:#6b6b6b;line-height:1.5;margin:4px auto 12px;max-width:335px;padding:0 4px}
+.yu-video-frame{margin-top:auto}
+.yu-video iframe{width:100%;max-width:335px;aspect-ratio:9/16;height:auto;border:0;border-radius:14px}
+
+/* Hero / Feature 圖上疊字 */
+.yu-hero{position:relative;border-radius:18px;overflow:hidden;background:#0d0f0c;text-align:center;margin:6px 0 0}
+.yu-hero>img{width:100%;border-radius:18px}
+.yu-hero-shade{position:absolute;left:0;right:0;top:0;height:55%;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0));z-index:1;pointer-events:none}
+.yu-hero-cap{position:absolute;left:0;right:0;top:6%;padding:0 16px;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4);z-index:2}
+.yu-tag{display:inline-block;font-size:15px;font-weight:800;letter-spacing:3px;background:rgba(0,0,0,.5);padding:4px 11px;border-radius:6px;margin-bottom:10px}
+.yu-hero-title{font-size:clamp(28px,6vw,40px);font-weight:800;letter-spacing:1px;margin:0 0 5px}
+.yu-hero-sub{font-size:clamp(15px,3vw,20px);margin:0;letter-spacing:1px}
+
+/* 定義句卡片 */
+.yu-define{margin:22px 0 4px}
+.yu-define-card{background:#faf8f6;border-left:4px solid #c8502d;border-radius:0 12px 12px 0;padding:22px 26px}
+.yu-define-card p{margin:0;color:#5b564d;font-size:clamp(16px,2.4vw,18px);line-height:1.9;text-align:left}
+.yu-define-card strong{color:#1c1b19;font-weight:700}
+
+/* 圖庫（自動換行） */
+.yu-grid{display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:10px}
+.yu-grid--wide{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.yu-grid img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:16px}
+
+/* 對照表（疊圖上） */
+.yu-compare{padding:20px 4px 8px}
+.yu-compare-wrap{position:relative;border-radius:18px;overflow:hidden}
+.yu-compare-wrap>img{width:100%;border-radius:18px}
+.yu-compare-cap{position:absolute;top:0;left:0;right:0;padding:6% 5% 0;text-align:center}
+.yu-compare-h{color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.5);margin-bottom:14px}
+.yu-compare-h .l1{display:block;font-size:clamp(20px,4.5vw,24px);font-weight:800;line-height:1.2}
+.yu-compare-h .l2{display:block;font-size:clamp(26px,6vw,34px);font-weight:800;line-height:1.2;margin-top:2px}
+.yu-ctable{width:100%;border-collapse:separate;border-spacing:0;font-size:clamp(12px,2.5vw,20px);background:rgba(18,20,18,.5);border-radius:10px;overflow:hidden;color:#fff;-webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.yu-ctable th,.yu-ctable td{padding:clamp(8px,1.8vw,16px) 8px;border:1px solid rgba(255,255,255,.2)}
+.yu-ctable th{background:rgba(0,0,0,.3);font-weight:800}
+.yu-ctable thead th:first-child{text-align:left;width:38%}
+.yu-ctable td:first-child{text-align:left;font-weight:700}
+.yu-ctable td{text-align:center;font-weight:700}
+.yu-ok{color:#7fe0a3}
+.yu-no{color:#ff8f8f}
+
+/* 版本對照卡片 */
+.yu-cards{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:10px}
+.yu-card{flex:1 1 230px;max-width:360px;margin:0;border:1px solid #e7e3dc;border-radius:16px;overflow:hidden;position:relative}
+.yu-card>img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.yu-badge{position:absolute;top:10px;left:10px;font-size:clamp(15px,3vw,20px);font-weight:700;padding:5px 12px;border-radius:8px;box-shadow:0 1px 6px rgba(0,0,0,.18)}
+.yu-badge--gray{background:#efece6;color:#7a7367}
+.yu-badge--green{background:#e6f3ec;color:#2e7d52}
+.yu-card figcaption{padding:11px 13px}
+.yu-card figcaption b{display:block;font-size:16px;margin-bottom:2px}
+.yu-card figcaption small{color:#8a8377;font-size:16px;line-height:1.5}
+
+/* 圖文配對 */
+.yu-pair{display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:8px}
+.yu-pair figure{flex:1 1 250px;max-width:480px;margin:0}
+.yu-pair img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:16px}
+.yu-pair figcaption{margin-top:10px;text-align:center;color:#8a8377;font-size:16px;line-height:1.5}
+
+/* 情境（桌機左右、手機上下；DOM 文字在前→手機文字在上） */
+.yu-case{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:18px 0}
+.yu-case.reverse{flex-direction:row-reverse}
+.yu-case-body{flex:1 1 280px;min-width:0}
+.yu-case-no{font-size:14px;font-weight:800;letter-spacing:2px;color:#c2502e}
+.yu-case-body h3{font-size:clamp(20px,3.5vw,22px);font-weight:800;margin:6px 0 8px}
+.yu-case-body p{color:#4a463f;font-size:clamp(16px,2.4vw,20px);line-height:1.5;margin:0}
+.yu-case-img{flex:1 1 280px;min-width:0;aspect-ratio:1/1;object-fit:cover;border-radius:16px}
+
+/* 功能特色（疊圖上） */
+.yu-feature{position:relative;border-radius:18px;overflow:hidden;background:#0d0f0c;text-align:center;margin:24px 0}
+.yu-feature>img{width:100%;border-radius:18px}
+.yu-feature-shade{position:absolute;left:0;right:0;top:0;height:70%;background:linear-gradient(to bottom,rgba(0,0,0,.55),rgba(0,0,0,0));z-index:1;pointer-events:none}
+.yu-feature-cap{position:absolute;left:0;right:0;top:7%;padding:0 8%;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.5);z-index:2}
+.yu-feature-eyebrow{font-size:14px;font-weight:800;letter-spacing:3px;margin-bottom:4px}
+.yu-feature-title{font-size:clamp(26px,5.5vw,34px);font-weight:800;margin:0 0 12px;line-height:1.2}
+.yu-feature-cap p{font-size:clamp(13px,2.6vw,20px);line-height:1.6;margin:3px 0}
+
+/* 常見 QA */
+.yu-faq{padding:34px 4px}
+.yu-qa{background:#faf8f6;border-left:4px solid #c8502d;border-radius:0 10px 10px 0;padding:18px 18px 18px 16px;margin:0 0 14px}
+.yu-qa:last-child{margin-bottom:0}
+.yu-q{font-size:clamp(16px,2.6vw,20px);font-weight:700;line-height:1.5;margin:0 0 8px;color:#1a1a1a}
+.yu-qbadge{display:inline-block;background:#c8502d;color:#fff;font-size:clamp(12px,2vw,14px);font-weight:700;border-radius:6px;padding:2px 8px;margin-right:8px;vertical-align:2px}
+.yu-a{font-size:clamp(14px,2.4vw,18px);color:#6b6b6b;line-height:1.65;margin:0}
+.yu-a+.yu-a{margin-top:8px}
+
+/* ===== 響應式斷點 ===== */
+@media (max-width:820px){
+  .yu-sec{padding:26px 4px}
+  .yu-case,.yu-case.reverse{flex-direction:column;align-items:stretch}
+  .yu-case-img{width:100%}
+}
+@media (max-width:480px){
+  .yu-sec,.yu-faq{padding:22px 2px}
+  .yu-define-card{padding:18px 18px}
+  .yu-grid{grid-template-columns:1fr 1fr}
+}
+/* ===================== A. CSS 結束 ===================== */
+</style>
+</head>
+<body style="margin:0;background:#fff">
+
+<!-- ===================== B. HTML（貼商品描述） ===================== -->
+<!-- ↓↓↓↓↓ 從這裡整段複製貼進 SHOPLINE 商品描述 ↓↓↓↓↓ -->
+<div class="yu-pdp">
+
+  <!-- 影音實測 -->
+  <div>
+    <h2 class="yu-h2 yu-h2--accent">影音實測</h2>
+    <div class="yu-videos">
+      <div class="yu-video">
+        <b class="yu-video-title">MagSafe 磁吸實測</b>
+        <p class="yu-video-desc">任何有磁力的金屬面都能馬上吸住，吸力一次看懂，不用看規格表也明白。</p>
+        <div class="yu-video-frame">
+          <iframe width="335" height="596" src="https://www.youtube.com/embed/FatNJO5I_m4" title="YU iPhone 360度輕鬆追劇支架指環手機殼【B67】"></iframe>
+        </div>
+      </div>
+      <div class="yu-video">
+        <b class="yu-video-title">360° 隱藏支架</b>
+        <p class="yu-video-desc">背板隱藏式金屬支架，不用時完全平整不卡手，要用時一翻即立。</p>
+        <div class="yu-video-frame">
+          <iframe width="335" height="596" src="https://www.youtube.com/embed/h0I1yNF_jfc" title="YU iPhone 360度無段支架指環手機殼【B67】"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 首屏 hero -->
+  <div class="yu-hero">
+    <img src="https://img.shoplineapp.com/media/image_clips/6a22b396e8101937b1c5d66e/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="YU 360° 支架手機殼，一個殼解決所有痛點">
+    <div class="yu-hero-shade"></div>
+    <div class="yu-hero-cap">
+      <div class="yu-tag">YU</div>
+      <div class="yu-hero-title">360° 支架手機殼</div>
+      <p class="yu-hero-sub">一個殼，解決所有痛點！</p>
+    </div>
+  </div>
+
+  <!-- 定義句（SEO/GEO） -->
+  <div class="yu-define">
+    <div class="yu-define-card">
+      <p><strong>YU 360°無段支架手機殼</strong>是一款內建<strong>金屬指環支架</strong>、支援 <strong>MagSafe 磁吸</strong>、適用 <strong>iPhone 12–16 系列</strong>（mini 除外）的<strong>防摔手機殼</strong>，可任意角度直立／橫放，一殼搞定追劇、視訊與防摔。</p>
+    </div>
+  </div>
+
+  <!-- 360° 環繞支架 -->
+  <div class="yu-sec">
+    <div class="yu-eyebrow">Stable Stand</div>
+    <h2 class="yu-h2">360° 環繞支架 ‧ 持久耐用</h2>
+    <p class="yu-lead">直立追劇、橫放滑 IG 都隨心所欲；金屬轉軸承始終穩定，長期使用不鬆軟，手機立得穩、看得久。</p>
+    <div class="yu-grid">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b39524a21718252a0d1c/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="YU 360 度支架斜立追劇角度">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b395d362befded384457/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="YU 360 度支架桌面直立視角">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b395b2736d986276cde4/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="YU 透明殼 MagSafe 磁吸單手握持背面">
+    </div>
+  </div>
+
+  <!-- 背板平整 -->
+  <div class="yu-sec">
+    <div class="yu-eyebrow">Flat Back</div>
+    <h2 class="yu-h2">背板平整優化</h2>
+    <p class="yu-lead">手機平放穩固，邊框與鏡頭框墊高有效保護鏡頭，從而提供全面的安全保障。</p>
+    <div class="yu-grid yu-grid--wide">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b39554bef8d149822437/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="背板平整">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b3952aac2b590b31dbe2/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="鏡頭墊高保護">
+    </div>
+  </div>
+
+  <!-- MagSafe -->
+  <div class="yu-sec">
+    <div class="yu-eyebrow">MagSafe</div>
+    <h2 class="yu-h2">MagSafe 功能進化</h2>
+    <p class="yu-lead">支援 MagSafe 無線充電，隨時隨地為手機補足電量。</p>
+    <div class="yu-grid yu-grid--wide">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b395b6af36fe109c2504/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="MagSafe 無線充電">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b395e9f8effab0c60cf8/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="MagSafe 磁吸配件">
+    </div>
+  </div>
+
+  <!-- 對照：背景照 + 標題與表格疊在圖上 -->
+  <div class="yu-compare">
+    <div class="yu-compare-wrap">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a22b3969381c40debb7e8e9/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="一般款與雙向吸進化 3.0 支架手機殼差別比較">
+      <div class="yu-compare-cap">
+        <div class="yu-eyebrow">Compare</div>
+        <div class="yu-compare-h">
+          <span class="l1">一般款？雙向吸<small>(進化3.0)</small>?</span>
+          <span class="l2">差別在哪呢？</span>
+        </div>
+        <table class="yu-ctable">
+          <thead><tr>
+            <th></th>
+            <th>一般款</th>
+            <th>雙向吸</th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td>直立／橫放支撐</td>
+              <td class="yu-ok">● 支援</td>
+              <td class="yu-ok">● 支援</td>
+            </tr>
+            <tr>
+              <td>無段式角度調整</td>
+              <td class="yu-ok">● 支援</td>
+              <td class="yu-ok">● 支援</td>
+            </tr>
+            <tr>
+              <td>雙向吸附</td>
+              <td class="yu-no">● 無</td>
+              <td class="yu-ok">● 可雙向吸附金屬</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 一般款 vs 3.0 超進化 -->
+  <div class="yu-sec">
+    <div class="yu-eyebrow">Two Versions</div>
+    <h2 class="yu-h2">一般款 vs 3.0 超進化</h2>
+    <div class="yu-cards">
+      <figure class="yu-card">
+        <img src="https://img.shoplineapp.com/media/image_clips/6a22b395c114b032942ef3f4/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="一般款 360° 環繞支架手機殼">
+        <span class="yu-badge yu-badge--gray">一般款</span>
+        <figcaption><b>360° 環繞支架</b><small>基礎直立／橫放支撐</small></figcaption>
+      </figure>
+      <figure class="yu-card">
+        <img src="https://img.shoplineapp.com/media/image_clips/6a22b396e716f82e433e839a/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="3.0 超進化雙向吸支架手機殼">
+        <span class="yu-badge yu-badge--green">3.0 超進化</span>
+        <figcaption><b>雙向吸支架</b><small>360° 環繞支架 ＋ 升級金屬磁吸，固定於任何磁性平面</small></figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- 3.0 超進化雙向吸 -->
+  <div class="yu-sec">
+    <div class="yu-eyebrow">Dual-Grip 3.0</div>
+    <h2 class="yu-h2">3.0 超進化雙向吸</h2>
+    <p class="yu-lead">支架內嵌高強度吸附金屬，提供超強抓握力，吸附在垂直的金屬表面也能長時間保持穩固不滑落。</p>
+    <div class="yu-pair">
+      <figure>
+        <img src="https://img.shoplineapp.com/media/image_clips/6a22b3952d08d12029d4cd40/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="雙向吸支架吸附於垂直金屬冰箱門面">
+        <figcaption>將手機吸附在冰箱門或金屬廚櫃上，邊看影片邊下廚，不佔用檯面空間。</figcaption>
+      </figure>
+      <figure>
+        <img src="https://img.shoplineapp.com/media/image_clips/6a22b395d280359ad0b66f04/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="手機吸附金屬廚櫃邊看影片邊下廚">
+        <figcaption>固定在健身房重訓器材上錄影確認姿勢，進化 3.0 都給你絕對的信心！</figcaption>
+      </figure>
+    </div>
+  </div>
+
+  <!-- 一個支架，多種玩法 -->
+  <div class="yu-sec">
+    <div class="yu-eyebrow">Use Cases</div>
+    <h2 class="yu-h2">一個支架，多種玩法</h2>
+
+    <!-- 01 桌機圖左文右 -->
+    <div class="yu-case reverse">
+      <div class="yu-case-body">
+        <div class="yu-case-no">情境 01</div>
+        <h3>隨身自拍神器</h3>
+        <p>輕鬆升級為隨身自拍神器，野餐、聚會、戶外旅行，完美角度輕鬆 Get！</p>
+      </div>
+      <img class="yu-case-img" src="https://img.shoplineapp.com/media/image_clips/6a22b39579e1b9471cb88966/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="情境一：隨身自拍神器，野餐聚會戶外旅行完美角度">
+    </div>
+
+    <!-- 02 桌機文字左圖右 -->
+    <div class="yu-case">
+      <div class="yu-case-body">
+        <div class="yu-case-no">情境 02</div>
+        <h3>變身增高支架</h3>
+        <p>可巧妙卡入寶特瓶、飲料瓶，讓螢幕與視線齊平；長時間使用手機也能保持最舒適的姿勢。</p>
+      </div>
+      <img class="yu-case-img" src="https://img.shoplineapp.com/media/image_clips/6a22dd83378c7d6d5154e5a4/original.png?1780669827=&owner_id=57975b626170691220930c00" alt="情境二：變身增高支架，卡入寶特瓶讓螢幕與視線齊平">
+    </div>
+
+    <!-- 03 桌機圖左文右 -->
+    <div class="yu-case reverse">
+      <div class="yu-case-body">
+        <div class="yu-case-no">情境 03</div>
+        <h3>行李箱卡位</h3>
+        <p>可穩固卡在行李箱拉桿上，旅行時拍 Vlog、團體自拍不再求人。</p>
+      </div>
+      <img class="yu-case-img" src="https://img.shoplineapp.com/media/image_clips/6a22bd699fd41b625e99bdd2/original.png?1780661608=&owner_id=57975b626170691220930c00" alt="情境三：卡在行李箱拉桿上拍 Vlog 與團體自拍">
+    </div>
+
+    <!-- 04 桌機文字左圖右 -->
+    <div class="yu-case">
+      <div class="yu-case-body">
+        <div class="yu-case-no">情境 04</div>
+        <h3>無桌板追劇神器</h3>
+        <p>利用支架的夾持特性，卡住垂直或橫向的縫隙，把手機架高、改善低頭角度，長時間觀影更舒適。</p>
+      </div>
+      <img class="yu-case-img" src="https://img.shoplineapp.com/media/image_clips/6a22bd690e26a91ca38107eb/original.png?1780661608=&owner_id=57975b626170691220930c00" alt="情境四：卡住縫隙把手機架高，無桌板也能追劇">
+    </div>
+  </div>
+
+  <!-- 功能特色（圖上疊字） -->
+  <div class="yu-feature">
+    <img src="https://img.shoplineapp.com/media/image_clips/6a22b39690682407161d41fb/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="支架手機殼：360° 旋轉支架、邊框精準墊高、PU 觸感表面">
+    <div class="yu-feature-shade"></div>
+    <div class="yu-feature-cap">
+      <div class="yu-feature-eyebrow">360° 輕鬆追劇</div>
+      <div class="yu-feature-title">支架手機殼</div>
+      <p>360° 旋轉支架，無論直拍橫看，追劇、視訊都能隨心調整角度</p>
+      <p>邊框精準墊高，鏡頭全面防護不怕磨</p>
+      <p>PU 觸感表面防汙抗指紋，乾淨俐落更耐看</p>
+    </div>
+  </div>
+
+  <!-- 常見 QA -->
+  <div class="yu-faq">
+    <h2 class="yu-h2 yu-h2--accent" style="margin-bottom:24px">常見 QA</h2>
+
+    <div class="yu-qa">
+      <p class="yu-q"><span class="yu-qbadge">Q</span>什麼是雙向吸？</p>
+      <p class="yu-a">雙向吸的部分在磁吸指環上採用雙向吸附設計，在傳統磁吸指環的基礎上額外增加了一塊圓環。雖然這塊圓環本身不具磁性，但能讓磁力分布更均勻，進一步提升吸附的穩定性；同時讓手機背殼本身可吸附在其他磁性表面（例如冰箱或鐵製物品），實用性更高。</p>
+    </div>
+
+    <div class="yu-qa">
+      <p class="yu-q"><span class="yu-qbadge">Q</span>支援哪些 iPhone 機型？</p>
+      <p class="yu-a">適用 iPhone 12～16 全系列，含 Pro／Pro Max／Plus；各系列 mini 不適用。</p>
+    </div>
+
+    <div class="yu-qa">
+      <p class="yu-q"><span class="yu-qbadge">Q</span>支架用久了會鬆掉站不住嗎？</p>
+      <p class="yu-a">我們採用強化的高品質轉軸，經過多次開合與旋轉測試，支撐力穩定持久，請安心使用。</p>
+    </div>
+
+    <div class="yu-qa">
+      <p class="yu-q"><span class="yu-qbadge">Q</span>裝了這款殼還可以貼鏡頭貼嗎？</p>
+      <p class="yu-a">可以的！鏡頭孔位處有預留空間，只要不是過於厚重的特殊款式，基本上都能完美相容。</p>
+    </div>
+
+    <div class="yu-qa">
+      <p class="yu-q"><span class="yu-qbadge">Q</span>第一代和第二代（雙向吸）差在哪？</p>
+      <p class="yu-a">第一代磁吸支架手機殼內建基本磁吸功能，可搭配 MagSafe 配件使用，滿足日常需求。</p>
+      <p class="yu-a">第二代「雙向吸」則在此基礎上升級為雙向吸設計，不僅支援磁吸配件，還能吸附在鐵製表面（例如冰箱），讓你邊看手機邊做菜更方便，功能更全面！</p>
+    </div>
+  </div>
+
+</div>
+<!-- ↑↑↑↑↑ 複製到這裡為止 ↑↑↑↑↑ -->
+
+</body>
+</html>
