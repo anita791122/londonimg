@@ -229,35 +229,31 @@ skill_page = f'''
 
   <div class="card">
     <h3 class="card-h">{IC["download"]}下載區</h3>
-    <p>下載檔案：<code>【請填入 skill 檔名，例：londonimg-pdp-skill.zip】</code></p>
-    <p><a class="dl-btn" href="【請填入 skill 下載連結】">{IC["download"]}<span>下載 Skill</span></a></p>
-    <p class="fhint">下載後解壓縮，會得到一個 skill 資料夾（內含 <code>SKILL.md</code> 等檔案）。</p>
+    <p>檔案：<code>londonimg-copy-skill.zip</code>　·　用途：輸入商品資訊，自動產出 SHOPLINE 商品頁的 <b>SEO 後台四欄</b>（標題／簡介／關鍵字／描述性URL）＋<b>商品描述文案</b>（定義句／H2／FAQ）。</p>
+    <p><a class="dl-btn" href="londonimg-copy-skill.zip" download>{IC["download"]}<span>下載 Skill（.zip）</span></a></p>
+    <p class="fhint">下載後不用解壓縮也行，下一步直接上傳這個 zip 即可。</p>
   </div>
 
   <div class="card">
-    <h3 class="card-h">{IC["settings"]}安裝方式</h3>
+    <h3 class="card-h">{IC["settings"]}安裝方式（claude.ai 網頁／桌面 App）</h3>
     <ol class="steps">
-      <li>把解壓縮後的 <b>skill 資料夾</b>放到 Claude 的 skills 目錄：
-        <ul>
-          <li>個人全域：<code>~/.claude/skills/</code></li>
-          <li>或專案內：<code>專案資料夾/.claude/skills/</code></li>
-        </ul>
-      </li>
-      <li>重新開啟（或重新載入）Claude，skill 就會出現在可用清單。</li>
-      <li>確認方式：輸入 <code>/</code> 或詢問可用 skills，應能看到 <code>【請填入 skill 名稱】</code>。</li>
+      <li>打開 <b>claude.ai</b> → 左下角你的頭像 → <b>設定 Settings</b>。</li>
+      <li>進入 <b>Capabilities / Skills（功能 / 技能）</b>頁。</li>
+      <li>按 <b>新增 / 上傳 Skill</b>，選剛下載的 <code>londonimg-copy-skill.zip</code> → 開啟啟用。</li>
+      <li>啟用後即可使用，名稱會顯示為 <code>londonimg-product-copy</code>（倫敦印象商品頁文案）。</li>
     </ol>
-    <p class="tipbox">{IC["bulb"]}<span>實際安裝路徑／步驟依你提供的 skill 為準；若是 claude.ai 網頁版 skill，改為依該平台的「新增 skill」流程操作。此處 <code>【…】</code> 與步驟請依實際情況調整。</span></p>
+    <p class="tipbox">{IC["bulb"]}<span>公司若是 <b>Team / Enterprise</b> 方案，可由管理員上傳一次、整個團隊共用，不必每人各裝。找不到 Skills 設定＝該方案可能尚未開放自訂 skill，先跟管理員確認。</span></p>
   </div>
 
   <div class="card">
     <h3 class="card-h">{IC["skill"]}使用方式</h3>
     <ol class="steps">
-      <li>在 Claude 對話輸入觸發語，例如：<code>【請填入觸發語，例：產生 B67 商品頁描述】</code>。</li>
-      <li>依 skill 提示提供必要資訊（例如商品名、賣點、圖片網址、影片代碼）。</li>
-      <li>Claude 會依 skill 產生商品頁 HTML／填好的語法，複製後貼進 SHOPLINE「商品描述 → HTML 原始碼」。</li>
-      <li>需要調整時，把要改的地方告訴 Claude 再請它重出即可。</li>
+      <li>在 Claude 對話直接說：<code>幫 [商品名] 寫商品頁文案</code>。<br>例：<i>幫 YU 360°無段支架手機殼 B67 寫商品頁文案，賣點是 360 支架、MagSafe、防摔，適用 iPhone 12–16</i>。</li>
+      <li>Claude 會（必要時）反問商品資訊，然後依序產出：標題 → 簡介 → 關鍵字 → 描述性URL → 定義句 → H2 → FAQ，每項都可一鍵複製。</li>
+      <li>把各欄位分別貼到後台：SEO 四欄貼「網路搜尋最佳化」；文案貼商品描述。</li>
+      <li>想要連「可貼 SHOPLINE 的 HTML」也一起出 → 跟 Claude 說「也給我可貼的 HTML」。</li>
     </ol>
-    <p class="tipbox">{IC["info"]}<span>產出的語法一樣遵守本說明的規則：單位用 px、圖片用 SHOPLINE 圖床網址、描述欄位勿貼 <code>&lt;style&gt;</code>。</span></p>
+    <p class="tipbox">{IC["info"]}<span>產出已內建本說明的規則：標題不塞促銷、slug 全英數、單位用 px、描述欄勿貼 <code>&lt;style&gt;</code>。改了 slug 記得設 301 轉址。</span></p>
   </div>'''
 
 doc = f'''<!DOCTYPE html>
