@@ -264,9 +264,9 @@ skill_page = f'''
     <h3 class="card-h">{IC["skill"]}使用方式</h3>
     <ol class="steps">
       <li>在 Claude 對話直接說：<code>幫 [商品名] 寫商品頁文案</code>。<br>例：<i>幫 YU 360°無段支架手機殼 B67 寫商品頁文案，賣點是 360 支架、MagSafe、防摔，適用 iPhone 12–16</i>。</li>
-      <li>Claude 會（必要時）反問商品資訊，然後依序產出：標題 → 簡介 → 關鍵字 → 描述性URL → 定義句 → 段落標題 → 常見問答，每項都可一鍵複製。</li>
-      <li>把各欄位分別貼到後台：SEO 四欄貼「網路搜尋最佳化」；文案貼商品描述。</li>
-      <li>想要連「可貼 SHOPLINE 的 HTML」也一起出 → 跟 Claude 說「也給我可貼的 HTML」。</li>
+      <li>Claude 會（必要時）反問商品資訊，然後依序產出：①SEO 四欄（標題／簡介／關鍵字／描述性URL）②頁面簡短介紹 ③商品描述——<b>商品描述會用「商品頁語法」的區塊名稱分組</b>（首屏 Hero／定義句／特色區／使用情境／常見 QA…），每塊文字都可一鍵複製。</li>
+      <li>對著貼：SEO 四欄 → <b>STEP 3 商品頁設定</b>；商品描述 → <b>STEP 2 商品頁語法</b>，找「同名區塊」把文字填進 ✏️【…】即可。</li>
+      <li>想連「可貼 SHOPLINE 的 HTML」一起出 → 跟 Claude 說「也給我可貼的 HTML」，它會直接把語法填好給你。</li>
     </ol>
     <p class="tipbox">{IC["info"]}<span>產出已內建本說明的規則：標題不塞促銷、slug 全英數、單位用 px、描述欄勿貼 <code>&lt;style&gt;</code>。改了 slug 記得設 301 轉址。</span></p>
   </div>'''
