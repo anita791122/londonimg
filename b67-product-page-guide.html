@@ -188,7 +188,7 @@
       <div class="hero">
         <span class="hero-eyebrow">STEP 3</span>
         <h1 class="hero-title">商品頁語法</h1>
-        <p class="hero-sub">整個商品頁拆成 12 個區塊，由上到下＝商品頁實際顯示順序。</p>
+        <p class="hero-sub">整個商品頁拆成 14 個區塊，由上到下＝商品頁實際顯示順序。</p>
       </div>
       <div class="howto">
         <div class="howto-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>怎麼用這頁？</div>
@@ -708,7 +708,81 @@
       </article>
 
       <article class="block">
-        <div class="block-head"><span class="num">12</span><h3>常見 QA（五則問答）</h3></div>
+        <div class="block-head"><span class="num">12</span><h3>適用機型（可見表格）</h3></div>
+        <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>標題＋一張相容機型表格（對 SEO/GEO 有幫助、使用者也清楚）。把表格列改成你的商品相容機型，✅／❌ 依實際填，<b>可自行增減列</b>（複製一整列 <code>&lt;tr&gt;…&lt;/tr&gt;</code> 再改）。</span></p>
+        <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+        <div class="preview"><div class="yu-pdp" style="max-width:1024px;margin:0 auto;color:#1c1b19;line-height:1.5;letter-spacing:.2px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">  <!-- 適用機型（可見表格，餵 GEO） -->
+  <div style="padding:34px 4px">
+    <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">Compatibility</div>
+    <h2 style="font-size:clamp(24px,5vw,40px);font-weight:800;text-align:center;line-height:1.35;margin:0 0 16px">適用機型</h2>
+    <table style="width:100%;max-width:560px;margin:0 auto;border-collapse:separate;border-spacing:0;font-size:clamp(14px,2.4vw,18px);border:1px solid #e7e3dc;border-radius:12px;overflow:hidden">
+      <thead><tr>
+        <th style="padding:12px 14px;background:#faf8f6;text-align:left;font-weight:800;border-bottom:1px solid #e7e3dc">機型</th>
+        <th style="padding:12px 14px;background:#faf8f6;text-align:center;font-weight:800;border-bottom:1px solid #e7e3dc;width:96px">相容</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:11px 14px;border-bottom:1px solid #efeae3">iPhone 16／16 Plus／16 Pro／16 Pro Max</td><td style="padding:11px 14px;text-align:center;color:#2e9d6e;font-weight:700;border-bottom:1px solid #efeae3">✅</td></tr>
+        <tr><td style="padding:11px 14px;border-bottom:1px solid #efeae3">iPhone 15／14／13／12 全系列</td><td style="padding:11px 14px;text-align:center;color:#2e9d6e;font-weight:700;border-bottom:1px solid #efeae3">✅</td></tr>
+        <tr><td style="padding:11px 14px">各系列 mini</td><td style="padding:11px 14px;text-align:center;color:#d2541f;font-weight:700">❌ 不適用</td></tr>
+      </tbody>
+    </table>
+  </div></div></div>
+        <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+        <div class="code">
+          <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+          <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：所有標 ✏️【…】 的地方都要改，把整個 ✏️【…】（含鉛筆符號）換成你的內容。圖片改 src 網址、影片改影片代碼。長長的 style="…" 不用看、不要動到。 -->
+  <!-- 適用機型（可見表格，餵 GEO） -->
+  <div style="padding:34px 4px">
+    <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
+    <h2 style="font-size:clamp(24px,5vw,40px);font-weight:800;text-align:center;line-height:1.35;margin:0 0 16px">適用機型</h2>
+    <table style="width:100%;max-width:560px;margin:0 auto;border-collapse:separate;border-spacing:0;font-size:clamp(14px,2.4vw,18px);border:1px solid #e7e3dc;border-radius:12px;overflow:hidden">
+      <thead><tr>
+        <th style="padding:12px 14px;background:#faf8f6;text-align:left;font-weight:800;border-bottom:1px solid #e7e3dc">機型</th>
+        <th style="padding:12px 14px;background:#faf8f6;text-align:center;font-weight:800;border-bottom:1px solid #e7e3dc;width:96px">相容</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:11px 14px;border-bottom:1px solid #efeae3">✏️【請填入相容機型，例：iPhone 16 全系列】</td><td style="padding:11px 14px;text-align:center;color:#2e9d6e;font-weight:700;border-bottom:1px solid #efeae3">✅</td></tr>
+        <tr><td style="padding:11px 14px;border-bottom:1px solid #efeae3">✏️【請填入相容機型】</td><td style="padding:11px 14px;text-align:center;color:#2e9d6e;font-weight:700;border-bottom:1px solid #efeae3">✅</td></tr>
+        <tr><td style="padding:11px 14px">✏️【請填入不相容機型，例：各系列 mini】</td><td style="padding:11px 14px;text-align:center;color:#d2541f;font-weight:700">❌ 不適用</td></tr>
+      </tbody>
+    </table>
+  </div></textarea>
+        </div>
+      </article>
+
+      <article class="block">
+        <div class="block-head"><span class="num">13</span><h3>規格</h3></div>
+        <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>標題＋規格清單。把每列「項目：內容」改成你的商品規格（材質／尺寸／容量…），<b>可自行增減列</b>（複製一整列 <code>&lt;div&gt;…&lt;/div&gt;</code> 再改）。</span></p>
+        <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+        <div class="preview"><div class="yu-pdp" style="max-width:1024px;margin:0 auto;color:#1c1b19;line-height:1.5;letter-spacing:.2px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">  <!-- 規格 -->
+  <div style="padding:34px 4px">
+    <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">Specs</div>
+    <h2 style="font-size:clamp(24px,5vw,40px);font-weight:800;text-align:center;line-height:1.35;margin:0 0 16px">規格</h2>
+    <div style="max-width:560px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 4px;border-bottom:1px solid #efeae3;font-size:clamp(14px,2.4vw,18px)"><span style="color:#8a8377">材質</span><span style="font-weight:600;text-align:right">TPU＋PC 複合</span></div>
+      <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 4px;border-bottom:1px solid #efeae3;font-size:clamp(14px,2.4vw,18px)"><span style="color:#8a8377">支架</span><span style="font-weight:600;text-align:right">360° 無段金屬轉軸</span></div>
+      <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 4px;font-size:clamp(14px,2.4vw,18px)"><span style="color:#8a8377">充電</span><span style="font-weight:600;text-align:right">支援 MagSafe 磁吸</span></div>
+    </div>
+  </div></div></div>
+        <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+        <div class="code">
+          <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+          <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：所有標 ✏️【…】 的地方都要改，把整個 ✏️【…】（含鉛筆符號）換成你的內容。圖片改 src 網址、影片改影片代碼。長長的 style="…" 不用看、不要動到。 -->
+  <!-- 規格 -->
+  <div style="padding:34px 4px">
+    <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
+    <h2 style="font-size:clamp(24px,5vw,40px);font-weight:800;text-align:center;line-height:1.35;margin:0 0 16px">規格</h2>
+    <div style="max-width:560px;margin:0 auto">
+      <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 4px;border-bottom:1px solid #efeae3;font-size:clamp(14px,2.4vw,18px)"><span style="color:#8a8377">✏️【規格項目，例：材質】</span><span style="font-weight:600;text-align:right">✏️【請填入內容】</span></div>
+      <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 4px;border-bottom:1px solid #efeae3;font-size:clamp(14px,2.4vw,18px)"><span style="color:#8a8377">✏️【規格項目】</span><span style="font-weight:600;text-align:right">✏️【請填入內容】</span></div>
+      <div style="display:flex;justify-content:space-between;gap:16px;padding:11px 4px;font-size:clamp(14px,2.4vw,18px)"><span style="color:#8a8377">✏️【規格項目】</span><span style="font-weight:600;text-align:right">✏️【請填入內容】</span></div>
+    </div>
+  </div></textarea>
+        </div>
+      </article>
+
+      <article class="block">
+        <div class="block-head"><span class="num">14</span><h3>常見 QA（五則問答）</h3></div>
         <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>五則問答卡片。填問題與答案；<b>要新增一題</b>：複製任一個 <code>&lt;div&gt;…&lt;/div&gt;</code> 卡片整段貼後面再改。</span></p>
         <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
         <div class="preview"><div class="yu-pdp" style="max-width:1024px;margin:0 auto;color:#1c1b19;line-height:1.5;letter-spacing:.2px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">  <!-- 常見 QA（卡片式平鋪 FAQ：全 inline，無 <style>/<script>/<details>，SHOPLINE 濾語法也不會壞；全展開＝全文可見，利 SEO） -->
