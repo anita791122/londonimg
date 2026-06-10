@@ -236,15 +236,17 @@ images_page = f'''
     <p class="tipbox">{IC["bulb"]}<span>圖片網址長這樣：<code>https://img.shoplineapp.com/media/image_clips/<b>圖片代碼</b>/original.png?...</code>　只要換掉這一整串就好，前後的 <code>&lt;img src="</code> 和 <code>"&gt;</code> 不要動。</span></p>
   </div>
   <div class="card">
-    <h3 class="card-h">{IC["image"]}各區塊建議圖片比例</h3>
+    <h3 class="card-h">{IC["image"]}各區塊建議圖片尺寸</h3>
     <table class="sizetab">
-      <thead><tr><th>區塊</th><th>建議尺寸</th><th>說明</th></tr></thead>
+      <thead><tr><th>區塊（對應「商品頁語法」）</th><th>建議尺寸</th><th>說明</th></tr></thead>
       <tbody>
-        <tr><td>影音實測</td><td>—（用影片）</td><td>用 YouTube 影片代碼，非圖片；影片本身為直式 9:16</td></tr>
+        <tr><td>影音實測</td><td>—（用影片）</td><td>貼 YouTube 嵌入碼，非圖片</td></tr>
         <tr><td>首屏 Hero、功能特色、對照表</td><td><b>1080 × 1350 px</b>（直式 4:5）</td><td>圖上會疊白色文字，選背景單純的圖</td></tr>
-        <tr><td>360°／背板／MagSafe 圖庫</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>系統會自動裁成正方形</td></tr>
-        <tr><td>3.0 雙向吸圖說</td><td><b>1000 × 750 px</b>（橫式 4:3）</td><td>—</td></tr>
-        <tr><td>情境（多種玩法）</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>—</td></tr>
+        <tr><td>特色區 ①②③</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>①三張、②③各兩張；系統自動裁正方</td></tr>
+        <tr><td>特色區 ④</td><td><b>1000 × 750 px</b>（橫式 4:3）</td><td>兩張帶圖說的圖</td></tr>
+        <tr><td>版本卡片</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>兩張卡片圖</td></tr>
+        <tr><td>使用情境</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>每個情境一張</td></tr>
+        <tr><td>適用機型、規格</td><td>—（不用圖）</td><td>表格／清單，純文字</td></tr>
       </tbody>
     </table>
     <p class="fhint">尺寸是「建議值」，大一點沒關係（系統會壓縮）；重點是<b>比例正確</b>，比例對了就不會被裁掉或變形。格式 JPG 或 PNG 皆可。</p>
