@@ -38,7 +38,7 @@ IC = {
 }
 
 meta = [
-    ("影音實測", "兩支 YouTube 直式影片並排。<b>換影片</b>：改 <code>src</code> 裡 <code>embed/</code> 後面的影片代碼；<b>換文字</b>：填上影片標題與說明。"),
+    ("影音實測", "兩支 YouTube 影片並排。<b>換影片</b>：到 YouTube 影片 → 按「分享」→「嵌入」→ 複製整段 <code>&lt;iframe&gt;</code> 程式碼，貼到 ✏️ 那格（取代整個 ✏️【…】）；<b>換文字</b>：填影片標題與說明。<br>📦 影片大小由 YouTube 嵌入碼決定；<b>沒有影片就把整個「影音實測」區塊刪掉</b>。"),
     ("首屏 Hero 大圖", "最上方的大圖＋疊在圖上的標題。換圖改 <code>&lt;img&gt;</code> 的 <code>src</code>；換字填<b>品牌</b>（深色小框內，例 YU，依品牌改）、主標、副標。<br>📦 <b>深色品牌框會隨字數自動變長</b>，不用調寬度；<b>不想顯示品牌</b>就把那一行 <code>&lt;div&gt;…&lt;/div&gt;</code> 整段刪掉即可。"),
     ("定義句（給 Google／AI 讀）", "用一句話講清楚「這是什麼商品」。把每個【】填成你的商品資訊即可，被 <code>&lt;strong&gt;</code> 包住的會變粗黑（強調關鍵字）。"),
     ("360° 環繞支架（標題＋三張方圖）", "標題＋一句說明＋三張正方圖。換圖改三個 <code>&lt;img&gt;</code>、換字填標題與說明。"),
@@ -137,9 +137,10 @@ for i, sec in enumerate(sections):
     tpl = sec
     for old, new in sorted(edits[i], key=lambda t: -len(t[0])):
         tpl = tpl.replace(old, new)
+    # 影音實測：整段 iframe 換成「貼 YouTube 嵌入程式碼」的填空（比叫同事抓影片代碼更直覺）
+    tpl = re.sub(r'<iframe\b[^>]*></iframe>', '【請貼上 YouTube 嵌入程式碼：影片→分享→嵌入→複製整段】', tpl)
     tpl = re.sub(r'src="https://img\.shoplineapp\.com/[^"]*"', 'src="【請貼上圖片網址（見「圖片取得方式」分頁）】"', tpl)
     tpl = re.sub(r'alt="[^"]*"', 'alt="【請填入這張圖的內容說明】"', tpl)
-    tpl = re.sub(r'(youtube\.com/embed/)[A-Za-z0-9_\-]+', r'\1【請填入YouTube影片代碼】', tpl)
     tpl = re.sub(r'title="[^"]*"', 'title="【請填入影片標題】"', tpl)
     tpl = tpl.replace("【", "✏️【")  # 每個填空點前加鉛筆 emoji，讓同事一眼看到要改的地方
     code_escaped = (ANNO + tpl).replace("&", "&amp;")
