@@ -1,5 +1,5 @@
 ---
-name: londonimg-product-copy
+name: londonimg-product
 description: 為倫敦印象（londonimg.tw，SHOPLINE 平台的 iPhone 配件電商）產出 SEO/GEO 優化、符合品牌語氣、可直接貼進後台的商品頁文案。一次給齊「商品頁設定」四個後台 SEO 欄位（標題、簡介、關鍵字、描述性URL）＋商品描述文案（定義句、段落標題、常見問答）。當使用者說「幫某商品寫商品頁文案／商品描述／SEO 設定／meta／關鍵字／網址（slug）」或要優化倫敦印象商品頁時，使用此 skill。
 ---
 
