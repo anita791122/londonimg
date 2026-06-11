@@ -279,7 +279,7 @@ skill_page = f'''
       <li>打開 <b>claude.ai</b> → 左下角你的頭像 → <b>設定 Settings</b>。</li>
       <li>進入 <b>Capabilities / Skills（功能 / 技能）</b>頁。</li>
       <li>按 <b>新增 / 上傳 Skill</b>，選剛下載的 <code>londonimg-skill.zip</code> → 開啟啟用。</li>
-      <li>啟用後即可使用，名稱會顯示為 <code>londonimg-product-copy</code>（倫敦印象商品頁文案）。</li>
+      <li>啟用後即可使用，名稱會顯示為 <code>londonimg-product</code>（倫敦印象商品頁文案）。</li>
     </ol>
     <p class="tipbox">{IC["bulb"]}<span>公司若是 <b>Team / Enterprise</b> 方案，可由管理員上傳一次、整個團隊共用，不必每人各裝。找不到 Skills 設定＝該方案可能尚未開放自訂 skill，先跟管理員確認。</span></p>
   </div>
