@@ -142,6 +142,7 @@
       <a data-t="p5" onclick="show('p5')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>商品資訊</span><span class="step">03</span></a>
       <a data-t="p2" onclick="show('p2')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>商品頁語法</span><span class="step">04</span></a>
       <a data-t="p1" onclick="show('p1')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg><span>商品頁設定</span><span class="step">05</span></a>
+      <a data-t="p6" onclick="show('p6')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg><span>301 轉址</span><span class="step">06</span></a>
     </nav>
     <div class="side-foot">標 <b style="color:var(--accent)">✏️【…】</b> 的地方都是填空處。<br>填好再貼進 SHOPLINE 商品描述。</div>
   </aside>
@@ -180,7 +181,7 @@
   </div>
   <div class="card warn">
     <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>改網址後一定要做的事</h3>
-    <p>改「描述性URL」會讓商品網址改變，舊網址 <code>b67-surprise</code> 會失效。請到後台設定 <b>301 轉址</b>，把舊網址導到新網址，既有連結與 Google 排名才不會斷掉。</p>
+    <p>改「描述性URL」會讓商品網址改變，舊網址 <code>b67-surprise</code> 會失效。請到後台設 <b>301 轉址</b>，把舊網址導到新網址，既有連結與 Google 排名才不會斷掉（<b>操作步驟見左側選單「301 轉址」</b>）。</p>
   </div>
     </section>
 
@@ -990,6 +991,39 @@
     </div>
     <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span>這段用的是店家既有的促銷框樣式（<code>promobox</code>），全店共用。<b>折扣與連結依當前檔期</b>——要改活動就改 <code>&lt;b&gt;…&lt;/b&gt;</code> 裡的文字；多數商品這段直接照貼即可。也可請 Claude Skill「幫我寫商品摘要」產出短版。</span></p>
   </div>
+    </section>
+
+    <section id="p6" class="page">
+      <div class="hero">
+        <span class="hero-eyebrow">STEP 6</span>
+        <h1 class="hero-title">301 轉址</h1>
+        <p class="hero-sub">改了商品的「描述性URL（網址）」後，<b>舊網址會失效</b>。設一個 301 轉址把舊網址導到新網址，原本的連結與 Google 排名才不會斷掉。</p>
+      </div>
+      <div class="howto">
+        <div class="howto-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>什麼時候要做？</div>
+        只有在你<b>改過 STEP 5 的「描述性URL」</b>時才需要。新商品、或沒改過網址的就<b>不用</b>做。
+      </div>
+      <div class="card warn">
+        <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>不做會怎樣？</h3>
+        <p>別人收藏的舊連結、Google 搜尋結果裡的舊連結、外部分享的連結，點了都會變成 <b>404 找不到頁面</b>，流量與 SEO 排名流失。301 轉址會自動把點舊網址的人導到新網址。</p>
+      </div>
+      <div class="card">
+        <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>操作步驟</h3>
+        <ol class="steps">
+          <li>先記下<b>舊網址</b>與<b>新網址</b>「網域後面那段路徑」，例如：<br>舊 <code>/products/old-slug</code>　→　新 <code>/products/new-slug</code></li>
+          <li>進 SHOPLINE 後台，找 <b>「301 轉址」</b>功能。<br><span style="color:#d2541f">⚠️ 後台確切位置請以你的後台為準（通常在「設定」或「網店設計」底下）。</span></li>
+          <li>新增一筆轉址：<b>來源／舊網址</b>填舊路徑、<b>目標／新網址</b>填新路徑。</li>
+          <li>儲存後，打開舊網址測試，應該會自動跳到新網址。</li>
+        </ol>
+        <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span>只填網域後面的路徑（<code>/products/…</code>），不用填完整 <code>https://www.londonimg.tw</code>。一個舊網址對應一個新網址。</span></p>
+      </div>
+      <div class="card warn">
+        <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>常見錯誤</h3>
+        <ul class="warnlist">
+          <li><b>新舊填反</b>：來源＝舊網址、目標＝新網址，填反會跳錯或循環。</li>
+          <li><b>改了網址卻沒設轉址</b>：舊連結就直接失效了，記得改網址後一定要補這一步。</li>
+        </ul>
+      </div>
     </section>
   </main>
 </div>
