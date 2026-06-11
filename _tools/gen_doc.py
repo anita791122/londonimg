@@ -268,8 +268,8 @@ skill_page = f'''
 
   <div class="card">
     <h3 class="card-h">{IC["download"]}下載區</h3>
-    <p>檔案：<code>londonimg-copy-skill.zip</code>　·　用途：輸入商品資訊，自動產出 SHOPLINE 商品頁的 <b>SEO 後台四欄</b>（標題／簡介／關鍵字／描述性URL）＋<b>商品描述文案</b>（定義句／段落標題／常見問答）。</p>
-    <p><a class="dl-btn" href="londonimg-copy-skill.zip" download>{IC["download"]}<span>下載 Skill（.zip）</span></a></p>
+    <p>檔案：<code>londonimg-skill.zip</code>　·　用途：輸入商品資訊，自動產出 SHOPLINE 商品頁的 <b>SEO 後台四欄</b>（標題／簡介／關鍵字／描述性URL）＋<b>商品描述文案</b>（定義句／段落標題／常見問答）。</p>
+    <p><a class="dl-btn" href="londonimg-skill.zip" download>{IC["download"]}<span>下載 Skill（.zip）</span></a></p>
     <p class="fhint">下載後不用解壓縮也行，下一步直接上傳這個 zip 即可。</p>
   </div>
 
@@ -278,7 +278,7 @@ skill_page = f'''
     <ol class="steps">
       <li>打開 <b>claude.ai</b> → 左下角你的頭像 → <b>設定 Settings</b>。</li>
       <li>進入 <b>Capabilities / Skills（功能 / 技能）</b>頁。</li>
-      <li>按 <b>新增 / 上傳 Skill</b>，選剛下載的 <code>londonimg-copy-skill.zip</code> → 開啟啟用。</li>
+      <li>按 <b>新增 / 上傳 Skill</b>，選剛下載的 <code>londonimg-skill.zip</code> → 開啟啟用。</li>
       <li>啟用後即可使用，名稱會顯示為 <code>londonimg-product-copy</code>（倫敦印象商品頁文案）。</li>
     </ol>
     <p class="tipbox">{IC["bulb"]}<span>公司若是 <b>Team / Enterprise</b> 方案，可由管理員上傳一次、整個團隊共用，不必每人各裝。找不到 Skills 設定＝該方案可能尚未開放自訂 skill，先跟管理員確認。</span></p>
