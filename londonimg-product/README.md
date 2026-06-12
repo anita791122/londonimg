@@ -5,7 +5,7 @@
 可直接貼進後台。
 
 ## 安裝（claude.ai 網頁／桌面 App）
-1. 下載並解壓縮本資料夾（或下載 `londonimg-skill.zip`）。
+1. 下載並解壓縮本資料夾（或下載 `londonimg-product.zip`）。
 2. claude.ai → 設定 → **Capabilities / Skills** → 上傳該 skill（zip）→ 開啟。
    - 公司 Team/Enterprise 方案：由管理員上傳一次即可全團隊共用。
 
