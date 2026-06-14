@@ -892,8 +892,8 @@
       <li>後台 → <b>商品 → 編輯該商品 → 商品描述</b>。</li>
       <li>點工具列的 <b>「插入圖片」</b>，把要用的圖上傳。</li>
       <li>上傳後，點右上角切到 <b>「HTML / 原始碼」&lt;/&gt;</b> 模式。</li>
-      <li>找到剛上傳的那段 <code>&lt;img src="https://img.shoplineapp.com/……"&gt;</code>，<b>把雙引號裡的整串網址複製</b>起來。</li>
-      <li>回到填空語法，把 <code>src="【請貼上圖片網址】"</code> 裡的 <code>【…】</code> 換成你複製的網址（雙引號保留）。</li>
+      <li>找到剛上傳的那段 <code>&lt;img src="https://img.shoplineapp.com/……"&gt;</code>，<b>只複製雙引號裡的那串網址</b>（從 <code>https://</code> 到結尾的引號前）。<b>不要</b>把前面的 <code>&lt;img src="</code> 和後面的 <code>"&gt;</code> 一起複製——只要網址本身。</li>
+      <li>回到填空語法，把 <code>src="✏️【請貼上圖片網址】"</code> 裡的 <code>✏️【…】</code> 換成你剛複製的<b>網址</b>（外面的雙引號 <code>"&nbsp;"</code> 保留不動）。</li>
       <li>順手把 <code>alt="【請填入這張圖的內容說明】"</code> 改成這張圖的內容描述（給 Google 看，有助 SEO）。</li>
     </ol>
     <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span>圖片網址長這樣：<code>https://img.shoplineapp.com/media/image_clips/<b>圖片代碼</b>/original.png?...</code>　只要換掉這一整串就好，前後的 <code>&lt;img src="</code> 和 <code>"&gt;</code> 不要動。</span></p>
