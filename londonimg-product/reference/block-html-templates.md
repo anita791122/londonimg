@@ -46,7 +46,7 @@
   </div>
 ```
 
-## 定義句
+## 定義句（給 Google／AI 讀）
 ```html
 <div style="margin:22px 0 4px">
     <div style="background:#faf8f6;border-left:4px solid #c8502d;border-radius:0 12px 12px 0;padding:22px 26px">
@@ -55,7 +55,7 @@
   </div>
 ```
 
-## 特色區①
+## 特色區①（標題＋三張方圖）
 ```html
 <div style="padding:34px 4px">
     <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
@@ -69,7 +69,7 @@
   </div>
 ```
 
-## 特色區②
+## 特色區②（標題＋兩張圖）
 ```html
 <div style="padding:34px 4px">
     <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
@@ -82,7 +82,7 @@
   </div>
 ```
 
-## 特色區③
+## 特色區③（標題＋兩張圖）
 ```html
 <div style="padding:34px 4px">
     <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
@@ -95,7 +95,7 @@
   </div>
 ```
 
-## 對照表
+## 對照表（背景圖＋比較表格）
 ```html
 <div style="padding:20px 4px 8px">
     <div style="position:relative;border-radius:18px;overflow:hidden">
@@ -135,7 +135,7 @@
   </div>
 ```
 
-## 版本卡片
+## 版本卡片（兩張帶標籤卡片）
 ```html
 <div style="padding:34px 4px">
     <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
@@ -155,7 +155,7 @@
   </div>
 ```
 
-## 特色區④
+## 特色區④（兩張含說明圖）
 ```html
 <div style="padding:34px 4px">
     <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
@@ -174,7 +174,7 @@
   </div>
 ```
 
-## 使用情境
+## 使用情境（多個情境）
 ```html
 <div style="padding:34px 4px">
     <div style="font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#c2502e;text-align:center;margin-bottom:8px">✏️【英文小標】</div>
@@ -218,7 +218,7 @@
   </div>
 ```
 
-## 功能特色
+## 功能特色（背景圖疊三行字）
 ```html
 <div style="position:relative;border-radius:18px;overflow:hidden;background:#0d0f0c;text-align:center;margin:24px 0">
     <img src="✏️【請貼上圖片網址（見「圖片取得方式」分頁）】" alt="✏️【請填入這張圖的內容說明】" style="width:100%;display:block;border-radius:18px">
@@ -233,7 +233,7 @@
   </div>
 ```
 
-## 適用機型
+## 適用機型（可見表格）
 ```html
 <div style="padding:34px 4px">
     <div style="display:flex;flex-wrap:wrap;gap:clamp(20px,4vw,56px);margin:0 auto">
@@ -276,7 +276,7 @@
   </div>
 ```
 
-## 常見 QA
+## 常見 QA（五則問答）
 ```html
 <div style="padding:34px 4px">
     <h2 style="font-size:clamp(24px,5vw,40px);font-weight:800;text-align:center;line-height:1.35;margin:0 0 24px;color:#c8502d">常見 QA</h2>
