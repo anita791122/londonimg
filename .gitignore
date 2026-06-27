@@ -1,3 +1,18 @@
 .DS_Store
 *.pxbak
 Thumbs.db
+
+# 僅保留本機、不托管於 GitHub（只托管教學頁＋skill＋yu-pdp.css）
+b67-description-v3.html
+b67-description-v2.html
+b67-description-merged.html
+b67-description-inline.html
+b67-description-css-separated.html
+pdp-layered-vs-overlay-demo.html
+b67-product-page-prototype.html
+LandingPage_prototype.html
+londonimg_optimization_handbook.html
+londonimg_homepage_audit.html
+images/
+prototype-assets/
+_tools/
