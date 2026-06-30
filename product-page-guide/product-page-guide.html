@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B67 商品頁建置說明（給同事）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="product-page-guide.css">
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="mark">B67</div>
+      <div class="txt">商品頁建置<small>給同事的操作說明</small></div>
+    </div>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="開關選單" aria-expanded="false">
+      <svg class="ic ham-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="ic ham-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+    <nav class="nav">
+      <a data-t="p4" class="active" onclick="show('p4')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.9a2 2 0 0 0 1.3 1.3L19.8 11l-4.9 1.6a2 2 0 0 0-1.3 1.3L12 19.8l-1.6-4.9a2 2 0 0 0-1.3-1.3L4.2 12l4.9-1.6a2 2 0 0 0 1.3-1.3L12 3z"/></svg><span>Claude Skill</span><span class="step">01</span></a>
+      <a data-t="p3" onclick="show('p3')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>圖片取得方式</span><span class="step">02</span></a>
+      <a data-t="p5" onclick="show('p5')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>商品資訊</span><span class="step">03</span></a>
+      <a data-t="p2" class="has-sub open" onclick="show('p2')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>商品頁語法</span><span class="step">04</span><svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
+      <div class="subnav open" id="subnav-lego">
+        <a class="sub-a" data-lego="hero" onclick="showLego('hero')"><span class="sub-i">01</span>Hero 直圖壓文</a>
+        <a class="sub-a" data-lego="icon" onclick="showLego('icon')"><span class="sub-i">02</span>重點 icon 列</a>
+        <a class="sub-a" data-lego="video" onclick="showLego('video')"><span class="sub-i">03</span>影音</a>
+        <a class="sub-a" data-lego="feature" onclick="showLego('feature')"><span class="sub-i">04</span>特色區 多圖</a>
+        <a class="sub-a todo" data-lego="scene" onclick="showLego('scene')"><span class="sub-i">05</span>情境 橫圖壓文</a>
+        <a class="sub-a todo" data-lego="grid" onclick="showLego('grid')"><span class="sub-i">06</span>棋盤格</a>
+        <a class="sub-a" data-lego="slider" onclick="showLego('slider')"><span class="sub-i">07</span>多圖橫移</a>
+        <a class="sub-a todo" data-lego="compare" onclick="showLego('compare')"><span class="sub-i">08</span>版本比較</a>
+        <a class="sub-a todo" data-lego="addon" onclick="showLego('addon')"><span class="sub-i">09</span>加價購</a>
+        <a class="sub-a todo" data-lego="cta" onclick="showLego('cta')"><span class="sub-i">10</span>收尾 CTA</a>
+        <a class="sub-a" data-lego="spec" onclick="showLego('spec')"><span class="sub-i">11</span>規格</a>
+        <a class="sub-a" data-lego="faq" onclick="showLego('faq')"><span class="sub-i">12</span>QA</a>
+        <a class="sub-a" data-lego="sns" onclick="showLego('sns')"><span class="sub-i">13</span>SNS</a>
+      </div>
+      <a data-t="p1" onclick="show('p1')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg><span>商品頁設定</span><span class="step">05</span></a>
+      <a data-t="p6" onclick="show('p6')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg><span>301 轉址</span><span class="step">06</span></a>
+    </nav>
+    <div class="side-foot">標 <b style="color:var(--accent)">✏️【…】</b> 的地方都是填空處。<br>填好再貼進 SHOPLINE 商品描述。</div>
+  </aside>
+
+  <main class="content">
+    <section id="p1" class="page">
+  <div class="hero">
+    <span class="hero-eyebrow">STEP 5</span>
+    <h1 class="hero-title">商品頁設定</h1>
+    <p class="hero-sub">後台位置：<b>商品 → 編輯該商品 → 網路搜尋最佳化（SEO）</b>。把下面四欄分別複製貼上即可。</p>
+  </div>
+  <div class="howto">
+    <div class="howto-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.9a2 2 0 0 0 1.3 1.3L19.8 11l-4.9 1.6a2 2 0 0 0-1.3 1.3L12 19.8l-1.6-4.9a2 2 0 0 0-1.3-1.3L4.2 12l4.9-1.6a2 2 0 0 0 1.3-1.3L12 3z"/></svg>要做「其他商品」嗎？用你裝好的 Claude Skill 產生</div>
+    下面四欄是 <b class="key">B67 的範例值</b>，<b>不是每個商品都一樣</b>。換別的商品時，用 <b>STEP 1 裝好的 Claude Skill</b>，對 Claude 說「<i>幫 [商品名] 寫商品頁文案</i>」，它會產出<b>該商品專屬</b>的標題／簡介／關鍵字／描述性URL，複製回來貼即可。<br>
+    （這頁的 B67 範例可當作「正確長相」的參考對照。）
+  </div>
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>網路搜尋最佳化（以 B67 為例）</h3>
+    <div class="field">
+      <div class="field-top"><label>標題</label><button class="copy-btn sm" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製</span></button></div>
+      <textarea class="fval" readonly spellcheck="false">YU iPhone 360°無段支架手機殼｜MagSafe 防摔殼 12-16 系列【B67】</textarea><small class="fhint">Google 搜尋結果的藍色大標。約 28–32 字（行動版約顯示前 30 字）；促銷字（任選兩件88折）不要寫進標題，也不要放 emoji 或花式符號。</small></div>
+    <div class="field">
+      <div class="field-top"><label>簡介</label><button class="copy-btn sm" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製</span></button></div>
+      <textarea class="fval" readonly spellcheck="false">YU 360°無段支架 iPhone 手機殼，內建金屬指環支架可任意角度追劇、視訊免手扶；支援 MagSafe 磁吸，四邊與鏡頭框墊高防摔。適用 iPhone 12～16 全系列（mini 除外）。TPU+PC 複合材質、PU 觸感防汙好握。指定款任選兩件 88 折，滿 $599 超取免運。</textarea><small class="fhint">⚠️ 這是給 Google 的 meta，只出現在搜尋結果、不會顯示在商品頁上（使用者逛頁面看不到）。約 150 字是為了 SEO，放長一點沒關係、不影響閱讀。</small></div>
+    <div class="field">
+      <div class="field-top"><label>關鍵字</label><button class="copy-btn sm" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製</span></button></div>
+      <textarea class="fval" readonly spellcheck="false">iPhone手機殼,360支架手機殼,MagSafe手機殼,指環支架手機殼,防摔殼,iPhone16手機殼,iPhone15手機殼,iPhone14手機殼,YU手機殼,追劇支架殼,B67</textarea><small class="fhint">以半形逗號分隔，建議 8–12 個（品類／機型／功能／品牌／型號）。</small></div>
+    <div class="field">
+      <div class="field-top"><label>描述性URL</label><button class="copy-btn sm" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製</span></button></div>
+      <textarea class="fval" readonly spellcheck="false">yu-iphone-360-ring-stand-case</textarea><small class="fhint">只能用小寫英文、數字與連字號 -，不能有空格、中文、° 符號、底線 _。</small></div>
+  </div>
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>頁面上「使用者看得到」的簡短介紹放哪？</h3>
+    <p>上面的「簡介」是給 Google 的（頁面看不到）。<b>使用者在商品頁價格上方看到的那段簡短介紹／促銷</b>（例：「驚喜賣場！任選 2 件 88 折」）是另一回事。</p>
+    <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span><b>原則：頁面簡短介紹要「短」</b>——一句賣點＋優惠重點就好，讓使用者一眼看到優惠。<b>詳細的賣點、規格、使用情境全部放 STEP 4「商品敘述（語法）」</b>，不要塞進簡短介紹。需要時請 Claude Skill「幫我寫頁面簡短介紹」即可產出短版。</span></p>
+  </div>
+  <div class="card warn">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>改網址後一定要做的事</h3>
+    <p>改「描述性URL」會讓商品網址改變，舊網址 <code>b67-surprise</code> 會失效。請到後台設 <b>301 轉址</b>，把舊網址導到新網址，既有連結與 Google 排名才不會斷掉（<b>操作步驟見左側選單「301 轉址」</b>）。</p>
+  </div>
+    </section>
+
+    <section id="p2" class="page">
+      <div class="hero">
+        <span class="hero-eyebrow">STEP 4</span>
+        <h1 class="hero-title">商品頁語法</h1>
+        <p class="hero-sub">商品頁＝一塊塊「樂高積木」拼成。<br>下面點積木分頁，每塊都有：① 說明 → ② 範例預覽 → ③ 一鍵複製語法 → ④ 自己試填看看。挑需要的積木、依序往下拼即可。</p>
+      </div>
+
+      <!-- ========================= 00 所有積木總覽（呈現樣式｜JS 動態生成，不重複 HTML）========================= -->
+      <div id="lego-overview" class="lego active"></div>
+
+      <!-- ========================= 01 Hero（直圖壓文）｜子選單已移到左側側欄 ========================= -->
+      <div id="lego-hero" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">01</span><h3>Hero（直圖壓文）</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>最上方的大圖，文字（品牌＋主標＋副標）壓在圖的<b>頂部留白</b>上。<br><b>換圖</b>：改 <code>&lt;img&gt;</code> 的 <code>src</code>（用<b>上方留白多一點</b>的直式／正方大圖，字才壓得進去、不蓋到產品）。<br><b>換字</b>：填品牌（深色小框，例 YU）、主標（大字，例 All-in-One）、副標（一句賣點）。<br>📦 <b>不想顯示品牌</b>：把品牌那行 <code>&lt;span&gt;…&lt;/span&gt;</code> 刪掉。<br>📦 <b>文字壓到產品</b>：把上層的 <code>top:7%</code> 數字調大，字會往下移。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+          <div class="preview">
+  <!-- Hero 直圖壓文 -->
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:24px 0 4px">
+      <div style="position:relative;overflow:hidden;background:#0d0f0c">
+        <img src="https://img.shoplineapp.com/media/image_clips/6a22b396e8101937b1c5d66e/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="YU 360° 無段支架手機殼：防摔＋立架＋指環" style="width:100%;display:block">
+        <div style="position:absolute;left:0;right:0;top:0;height:58%;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0));z-index:1;pointer-events:none"></div>
+        <div style="position:absolute;left:0;right:0;top:7%;text-align:center;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4);padding:0 16px;z-index:2">
+          <span style="display:inline-block;font-size:15px;font-weight:700;letter-spacing:3px;background:rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.25);padding:5px 13px;border-radius:6px;margin:0 0 12px">YU</span>
+          <div style="font-size:clamp(30px,7vw,63px);font-weight:700;letter-spacing:1px;line-height:1.05;margin:0 0 8px">All-in-One</div>
+          <p style="font-size:clamp(16px,3vw,23px);margin:0;letter-spacing:.5px">一個殼＝防摔＋立架＋指環，解決所有痛點！</p>
+        </div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：圖片換 src 網址、文字填【】。長長的 style="…" 不要動。 -->
+<!-- Hero 直圖壓文 -->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:24px 0 4px">
+    <div style="position:relative;overflow:hidden;background:#0d0f0c">
+      <img src="✏️【請貼上圖片網址（見「圖片取得方式」分頁）】" alt="✏️【請填入這張圖的內容說明】" style="width:100%;display:block">
+      <div style="position:absolute;left:0;right:0;top:0;height:58%;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0));z-index:1;pointer-events:none"></div>
+      <div style="position:absolute;left:0;right:0;top:7%;text-align:center;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4);padding:0 16px;z-index:2">
+        <span style="display:inline-block;font-size:15px;font-weight:700;letter-spacing:3px;background:rgba(0,0,0,.36);border:1px solid rgba(255,255,255,.25);padding:5px 13px;border-radius:6px;margin:0 0 12px">✏️【品牌，例：YU】</span>
+        <div style="font-size:clamp(30px,7vw,63px);font-weight:700;letter-spacing:1px;line-height:1.05;margin:0 0 8px">✏️【主標題，例：All-in-One】</div>
+        <p style="font-size:clamp(16px,3vw,23px);margin:0;letter-spacing:.5px">✏️【副標題（一句賣點）】</p>
+      </div>
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+
+      <!-- ========================= 06 多圖橫移（方形滑塊） ========================= -->
+      <div id="lego-slider" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">06</span><h3>多圖橫移（方形滑塊）</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>左右滑動的<b>正方形卡片</b>，適合放使用情境照、顧客評論、開箱截圖、使用步驟。<br><b>換圖</b>：改每張卡的 <code>&lt;img&gt;</code> src（用<b>正方形圖</b>最好看）。<br><b>換字</b>：填每張卡的說明文字。<br>🔗 <b>要連結</b>：把卡片 <code>href</code> 填成網址（連到 KOL 貼文、其他商品…）；<b>不要連結</b>就照語法裡的註解，把 <code>&lt;a&gt;</code> 改成 <code>&lt;div&gt;</code>。<br>➕ <b>多一張卡</b>：複製整段 <code>&lt;a&gt;…&lt;/a&gt;</code> 貼在後面。<br>➖ <b>少一張</b>：刪掉整段 <code>&lt;a&gt;…&lt;/a&gt;</code>。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽，可左右滑）</div>
+          <div class="preview">
+  <!-- 多圖橫移（方形滑塊）-->
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:18px 0 8px">
+      <div style="text-align:center;margin:0 0 4px">
+        <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">Real Moments</div>
+        <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">實際使用一次看</h2>
+        <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">日常各種情境，這一殼全包 ‧ 左右滑看更多 →</p>
+      </div>
+      <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 4px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+        <div style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff">
+          <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://img.shoplineapp.com/media/image_clips/6a22b39524a21718252a0d1c/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="斜立追劇" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">斜立追劇，雙手完全解放</p></div>
+        </div>
+        <div style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff">
+          <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395d362befded384457/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="桌面直立" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">桌面直立，視訊不手痠</p></div>
+        </div>
+        <div style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff">
+          <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395b2736d986276cde4/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="單手握持" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+          <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">單手握持，背板平整不卡手</p></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：每張卡片改圖片 src、說明文字、要不要連結。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（方形滑塊）：左右滑的正方形卡片 -->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:clamp(16px,4vw,28px) 0">
+    <div style="text-align:center;margin:0 0 4px">
+      <div style="font-size:clamp(11px,1.4vw,13px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">✏️【英文小標，例：Real Moments】</div>
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">✏️【區塊標題，例：實際使用一次看】</h2>
+      <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">✏️【一句說明】 ‧ 左右滑看更多 →</p>
+    </div>
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 4px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+
+      <!-- ↓↓ 一張卡片（要多一張：整段 a 複製貼在後面）↓↓ -->
+      <a href="✏️【這張卡要連到的網址；不需要連結：把 href=".." 刪掉、開頭 a 改成 div、結尾 /a 改成 /div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;text-decoration:none;color:inherit;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">✏️【卡片說明文字】</p></div>
+      </a>
+      <!-- ↑↑ 一張卡片 ↑↑ -->
+
+      <a href="✏️【這張卡要連到的網址；不需要連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;text-decoration:none;color:inherit;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">✏️【卡片說明文字】</p></div>
+      </a>
+
+      <a href="✏️【這張卡要連到的網址；不需要連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;text-decoration:none;color:inherit;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+        <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">✏️【卡片說明文字】</p></div>
+      </a>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+
+      <!-- ========================= 製作中佔位（格式確認後補完整內容） ========================= -->
+      <!-- ========================= 02 重點 icon 列 ========================= -->
+      <div id="lego-icon" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">02</span><h3>重點 icon 列</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>一排重點圖示（建議 4 個），每個＝圓底圖示＋標題＋兩行說明，快速帶出賣點。<br><b>換圖示</b>：改每個 <code>&lt;img&gt;</code> src（用<b>線條 PNG</b>、背景透明最好看）。<br><b>換字</b>：填標題與兩行說明。<br>➕➖ <b>增減</b>：複製／刪整個圖示的 <code>&lt;div&gt;…&lt;/div&gt;</code>（建議 3～4 個一排最整齊）。<br>⚠️ 圖示<b>不能用 SVG</b>（SHOPLINE 會濾掉），要用 PNG／JPG 網址（建議上傳 SHOPLINE 媒體庫取得網址）。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+          <div class="preview">
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
+      <div style="display:flex;flex-wrap:wrap;justify-content:center">
+        <div style="flex:1 1 140px;margin:14px 6px;text-align:center"><div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="https://img.shoplineapp.com/media/image_clips/6a3c6368d3434e000ce02af7/original.png?1782342504=&owner_id=57975b626170691220930c00" alt="" width="34" height="34" style="display:block"></div><div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">｜360° 環繞支架｜</div><div style="font-size:15px;color:#8a8a8a;line-height:1.5">直立追劇、橫放滑 IG<br>都隨心所欲</div></div>
+        <div style="flex:1 1 140px;margin:14px 6px;text-align:center"><div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="https://img.shoplineapp.com/media/image_clips/6a3c636891464613182f1abf/original.png?1782342504=&owner_id=57975b626170691220930c00" alt="" width="34" height="34" style="display:block"></div><div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">｜超防護｜</div><div style="font-size:15px;color:#8a8a8a;line-height:1.5">邊框與鏡頭框墊高<br>有效保護鏡頭</div></div>
+        <div style="flex:1 1 140px;margin:14px 6px;text-align:center"><div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="https://img.shoplineapp.com/media/image_clips/6a3c63683ac2af79cdc0bb05/original.png?1782342504=&owner_id=57975b626170691220930c00" alt="" width="34" height="34" style="display:block"></div><div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">｜MagSafe無線充電｜</div><div style="font-size:15px;color:#8a8a8a;line-height:1.5">磁吸一貼即合<br>隨時補足電量</div></div>
+        <div style="flex:1 1 140px;margin:14px 6px;text-align:center"><div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="https://img.shoplineapp.com/media/image_clips/6a3c6368c4f18d16cc776994/original.png?1782342504=&owner_id=57975b626170691220930c00" alt="" width="34" height="34" style="display:block"></div><div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">｜表面防汙抗指紋｜</div><div style="font-size:15px;color:#8a8a8a;line-height:1.5">PU 觸感塗層<br>乾淨俐落更耐看</div></div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：圖示換 src、文字填【】。長長的 style="…" 不要動。 -->
+<!-- 重點 icon 列 -->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
+    <div style="display:flex;flex-wrap:wrap;justify-content:center">
+
+      <!-- ↓↓ 一個圖示（要多一個：整段 div 複製貼在後面，建議 3～4 個）↓↓ -->
+      <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址（PNG，見「圖片取得方式」分頁）】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題，例：360° 環繞支架】</div>
+        <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
+      </div>
+      <!-- ↑↑ 一個圖示 ↑↑ -->
+
+      <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題】</div>
+        <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
+      </div>
+
+      <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題】</div>
+        <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
+      </div>
+
+      <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題】</div>
+        <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
+      </div>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+      <!-- ========================= 03 影音 ========================= -->
+      <div id="lego-video" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">03</span><h3>影音</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>橫滑影片牆，每支直式 9:16（像 Shorts）；手機左右滑、桌機並排。<br><b>換影片</b>：到 YouTube 影片→「分享」→「嵌入」，複製 <code>src="..."</code> 裡的<b>網址</b>貼到 ✏️ 那格。<br><b>換字</b>：填英文小標、區塊標題、每支影片標題。<br>➕➖ <b>增減影片</b>：複製／刪整支影片的 <code>&lt;div&gt;…&lt;/div&gt;</code>。<br>📦 影片框是<b>固定直式比例</b>，換 src 不會跑版；<b>沒有影片</b>就整塊不用。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽，可左右滑）</div>
+          <div class="preview">
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
+      <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">In Action</div>
+      <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0 0 16px">影音實測</h2>
+      <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;margin:0 -20px;padding:0 20px 4px">
+        <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center"><div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">360° Stepless Stand<br>無段支架實測</div><div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000"><iframe src="https://www.youtube.com/embed/h0I1yNF_jfc" title="360° 無段支架實測" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div></div>
+        <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center"><div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">MagSafe Test<br>磁吸實測</div><div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000"><iframe src="https://www.youtube.com/embed/FatNJO5I_m4" title="MagSafe 磁吸實測" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div></div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：影片換 src 網址、文字填【】。長長的 style="…" 不要動。 -->
+<!-- 影音實測（橫滑影片牆·直式 9:16）-->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
+    <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">✏️【英文小標，例：In Action】</div>
+    <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0 0 16px">✏️【區塊標題，例：影音實測】</h2>
+    <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;margin:0 -20px;padding:0 20px 4px">
+
+      <!-- ↓↓ 一支影片（要多一支：整段 div 複製貼在後面）↓↓ -->
+      <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+        <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題（可英＋中，中間用 br 換行）】</div>
+        <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000"><iframe src="✏️【YouTube 嵌入網址：影片→分享→嵌入→複製網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div>
+      </div>
+      <!-- ↑↑ 一支影片 ↑↑ -->
+
+      <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+        <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題】</div>
+        <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000"><iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div>
+      </div>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+
+      <!-- ========================= 04 特色區（標題＋多圖） ========================= -->
+      <div id="lego-feature" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">04</span><h3>特色區（標題＋多圖）</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>一個賣點＝英文小標＋中文大標＋一句說明＋一排方圖（建議 3 張），用來深入講某個功能。<br><b>換圖</b>：改每張 <code>&lt;img&gt;</code> src（正方圖最整齊）。<br><b>換字</b>：填英文小標、大標、說明。<br>➕➖ <b>增減圖</b>：複製／刪整個圖片的 <code>&lt;div&gt;…&lt;/div&gt;</code>。<br>📦 想再來一個賣點？整塊複製貼在後面、改文字即可。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+          <div class="preview">
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:clamp(16px,4vw,28px) 0 16px;text-align:center">
+      <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">Stable Stand</div>
+      <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">360° 環繞支架 ‧ 持久耐用</h2>
+      <p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:6px auto 0;max-width:46ch">金屬轉軸無段微調、始終穩定，長期使用不鬆軟，任意角度都立得穩、看得久</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:14px">
+        <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://img.shoplineapp.com/media/image_clips/6a3bf4957e9f6c78f436c357/original.png?1782314132=&owner_id=57975b626170691220930c00" alt="360° 支架斜立追劇" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://img.shoplineapp.com/media/image_clips/6a3bf4951818a27c31382a72/original.png?1782314132=&owner_id=57975b626170691220930c00" alt="360° 支架桌面直立" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://img.shoplineapp.com/media/image_clips/6a3bf49574d5e35f05a00a7f/original.png?1782314132=&owner_id=57975b626170691220930c00" alt="透明殼 MagSafe 單手握持背面" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：圖片換 src、文字填【】。長長的 style="…" 不要動。 -->
+<!-- 特色區（標題＋多圖）-->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:clamp(16px,4vw,28px) 0 16px;text-align:center">
+    <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">✏️【英文小標，例：Stable Stand】</div>
+    <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">✏️【區塊標題，例：360° 環繞支架 ‧ 持久耐用】</h2>
+    <p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:6px auto 0;max-width:46ch">✏️【一句說明】</p>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:14px">
+
+      <!-- ↓↓ 一張方圖（要多一張：整段 div 複製貼在後面）↓↓ -->
+      <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="✏️【請貼上方形圖片網址（見「圖片取得方式」分頁）】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <!-- ↑↑ 一張方圖 ↑↑ -->
+
+      <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+
+      <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+      <div id="lego-scene" class="lego"><div class="todo-card"><b>「情境 橫圖壓文」積木製作中</b><br>滿版橫圖＋疊字情境區塊，格式確認後補上。</div></div>
+      <div id="lego-grid" class="lego"><div class="todo-card"><b>「棋盤格」積木製作中</b><br>圖文各半、左右交替的優點／情境格，格式確認後補上。</div></div>
+      <div id="lego-compare" class="lego"><div class="todo-card"><b>「版本比較」積木製作中</b><br>改用單張合成圖／通用公告區塊（不做複雜表格），格式確認後補上。</div></div>
+      <div id="lego-addon" class="lego"><div class="todo-card"><b>「加價購」積木製作中</b><br>橫向捲動加購卡片，格式確認後補上。</div></div>
+      <div id="lego-cta" class="lego"><div class="todo-card"><b>「收尾 CTA」積木製作中</b><br>情境背景圖＋回購買區按鈕，格式確認後補上。</div></div>
+      <!-- ========================= 11 規格 ========================= -->
+      <div id="lego-spec" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">11</span><h3>規格</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>左邊標題、右邊規格列表（材質／支架／充電…）。對 SEO 有幫助。<br><b>換字</b>：填每列的「項目名＋內容」。<br>➕➖ <b>增減一列</b>：複製／刪一列的 <code>&lt;div&gt;…&lt;/div&gt;</code>。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+          <div class="preview">
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:clamp(20px,4vw,32px) 0 clamp(12px,3vw,20px);border-top:1px solid #ededed">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-start">
+        <div style="flex:1 1 200px;min-width:0;margin:0 clamp(0px,4vw,40px) 14px 0"><div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">Specs</div><h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;margin:0;color:#1a1a1a">規格</h2></div>
+        <div style="flex:2 1 360px;min-width:0">
+          <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">材質</span><span style="color:#6E6E73">TPU＋PC 複合</span></div>
+          <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">支架</span><span style="color:#6E6E73">360° 無段金屬轉軸</span></div>
+          <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">充電</span><span style="color:#6E6E73">支援 MagSafe 磁吸</span></div>
+          <div style="border-top:1px solid #ededed"></div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：文字填【】。長長的 style="…" 不要動。 -->
+<!-- 規格（左標右表）-->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:clamp(20px,4vw,32px) 0 clamp(12px,3vw,20px);border-top:1px solid #ededed">
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-start">
+      <div style="flex:1 1 200px;min-width:0;margin:0 clamp(0px,4vw,40px) 14px 0"><div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">Specs</div><h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;margin:0;color:#1a1a1a">規格</h2></div>
+      <div style="flex:2 1 360px;min-width:0">
+
+        <!-- ↓↓ 一列規格（要多一列：整段 div 複製貼在後面）↓↓ -->
+        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目，例：材質】</span><span style="color:#6E6E73">✏️【內容，例：TPU＋PC 複合】</span></div>
+        <!-- ↑↑ 一列規格 ↑↑ -->
+
+        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目】</span><span style="color:#6E6E73">✏️【內容】</span></div>
+
+        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目】</span><span style="color:#6E6E73">✏️【內容】</span></div>
+
+        <div style="border-top:1px solid #ededed"></div>
+      </div>
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+      <!-- ========================= 12 QA ========================= -->
+      <div id="lego-faq" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">12</span><h3>QA</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>卡片式常見問答（全部展開、利 SEO／AI 摘錄）。<br><b>換字</b>：填每則的問題與答案；問題口語化、答案具體。<br>➕➖ <b>增減一則</b>：複製／刪一張卡片的 <code>&lt;div&gt;…&lt;/div&gt;</code>（建議 4～6 則）。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+          <div class="preview">
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:clamp(12px,3vw,20px) 0 clamp(20px,5vw,40px)">
+      <div style="text-align:center;margin:0 0 22px"><div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px">FAQ</div><h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">常見問題</h2></div>
+      <div style="margin:0 auto">
+        <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>金屬指環殼能用 MagSafe 無線充電嗎？</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">可以。磁吸區經導磁設計，不擋磁吸與無線充電，免拆殼即可充。</p></div>
+        <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>「雙向吸」跟一般款差在哪？</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">一般款內建基本磁吸；雙向吸（3.0）磁力更均勻更穩，且背殼可吸附鐵製表面（如冰箱）。</p></div>
+        <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>適用哪些 iPhone？</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">適用 iPhone 12～17 全系列（含 Pro／Pro Max／Plus），mini 不適用。</p></div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：文字填【】。長長的 style="…" 不要動。 -->
+<!-- 常見 QA（卡片式平鋪 FAQ）-->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:clamp(12px,3vw,20px) 0 clamp(20px,5vw,40px)">
+    <div style="text-align:center;margin:0 0 22px"><div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px">FAQ</div><h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">常見問題</h2></div>
+    <div style="margin:0 auto">
+
+      <!-- ↓↓ 一則問答（要多一則：整段 div 複製貼在後面，建議 4～6 則）↓↓ -->
+      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p></div>
+      <!-- ↑↑ 一則問答 ↑↑ -->
+
+      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p></div>
+
+      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p></div>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+      <!-- ========================= 12 SNS（社群圖牆 ‧ UGC） ========================= -->
+      <div id="lego-sns" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">12</span><h3>SNS（社群圖牆 ‧ UGC）</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>IG 風格的<b>正方形圖牆</b>（固定 3 欄），放顧客實拍開箱、KOL／部落客截圖，建立社會證明。<br><b>換圖</b>：改每張卡的 <code>&lt;img&gt;</code> src（用正方形圖最整齊）。<br>🔗 <b>要連結</b>：把卡片 <code>href</code> 填成貼文網址；<b>不要連結</b>就照註解把 <code>&lt;a&gt;</code> 改成 <code>&lt;div&gt;</code>。<br>➕ <b>多一張</b>：複製整段 <code>&lt;a&gt;…&lt;/a&gt;</code>（<b>建議維持 3 的倍數</b>＝每列剛好排滿）。<br>➖ <b>少一張</b>：刪掉整段 <code>&lt;a&gt;…&lt;/a&gt;</code>。<br>⚠️ <b>一定要用真實顧客／KOL 授權的照片</b>，不可用 AI 生成的假圖或假截圖。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽，示意圖以產品照代替 UGC）</div>
+          <div class="preview">
+  <!-- SNS 社群圖牆（UGC）-->
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:18px 0 8px">
+      <div style="text-align:center;margin:0 0 14px">
+        <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">As Seen On IG</div>
+        <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">大家都這樣用</h2>
+        <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">真實顧客的開箱與分享</p>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;margin:0 -2px">
+        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://img.shoplineapp.com/media/image_clips/6a22b39524a21718252a0d1c/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="顧客開箱 1" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395d362befded384457/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="顧客開箱 2" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395b2736d986276cde4/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="顧客開箱 3" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="顧客開箱 4" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg" alt="顧客開箱 5" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="顧客開箱 6" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：每張卡片改圖片 src、要不要連結。長長的 style="…" 不要動。 -->
+<!-- SNS 社群圖牆（UGC）：IG 風格正方形圖牆，固定 3 欄 -->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:clamp(16px,4vw,28px) 0">
+    <div style="text-align:center;margin:0 0 14px">
+      <div style="font-size:clamp(11px,1.4vw,13px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">✏️【英文小標，例：As Seen On IG】</div>
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">✏️【區塊標題，例：大家都這樣用】</h2>
+      <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">✏️【一句說明，例：真實顧客的開箱與分享】</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;margin:0 -2px">
+
+      <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面，建議維持 3 的倍數）↓↓ -->
+      <a href="✏️【連到貼文網址；不需要連結：把 href=".." 刪掉、開頭 a 改成 div、結尾 /a 改成 /div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+      <!-- ↑↑ 一張圖卡 ↑↑ -->
+
+      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+
+      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+
+      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+
+      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+
+      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+
+    </section>
+
+    <section id="p3" class="page">
+  <div class="hero">
+    <span class="hero-eyebrow">STEP 2</span>
+    <h1 class="hero-title">圖片取得方式</h1>
+    <p class="hero-sub">語法裡每張圖都是一段 <code>&lt;img src="網址"&gt;</code>。要換成自己的圖，就是把這個「網址」換掉（也就是填空語法裡的 <code>【請貼上圖片網址】</code>）。</p>
+  </div>
+  <div class="howto">
+    <div class="howto-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.9a2 2 0 0 0 1.3 1.3L19.8 11l-4.9 1.6a2 2 0 0 0-1.3 1.3L12 19.8l-1.6-4.9a2 2 0 0 0-1.3-1.3L4.2 12l4.9-1.6a2 2 0 0 0 1.3-1.3L12 3z"/></svg>Claude Skill 不會幫你上傳圖片</div>
+    Claude Skill 產出的是<b>文字與語法</b>；<b>圖片仍要你自己上傳到 SHOPLINE 取得網址</b>，再把網址填進語法的 <code>src</code>。這頁就是教你怎麼拿到那個網址。
+  </div>
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>步驟：在 SHOPLINE 取得圖片網址</h3>
+    <ol class="steps">
+      <li>後台 → <b>商品 → 編輯該商品 → 商品描述</b>。</li>
+      <li>點工具列的 <b>「插入圖片」</b>，把要用的圖上傳。</li>
+      <li>上傳後，點右上角切到 <b>「HTML / 原始碼」&lt;/&gt;</b> 模式。</li>
+      <li>找到剛上傳的那段 <code>&lt;img src="https://img.shoplineapp.com/……"&gt;</code>，<b>只複製雙引號裡的那串網址</b>（從 <code>https://</code> 到結尾的引號前）。<b>不要</b>把前面的 <code>&lt;img src="</code> 和後面的 <code>"&gt;</code> 一起複製——只要網址本身。</li>
+      <li>回到填空語法，把 <code>src="✏️【請貼上圖片網址】"</code> 裡的 <code>✏️【…】</code> 換成你剛複製的<b>網址</b>（外面的雙引號 <code>"&nbsp;"</code> 保留不動）。</li>
+      <li>順手把 <code>alt="【請填入這張圖的內容說明】"</code> 改成這張圖的內容描述（給 Google 看，有助 SEO）。</li>
+    </ol>
+    <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span>圖片網址長這樣：<code>https://img.shoplineapp.com/media/image_clips/<b>圖片代碼</b>/original.png?...</code>　只要換掉這一整串就好，前後的 <code>&lt;img src="</code> 和 <code>"&gt;</code> 不要動。</span></p>
+  </div>
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>各區塊建議圖片尺寸</h3>
+    <table class="sizetab">
+      <thead><tr><th>區塊（對應「商品頁語法」）</th><th>建議尺寸</th><th>說明</th></tr></thead>
+      <tbody>
+        <tr><td>影音實測</td><td>—（用影片）</td><td>貼 YouTube 嵌入碼，非圖片</td></tr>
+        <tr><td>首屏 Hero、功能特色、對照表</td><td><b>1080 × 1350 px</b>（直式 4:5）</td><td>圖上會疊白色文字，選背景單純的圖</td></tr>
+        <tr><td>特色區 ①②③</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>①三張、②③各兩張；系統自動裁正方</td></tr>
+        <tr><td>特色區 ④</td><td><b>1000 × 750 px</b>（橫式 4:3）</td><td>兩張帶圖說的圖</td></tr>
+        <tr><td>版本卡片</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>兩張卡片圖</td></tr>
+        <tr><td>使用情境</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>每個情境一張</td></tr>
+        <tr><td>適用機型、規格</td><td>—（不用圖）</td><td>表格／清單，純文字</td></tr>
+      </tbody>
+    </table>
+    <p class="fhint">尺寸是「建議值」，大一點沒關係（系統會壓縮）；重點是<b>比例正確</b>，比例對了就不會被裁掉或變形。格式 JPG 或 PNG 皆可。</p>
+  </div>
+  <div class="card warn">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>兩個常見錯誤</h3>
+    <ul class="warnlist">
+      <li>只複製到一半的網址 → 圖會破圖。請從 <code>https://</code> 複製到結尾的引號前。</li>
+      <li>用別的網站的圖片網址（例如 Google 圖片）→ 可能隨時失效。請一律先上傳到 SHOPLINE 再複製。</li>
+    </ul>
+  </div>
+    </section>
+
+    <section id="p4" class="page active">
+  <div class="hero">
+    <span class="hero-eyebrow">STEP 1 · 先裝這個</span>
+    <h1 class="hero-title">Claude Skill</h1>
+    <p class="hero-sub">第一步：先安裝這個 skill。之後寫任何商品的文案都靠它自動產出。下載 → 安裝 → 使用三步驟。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>下載區</h3>
+    <p>檔案：<code>londonimg-product.zip</code>　·　用途：輸入商品資訊，自動產出 SHOPLINE 商品頁的 <b>SEO 後台四欄</b>（標題／簡介／關鍵字／描述性URL）＋<b>商品描述文案</b>（定義句／段落標題／常見問答）。</p>
+    <p><a class="dl-btn" href="londonimg-product.zip" download><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>下載 Skill（.zip）</span></a></p>
+    <p class="fhint">下載後不用解壓縮也行，下一步直接上傳這個 zip 即可。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>安裝方式（claude.ai 網頁／桌面 App）</h3>
+    <ol class="steps">
+      <li>打開 <b>claude.ai</b> → 左下角你的頭像 → <b>設定 Settings</b>。</li>
+      <li>進入 <b>Capabilities / Skills（功能 / 技能）</b>頁。</li>
+      <li>按 <b>新增 / 上傳 Skill</b>，選剛下載的 <code>londonimg-product.zip</code> → 開啟啟用。</li>
+      <li>啟用後即可使用，名稱會顯示為 <code>londonimg-product</code>（倫敦印象商品頁文案）。</li>
+    </ol>
+    <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span>公司若是 <b>Team / Enterprise</b> 方案，可由管理員上傳一次、整個團隊共用，不必每人各裝。找不到 Skills 設定＝該方案可能尚未開放自訂 skill，先跟管理員確認。</span></p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>管理員集中佈署（Team / Enterprise）— 裝一次，全員可用</h3>
+    <p>公司若是 <b>Team / Enterprise</b> 方案，建議由<b>管理員佈署一次</b>，全公司同事就自動有、且<b>預設開啟</b>，不必每人各自上傳；更新也在同一處做。</p>
+    <p style="font-weight:700;margin:16px 0 6px">首次佈署（管理員做一次）</p>
+    <ol class="steps">
+      <li>用<b>管理員帳號</b>登入 claude.ai → <b>Admin／設定 → Skills（技能）</b>。</li>
+      <li>上傳 <code>londonimg-product.zip</code>，設定<b>適用對象</b>（全公司或指定群組，如電商／行銷組）。</li>
+      <li>儲存。同事的 claude.ai 就會<b>自動出現</b> <code>londonimg-product</code>，免各自上傳。</li>
+    </ol>
+    <p style="font-weight:700;margin:16px 0 6px">更新（每次改版）</p>
+    <ol class="steps">
+      <li>管理員進 <b>Admin → Skills</b>，找到 <code>londonimg-product</code> → <b>上傳新版／取代</b>。</li>
+      <li>全員自動拿到最新版，<b>不必每人刪舊重傳</b>。若同事正開著 Claude：<b>網頁版</b>按 <code>⌘⇧R</code>（Windows <code>Ctrl+Shift+R</code>）強制重新整理；<b>桌面 App</b> 沒有重新整理，請<b>完全關閉再重開 App</b>（或開一個新對話）即可看到新版。</li>
+    </ol>
+    <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span><b>同事端</b>：什麼都不用做，直接在對話用即可。若沒看到 skill → 到自己的<b>設定 → Skills</b> 確認沒被個人關掉。建議指定一位管理員負責「每次改版後重新上傳」，避免版本分歧。</span></p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.9a2 2 0 0 0 1.3 1.3L19.8 11l-4.9 1.6a2 2 0 0 0-1.3 1.3L12 19.8l-1.6-4.9a2 2 0 0 0-1.3-1.3L4.2 12l4.9-1.6a2 2 0 0 0 1.3-1.3L12 3z"/></svg>使用方式（👤 給寫文案的同事 — 日常就用這個）</h3>
+    <p><b>上面那張是「管理員佈署」用的；這一區才是你——要寫商品頁文案的同事——每天實際操作的地方。</b>skill 裝好後（自己裝或公司已佈署），照下面做就能產出文案：</p>
+    <ol class="steps">
+      <li>在 Claude 對話直接說：<code>幫 [商品名] 寫商品頁文案</code>。<br>例：<i>幫 YU 360°無段支架手機殼 B67 寫商品頁文案，賣點是 360度支架、MagSafe、防摔，適用 iPhone 12–16</i>。</li>
+      <li>Claude 會（必要時）反問商品資訊，然後依序產出（順序＝下方選單）：①<b>商品資訊</b>（商品名稱＋商品摘要）②<b>商品描述</b>（用「商品頁語法」的區塊名稱分組：首屏 Hero／定義句／特色區／使用情境／常見 QA…，每塊一鍵複製）③<b>商品頁設定</b>（SEO 四欄：標題／簡介／關鍵字／描述性URL）。</li>
+      <li>對著貼：商品名稱／商品摘要 → <b>STEP 3 商品資訊</b>；商品描述 → <b>STEP 4 商品頁語法</b>（找同名區塊填 ✏️【…】）；SEO 四欄 → <b>STEP 5 商品頁設定</b>。</li>
+      <li>想連「可貼 SHOPLINE 的 HTML」一起出 → 跟 Claude 說「也給我可貼的 HTML」，它會直接把語法填好給你。</li>
+    </ol>
+    <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>產出已內建本說明的規則：標題不塞促銷、slug 全英數、單位用 px、描述欄勿貼 <code>&lt;style&gt;</code>。改了 slug 記得設 301 轉址。</span></p>
+  </div>
+    </section>
+
+    <section id="p5" class="page">
+  <div class="hero">
+    <span class="hero-eyebrow">STEP 3</span>
+    <h1 class="hero-title">商品資訊</h1>
+    <p class="hero-sub">後台位置：<b>商品 → 編輯該商品 → 商品資訊</b>。這裡設「<b>商品名稱</b>」與「<b>商品摘要</b>」（價格上方、使用者看得到的簡短介紹／促銷）。</p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>商品名稱</h3>
+    <p>顯示在商品頁最上方的名稱（也是頁面大標）。用 <b>STEP 1 Claude Skill</b> 產的「標題」即可；若含內部代號（如測試前綴）記得拿掉。</p>
+    <div class="field">
+      <div class="field-top"><label>商品名稱（繁體中文）</label><button class="copy-btn sm" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製</span></button></div>
+      <textarea class="fval" readonly spellcheck="false">YU iPhone 360°無段支架手機殼｜MagSafe 防摔殼（12-16 系列）【B67】</textarea><small class="fhint">顧客實際看到的商品名。</small></div>
+    <div class="field">
+      <div class="field-top"><label>商品名稱（英文）</label><button class="copy-btn sm" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製</span></button></div>
+      <textarea class="fval" readonly spellcheck="false">YU iPhone 360° Ring Stand Case｜MagSafe (12-16)</textarea><small class="fhint">顧客把語言切成英文才會看到；沒有可留空。</small></div>
+    <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>「商品名稱」是<b>頁面上顯示</b>的標題；STEP 5「網路搜尋最佳化」的標題是<b>給 Google</b> 的，兩者可以不同（但通常相近）。</span></p>
+  </div>
+
+  <div class="card">
+    <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>商品摘要（價格上方的簡短介紹／促銷）</h3>
+    <p>就是商品頁價格上方那塊。<b>要短、以優惠為主</b>；詳細賣點放 STEP 4 商品描述。<br>下面範本：第一行是<b>商品專屬短介紹</b>（✏️ 填空，或用 Claude Skill 產），第二行是<b>固定的湊免運促銷</b>。</p>
+    <div class="code">
+      <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">商品摘要 HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製</span></button></div>
+      <textarea readonly spellcheck="false">&lt;div style="font-size:15px;line-height:1.85;color:#1c1b19"&gt;
+  &lt;div&gt;✏️【商品一句賣點＋優惠】&lt;/div&gt;
+  &lt;div&gt;🚚 湊免運嗎？&lt;b&gt;&lt;a href="https://www.londonimg.tw/pages/add" target="_blank"&gt;加價購&lt;/a&gt;省更多｜超值好物一起帶！&lt;/b&gt;&lt;/div&gt;
+&lt;/div&gt;</textarea>
+    </div>
+    <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span><b>樣式已內嵌（inline style）</b>，不依賴 <code>promobox</code>／<code>promo-line</code> 等外部 class，所以貼進「商品摘要」就會正常顯示。<b>第一行</b>換成你的商品短介紹（或用 Claude Skill 產）；<b>第二行湊免運</b>是全店固定、依檔期改 <code>&lt;b&gt;…&lt;/b&gt;</code> 裡文字即可。</span></p>
+  </div>
+    </section>
+
+    <section id="p6" class="page">
+      <div class="hero">
+        <span class="hero-eyebrow">STEP 6</span>
+        <h1 class="hero-title">301 轉址</h1>
+        <p class="hero-sub">改了商品的「描述性URL（網址）」後，<b>舊網址會失效</b>。設一個 301 轉址把舊網址導到新網址，原本的連結與 Google 排名才不會斷掉。</p>
+      </div>
+      <div class="howto">
+        <div class="howto-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>什麼時候要做？</div>
+        只有在你<b>改過 STEP 5 的「描述性URL」</b>時才需要。新商品、或沒改過網址的就<b>不用</b>做。
+      </div>
+      <div class="card warn">
+        <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>不做會怎樣？</h3>
+        <p>別人收藏的舊連結、Google 搜尋結果裡的舊連結、外部分享的連結，點了都會變成 <b>404 找不到頁面</b>，流量與 SEO 排名流失。301 轉址會自動把點舊網址的人導到新網址。</p>
+      </div>
+      <div class="card">
+        <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg>操作步驟</h3>
+        <p>SHOPLINE 設定 301 轉址的<b>詳細後台步驟</b>，請直接看官方說明（最準確，會跟著後台更新）：</p>
+        <p><a class="dl-btn" href="https://support.shoplineapp.com/hc/zh-tw/articles/360020296431-%E7%B6%B2%E5%9F%9F-%E5%9D%80-%E9%87%8D%E5%AE%9A%E5%90%91%E5%8A%9F%E8%83%BD-301-%E8%BD%89%E5%9D%80%E8%A8%AD%E5%AE%9A" target="_blank" rel="noopener"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg><span>SHOPLINE 官方說明：301 轉址設定</span></a></p>
+        <p class="tipbox"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5.76.76 1.23 1.52 1.41 2.5"/></svg><span><b>重點：來源填「舊網址」、目標填「新網址」</b>；設定完打開舊網址測試是否自動跳到新網址。一個舊網址對應一個新網址。</span></p>
+      </div>
+      <div class="card warn">
+        <h3 class="card-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>常見錯誤</h3>
+        <ul class="warnlist">
+          <li><b>新舊填反</b>：來源＝舊網址、目標＝新網址，填反會跳錯或循環。</li>
+          <li><b>改了網址卻沒設轉址</b>：舊連結就直接失效了，記得改網址後一定要補這一步。</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="product-page-guide.js"></script>
+</body>
+</html>

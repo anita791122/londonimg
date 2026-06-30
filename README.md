@@ -7,7 +7,7 @@
 | 檔案 | 說明 |
 |------|------|
 | `index.html` | 入口頁（GitHub Pages 根網址）。 |
-| `b67-product-page-guide.html` | 給同事的商品頁建置教學頁（六分頁：Claude Skill／圖片取得／商品資訊／商品頁語法 14 區塊 ✏️ 填空一鍵複製／頁面設定／301 轉址）。 |
+| `product-page-guide.html` | 給同事的商品頁建置教學頁（六分頁：Claude Skill／圖片取得／商品資訊／商品頁語法 14 區塊 ✏️ 填空一鍵複製／頁面設定／301 轉址）。 |
 | `londonimg-product.zip` ‧ `londonimg-product/` | 給 claude.ai 用的商品頁 skill（壓縮檔＋原始檔）。 |
 | `yu-pdp.css` | 商品描述共用樣式（選用）。可經 jsDelivr 載入。 |
 
@@ -16,7 +16,7 @@
 ## GitHub Pages
 
 - 入口：<https://anita791122.github.io/londonimg/>
-- 教學頁：<https://anita791122.github.io/londonimg/b67-product-page-guide.html>
+- 教學頁：<https://anita791122.github.io/londonimg/product-page-guide/product-page-guide.html>
 
 ## 透過 jsDelivr 載入 yu-pdp.css
 
