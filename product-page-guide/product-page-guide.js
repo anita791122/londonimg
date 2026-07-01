@@ -28,7 +28,8 @@
       if(ov) ov.classList.add('active');
     }
     if(id!=='p2') closeMenu();
-    window.scrollTo({top:0,behavior:'smooth'});
+    try{localStorage.setItem('ppg-page',id);localStorage.removeItem('ppg-lego');}catch(e){}
+    if(!window._ppgRestoring) window.scrollTo({top:0,behavior:'smooth'});
   }
   function copyCode(btn){
     var box = btn.closest('.code,.field').querySelector('textarea');
@@ -59,7 +60,8 @@
     document.querySelectorAll('.subnav .sub-a').forEach(function(a){a.classList.remove('active')});
     var sa=document.querySelector('.subnav [data-lego="'+id+'"]');
     if(sa) sa.classList.add('active');
-    if(el){var y=el.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y,behavior:'smooth'});}
+    try{localStorage.setItem('ppg-page','p2');localStorage.setItem('ppg-lego',id);}catch(e){}
+    if(el && !window._ppgRestoring){var y=el.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:y,behavior:'smooth'});}
     closeMenu();
   }
   /* 測試方塊：把同事填的內容即時 render 出來 */
@@ -93,3 +95,22 @@
     ov.innerHTML=html;
   }
   buildOverview();
+  /* reload 後停留在上次瀏覽的分頁／積木＋捲動位置（不跳回第一頁）*/
+  (function(){
+    try{
+      var page=localStorage.getItem('ppg-page');
+      var lego=localStorage.getItem('ppg-lego');
+      var sy=parseInt(localStorage.getItem('ppg-scroll')||'0',10);
+      window._ppgRestoring=true;
+      if(page==='p2' && lego && document.getElementById('lego-'+lego)){ showLego(lego); }
+      else if(page && document.getElementById(page)){ show(page); }
+      window._ppgRestoring=false;
+      if(sy>0) window.scrollTo(0,sy);
+    }catch(e){ window._ppgRestoring=false; }
+  })();
+  /* 記住捲動位置（節流 120ms）*/
+  var _ppgScrollT;
+  window.addEventListener('scroll',function(){
+    if(window._ppgRestoring||_ppgScrollT) return;
+    _ppgScrollT=setTimeout(function(){_ppgScrollT=null;try{localStorage.setItem('ppg-scroll',String(window.pageYOffset));}catch(e){}},120);
+  },{passive:true});

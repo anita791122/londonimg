@@ -17,8 +17,9 @@
   .layout{display:flex;min-height:100vh}
   /* ---- 側邊欄 ---- */
   .sidebar{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);position:sticky;top:0;height:100vh;padding:22px 16px;display:flex;flex-direction:column;overflow-y:auto}
-  .brand{display:flex;align-items:center;gap:12px;padding:6px 8px 18px;margin-bottom:10px;border-bottom:1px solid var(--border-2)}
-  .brand .mark{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--font-h);font-weight:700;font-size:17px;box-shadow:0 6px 16px rgba(110,92,182,.32)}
+  .brand{display:flex;align-items:center;gap:12px;padding:6px 8px 18px;margin-bottom:10px;border-bottom:1px solid var(--border-2);cursor:pointer}
+  .brand:hover{opacity:.82}
+  .brand-logo{height:40px;width:auto;max-width:150px;object-fit:contain;display:block;flex:none}
   .brand .txt{font-family:var(--font-h);font-weight:600;font-size:15px;line-height:1.25}
   .brand .txt small{display:block;font-family:var(--font-b);font-weight:400;font-size:11.5px;color:var(--faint);letter-spacing:.3px;margin-top:2px}
   .nav{display:flex;flex-direction:column;gap:4px;margin-top:6px;flex-shrink:0}
@@ -40,7 +41,7 @@
   .hero{margin:0 0 26px}
   .hero-eyebrow{display:inline-block;font-family:var(--font-h);font-size:12px;font-weight:600;letter-spacing:2.5px;color:var(--accent);background:var(--accent-soft);padding:5px 12px;border-radius:999px;margin-bottom:14px}
   .hero-title{font-family:var(--font-h);font-size:clamp(26px,4.4vw,38px);font-weight:700;letter-spacing:-.5px;margin:0 0 8px;color:var(--ink)}
-  .hero-sub{color:var(--muted);font-size:15.5px;max-width:70ch;margin:0}
+  .hero-sub{color:var(--muted);font-size:15.5px;margin:0}
 
   .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px 26px;margin:0 0 20px;box-shadow:var(--shadow)}
   .card.warn{background:var(--warn-bg);border-color:var(--warn-bd)}
@@ -80,7 +81,7 @@
   .block-head h3{margin:0;font-family:var(--font-h);font-size:17px;font-weight:600;color:var(--ink)}
   .note{display:flex;gap:9px;align-items:flex-start;background:#f7f9fc;border:1px solid var(--border-2);border-radius:12px;padding:12px 14px;font-size:13.6px;color:var(--muted);margin:0 0 16px;line-height:1.72}
   .note .ic{color:var(--accent);margin-top:2px}
-  .seg-label{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--faint);margin:0 0 8px;font-family:var(--font-h);letter-spacing:.2px}
+  .seg-label{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:700;color:var(--faint);margin:30px 0 8px;font-family:var(--font-h);letter-spacing:.2px}
   .seg-label .ic{width:15px;height:15px}
   .code-seg{margin-top:18px;color:var(--accent)} .code-seg .ic{color:var(--accent)}
   .preview{border:1px solid var(--border);border-radius:12px;padding:14px;overflow:hidden;background:#fff}

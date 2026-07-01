@@ -12,8 +12,8 @@
 <body>
 <div class="layout">
   <aside class="sidebar">
-    <div class="brand">
-      <div class="mark">B67</div>
+    <div class="brand" onclick="show('p4')" title="回到第一頁（Claude Skill）">
+      <img class="brand-logo" src="https://shoplineimg.com/57975b626170691220930c00/5f7ee62005a89e001d7bc417/1200x.webp?source_format=png" alt="倫敦印象">
       <div class="txt">商品頁建置<small>給同事的操作說明</small></div>
     </div>
     <button class="hamburger" onclick="toggleMenu()" aria-label="開關選單" aria-expanded="false">
@@ -34,8 +34,8 @@
         <a class="sub-a todo" data-lego="grid" onclick="showLego('grid')"><span class="sub-i">06</span>棋盤格</a>
         <a class="sub-a" data-lego="slider" onclick="showLego('slider')"><span class="sub-i">07</span>多圖橫移</a>
         <a class="sub-a todo" data-lego="compare" onclick="showLego('compare')"><span class="sub-i">08</span>版本比較</a>
-        <a class="sub-a todo" data-lego="addon" onclick="showLego('addon')"><span class="sub-i">09</span>加價購</a>
-        <a class="sub-a todo" data-lego="cta" onclick="showLego('cta')"><span class="sub-i">10</span>收尾 CTA</a>
+        <a class="sub-a" data-lego="addon" onclick="showLego('addon')"><span class="sub-i">09</span>加價購</a>
+        <a class="sub-a" data-lego="cta" onclick="showLego('cta')"><span class="sub-i">10</span>收尾 CTA</a>
         <a class="sub-a" data-lego="spec" onclick="showLego('spec')"><span class="sub-i">11</span>規格</a>
         <a class="sub-a" data-lego="faq" onclick="showLego('faq')"><span class="sub-i">12</span>QA</a>
         <a class="sub-a" data-lego="sns" onclick="showLego('sns')"><span class="sub-i">13</span>SNS</a>
@@ -138,73 +138,7 @@
       </div>
 
       <!-- ========================= 06 多圖橫移（方形滑塊） ========================= -->
-      <div id="lego-slider" class="lego">
-        <article class="block">
-          <div class="block-head"><span class="num">06</span><h3>多圖橫移（方形滑塊）</h3></div>
-          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>左右滑動的<b>正方形卡片</b>，適合放使用情境照、顧客評論、開箱截圖、使用步驟。<br><b>換圖</b>：改每張卡的 <code>&lt;img&gt;</code> src（用<b>正方形圖</b>最好看）。<br><b>換字</b>：填每張卡的說明文字。<br>🔗 <b>要連結</b>：把卡片 <code>href</code> 填成網址（連到 KOL 貼文、其他商品…）；<b>不要連結</b>就照語法裡的註解，把 <code>&lt;a&gt;</code> 改成 <code>&lt;div&gt;</code>。<br>➕ <b>多一張卡</b>：複製整段 <code>&lt;a&gt;…&lt;/a&gt;</code> 貼在後面。<br>➖ <b>少一張</b>：刪掉整段 <code>&lt;a&gt;…&lt;/a&gt;</code>。</span></p>
-          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽，可左右滑）</div>
-          <div class="preview">
-  <!-- 多圖橫移（方形滑塊）-->
-  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
-    <div style="padding:18px 0 8px">
-      <div style="text-align:center;margin:0 0 4px">
-        <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">Real Moments</div>
-        <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">實際使用一次看</h2>
-        <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">日常各種情境，這一殼全包 ‧ 左右滑看更多 →</p>
-      </div>
-      <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 4px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
-        <div style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff">
-          <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://img.shoplineapp.com/media/image_clips/6a22b39524a21718252a0d1c/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="斜立追劇" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
-          <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">斜立追劇，雙手完全解放</p></div>
-        </div>
-        <div style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff">
-          <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395d362befded384457/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="桌面直立" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
-          <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">桌面直立，視訊不手痠</p></div>
-        </div>
-        <div style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff">
-          <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395b2736d986276cde4/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="單手握持" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
-          <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">單手握持，背板平整不卡手</p></div>
-        </div>
-      </div>
-    </div>
-  </div></div>
-          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
-          <div class="code">
-            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
-            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：每張卡片改圖片 src、說明文字、要不要連結。長長的 style="…" 不要動。 -->
-<!-- 多圖橫移（方形滑塊）：左右滑的正方形卡片 -->
-<div style="max-width:1080px;margin:0 auto;padding:0 20px">
-  <div style="padding:clamp(16px,4vw,28px) 0">
-    <div style="text-align:center;margin:0 0 4px">
-      <div style="font-size:clamp(11px,1.4vw,13px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">✏️【英文小標，例：Real Moments】</div>
-      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">✏️【區塊標題，例：實際使用一次看】</h2>
-      <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">✏️【一句說明】 ‧ 左右滑看更多 →</p>
-    </div>
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 4px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
-
-      <!-- ↓↓ 一張卡片（要多一張：整段 a 複製貼在後面）↓↓ -->
-      <a href="✏️【這張卡要連到的網址；不需要連結：把 href=".." 刪掉、開頭 a 改成 div、結尾 /a 改成 /div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;text-decoration:none;color:inherit;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
-        <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">✏️【卡片說明文字】</p></div>
-      </a>
-      <!-- ↑↑ 一張卡片 ↑↑ -->
-
-      <a href="✏️【這張卡要連到的網址；不需要連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;text-decoration:none;color:inherit;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
-        <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">✏️【卡片說明文字】</p></div>
-      </a>
-
-      <a href="✏️【這張卡要連到的網址；不需要連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(200px,60vw,250px);scroll-snap-align:start;margin-right:14px;text-decoration:none;color:inherit;border:1px solid #ededed;border-radius:14px;overflow:hidden;background:#fff;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
-        <div style="padding:12px 15px 14px"><p style="font-size:15px;line-height:1.5;margin:0;color:#1a1a1a">✏️【卡片說明文字】</p></div>
-      </a>
-
-    </div>
-  </div>
-</div></textarea>
-          </div>
-        </article>
-      </div>
+      <div id="lego-slider" class="lego"><div class="todo-card"><b>「多圖橫移（方形滑塊）」積木施工中</b><br>左右滑的正方形卡片，格式確認後補上。</div></div>
 
       <!-- ========================= 製作中佔位（格式確認後補完整內容） ========================= -->
       <!-- ========================= 02 重點 icon 列 ========================= -->
@@ -235,26 +169,34 @@
 
       <!-- ↓↓ 一個圖示（要多一個：整段 div 複製貼在後面，建議 3～4 個）↓↓ -->
       <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
-        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址（PNG，見「圖片取得方式」分頁）】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <img src="✏️【請貼上線條圖示網址（PNG，見「圖片取得方式」分頁）】" alt="" width="34" height="34" style="display:block">
+        </div>
         <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題，例：360° 環繞支架】</div>
         <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
       </div>
       <!-- ↑↑ 一個圖示 ↑↑ -->
 
       <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
-        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block">
+        </div>
         <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題】</div>
         <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
       </div>
 
       <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
-        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block">
+        </div>
         <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題】</div>
         <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
       </div>
 
       <div style="flex:1 1 140px;margin:14px 6px;text-align:center">
-        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px"><img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block"></div>
+        <div style="width:76px;height:76px;border-radius:50%;background:#f4f4f4;display:flex;align-items:center;justify-content:center;margin:0 auto 14px">
+          <img src="✏️【請貼上線條圖示網址】" alt="" width="34" height="34" style="display:block">
+        </div>
         <div style="font-size:clamp(16px,2vw,19px);font-weight:600;color:#1a1a1a;margin:0 0 5px">✏️【圖示標題】</div>
         <div style="font-size:15px;color:#8a8a8a;line-height:1.5">✏️【第一行說明】<br>✏️【第二行說明】</div>
       </div>
@@ -296,13 +238,17 @@
       <!-- ↓↓ 一支影片（要多一支：整段 div 複製貼在後面）↓↓ -->
       <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題（可英＋中，中間用 br 換行）】</div>
-        <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000"><iframe src="✏️【YouTube 嵌入網址：影片→分享→嵌入→複製網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div>
+        <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000">
+          <iframe src="✏️【YouTube 嵌入網址：影片→分享→嵌入→複製網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe>
+        </div>
       </div>
       <!-- ↑↑ 一支影片 ↑↑ -->
 
       <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題】</div>
-        <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000"><iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div>
+        <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000">
+          <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe>
+        </div>
       </div>
 
     </div>
@@ -344,12 +290,24 @@
     <div style="display:flex;flex-wrap:wrap;justify-content:center;margin-top:14px">
 
       <!-- ↓↓ 一張方圖（要多一張：整段 div 複製貼在後面）↓↓ -->
-      <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="✏️【請貼上方形圖片網址（見「圖片取得方式」分頁）】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <div style="flex:1 1 200px;margin:6px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上方形圖片網址（見「圖片取得方式」分頁）】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
       <!-- ↑↑ 一張方圖 ↑↑ -->
 
-      <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <div style="flex:1 1 200px;margin:6px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
 
-      <div style="flex:1 1 200px;margin:6px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <div style="flex:1 1 200px;margin:6px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
 
     </div>
   </div>
@@ -357,11 +315,495 @@
           </div>
         </article>
       </div>
-      <div id="lego-scene" class="lego"><div class="todo-card"><b>「情境 橫圖壓文」積木製作中</b><br>滿版橫圖＋疊字情境區塊，格式確認後補上。</div></div>
-      <div id="lego-grid" class="lego"><div class="todo-card"><b>「棋盤格」積木製作中</b><br>圖文各半、左右交替的優點／情境格，格式確認後補上。</div></div>
+      <div id="lego-scene" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">05</span><h3>情境 橫圖壓文</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>滿版橫式大圖＋文字疊在圖上，用來營造使用情境。<br><b>兩種版型</b>：A 文字左上、B 文字左下——<b>挑你圖片「暗部」位置對應的那個</b>（暗部在左上→版本 A、暗部在下方→版本 B），文字才看得清楚。兩個版型各自有預覽與複製語法，<b>用哪個就複製哪個</b>。<br><b>換圖</b>：改 <code>&lt;img&gt;</code> src（建議 16:9 橫式、寬一點的高解析圖）。<br><b>換字</b>：填英文小標、大標、一句說明。<br>📦 <b>這塊是滿版</b>（貼齊螢幕兩側）；<code>width:100vw…</code> 是滿版設定、不要動。</span></p>
+
+          <!-- ========== 版本 A：文字左上 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 A：文字左上（圖片暗部在「左上」時用）‧ 完成後長這樣</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="position:relative;width:100%;overflow:hidden;background:#f4f4f4">
+      <div style="position:relative;width:100%;padding-bottom:56.25%">
+        <img src="https://img.shoplineapp.com/media/image_clips/6a3e0c7544f42230e076178a/original.png?1782451316=&owner_id=57975b626170691220930c00" alt="咖啡廳手持 YU 360° 指環支架透明手機殼，金屬指環翻出當支架" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(0,0,0,.58),rgba(0,0,0,.12) 44%,rgba(0,0,0,0) 66%);pointer-events:none"></div>
+      </div>
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0">
+        <div style="max-width:1080px;margin:0 auto;padding:0 20px;height:100%;position:relative">
+          <div style="position:absolute;left:20px;top:clamp(16px,4vw,44px);max-width:70%;text-align:left;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45)">
+            <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">Everyday</div>
+            <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff">解放雙手，生活更自在</h2>
+            <p style="font-size:clamp(16px,2vw,18px);line-height:1.5;margin:8px 0 0;color:rgba(255,255,255,.92)">一個支架多種玩法，追劇、視訊、料理、健身、出遊都用得上</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【版本 A】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 A ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 版本 A（文字左上）：背景圖換 src、文字填【】。長長的 style="…" 不要動。 -->
+<!-- 情境 橫圖壓文 A：文字左上（圖片暗部在「左上」的圖用這個）｜滿版·width:100vw 設定不要動 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow:hidden;background:#f4f4f4">
+  <div style="position:relative;width:100%;height:clamp(400px,56.25vw,720px)">
+    <img src="✏️【請貼上橫式情境大圖網址（見「圖片取得方式」分頁）】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(0,0,0,.58),rgba(0,0,0,.12) 44%,rgba(0,0,0,0) 66%);pointer-events:none"></div>
+  </div>
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0">
+    <div style="max-width:1080px;margin:0 auto;padding:0 20px;height:100%;position:relative">
+      <div style="position:absolute;left:20px;top:clamp(18px,5vw,48px);max-width:560px;text-align:left;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.45)">
+        <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Everyday】</div>
+        <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff">✏️【情境大標，例：解放雙手，生活更自在】</h2>
+        <p style="font-size:clamp(16px,2vw,18px);line-height:1.5;margin:8px 0 0;color:rgba(255,255,255,.92)">✏️【一句說明】</p>
+      </div>
+    </div>
+  </div>
+</div></textarea>
+          </div>
+
+          <!-- ========== 版本 B：文字左下 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 B：文字左下（圖片暗部在「下方」時用）‧ 完成後長這樣</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="position:relative;width:100%;overflow:hidden;background:#f4f4f4">
+      <div style="position:relative;width:100%;padding-bottom:56.25%">
+        <img src="https://img.shoplineapp.com/media/image_clips/6a3e0f14d93901e8c300fe7f/original.png?1782451987=&owner_id=57975b626170691220930c00" alt="YU 360° 無段支架手機殼系列平擺：白色款翻出金屬指環支架，旁有藍／綠／透明多色款，皆支援 MagSafe" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,.28) 38%,rgba(0,0,0,0) 68%);pointer-events:none"></div>
+      </div>
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0">
+        <div style="max-width:1080px;margin:0 auto;padding:0 20px;height:100%;position:relative">
+          <div style="position:absolute;left:20px;bottom:clamp(16px,4vw,44px);max-width:70%;text-align:left;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.5)">
+            <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">Features</div>
+            <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff">YU 360° 無段支架手機殼</h2>
+            <p style="font-size:clamp(16px,2vw,18px);line-height:1.5;margin:8px 0 0;color:rgba(255,255,255,.92)">不只如此，還有更多亮點</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【版本 B】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 B ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 版本 B（文字左下）：背景圖換 src、文字填【】。長長的 style="…" 不要動。 -->
+<!-- 情境 橫圖壓文 B：文字左下（圖片暗部在「下方」的圖用這個）｜滿版·width:100vw 設定不要動 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow:hidden;background:#f4f4f4">
+  <div style="position:relative;width:100%;height:clamp(400px,56.25vw,720px)">
+    <img src="✏️【請貼上橫式情境大圖網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,.28) 38%,rgba(0,0,0,0) 68%);pointer-events:none"></div>
+  </div>
+  <div style="position:absolute;top:0;left:0;right:0;bottom:0">
+    <div style="max-width:1080px;margin:0 auto;padding:0 20px;height:100%;position:relative">
+      <div style="position:absolute;left:20px;bottom:clamp(18px,5vw,44px);max-width:560px;text-align:left;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.5)">
+        <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Features】</div>
+        <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff">✏️【情境大標／可放產品全名，例：YU 360° 無段支架手機殼】</h2>
+        <p style="font-size:clamp(16px,2vw,18px);line-height:1.5;margin:8px 0 0;color:rgba(255,255,255,.92)">✏️【一句說明】</p>
+      </div>
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+      <div id="lego-grid" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">07</span><h3>棋盤格（圖文各半）</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>圖片與文字各占一半、左右交替排列（像棋盤格），適合逐點介紹功能或情境。<br><b>兩種版型</b>：A 無英文小標（純中文標題）、B 有英文小標（每列多一行橘色英文小標）。兩版各自有預覽與複製語法，<b>用哪個就複製哪個</b>。<br><b>交替</b>：一列圖左文右、下一列圖右文左——想反向就在那一列的 flex 樣式加／移除 <code>flex-direction:row-reverse</code>。<br>➕ <b>多一列</b>：複製整段一列的 <code>&lt;div…&gt;…&lt;/div&gt;</code>。手機一律圖上文下。<br>📦 <b>這塊是滿版</b>；<code>width:100vw…</code> 是滿版設定、不要動。</span></p>
+
+          <!-- ========== 版本 A：無英文小標 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 A：無英文小標（純中文標題）‧ 完成後長這樣</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 12px;flex-direction:row-reverse">
+      <div style="flex:1 1 384px;min-width:0"><div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4"><img src="https://img.shoplineapp.com/media/image_clips/6a3933293524d2891848cf97/original.png?1782133544=&owner_id=57975b626170691220930c00" alt="情境一：隨身自拍神器，野餐聚會戶外旅行完美角度" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left"><h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">隨身自拍神器</h3><p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">輕鬆升級為隨身自拍神器，野餐、聚會、戶外旅行，完美角度輕鬆 Get！</p></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 12px">
+      <div style="flex:1 1 384px;min-width:0"><div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4"><img src="https://img.shoplineapp.com/media/image_clips/6a3e2a60a2d8349437537d12/original.png?1782458974=&owner_id=57975b626170691220930c00" alt="情境二：變身增高支架，卡入寶特瓶讓螢幕與視線齊平" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left"><h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">變身增高支架</h3><p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">可巧妙卡入寶特瓶、飲料瓶，讓螢幕與視線齊平；長時間使用手機也能保持最舒適的姿勢。</p></div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【版本 A：無英文小標】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 A ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 版本 A（無英文小標）：圖片換 src、文字填【】。長長的 style="…" 不要動。 -->
+<!-- 棋盤格 版本 A：無英文小標（純中文標題）｜滿版·width:100vw 設定不要動 -->
+<div style="padding:clamp(16px,4vw,28px) 0;position:relative;width:100vw;left:50%;margin-left:-50vw">
+      <!-- ↓↓ 一列（圖右文左（加了 row-reverse））｜要反向就加／移除 flex-direction:row-reverse ↓↓ -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 clamp(0px,calc((768px - 100vw)*99),44px);flex-direction:row-reverse">
+        <div style="flex:1 1 384px;min-width:0">
+          <div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4">
+            <img src="✏️【請貼上橫式情境圖網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+        </div>
+        <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left">
+          <h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">✏️【標題，例：隨身自拍神器】</h3>
+          <p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">✏️【說明文字】</p>
+        </div>
+      </div>
+      <!-- ↑↑ 一列 ↑↑ -->
+
+      <!-- ↓↓ 一列（圖左文右）｜要反向就加／移除 flex-direction:row-reverse ↓↓ -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 clamp(0px,calc((768px - 100vw)*99),44px)">
+        <div style="flex:1 1 384px;min-width:0">
+          <div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4">
+            <img src="✏️【請貼上橫式情境圖網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+        </div>
+        <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left">
+          <h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">✏️【標題，例：變身增高支架】</h3>
+          <p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">✏️【說明文字】</p>
+        </div>
+      </div>
+      <!-- ↑↑ 一列 ↑↑ -->
+</div></textarea>
+          </div>
+
+          <!-- ========== 版本 B：有英文小標 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 B：有英文小標（每列多一行英文小標）‧ 完成後長這樣</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 12px">
+      <div style="flex:1 1 384px;min-width:0"><div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4"><img src="https://img.shoplineapp.com/media/image_clips/6a3c0f62105d6a6c36fd8d84/original.png?1782320994=&owner_id=57975b626170691220930c00" alt="手持 YU 黑色手機殼，MagSafe 圓形充電器磁吸貼合背面、免脫殼充電" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left"><div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 10px">MagSafe</div><h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">內建強效 MagSafe 磁吸圈</h3><p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">精準對位、一貼即合，磁吸充電免脫殼、配件秒上身；磁力穩固，掛在磁吸支架或車架也牢靠。</p></div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 12px;flex-direction:row-reverse">
+      <div style="flex:1 1 384px;min-width:0"><div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4"><img src="https://img.shoplineapp.com/media/image_clips/6a3c30a893bc25df6f0ad2d7/original.png?1782329511=&owner_id=57975b626170691220930c00" alt="YU 透明防摔手機殼平放於木桌，金屬指環支架翻出，邊角強化緩衝、鏡頭框墊高" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left"><div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 10px">Drop Protection</div><h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">四角氣墊 × 鏡頭墊高防摔</h3><p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">四邊與四角強化緩衝、分散撞擊力道；鏡頭框微增高、高於鏡頭表面，平放不刮鏡頭，日常碰撞更安心。</p></div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【版本 B：有英文小標】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 B ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 版本 B（有英文小標）：圖片換 src、文字填【】。長長的 style="…" 不要動。 -->
+<!-- 棋盤格 版本 B：有英文小標（每列加一行橘色英文小標）｜滿版·width:100vw 設定不要動 -->
+<div style="padding:clamp(16px,4vw,28px) 0;position:relative;width:100vw;left:50%;margin-left:-50vw">
+      <!-- ↓↓ 一列（圖左文右）｜要反向就加／移除 flex-direction:row-reverse ↓↓ -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 clamp(0px,calc((768px - 100vw)*99),44px)">
+        <div style="flex:1 1 384px;min-width:0">
+          <div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4">
+            <img src="✏️【請貼上橫式情境圖網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+        </div>
+        <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left">
+          <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 10px">✏️【英文小標，例：MagSafe】</div>
+          <h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">✏️【標題，例：內建強效 MagSafe 磁吸圈】</h3>
+          <p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">✏️【說明文字】</p>
+        </div>
+      </div>
+      <!-- ↑↑ 一列 ↑↑ -->
+
+      <!-- ↓↓ 一列（圖右文左（加了 row-reverse））｜要反向就加／移除 flex-direction:row-reverse ↓↓ -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;margin:0 0 clamp(0px,calc((768px - 100vw)*99),44px);flex-direction:row-reverse">
+        <div style="flex:1 1 384px;min-width:0">
+          <div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#f4f4f4">
+            <img src="✏️【請貼上橫式情境圖網址】" alt="✏️【這張圖的說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+          </div>
+        </div>
+        <div style="flex:1 1 384px;min-width:0;box-sizing:border-box;padding:clamp(28px,5vw,56px);text-align:left">
+          <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 10px">✏️【英文小標，例：Drop Protection】</div>
+          <h3 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.3;margin:0 0 12px">✏️【標題，例：四角氣墊 × 鏡頭墊高防摔】</h3>
+          <p style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;margin:0">✏️【說明文字】</p>
+        </div>
+      </div>
+      <!-- ↑↑ 一列 ↑↑ -->
+</div></textarea>
+          </div>
+        </article>
+      </div>
       <div id="lego-compare" class="lego"><div class="todo-card"><b>「版本比較」積木製作中</b><br>改用單張合成圖／通用公告區塊（不做複雜表格），格式確認後補上。</div></div>
-      <div id="lego-addon" class="lego"><div class="todo-card"><b>「加價購」積木製作中</b><br>橫向捲動加購卡片，格式確認後補上。</div></div>
-      <div id="lego-cta" class="lego"><div class="todo-card"><b>「收尾 CTA」積木製作中</b><br>情境背景圖＋回購買區按鈕，格式確認後補上。</div></div>
+      <!-- ========================= 09 加價購 ========================= -->
+      <div id="lego-addon" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">09</span><h3>加價購</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span><b>全店共用的加價購商品</b>（固定 15 項，所有商品頁都放同一組）——<b>直接複製整段貼上即可、不用改</b>。<br>要調整加購品項，再複製／刪整張卡的 <code>&lt;a&gt;…&lt;/a&gt;</code>。<br>📦 <b>這塊是滿版</b>（貼齊螢幕兩側）；最外層 <code>width:100vw…</code> 是滿版設定、不要動。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽，可左右滑 ‧ 共 15 項）</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="border-top:1px solid #ededed;padding:clamp(16px,4vw,28px) 0 24px">
+      <div style="text-align:center;padding:0 24px;margin:0 0 4px">
+        <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px">Add-on Deals</div>
+        <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">加價購，省更多</h2>
+        <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">結帳前一起帶，配件一次補齊 ‧ 左右滑看更多 →</p>
+      </div>
+      <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+        <a href="https://www.londonimg.tw/products/%E3%80%90z19%E3%80%91-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="瞬貼無痕極地冰盾貼【Z19】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">瞬貼無痕極地冰盾貼【Z19】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$490</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$690</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/b57-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg" alt="HANG 22W 雙孔快充頭＋PD 快充線【B57】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">HANG 22W 雙孔快充頭＋PD 快充線【B57】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$480</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$790</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/s08" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="MagSafe 雙面磁吸金屬桌面支架【S08】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">MagSafe 雙面磁吸金屬桌面支架【S08】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$249</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$490</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/b51-2" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/64bf7416b98c2700148e354b/400x.webp?source_format=jpeg" alt="IceRen 手機掛繩＋夾片【B51】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">IceRen 手機掛繩＋夾片【B51】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$200</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$690</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91g79" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/64f6f86321af7a0017be0b0a/400x.webp?source_format=jpeg" alt="15W MagSafe 磁吸無線充電器【G79】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">15W MagSafe 磁吸無線充電器【G79】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$299</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$590</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg" alt="iPhone 鏡頭玻璃金屬環【N08】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">iPhone 鏡頭玻璃金屬環【N08】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$350</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$590</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/f91-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/66ab308f36b05e001c8dcabd/400x.webp?source_format=jpeg" alt="YU MagSafe 透明磁吸卡夾【F91】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">YU MagSafe 透明磁吸卡夾【F91】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$190</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/s09" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/66dff59eec2b530013ba8960/400x.webp?source_format=jpeg" alt="手提行李秤【S09】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">手提行李秤【S09】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$149</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91b36" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/640eeca68937d100237f106a/400x.webp?source_format=jpeg" alt="YU 磁吸手機支架卡夾＋防磁片【B36】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">YU 磁吸手機支架卡夾＋防磁片【B36】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$390</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$690</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91u37" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/62130e979a5cc90023d6f7be/400x.webp?source_format=jpeg" alt="HANG 22W 雙孔快速閃充充電頭【U37】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">HANG 22W 雙孔快速閃充充電頭【U37】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$450</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$590</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/s06" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/66dff3ad7d4868000d50ba9b/400x.webp?source_format=jpeg" alt="Apple Watch 無線充電底座【S06】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">Apple Watch 無線充電底座【S06】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$99</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/d35-3" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/655c53d2111ea6001489c87c/400x.webp?source_format=jpeg" alt="pqi 三合一磁吸無線充電座【D32】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">pqi 三合一磁吸無線充電座【D32】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$1,590</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$1,890</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/s07" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/66dff40f82d10bf8a0c0b2e9/400x.webp?source_format=jpeg" alt="藍芽耳機清潔筆【S07】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">藍芽耳機清潔筆【S07】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$49</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$89</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/d13" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/64fe943505ac6b001d8f7ed2/400x.webp?source_format=jpeg" alt="兩段式 MagSafe 磁吸支架【D13】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">兩段式 MagSafe 磁吸支架【D13】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$199</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$490</span></div></div></a>
+        <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91b51-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"><img src="https://shoplineimg.com/57975b626170691220930c00/642544fa859fdd00172631ca/400x.webp?source_format=jpeg" alt="IceRen 手機雙面夾片【B51】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div><div style="padding:10px 11px 12px"><p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">IceRen 手機雙面夾片【B51】</p><div><span style="font-size:16px;font-weight:700;color:#fe5226">NT$99</span> <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span></div></div></a>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製這段 → 直接貼進 SHOPLINE「商品描述 → HTML 原始碼」（加購商品全店共用、不用改）</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- 加價購（滿版橫滑商品卡 ‧ 全店共用 15 項 ‧ 直接整段貼上、不用改）-->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
+  <div style="border-top:1px solid #ededed;padding:clamp(16px,4vw,28px) 0 24px">
+    <div style="text-align:center;padding:0 24px;margin:0 0 4px">
+      <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px">Add-on Deals</div>
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">加價購，省更多</h2>
+      <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">結帳前一起帶，配件一次補齊 ‧ 左右滑看更多 →</p>
+    </div>
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+
+      <a href="https://www.londonimg.tw/products/%E3%80%90z19%E3%80%91-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="瞬貼無痕極地冰盾貼【Z19】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">瞬貼無痕極地冰盾貼【Z19】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$490</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$690</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/b57-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg" alt="HANG 22W 雙孔快充頭＋PD 快充線【B57】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">HANG 22W 雙孔快充頭＋PD 快充線【B57】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$480</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$790</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/s08" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="MagSafe 雙面磁吸金屬桌面支架【S08】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">MagSafe 雙面磁吸金屬桌面支架【S08】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$249</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$490</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/b51-2" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/64bf7416b98c2700148e354b/400x.webp?source_format=jpeg" alt="IceRen 手機掛繩＋夾片【B51】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">IceRen 手機掛繩＋夾片【B51】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$200</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$690</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91g79" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/64f6f86321af7a0017be0b0a/400x.webp?source_format=jpeg" alt="15W MagSafe 磁吸無線充電器【G79】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">15W MagSafe 磁吸無線充電器【G79】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$299</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$590</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg" alt="iPhone 鏡頭玻璃金屬環【N08】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">iPhone 鏡頭玻璃金屬環【N08】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$350</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$590</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/f91-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/66ab308f36b05e001c8dcabd/400x.webp?source_format=jpeg" alt="YU MagSafe 透明磁吸卡夾【F91】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">YU MagSafe 透明磁吸卡夾【F91】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$190</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/s09" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/66dff59eec2b530013ba8960/400x.webp?source_format=jpeg" alt="手提行李秤【S09】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">手提行李秤【S09】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$149</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91b36" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/640eeca68937d100237f106a/400x.webp?source_format=jpeg" alt="YU 磁吸手機支架卡夾＋防磁片【B36】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">YU 磁吸手機支架卡夾＋防磁片【B36】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$390</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$690</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91u37" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/62130e979a5cc90023d6f7be/400x.webp?source_format=jpeg" alt="HANG 22W 雙孔快速閃充充電頭【U37】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">HANG 22W 雙孔快速閃充充電頭【U37】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$450</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$590</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/s06" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/66dff3ad7d4868000d50ba9b/400x.webp?source_format=jpeg" alt="Apple Watch 無線充電底座【S06】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">Apple Watch 無線充電底座【S06】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$99</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/d35-3" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/655c53d2111ea6001489c87c/400x.webp?source_format=jpeg" alt="pqi 三合一磁吸無線充電座【D32】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">pqi 三合一磁吸無線充電座【D32】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$1,590</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$1,890</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/s07" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/66dff40f82d10bf8a0c0b2e9/400x.webp?source_format=jpeg" alt="藍芽耳機清潔筆【S07】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">藍芽耳機清潔筆【S07】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$49</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$89</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/d13" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/64fe943505ac6b001d8f7ed2/400x.webp?source_format=jpeg" alt="兩段式 MagSafe 磁吸支架【D13】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">兩段式 MagSafe 磁吸支架【D13】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$199</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$490</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91b51-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(140px,40vw,165px);scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7">
+          <img src="https://shoplineimg.com/57975b626170691220930c00/642544fa859fdd00172631ca/400x.webp?source_format=jpeg" alt="IceRen 手機雙面夾片【B51】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="padding:10px 11px 12px">
+          <p style="font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">IceRen 手機雙面夾片【B51】</p>
+          <div>
+            <span style="font-size:16px;font-weight:700;color:#fe5226">NT$99</span>
+            <span style="font-size:12px;color:#9b9b9f;text-decoration:line-through">NT$390</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
+      <!-- ========================= 10 收尾 CTA ========================= -->
+      <div id="lego-cta" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">10</span><h3>收尾 CTA</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>頁尾收尾大圖：情境背景圖＋總結標題＋「回購買區」按鈕（最後臨門一腳）。<br><b>換圖</b>：改 <code>&lt;img&gt;</code> src（用情境大圖，桌機接近全圖顯示）。<br><b>換字</b>：填總結大標（可 <code>&lt;br&gt;</code> 換兩行）、下方一句描述。<br>🔗 <b>填按鈕網址</b>：你商品的<b>完整網址</b>＋<code>#sl-product-image</code>（點了會捲回上方購買區）。語法裡有<b>兩個按鈕</b>（桌機版／手機版各一顆，外觀位置不同），<b>兩個都填一樣的網址</b>。<br>⚠️ <b>一定要完整網址</b>（<code>https://…</code>），<b>不能只填 #</b>——SHOPLINE 有 base href 會把相對 # 導去首頁。</span></p>
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽）</div>
+          <div class="preview">
+  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="position:relative;overflow:hidden;color:#fff;height:clamp(500px,103vw,1071px)">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a3c5340d95933f7b0d1a0c1/original.png?1782338367=&owner_id=57975b626170691220930c00" alt="YU 360° 無段支架手機殼三色款平擺木桌，金屬指環支架翻出" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom,rgba(0,0,0,.6),rgba(0,0,0,.5) 200px,rgba(0,0,0,0) 360px);pointer-events:none"></div>
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:clamp(28px,5vw,56px) 24px">
+        <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;line-height:1.5;margin:0;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.6)">一個殼搞定<br>追劇・視訊・防摔・磁吸</h2>
+        <p style="font-size:clamp(16px,2vw,19px);line-height:1.5;margin:0 auto 26px;color:rgba(255,255,255,.94);text-shadow:0 1px 12px rgba(0,0,0,.6)">YU 360° 無段支架手機殼 ‧ 金屬指環支架 × MagSafe 磁吸 × 防摔 ‧ 適用 iPhone 12～17（mini 除外）</p>
+        <div style="overflow:hidden;max-height:clamp(0px,calc((100vw - 1023px)*99),140px)"><a href="https://www.londonimg.tw/products/yu-iphone-360-ring-stand-case-2#sl-product-image" style="display:inline-block;background:linear-gradient(135deg,#ff8a3d,#fe5226 55%,#f5391a);color:#fff;font-weight:800;font-size:clamp(16px,2vw,20px);letter-spacing:1px;padding:15px 40px;border-radius:999px;text-decoration:none;box-shadow:0 8px 22px rgba(254,82,38,.5)">回上方選你的機型・立即加入購物車</a></div>
+      </div>
+    </div>
+    <div style="overflow:hidden;text-align:center;max-height:clamp(0px,calc((1025px - 100vw)*99),140px);padding:clamp(0px,calc((1025px - 100vw)*99),24px) 0 clamp(0px,calc((1025px - 100vw)*99),10px)"><a href="https://www.londonimg.tw/products/yu-iphone-360-ring-stand-case-2#sl-product-image" style="display:inline-block;background:linear-gradient(135deg,#ff8a3d,#fe5226 55%,#f5391a);color:#fff;font-weight:800;font-size:clamp(16px,2vw,20px);letter-spacing:1px;padding:15px 40px;border-radius:999px;text-decoration:none;box-shadow:0 8px 22px rgba(254,82,38,.45)">回上方選你的機型・立即加入購物車</a></div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：背景圖換 src、文字填【】、兩個按鈕網址填一樣。長長的 style="…" 不要動。 -->
+<!-- 收尾 CTA（情境背景圖＋總結＋回購買區按鈕）-->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="position:relative;overflow:hidden;color:#fff;height:clamp(500px,103vw,1071px)">
+    <img src="✏️【請貼上情境大圖網址（見「圖片取得方式」分頁）】" alt="✏️【這張圖的內容說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom,rgba(0,0,0,.6),rgba(0,0,0,.5) 200px,rgba(0,0,0,0) 360px);pointer-events:none"></div>
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:clamp(28px,5vw,56px) 24px">
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;line-height:1.5;margin:0;color:#fff;text-shadow:0 1px 14px rgba(0,0,0,.6)">✏️【總結大標，例：一個殼搞定】<br>✏️【副標，例：追劇・視訊・防摔・磁吸】</h2>
+      <p style="font-size:clamp(16px,2vw,19px);line-height:1.5;margin:0 auto 26px;color:rgba(255,255,255,.94);text-shadow:0 1px 12px rgba(0,0,0,.6)">✏️【一句描述：品牌＋核心賣點＋適用機型】</p>
+      <!-- 桌機版按鈕（疊在圖上·窄螢幕自動收合）-->
+      <div style="overflow:hidden;max-height:clamp(0px,calc((100vw - 1023px)*99),140px)">
+        <a href="✏️【你商品的完整網址＋#sl-product-image，例：https://www.londonimg.tw/products/xxx#sl-product-image】" style="display:inline-block;background:linear-gradient(135deg,#ff8a3d,#fe5226 55%,#f5391a);color:#fff;font-weight:800;font-size:clamp(16px,2vw,20px);letter-spacing:1px;padding:15px 40px;border-radius:999px;text-decoration:none;box-shadow:0 8px 22px rgba(254,82,38,.5)">回上方選你的機型・立即加入購物車</a>
+      </div>
+    </div>
+  </div>
+  <!-- 手機版按鈕（圖外下方·寬螢幕自動收合）·網址填跟上面一樣 -->
+  <div style="overflow:hidden;text-align:center;max-height:clamp(0px,calc((1025px - 100vw)*99),140px);padding:clamp(0px,calc((1025px - 100vw)*99),24px) 0 clamp(0px,calc((1025px - 100vw)*99),10px)">
+    <a href="✏️【同上：你商品的完整網址＋#sl-product-image】" style="display:inline-block;background:linear-gradient(135deg,#ff8a3d,#fe5226 55%,#f5391a);color:#fff;font-weight:800;font-size:clamp(16px,2vw,20px);letter-spacing:1px;padding:15px 40px;border-radius:999px;text-decoration:none;box-shadow:0 8px 22px rgba(254,82,38,.45)">回上方選你的機型・立即加入購物車</a>
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
       <!-- ========================= 11 規格 ========================= -->
       <div id="lego-spec" class="lego">
         <article class="block">
@@ -390,16 +832,28 @@
 <div style="max-width:1080px;margin:0 auto;padding:0 20px">
   <div style="padding:clamp(20px,4vw,32px) 0 clamp(12px,3vw,20px);border-top:1px solid #ededed">
     <div style="display:flex;flex-wrap:wrap;align-items:flex-start">
-      <div style="flex:1 1 200px;min-width:0;margin:0 clamp(0px,4vw,40px) 14px 0"><div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">Specs</div><h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;margin:0;color:#1a1a1a">規格</h2></div>
+      <div style="flex:1 1 200px;min-width:0;margin:0 clamp(0px,4vw,40px) 14px 0">
+        <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">Specs</div>
+        <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;margin:0;color:#1a1a1a">規格</h2>
+      </div>
       <div style="flex:2 1 360px;min-width:0">
 
         <!-- ↓↓ 一列規格（要多一列：整段 div 複製貼在後面）↓↓ -->
-        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目，例：材質】</span><span style="color:#6E6E73">✏️【內容，例：TPU＋PC 複合】</span></div>
+        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5">
+          <span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目，例：材質】</span>
+          <span style="color:#6E6E73">✏️【內容，例：TPU＋PC 複合】</span>
+        </div>
         <!-- ↑↑ 一列規格 ↑↑ -->
 
-        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目】</span><span style="color:#6E6E73">✏️【內容】</span></div>
+        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5">
+          <span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目】</span>
+          <span style="color:#6E6E73">✏️【內容】</span>
+        </div>
 
-        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5"><span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目】</span><span style="color:#6E6E73">✏️【內容】</span></div>
+        <div style="display:flex;padding:15px 2px;border-top:1px solid #ededed;font-size:clamp(16px,2.1vw,19px);line-height:1.5">
+          <span style="flex:0 0 92px;font-weight:600;margin-right:20px">✏️【項目】</span>
+          <span style="color:#6E6E73">✏️【內容】</span>
+        </div>
 
         <div style="border-top:1px solid #ededed"></div>
       </div>
@@ -433,16 +887,28 @@
 <!-- 常見 QA（卡片式平鋪 FAQ）-->
 <div style="max-width:1080px;margin:0 auto;padding:0 20px">
   <div style="padding:clamp(12px,3vw,20px) 0 clamp(20px,5vw,40px)">
-    <div style="text-align:center;margin:0 0 22px"><div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px">FAQ</div><h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">常見問題</h2></div>
+    <div style="text-align:center;margin:0 0 22px">
+      <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px">FAQ</div>
+      <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0">常見問題</h2>
+    </div>
     <div style="margin:0 auto">
 
       <!-- ↓↓ 一則問答（要多一則：整段 div 複製貼在後面，建議 4～6 則）↓↓ -->
-      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p></div>
+      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px">
+        <p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p>
+        <p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p>
+      </div>
       <!-- ↑↑ 一則問答 ↑↑ -->
 
-      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p></div>
+      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0 0 9px">
+        <p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p>
+        <p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p>
+      </div>
 
-      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0"><p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p><p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p></div>
+      <div style="background:#f7f6f4;border-radius:10px;padding:14px 16px;margin:0">
+        <p style="font-size:clamp(16px,2.1vw,18px);font-weight:600;line-height:1.45;margin:0 0 5px;color:#1a1a1a"><span style="display:inline-block;background:#fe5226;color:#fff;font-size:12px;font-weight:700;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px">Q</span>✏️【問題】</p>
+        <p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0">✏️【答案】</p>
+      </div>
 
     </div>
   </div>
@@ -451,64 +917,7 @@
         </article>
       </div>
       <!-- ========================= 12 SNS（社群圖牆 ‧ UGC） ========================= -->
-      <div id="lego-sns" class="lego">
-        <article class="block">
-          <div class="block-head"><span class="num">12</span><h3>SNS（社群圖牆 ‧ UGC）</h3></div>
-          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>IG 風格的<b>正方形圖牆</b>（固定 3 欄），放顧客實拍開箱、KOL／部落客截圖，建立社會證明。<br><b>換圖</b>：改每張卡的 <code>&lt;img&gt;</code> src（用正方形圖最整齊）。<br>🔗 <b>要連結</b>：把卡片 <code>href</code> 填成貼文網址；<b>不要連結</b>就照註解把 <code>&lt;a&gt;</code> 改成 <code>&lt;div&gt;</code>。<br>➕ <b>多一張</b>：複製整段 <code>&lt;a&gt;…&lt;/a&gt;</code>（<b>建議維持 3 的倍數</b>＝每列剛好排滿）。<br>➖ <b>少一張</b>：刪掉整段 <code>&lt;a&gt;…&lt;/a&gt;</code>。<br>⚠️ <b>一定要用真實顧客／KOL 授權的照片</b>，不可用 AI 生成的假圖或假截圖。</span></p>
-          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽，示意圖以產品照代替 UGC）</div>
-          <div class="preview">
-  <!-- SNS 社群圖牆（UGC）-->
-  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
-    <div style="padding:18px 0 8px">
-      <div style="text-align:center;margin:0 0 14px">
-        <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">As Seen On IG</div>
-        <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">大家都這樣用</h2>
-        <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">真實顧客的開箱與分享</p>
-      </div>
-      <div style="display:flex;flex-wrap:wrap;justify-content:center;margin:0 -2px">
-        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://img.shoplineapp.com/media/image_clips/6a22b39524a21718252a0d1c/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="顧客開箱 1" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395d362befded384457/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="顧客開箱 2" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395b2736d986276cde4/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="顧客開箱 3" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="顧客開箱 4" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg" alt="顧客開箱 5" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="顧客開箱 6" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-      </div>
-    </div>
-  </div></div>
-          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
-          <div class="code">
-            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
-            <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：每張卡片改圖片 src、要不要連結。長長的 style="…" 不要動。 -->
-<!-- SNS 社群圖牆（UGC）：IG 風格正方形圖牆，固定 3 欄 -->
-<div style="max-width:1080px;margin:0 auto;padding:0 20px">
-  <div style="padding:clamp(16px,4vw,28px) 0">
-    <div style="text-align:center;margin:0 0 14px">
-      <div style="font-size:clamp(11px,1.4vw,13px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#c2502e;margin:0 0 10px">✏️【英文小標，例：As Seen On IG】</div>
-      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">✏️【區塊標題，例：大家都這樣用】</h2>
-      <p style="font-size:16px;color:#6E6E73;margin:6px 0 0">✏️【一句說明，例：真實顧客的開箱與分享】</p>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;justify-content:center;margin:0 -2px">
-
-      <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面，建議維持 3 的倍數）↓↓ -->
-      <a href="✏️【連到貼文網址；不需要連結：把 href=".." 刪掉、開頭 a 改成 div、結尾 /a 改成 /div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
-      <!-- ↑↑ 一張圖卡 ↑↑ -->
-
-      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
-
-      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
-
-      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
-
-      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
-
-      <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 33.333%;max-width:33.333%;padding:2px;box-sizing:border-box;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px"><img src="✏️【請貼上方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
-
-    </div>
-  </div>
-</div></textarea>
-          </div>
-        </article>
-      </div>
+      <div id="lego-sns" class="lego"><div class="todo-card"><b>「SNS（社群圖牆）」積木施工中</b><br>IG 風格社群 UGC 圖牆，格式確認後補上。</div></div>
 
     </section>
 
