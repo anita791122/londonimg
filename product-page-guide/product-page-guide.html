@@ -33,7 +33,7 @@
         <a class="sub-a" data-lego="scene" onclick="showLego('scene')">情境 橫圖壓文</a>
         <a class="sub-a" data-lego="grid" onclick="showLego('grid')">棋盤格</a>
         <a class="sub-a" data-lego="slider" onclick="showLego('slider')">多圖橫移</a>
-        <a class="sub-a todo" data-lego="compare" onclick="showLego('compare')">版本比較</a>
+        <a class="sub-a" data-lego="compare" onclick="showLego('compare')">版本比較</a>
         <a class="sub-a" data-lego="addon" onclick="showLego('addon')">加價購</a>
         <a class="sub-a" data-lego="cta" onclick="showLego('cta')">收尾 CTA</a>
         <a class="sub-a" data-lego="spec" onclick="showLego('spec')">規格</a>
@@ -177,8 +177,9 @@
       <div id="lego-slider" class="lego">
         <article class="block">
           <div class="block-head"><span class="num">06</span><h3>多圖橫移（方形滑塊）</h3></div>
-          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>一排可左右滑的<b>正方形大圖</b>，放同一產品的多角度／多情境實拍（像 IG 九宮格的橫向版）。手機用手指滑、桌機用滑鼠拖或滾輪。<br><b>換圖</b>：改每張 <code>&lt;img&gt;</code> 的 <code>src</code>（用<b>正方形</b>高解析圖最整齊）。<br>➕➖ <b>增減圖</b>：複製／刪整張的 <code>&lt;div style="flex:0 0 auto…"&gt;…&lt;/div&gt;</code>（建議 5～10 張）。<br>🔗 <b>想讓某張可點</b>（連到商品／系列頁）：照語法<b>最後一張的 <code>&lt;a href…&gt;</code> 寫法</b>（每張都可自由選要不要連）。<br>📦 <b>這塊是滿版</b>（貼齊螢幕兩側）；最外層 <code>width:100vw…</code> 是滿版設定、不要動。<br>⚠️ 圖片<b>直角、不加圓角</b>（全站統一）。</span></p>
-          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>完成後長這樣（範例預覽，可左右滑）</div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>一排可左右滑的<b>正方形大圖</b>，放同一產品的多角度／多情境實拍（像 IG 九宮格的橫向版）。手機用手指滑、桌機用滑鼠拖或滾輪。<br><b>三種版型</b>：A 有標題（純圖）、A-2 有標題＋可連結（整張圖可點，連到商品／系列頁）、B 只有照片（無標題無備注）。三版各自有預覽與複製語法，<b>用哪個就複製哪個</b>。<br><b>換圖</b>：改每張 <code>&lt;img&gt;</code> 的 <code>src</code>（用<b>正方形</b>高解析圖最整齊）。<br>➕➖ <b>增減圖</b>：複製／刪整張的 <code>&lt;div style="flex:0 0 auto…"&gt;…&lt;/div&gt;</code>（建議 5～10 張）。<br>🔗 <b>想讓圖可點</b>（連到商品／系列頁）：用<b>版本 A-2</b>（每張都是 <code>&lt;a href…&gt;</code>；某張不想連就換回 <code>&lt;div&gt;</code>）。<br>📦 <b>這塊是滿版</b>（貼齊螢幕兩側）；最外層 <code>width:100vw…</code> 是滿版設定、不要動。<br>⚠️ 圖片<b>直角、不加圓角</b>（全站統一）。</span></p>
+          <!-- ========== 版本 A：有標題 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 A-1：有標題 ‧ 完成後長這樣（可左右滑）</div>
           <div class="preview">
   <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
     <div style="padding:clamp(16px,4vw,28px) 0">
@@ -188,20 +189,20 @@
         <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
       </div>
       <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
-        <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="產品實拍 1" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="產品實拍 2" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64f6f86321af7a0017be0b0a/400x.webp?source_format=jpeg" alt="產品實拍 3" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg" alt="產品實拍 4" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ab308f36b05e001c8dcabd/400x.webp?source_format=jpeg" alt="產品實拍 5" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
-        <a href="https://www.londonimg.tw/products/d13" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64fe943505ac6b001d8f7ed2/400x.webp?source_format=jpeg" alt="可點圖：整張連到商品頁" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="產品實拍 1" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="產品實拍 2" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64f6f86321af7a0017be0b0a/400x.webp?source_format=jpeg" alt="產品實拍 3" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg" alt="產品實拍 4" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ab308f36b05e001c8dcabd/400x.webp?source_format=jpeg" alt="產品實拍 5" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64fe943505ac6b001d8f7ed2/400x.webp?source_format=jpeg" alt="產品實拍 6" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
       </div>
     </div>
   </div></div>
-          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製填空語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【版本 A：有標題】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
           <div class="code">
-            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
-            <textarea readonly spellcheck="false"><!-- ✏️ 多圖橫移（方形滑塊）：每張圖換 src、填說明；增減圖就複製／刪整張 <div>。長長的 style="…" 不要動。 -->
-<!-- 多圖橫移（方形滑塊）｜滿版·width:100vw 設定不要動 -->
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 A ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 多圖橫移（版本 A：有標題）：每張圖換 src、填說明；增減圖就複製／刪整張 <div>。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（版本 A：有標題）｜滿版·width:100vw 設定不要動 -->
 <div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
   <div style="padding:clamp(16px,4vw,28px) 0">
     <!-- 標題（不需要就把這段整個刪掉）-->
@@ -213,42 +214,184 @@
     <!-- 橫滑列：每張正方形圖＝一個 <div>（想增減就複製／刪一整張）-->
     <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
-      <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px">
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
       </div>
 
-      <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px">
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
       </div>
 
-      <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px">
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
       </div>
 
-      <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px">
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
       </div>
 
-      <div style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px">
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
       </div>
 
-      <!-- ↓ 這張是「可點」版本：整張圖連到商品／系列頁。不想連結的圖就用上面 <div> 那種寫法 -->
-      <a href="✏️【要連到的商品／系列網址（不需要連結就用上面 <div> 版本）】" target="_blank" rel="noopener" style="flex:0 0 auto;width:clamp(260px,72vw,420px);scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+
+          <!-- ========== 版本 A-2：有標題＋可連結圖 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 A-2：有標題＋可連結圖（整張圖可點，連到商品／系列頁）‧ 完成後長這樣（可左右滑）</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:clamp(16px,4vw,28px) 0">
+      <div style="max-width:1080px;margin:0 auto;padding:0 24px 4px">
+        <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">Gallery</div>
+        <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0">多角度實拍，細節看得更清楚</h2>
+        <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
+      </div>
+      <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+        <a href="https://www.londonimg.tw/products/d13" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="可點圖 1" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+        <a href="https://www.londonimg.tw/products/s08" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="可點圖 2" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+        <a href="https://www.londonimg.tw/products/f91-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64f6f86321af7a0017be0b0a/400x.webp?source_format=jpeg" alt="可點圖 3" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+        <a href="https://www.londonimg.tw/products/s06" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg" alt="可點圖 4" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+        <a href="https://www.londonimg.tw/products/s09" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ab308f36b05e001c8dcabd/400x.webp?source_format=jpeg" alt="可點圖 5" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+        <a href="https://www.londonimg.tw/products/b57-1" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64fe943505ac6b001d8f7ed2/400x.webp?source_format=jpeg" alt="可點圖 6" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></a>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【版本 A-2：有標題＋可連結圖】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 A-2 ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 多圖橫移（版本 A-2：有標題＋可連結圖）：每張圖換 src、填說明、填 <a href> 的連結網址；增減圖就複製／刪整張 <a>。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（版本 A-2：有標題＋可連結圖·整張圖可點）｜滿版·width:100vw 設定不要動 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
+  <div style="padding:clamp(16px,4vw,28px) 0">
+    <!-- 標題（不需要就把這段整個刪掉）-->
+    <div style="max-width:1080px;margin:0 auto;padding:0 24px 4px">
+      <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Gallery】</div>
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0">✏️【標題，例：多角度實拍，細節看得更清楚】</h2>
+      <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
+    </div>
+    <!-- 橫滑列：每張圖都是連結（整張可點）；某張不想連，把它的 <a …>…</a> 換回 <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">…</div> 即可 -->
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
       </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div></textarea>
+          </div>
+
+          <!-- ========== 版本 B：只有照片（無標題、無備注）========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 B：只有照片（無標題、無備注、無連結）‧ 完成後長這樣（可左右滑）</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+    <div style="padding:clamp(16px,4vw,28px) 0">
+      <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:4px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg" alt="產品實拍 1" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ed1e28643db8001c60fce2/400x.webp?source_format=jpeg" alt="產品實拍 2" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64f6f86321af7a0017be0b0a/400x.webp?source_format=jpeg" alt="產品實拍 3" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg" alt="產品實拍 4" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/66ab308f36b05e001c8dcabd/400x.webp?source_format=jpeg" alt="產品實拍 5" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+        <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px"><div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4"><img src="https://shoplineimg.com/57975b626170691220930c00/64fe943505ac6b001d8f7ed2/400x.webp?source_format=jpeg" alt="產品實拍 6" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div></div>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【版本 B：只有照片】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 B ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 多圖橫移（版本 B：只有照片）：每張圖換 src、填說明；增減圖就複製／刪整張 <div>。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（版本 B：只有照片·無標題無備注）｜滿版·width:100vw 設定不要動 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
+  <div style="padding:clamp(16px,4vw,28px) 0">
+    <!-- 橫滑列：每張正方形圖＝一個 <div>（想增減就複製／刪一整張）-->
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:4px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
+
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
+
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
+
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
+
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
+
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </div>
 
     </div>
   </div>
@@ -628,7 +771,101 @@
           </div>
         </article>
       </div>
-      <div id="lego-compare" class="lego"><div class="todo-card"><b>「版本比較」積木製作中</b><br>改用單張合成圖／通用公告區塊（不做複雜表格），格式確認後補上。</div></div>
+      <div id="lego-compare" class="lego">
+        <article class="block">
+          <div class="block-head"><span class="num">08</span><h3>版本比較</h3></div>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>比較同商品的<b>不同版本</b>（例：一般款 vs 進化款）。<br>⚠️ <b>不用 HTML 表格</b>（同事難維護、手機易跑版）——改用 ① <b>一張「對比合成圖」</b>（請美編把規格差異直接畫進圖裡）＋ ② <b>選哪款 2 張卡</b>（各版本一張圖＋標籤＋「適合誰→選這款」）。<br><b>① 與 ② 語法分開</b>，各自有預覽與複製語法——<b>用哪個就複製哪個</b>（可只用一個，或兩個都用）。<br><b>換圖／換字</b>：改各段 <code>&lt;img&gt;</code> src、填標籤與說明。<br>📦 <b>對比圖裡已含標題</b>：把①的圖上疊字那段刪掉。<br>➕ <b>超過 2 個版本</b>：複製一整個 <code>&lt;figure&gt;…&lt;/figure&gt;</code>。</span></p>
+          <!-- ========== ① 對比合成圖 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>① 對比合成圖（把差異畫進圖裡）‧ 完成後長這樣</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif;max-width:1080px;margin:0 auto;padding:clamp(16px,4vw,28px) 20px">
+    <div style="position:relative;overflow:hidden">
+      <img src="https://img.shoplineapp.com/media/image_clips/6a3c28b6b5032afcad3665d8/original.png?1782327477=&owner_id=57975b626170691220930c00" alt="一般款與進化款差別比較合成圖" style="width:100%;display:block">
+      <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0) 32%);pointer-events:none"></div>
+      <div style="position:absolute;top:0;left:0;right:0;padding:clamp(20px,5%,44px) clamp(16px,5%,40px) 0;text-align:center">
+        <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px;text-shadow:0 1px 8px rgba(0,0,0,.5)">Compare</div>
+        <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#fff;line-height:1.2;margin:0;text-shadow:0 1px 12px rgba(0,0,0,.55)">一般款？進化 3.0？</h2>
+        <p style="font-size:clamp(16px,2vw,18px);line-height:1.5;margin:8px 0 0;color:rgba(255,255,255,.92);text-shadow:0 1px 10px rgba(0,0,0,.5)">差別在哪呢？</p>
+      </div>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【① 對比合成圖】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">① 對比合成圖 ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 版本比較 ① 對比合成圖：把差異畫進這張圖·不用 HTML 表格。長長的 style="…" 不要動。 -->
+<!-- 版本比較 ① 對比合成圖｜置中·max-width 1080 -->
+<div style="max-width:1080px;margin:0 auto;padding:clamp(16px,4vw,28px) 20px">
+  <div style="position:relative;overflow:hidden">
+    <img src="✏️【請貼上「對比合成圖」網址（把一般款／進化款差異畫進圖裡）】" alt="✏️【對比圖說明】" style="width:100%;display:block">
+    <!-- 圖上疊字（圖裡已含標題就把這段刪掉）-->
+    <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0) 32%);pointer-events:none"></div>
+    <div style="position:absolute;top:0;left:0;right:0;padding:clamp(20px,5%,44px) clamp(16px,5%,40px) 0;text-align:center">
+      <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 12px;text-shadow:0 1px 8px rgba(0,0,0,.5)">✏️【英文小標，例：Compare】</div>
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#fff;line-height:1.2;margin:0;text-shadow:0 1px 12px rgba(0,0,0,.55)">✏️【問句標題，例：一般款？進化 3.0？】</h2>
+      <p style="font-size:clamp(16px,2vw,18px);line-height:1.5;margin:8px 0 0;color:rgba(255,255,255,.92);text-shadow:0 1px 10px rgba(0,0,0,.5)">✏️【一句，例：差別在哪呢？】</p>
+    </div>
+  </div>
+</div></textarea>
+          </div>
+
+          <!-- ========== ② 選哪款 2 卡 ========== -->
+          <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>② 選哪款 2 卡 ‧ 完成後長這樣</div>
+          <div class="preview">
+  <div style="font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif;max-width:1080px;margin:0 auto;padding:clamp(16px,4vw,28px) 20px;text-align:center">
+    <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">Two Versions</div>
+    <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0 0 24px">一般款 vs 3.0 超進化</h2>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;text-align:left">
+      <figure style="flex:1 1 300px;min-width:0;margin:0 8px 16px;border:1px solid #ededed;overflow:hidden;position:relative;background:#fff">
+        <div style="position:relative;width:100%;padding-bottom:75%;overflow:hidden"><img src="https://img.shoplineapp.com/media/image_clips/6a22b395c114b032942ef3f4/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="一般款 360° 支架手機殼" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+        <span style="position:absolute;top:12px;left:12px;font-size:15px;font-weight:600;padding:5px 12px;border-radius:8px;background:#efece6;color:#7a7367">一般款</span>
+        <figcaption style="padding:15px 16px"><b style="display:block;font-size:clamp(16px,2.1vw,20px);font-weight:600;margin-bottom:6px">要追劇、視訊免手扶 → 選支架款</b><span style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5">內建 360° 旋轉支架，桌上、床頭一掰即站；同時支援 MagSafe 與四角防摔。</span></figcaption>
+      </figure>
+      <figure style="flex:1 1 300px;min-width:0;margin:0 8px 16px;border:1px solid #ededed;overflow:hidden;position:relative;background:#fff">
+        <div style="position:relative;width:100%;padding-bottom:75%;overflow:hidden"><img src="https://img.shoplineapp.com/media/image_clips/6a22b396e716f82e433e839a/original.png?1780659093=&owner_id=57975b626170691220930c00" alt="雙向吸 3.0 款手機殼" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>
+        <span style="position:absolute;top:12px;left:12px;font-size:15px;font-weight:600;padding:5px 12px;border-radius:8px;background:#e6f3ec;color:#2e7d52">3.0 超進化</span>
+        <figcaption style="padding:15px 16px"><b style="display:block;font-size:clamp(16px,2.1vw,20px);font-weight:600;margin-bottom:6px">要極致輕薄、雙向都能吸 → 選雙向吸款</b><span style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5">雙向皆可 MagSafe 磁吸，貼牆架、車架、行動電源更彈性；機身更輕薄貼手。</span></figcaption>
+      </figure>
+    </div>
+  </div></div>
+          <div class="seg-label code-seg"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>複製【② 選哪款 2 卡】語法 → 把 ✏️【…】 換成你的內容 → 貼進 SHOPLINE「商品描述 → HTML 原始碼」</div>
+          <div class="code">
+            <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">② 選哪款 2 卡 ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
+            <textarea readonly spellcheck="false"><!-- ✏️ 版本比較 ② 選哪款 2 卡：換圖填字；超過 2 版本複製一整個 <figure>。長長的 style="…" 不要動。 -->
+<!-- 版本比較 ② 選哪款 2 卡｜置中·max-width 1080 -->
+<div style="max-width:1080px;margin:0 auto;padding:clamp(16px,4vw,28px) 20px;text-align:center">
+  <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">✏️【英文小標，例：Two Versions】</div>
+  <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0 0 24px">✏️【標題，例：一般款 vs 3.0 超進化】</h2>
+  <div style="display:flex;flex-wrap:wrap;justify-content:center;text-align:left">
+
+    <!-- 版本卡 1 -->
+    <figure style="flex:1 1 300px;min-width:0;margin:0 8px 16px;border:1px solid #ededed;overflow:hidden;position:relative;background:#fff">
+      <div style="position:relative;width:100%;padding-bottom:75%;overflow:hidden">
+        <img src="✏️【版本 1 圖片網址】" alt="✏️【版本 1 說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <span style="position:absolute;top:12px;left:12px;font-size:15px;font-weight:600;padding:5px 12px;border-radius:8px;background:#efece6;color:#7a7367">✏️【版本 1 標籤，例：一般款】</span>
+      <figcaption style="padding:15px 16px">
+        <b style="display:block;font-size:clamp(16px,2.1vw,20px);font-weight:600;margin-bottom:6px">✏️【適合誰 → 選這款，例：要追劇、視訊免手扶 → 選支架款】</b>
+        <span style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5">✏️【這個版本的說明】</span>
+      </figcaption>
+    </figure>
+
+    <!-- 版本卡 2 -->
+    <figure style="flex:1 1 300px;min-width:0;margin:0 8px 16px;border:1px solid #ededed;overflow:hidden;position:relative;background:#fff">
+      <div style="position:relative;width:100%;padding-bottom:75%;overflow:hidden">
+        <img src="✏️【版本 2 圖片網址】" alt="✏️【版本 2 說明】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+      </div>
+      <span style="position:absolute;top:12px;left:12px;font-size:15px;font-weight:600;padding:5px 12px;border-radius:8px;background:#e6f3ec;color:#2e7d52">✏️【版本 2 標籤，例：3.0 超進化】</span>
+      <figcaption style="padding:15px 16px">
+        <b style="display:block;font-size:clamp(16px,2.1vw,20px);font-weight:600;margin-bottom:6px">✏️【適合誰 → 選這款，例：要極致輕薄、雙向都能吸 → 選雙向吸款】</b>
+        <span style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5">✏️【這個版本的說明】</span>
+      </figcaption>
+    </figure>
+
+  </div>
+</div></textarea>
+          </div>
+        </article>
+      </div>
       <!-- ========================= 09 加價購 ========================= -->
       <div id="lego-addon" class="lego">
         <article class="block">
