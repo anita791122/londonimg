@@ -26,19 +26,19 @@
       <a data-t="p5" onclick="show('p5')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg><span>商品資訊</span><span class="step">03</span></a>
       <a data-t="p2" class="has-sub open" onclick="show('p2')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg><span>商品頁語法</span><span class="step">04</span><svg class="chev" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></a>
       <div class="subnav open" id="subnav-lego">
-        <a class="sub-a" data-lego="hero" onclick="showLego('hero')">Hero、直圖壓文</a>
-        <a class="sub-a" data-lego="icon" onclick="showLego('icon')">重點 icon 列</a>
-        <a class="sub-a" data-lego="video" onclick="showLego('video')">影音</a>
-        <a class="sub-a" data-lego="feature" onclick="showLego('feature')">特色區 多圖</a>
-        <a class="sub-a" data-lego="scene" onclick="showLego('scene')">情境 橫圖壓文</a>
-        <a class="sub-a" data-lego="grid" onclick="showLego('grid')">棋盤格</a>
-        <a class="sub-a" data-lego="slider" onclick="showLego('slider')">多圖橫移</a>
-        <a class="sub-a" data-lego="compare" onclick="showLego('compare')">版本比較</a>
-        <a class="sub-a" data-lego="addon" onclick="showLego('addon')">加價購</a>
-        <a class="sub-a" data-lego="cta" onclick="showLego('cta')">收尾 CTA</a>
-        <a class="sub-a" data-lego="spec" onclick="showLego('spec')">規格</a>
-        <a class="sub-a" data-lego="faq" onclick="showLego('faq')">QA</a>
-        <a class="sub-a todo" data-lego="sns" onclick="showLego('sns')">SNS</a>
+        <a class="sub-a" data-lego="hero" onclick="showLego('hero')"><span class="sub-i">01</span>Hero、直圖壓文</a>
+        <a class="sub-a" data-lego="icon" onclick="showLego('icon')"><span class="sub-i">02</span>重點 icon 列</a>
+        <a class="sub-a" data-lego="video" onclick="showLego('video')"><span class="sub-i">03</span>影音</a>
+        <a class="sub-a" data-lego="feature" onclick="showLego('feature')"><span class="sub-i">04</span>特色區 多圖</a>
+        <a class="sub-a" data-lego="scene" onclick="showLego('scene')"><span class="sub-i">05</span>情境 橫圖壓文</a>
+        <a class="sub-a" data-lego="grid" onclick="showLego('grid')"><span class="sub-i">06</span>棋盤格</a>
+        <a class="sub-a" data-lego="slider" onclick="showLego('slider')"><span class="sub-i">07</span>多圖橫移</a>
+        <a class="sub-a" data-lego="compare" onclick="showLego('compare')"><span class="sub-i">08</span>版本比較</a>
+        <a class="sub-a" data-lego="addon" onclick="showLego('addon')"><span class="sub-i">09</span>加價購</a>
+        <a class="sub-a" data-lego="cta" onclick="showLego('cta')"><span class="sub-i">10</span>收尾 CTA</a>
+        <a class="sub-a" data-lego="spec" onclick="showLego('spec')"><span class="sub-i">11</span>規格</a>
+        <a class="sub-a" data-lego="faq" onclick="showLego('faq')"><span class="sub-i">12</span>QA</a>
+        <a class="sub-a todo" data-lego="sns" onclick="showLego('sns')"><span class="sub-i">13</span>SNS</a>
       </div>
       <a data-t="p1" onclick="show('p1')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg><span>商品頁設定</span><span class="step">05</span></a>
       <a data-t="p6" onclick="show('p6')"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 14 20 9 15 4"/><path d="M4 20v-7a4 4 0 0 1 4-4h12"/></svg><span>301 轉址</span><span class="step">06</span></a>
@@ -1408,7 +1408,7 @@
   <div class="hero">
     <span class="hero-eyebrow">STEP 2</span>
     <h1 class="hero-title">圖片取得方式</h1>
-    <p class="hero-sub">語法裡每張圖都是一段 <code>&lt;img src="網址"&gt;</code>。要換成自己的圖，就是把這個「網址」換掉（也就是填空語法裡的 <code>【請貼上圖片網址】</code>）。</p>
+    <p class="hero-sub">語法裡每張圖都是一段 <code>&lt;img src="網址"&gt;</code>。<br>要換成自己的圖，就是把這個「網址」換掉（也就是填空語法裡的 <code>【請貼上圖片網址】</code>）。</p>
   </div>
   <div class="howto">
     <div class="howto-h"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.9a2 2 0 0 0 1.3 1.3L19.8 11l-4.9 1.6a2 2 0 0 0-1.3 1.3L12 19.8l-1.6-4.9a2 2 0 0 0-1.3-1.3L4.2 12l4.9-1.6a2 2 0 0 0 1.3-1.3L12 3z"/></svg>Claude Skill 不會幫你上傳圖片</div>
@@ -1438,8 +1438,8 @@
         <tr><td>05 情境 橫圖壓文</td><td><b>1920 × 1080 px</b>（橫式 16:9）</td><td>滿版大圖、文字疊在圖上；選寬一點高解析，暗部對應文字位置</td></tr>
         <tr><td>06 棋盤格</td><td><b>1200 × 800 px</b>（橫式 3:2）</td><td>圖文各半、左右交替，每列一張</td></tr>
         <tr><td>07 多圖橫移（滑塊）</td><td><b>800 × 800 px</b>（正方 1:1）</td><td>正方大圖橫向排（建議 5～10 張）</td></tr>
-        <tr><td>08 版本比較 ①對比合成圖</td><td><b>橫式，寬約 1080 px</b>（比例由美編決定）</td><td>把一般款／進化款差異畫進同一張圖</td></tr>
-        <tr><td>08 版本比較 ②選哪款卡</td><td><b>1000 × 750 px</b>（橫式 4:3）</td><td>每個版本一張卡片圖</td></tr>
+        <tr><td>08 版本比較 <br>①對比合成圖</td><td><b>橫式，寬約 1080 px</b>（比例由美編決定）</td><td>把一般款／進化款差異畫進同一張圖</td></tr>
+        <tr><td>08 版本比較 <br>②選哪款卡</td><td><b>1000 × 750 px</b>（橫式 4:3）</td><td>每個版本一張卡片圖</td></tr>
         <tr><td>09 加價購</td><td>—（全站共用、免自備圖）</td><td>固定 15 項，直接複製、不用換圖</td></tr>
         <tr><td>10 收尾 CTA</td><td><b>1080 × 1080 px</b>（正方 1:1）</td><td>情境大圖、文字疊圖上，桌機接近整張顯示</td></tr>
         <tr><td>11 規格</td><td>—（不用圖）</td><td>表格／清單，純文字</td></tr>

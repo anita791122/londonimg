@@ -114,10 +114,10 @@
   .subnav{display:flex;flex-direction:column;gap:2px;overflow:hidden;max-height:0;transition:max-height .32s ease}
   .subnav.open{max-height:720px;margin:3px 0 5px}
   .subnav .sub-a{display:flex;align-items:center;gap:9px;padding:8px 12px 8px 44px;border-radius:9px;color:var(--muted);text-decoration:none;font-size:16px;font-weight:600;cursor:pointer;transition:background .2s,color .2s}
-  .sub-a .sub-i{font-size:16px;font-weight:700;color:var(--faint);min-width:15px}
+  .sub-a .sub-i{display:inline-flex;align-items:center;justify-content:center;flex:none;width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#fff;font-family:var(--font-h);font-size:11px;font-weight:700;letter-spacing:0}
   .sub-a:hover{background:var(--bg);color:var(--ink)}
   .sub-a.active{background:var(--accent-soft);color:var(--accent)}
-  .sub-a.active .sub-i{color:var(--accent)}
+  .sub-a.active .sub-i{color:#fff;box-shadow:0 0 0 2px #fff,0 0 0 3px var(--accent-2)}
   .sub-a.todo{opacity:.62} .sub-a.todo::after{content:"🚧"}
   .lego{display:none} .lego.active{display:block;animation:fade .3s ease}
   /* 所有積木總覽（商品頁語法主項）*/
