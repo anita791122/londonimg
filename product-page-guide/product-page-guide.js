@@ -80,10 +80,10 @@
       var seq=seqEl?seqEl.textContent.trim():'';
       var label=tab.textContent.trim();
       if(seq && label.indexOf(seq)===0) label=label.slice(seq.length).trim();
-      var name=(seq?seq+'　':'')+label;
+      var numBadge=seq?'<span class="ov-num">'+seq+'</span>':'';
       var lego=document.getElementById('lego-'+id);
       var preview=lego?lego.querySelector('.preview'):null;
-      html+='<div class="ov-item"><div class="ov-head"><h3>'+name+'</h3>';
+      html+='<div class="ov-item"><div class="ov-head">'+numBadge+'<h3>'+label+'</h3>';
       if(preview){
         html+='<button class="ov-link" onclick="showLego(\''+id+'\')">看填空語法 →</button></div>';
         html+='<div class="preview">'+preview.innerHTML+'</div>';

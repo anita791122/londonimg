@@ -127,6 +127,7 @@
   .ov-item:last-child{border-bottom:0;margin-bottom:0}
   .ov-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 12px}
   .ov-head h3{margin:0;font-family:var(--font-h);font-size:18px;font-weight:600;color:var(--ink)}
+  .ov-num{display:inline-flex;align-items:center;justify-content:center;flex:none;width:34px;height:34px;border-radius:10px;background:linear-gradient(135deg,var(--accent-2),var(--accent));color:#fff;font-family:var(--font-h);font-size:16px;font-weight:700;box-shadow:0 4px 12px rgba(110,92,182,.28)}
   .ov-link{margin-left:auto;display:inline-flex;align-items:center;gap:5px;background:var(--accent-soft);color:var(--accent);border:1px solid #ddd3f1;border-radius:8px;padding:6px 12px;font-size:16px;font-weight:700;font-family:var(--font-h);cursor:pointer;transition:background .2s}
   .ov-link:hover{background:#e8e1f7}
   .ov-todo{margin-left:auto;font-size:16px;color:var(--faint);font-weight:600}
