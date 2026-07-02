@@ -100,7 +100,6 @@
   .copy-btn:hover{filter:brightness(1.08)} .copy-btn:active{transform:scale(.97)}
   .copy-btn:focus-visible{outline:2px solid #fff;outline-offset:2px}
   .copy-btn.ok{background:linear-gradient(135deg,#1f9d6b,#23b377)}
-  .copy-btn.sm{padding:6px 11px;font-size:16px}
   .dl-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;text-decoration:none;border-radius:10px;padding:11px 20px;font-family:var(--font-h);font-size:16px;font-weight:600;box-shadow:0 6px 16px rgba(110,92,182,.28);transition:transform .15s,filter .2s}
   .dl-btn:hover{filter:brightness(1.07);transform:translateY(-1px)}
   .dl-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
