@@ -1,7 +1,7 @@
 # 倫敦印象 商品頁文案 Skill
 
-給同事用的 Claude skill：輸入商品資訊，自動產出 SHOPLINE 商品頁的
-**SEO 後台四欄（標題／簡介／關鍵字／描述性URL）＋ 商品描述文案（定義句／段落標題／常見問答）**，
+給同事用的 Claude skill：輸入商品資訊，依序自動產出 SHOPLINE 商品頁的
+**A. 商品資訊（商品名稱中英雙語＋商品摘要促銷框）→ B. 商品描述（照教學頁 13 塊積木逐塊給文字）→ C. 商品頁設定（SEO 四欄：標題／簡介／關鍵字／描述性URL）**，
 可直接貼進後台。
 
 ## 安裝（claude.ai 網頁／桌面 App）
@@ -16,6 +16,8 @@ Claude 會依序產出可複製的各欄位。
 
 ## 內含
 - `SKILL.md` — 主指示（觸發、流程、輸出）
+- `reference/page-blocks.md` — 商品描述 13 塊積木與欄位（與教學頁同名同順序）
 - `reference/seo-geo-rules.md` — 各欄位 SEO/GEO 寫法
 - `reference/brand-voice.md` — 品牌語氣與定位
 - `reference/shopline-output.md` — SHOPLINE 平台限制與輸出格式
+- `reference/block-html-templates.md` — 各積木可貼 HTML 模板（教學頁原樣鏡像；只在使用者要 HTML 時載入）
