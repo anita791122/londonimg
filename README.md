@@ -6,8 +6,8 @@
 
 | 檔案 | 說明 |
 |------|------|
-| `index.html` | 入口頁（GitHub Pages 根網址）。 |
-| `product-page-guide.html` | 給同事的商品頁建置教學頁（六分頁：Claude Skill／圖片取得／商品資訊／商品頁語法 14 區塊 ✏️ 填空一鍵複製／頁面設定／301 轉址）。 |
+| `index.html` | GitHub Pages 根網址；**自動導向教學頁**（同事主要用教學頁，首頁不再放目錄卡片）。 |
+| `product-page-guide/product-page-guide.html` | 給同事的商品頁建置教學頁（樂高積木手冊·六分頁：Claude Skill／圖片取得／商品資訊／商品頁語法 **13 塊積木** ✏️ 填空一鍵複製／頁面設定／301 轉址）。 |
 | `londonimg-product.zip` ‧ `londonimg-product/` | 給 claude.ai 用的商品頁 skill（壓縮檔＋原始檔）。 |
 | `yu-pdp.css` | 商品描述共用樣式（選用）。可經 jsDelivr 載入。 |
 
