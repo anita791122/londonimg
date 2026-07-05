@@ -474,55 +474,49 @@
 <!-- 多圖橫移（版本 C：圖下有說明文字）｜滿版·width:100vw 設定不要動 -->
 <div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
   <div style="padding:clamp(16px,4vw,28px) 0">
-    <!-- 標題（不需要就把這段整個刪掉）-->
-    <div style="max-width:1080px;margin:0 auto;padding:0 24px 4px">
-      <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Gallery】</div>
-      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0">✏️【標題，例：多角度實拍，細節看得更清楚】</h2>
-      <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
-    </div>
     <!-- 橫滑列：每張＝正方圖＋圖下敘述（想增減就複製／刪一整張 <div>）-->
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:4px 24px 14px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
-        <div style="font-size:clamp(16px,1.9vw,17px);font-weight:500;color:#1a1a1a;line-height:1.5;margin:10px 2px 0">✏️【這張圖的文字敘述，例：360° 無段支架】</div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【這張圖的敘述，例：野餐、聚會、戶外旅行，完美角度輕鬆 Get】</div>
       </div>
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
-        <div style="font-size:clamp(16px,1.9vw,17px);font-weight:500;color:#1a1a1a;line-height:1.5;margin:10px 2px 0">✏️【這張圖的文字敘述】</div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【這張圖的敘述】</div>
       </div>
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
-        <div style="font-size:clamp(16px,1.9vw,17px);font-weight:500;color:#1a1a1a;line-height:1.5;margin:10px 2px 0">✏️【這張圖的文字敘述】</div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【這張圖的敘述】</div>
       </div>
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
-        <div style="font-size:clamp(16px,1.9vw,17px);font-weight:500;color:#1a1a1a;line-height:1.5;margin:10px 2px 0">✏️【這張圖的文字敘述】</div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【這張圖的敘述】</div>
       </div>
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
-        <div style="font-size:clamp(16px,1.9vw,17px);font-weight:500;color:#1a1a1a;line-height:1.5;margin:10px 2px 0">✏️【這張圖的文字敘述】</div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【這張圖的敘述】</div>
       </div>
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
           <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
         </div>
-        <div style="font-size:clamp(16px,1.9vw,17px);font-weight:500;color:#1a1a1a;line-height:1.5;margin:10px 2px 0">✏️【這張圖的文字敘述】</div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【這張圖的敘述】</div>
       </div>
 
     </div>
