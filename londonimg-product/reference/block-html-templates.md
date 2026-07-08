@@ -701,12 +701,12 @@
 <!-- SNS 社群圖牆（IG 風格·一排左右滑·方形照片 300×300·圖＋@帳號·右上角 IG 小圖示·點圖連到貼文）-->
 <!-- 左右滿版淺灰底：最外層 100vw break-out，內層維持 max-width 1080 -->
 <div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip;background:#f4f4f4">
-<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+<div style="max-width:1080px;margin:0 auto;padding:0 20px 0 24px">
   <div style="padding:clamp(16px,4vw,28px) 0">
     <div style="text-align:left;margin:0 0 14px">
       <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">SNS</h2>
     </div>
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;margin:0 -20px;padding:4px 20px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;margin:0 -20px 0 0;padding:4px 20px 12px 0;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
       <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面·想放幾張都行、多的就左右滑）↓↓ -->
       <a href="✏️【貼文網址；不需要連結：把 href=".." 刪掉、開頭 a 改成 div、結尾 /a 改成 /div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
@@ -718,6 +718,7 @@
       </a>
       <!-- ↑↑ 一張圖卡 ↑↑ -->
 
+      <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面·想放幾張都行、多的就左右滑）↓↓ -->
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px">
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
@@ -725,7 +726,9 @@
         </div>
         <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
+      <!-- ↑↑ 一張圖卡 ↑↑ -->
 
+      <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面·想放幾張都行、多的就左右滑）↓↓ -->
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px">
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
@@ -733,7 +736,9 @@
         </div>
         <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
+      <!-- ↑↑ 一張圖卡 ↑↑ -->
 
+      <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面·想放幾張都行、多的就左右滑）↓↓ -->
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px">
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
@@ -741,7 +746,9 @@
         </div>
         <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
+      <!-- ↑↑ 一張圖卡 ↑↑ -->
 
+      <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面·想放幾張都行、多的就左右滑）↓↓ -->
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px">
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
@@ -749,7 +756,9 @@
         </div>
         <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
+      <!-- ↑↑ 一張圖卡 ↑↑ -->
 
+      <!-- ↓↓ 一張圖卡（要多一張：整段 a 複製貼在後面·想放幾張都行、多的就左右滑）↓↓ -->
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7;border-radius:8px">
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
@@ -757,6 +766,7 @@
         </div>
         <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
+      <!-- ↑↑ 一張圖卡 ↑↑ -->
 
     </div>
   </div>
