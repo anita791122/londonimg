@@ -699,12 +699,12 @@
 ```html
 <!-- ✏️ 改這裡：每張卡片換圖片 src（建議 300×300 正方圖）、貼文網址、@帳號。長長的 style="…" 不要動。 -->
 <!-- SNS 社群圖牆（IG 風格·一排左右滑·方形照片 300×300·圖＋@帳號·右上角 IG 小圖示·點圖連到貼文）-->
+<!-- 左右滿版淺灰底：最外層 100vw break-out，內層維持 max-width 1080 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip;background:#f4f4f4">
 <div style="max-width:1080px;margin:0 auto;padding:0 20px">
   <div style="padding:clamp(16px,4vw,28px) 0">
-    <div style="text-align:center;margin:0 0 14px">
-      <div style="font-size:clamp(11px,1.4vw,13px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 10px">✏️【英文小標，例：As Seen On IG】</div>
-      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">✏️【區塊標題，例：大家都這樣用】</h2>
-      <a href="✏️【你的 IG 網址】" target="_blank" rel="noopener" style="font-size:16px;color:#fe5226;text-decoration:none;font-weight:600;display:inline-block;margin:10px 0 0">追蹤 ✏️【@你的IG帳號】 看更多 →</a>
+    <div style="text-align:left;margin:0 0 14px">
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:700;letter-spacing:.5px;color:#1a1a1a;margin:0">SNS</h2>
     </div>
     <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;margin:0 -20px;padding:4px 20px 12px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
@@ -714,7 +714,7 @@
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
           <div style="position:absolute;top:8px;right:8px;width:22px;height:22px;border:2px solid #fff;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.45);z-index:2;pointer-events:none"><div style="position:absolute;top:3px;left:3px;width:8px;height:8px;border:2px solid #fff;border-radius:50%"></div><div style="position:absolute;top:2px;right:2px;width:3px;height:3px;background:#fff;border-radius:50%"></div></div>
         </div>
-        <div style="font-size:13px;color:#6E6E73;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
+        <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
       <!-- ↑↑ 一張圖卡 ↑↑ -->
 
@@ -723,7 +723,7 @@
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
           <div style="position:absolute;top:8px;right:8px;width:22px;height:22px;border:2px solid #fff;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.45);z-index:2;pointer-events:none"><div style="position:absolute;top:3px;left:3px;width:8px;height:8px;border:2px solid #fff;border-radius:50%"></div><div style="position:absolute;top:2px;right:2px;width:3px;height:3px;background:#fff;border-radius:50%"></div></div>
         </div>
-        <div style="font-size:13px;color:#6E6E73;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
+        <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
 
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
@@ -731,7 +731,7 @@
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
           <div style="position:absolute;top:8px;right:8px;width:22px;height:22px;border:2px solid #fff;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.45);z-index:2;pointer-events:none"><div style="position:absolute;top:3px;left:3px;width:8px;height:8px;border:2px solid #fff;border-radius:50%"></div><div style="position:absolute;top:2px;right:2px;width:3px;height:3px;background:#fff;border-radius:50%"></div></div>
         </div>
-        <div style="font-size:13px;color:#6E6E73;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
+        <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
 
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
@@ -739,7 +739,7 @@
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
           <div style="position:absolute;top:8px;right:8px;width:22px;height:22px;border:2px solid #fff;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.45);z-index:2;pointer-events:none"><div style="position:absolute;top:3px;left:3px;width:8px;height:8px;border:2px solid #fff;border-radius:50%"></div><div style="position:absolute;top:2px;right:2px;width:3px;height:3px;background:#fff;border-radius:50%"></div></div>
         </div>
-        <div style="font-size:13px;color:#6E6E73;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
+        <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
 
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
@@ -747,7 +747,7 @@
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
           <div style="position:absolute;top:8px;right:8px;width:22px;height:22px;border:2px solid #fff;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.45);z-index:2;pointer-events:none"><div style="position:absolute;top:3px;left:3px;width:8px;height:8px;border:2px solid #fff;border-radius:50%"></div><div style="position:absolute;top:2px;right:2px;width:3px;height:3px;background:#fff;border-radius:50%"></div></div>
         </div>
-        <div style="font-size:13px;color:#6E6E73;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
+        <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
 
       <a href="✏️【貼文網址；不連結就改成 div】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:12px;text-decoration:none;color:inherit;display:block">
@@ -755,10 +755,11 @@
           <img src="✏️【請貼上方形圖片網址·建議 300×300】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
           <div style="position:absolute;top:8px;right:8px;width:22px;height:22px;border:2px solid #fff;border-radius:7px;box-shadow:0 1px 4px rgba(0,0,0,.45);z-index:2;pointer-events:none"><div style="position:absolute;top:3px;left:3px;width:8px;height:8px;border:2px solid #fff;border-radius:50%"></div><div style="position:absolute;top:2px;right:2px;width:3px;height:3px;background:#fff;border-radius:50%"></div></div>
         </div>
-        <div style="font-size:13px;color:#6E6E73;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
+        <div style="font-size:13px;color:#333;margin:6px 2px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">✏️【@你的IG帳號】</div>
       </a>
 
     </div>
   </div>
+</div>
 </div>
 ```
