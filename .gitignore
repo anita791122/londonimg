@@ -17,3 +17,9 @@ londonimg_homepage_audit.html
 images/
 prototype-assets/
 _tools/
+
+# 2026-07-16 新增本機工作檔（非教學頁·不托管 GitHub；含給 Raymond 的內部提案／架構總覽／Hero 草稿）
+index/
+index-hero.html
+raymond-proposal-summary.html
+site-architecture-overview.html
