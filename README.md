@@ -25,8 +25,8 @@ traffic is mobile), and structured for SEO/GEO (AI-citation) friendliness.
 
 | Path | What it is |
 |------|------------|
-| `londonimg-product/` ‧ `londonimg-product.zip` | A **Claude Skill**. You give it product info; it returns SHOPLINE-ready copy (bilingual product name + summary), a product description built from 13 reusable blocks, and the 4 back-office SEO fields (title / meta / keywords / URL slug). Ships with reference docs for the sanitization rules, brand-voice guardrails, SEO/GEO rules, and an optional copy-research mode. |
-| `product-page-guide/` | A **build guide** (static HTML) for non-technical teammates — the 13 lego blocks with live previews and one-click "fill-in-the-blank" copy buttons, plus back-office setup and 301-redirect steps. |
+| `product-page/londonimg-product/` ‧ `product-page/londonimg-product.zip` | A **Claude Skill**. You give it product info; it returns SHOPLINE-ready copy (bilingual product name + summary), a product description built from 13 reusable blocks, and the 4 back-office SEO fields (title / meta / keywords / URL slug). Ships with reference docs for the sanitization rules, brand-voice guardrails, SEO/GEO rules, and an optional copy-research mode. |
+| `product-page/` (product-page-guide.html/css/js) | A **build guide** (static HTML) for non-technical teammates — the 13 lego blocks with live previews and one-click "fill-in-the-blank" copy buttons, plus back-office setup and 301-redirect steps. |
 | `yu-pdp.css` | Optional shared stylesheet for product descriptions (loadable via jsDelivr). |
 | `index.html` | GitHub Pages entry; auto-redirects to the build guide. |
 
@@ -48,7 +48,7 @@ reference docs so you can swap them for your own.
 ## GitHub Pages
 
 - Entry: <https://anita791122.github.io/londonimg/>
-- Build guide: <https://anita791122.github.io/londonimg/product-page-guide/product-page-guide.html>
+- Build guide: <https://anita791122.github.io/londonimg/product-page/product-page-guide.html>
 
 ## Loading `yu-pdp.css` via jsDelivr
 
