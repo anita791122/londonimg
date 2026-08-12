@@ -14,12 +14,37 @@ b67-product-page-prototype.html
 LandingPage_prototype.html
 londonimg_optimization_handbook.html
 londonimg_homepage_audit.html
+index-member.html
 images/
 prototype-assets/
 _tools/
 
 # 2026-07-16 新增本機工作檔（非教學頁·不托管 GitHub；含給 Raymond 的內部提案／架構總覽／Hero 草稿）
 index/
+# 2026-07-17 首頁客製 HTML 區塊的本機預覽檔（index-hero/line/member/promo…）整個資料夾都不托管
+londonimg/
 index-hero.html
 raymond-proposal-summary.html
 site-architecture-overview.html
+
+# 2026-07-31 給 Raymond 的內部報告（含 GA4 流量／銷售數據＋人名）·公開 repo 絕不可推上去
+raymond-brief-homepage-iphone18.html
+# 2026-08-01 促銷頁提案整併為單一檔（原 promo-page-redesign-brief／promo-series-nav-block／promo-redesign-prototype 已刪除）
+promo-page-proposal.html
+# 2026-08-01 iPhone 18 專屬頁設計原型（含 GA4 推導的價格與組合、AI 生成佔位人像）
+iphone18-promo-prototype.html
+# 2026-08-06 三重防護組商品內頁原型（含現況診斷對照·內部用）
+pdp-triple-protection-prototype.html
+# 2026-08-07 原型用 AI 生成佔位圖（設計師重新生圖後刪除·絕不可上線）
+ai-placeholder/
+pdp-triple-protection-proposal.html
+# 2026-08-07 極地冰岩殼重點 icon 列（本機工作檔·icons/ 需先上傳媒體庫）
+icon-row.html
+icons/
+z19.html
+# 2026-08-12 iPhone 18 商品內頁工作檔與素材（本機用·不托管）
+3set.html
+4set-1.html
+icons-bak/
+# 教學頁資料夾內的內部分析報告（含 GA4／熱點數據·公開 repo 不可推）
+product-page/2026-07-04_B67商品頁分析.html

@@ -113,7 +113,7 @@
 
 ```html
 <!-- ✏️ 改這裡：影片換 src 網址、文字填【】。長長的 style="…" 不要動。 -->
-<!-- 影音實測（橫滑影片牆·直式 9:16）-->
+<!-- 影音實測（上：橫滑影片牆 直式 9:16／下：橫式影片區 16:9）-->
 <div style="max-width:1080px;margin:0 auto;padding:0 20px">
   <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
     <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">✏️【英文小標，例：In Action】</div>
@@ -124,7 +124,7 @@
       <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題（可英＋中，中間用 br 換行）】</div>
         <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000">
-          <iframe src="✏️【YouTube 嵌入網址：影片→分享→嵌入→複製網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe>
+          <iframe src="✏️【YouTube 嵌入網址：影片→分享→嵌入→複製網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
         </div>
       </div>
       <!-- ↑↑ 一支影片 ↑↑ -->
@@ -133,12 +133,37 @@
       <div style="flex:0 0 clamp(220px,70vw,300px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題】</div>
         <div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000">
-          <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe>
+          <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
         </div>
       </div>
       <!-- ↑↑ 一支影片 ↑↑ -->
 
     </div>
+
+    <!-- ↓↓ 橫式影片區（16:9）：沒有橫式影片就整段刪掉 ↓↓ -->
+    <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;margin:22px -20px 0;padding:0 20px 4px">
+
+      <!-- ↓↓ 一支橫式影片（要多一支：整段 div 複製貼在後面）↓↓ -->
+      <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+        <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【橫式影片標題（可英＋中，中間用 br 換行）】</div>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000">
+          <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
+        </div>
+      </div>
+      <!-- ↑↑ 一支橫式影片 ↑↑ -->
+
+      <!-- ↓↓ 一支橫式影片 ↓↓ -->
+      <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+        <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【橫式影片標題】</div>
+        <div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000">
+          <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
+        </div>
+      </div>
+      <!-- ↑↑ 一支橫式影片 ↑↑ -->
+
+    </div>
+    <!-- ↑↑ 橫式影片區 ↑↑ -->
+
   </div>
 </div>
 ```
