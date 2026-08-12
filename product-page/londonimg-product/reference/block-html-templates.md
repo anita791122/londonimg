@@ -55,6 +55,26 @@
 </div>
 ```
 
+## 01 Hero（直圖壓文） — 版本 C：文字靠左（英文小標＋中文大標＋內容）
+
+```html
+<!-- ✏️ 版本 C（文字靠左）：圖片換 src 網址、文字填【】。長長的 style="…" 不要動。 -->
+<!-- Hero 直圖壓文（版本 C：文字靠左） -->
+<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+  <div style="padding:24px 0 4px">
+    <div style="position:relative;overflow:hidden;background:#0d0f0c">
+      <img src="✏️【請貼上圖片網址（見「圖片取得方式」分頁）】" alt="✏️【請填入這張圖的內容說明】" style="width:100%;display:block">
+      <div style="position:absolute;left:0;right:0;top:0;height:58%;background:linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0));z-index:1;pointer-events:none"></div>
+      <div style="position:absolute;left:0;right:0;top:7%;text-align:left;color:#fff;text-shadow:0 2px 14px rgba(0,0,0,.4);padding:0 24px;z-index:2">
+        <div style="font-size:clamp(13px,2.4vw,16px);font-weight:600;letter-spacing:3px;margin:0 0 10px;opacity:.9">✏️【英文小標，例：EVERYDAY CARRY】</div>
+        <div style="font-size:clamp(28px,6vw,54px);font-weight:700;letter-spacing:1px;line-height:1.1;margin:0 0 12px">✏️【中文大標，例：日常隨行，一手掌握】</div>
+        <p style="font-size:clamp(15px,2.6vw,20px);line-height:1.6;margin:0;max-width:560px">✏️【內容（1–2 句說明）】</p>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
 ## 02 重點 icon 列
 
 ```html
