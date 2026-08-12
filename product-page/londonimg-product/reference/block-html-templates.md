@@ -148,14 +148,14 @@
 ```html
 <!-- ✏️ 改這裡：影片換 src 網址、文字填【】。長長的 style="…" 不要動。 -->
 <!-- 影音（版本 B：橫式 16:9）｜橫滑影片列 -->
-<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+<div style="max-width:1080px;margin:0 auto">
   <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
     <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">✏️【英文小標，例：Hands On】</div>
     <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0 0 16px">✏️【區塊標題，例：實拍開箱】</h2>
-    <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;margin:0 -20px;padding:0 20px 4px">
+    <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;padding:0 12px 4px">
 
       <!-- ↓↓ 一支影片（要多一支：整段 div 複製貼在後面）↓↓ -->
-      <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+      <div style="flex:0 0 clamp(200px,calc(100% - 40px),480px);min-width:0;margin:0 6px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題】</div>
         <div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000">
           <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
@@ -164,7 +164,7 @@
       <!-- ↑↑ 一支影片 ↑↑ -->
 
       <!-- ↓↓ 一支影片（要多一支：整段 div 複製貼在後面）↓↓ -->
-      <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+      <div style="flex:0 0 clamp(200px,calc(100% - 40px),480px);min-width:0;margin:0 6px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題】</div>
         <div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000">
           <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>

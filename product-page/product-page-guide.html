@@ -249,7 +249,7 @@
       <div id="lego-video" class="lego">
         <article class="block">
           <div class="block-head"><span class="num">03</span><h3>影音</h3></div>
-          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>橫滑影片列，手機左右滑、桌機並排。<b>兩個版本各自獨立、可只用一個、也可兩個都放</b>：<b>版本 A 直式 9:16</b>（像 Shorts）／<b>版本 B 橫式 16:9</b>（一般橫拍）。<br><b>換影片</b>：到 YouTube 影片→「分享」→「嵌入」，複製 <code>src="..."</code> 裡的<b>網址</b>貼到 ✏️ 那格。<br><b>換字</b>：每個版本都有自己的英文小標、區塊標題、每支影片標題。<br>➕➖ <b>增減影片</b>：複製／刪整支影片的 <code>&lt;div&gt;…&lt;/div&gt;</code>。<br>🔍 <b>放大播放</b>：已開啟 <code>allowfullscreen</code>，點播放器右下角全螢幕鍵即可放大（描述欄濾掉 script／style，做不出點畫面自動放大的 lightbox）。<br>📦 影片框是<b>固定比例</b>，換 src 不會跑版；<b>沒有影片</b>就整塊不用。</span></p>
+          <p class="note"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>橫滑影片列，手機左右滑、桌機並排。<b>兩個版本各自獨立、可只用一個、也可兩個都放</b>：<b>版本 A 直式 9:16</b>（像 Shorts）／<b>版本 B 橫式 16:9</b>（一般橫拍）。<br><b>橫式的卡片寬度是照「描述區容器」算的，不是照螢幕算</b>——手機上會刻意露出下一支影片的一角（約 34px），使用者才知道可以往右滑。這個值已經算好寫死，<b>不要改成 <code>vw</code></b>（螢幕比描述區寬，改了就露不出來）。<br><b>換影片</b>：到 YouTube 影片→「分享」→「嵌入」，複製 <code>src="..."</code> 裡的<b>網址</b>貼到 ✏️ 那格。<br><b>換字</b>：每個版本都有自己的英文小標、區塊標題、每支影片標題。<br>➕➖ <b>增減影片</b>：複製／刪整支影片的 <code>&lt;div&gt;…&lt;/div&gt;</code>。<br>🔍 <b>放大播放</b>：已開啟 <code>allowfullscreen</code>，點播放器右下角全螢幕鍵即可放大（描述欄濾掉 script／style，做不出點畫面自動放大的 lightbox）。<br>📦 影片框是<b>固定比例</b>，換 src 不會跑版；<b>沒有影片</b>就整塊不用。</span></p>
           <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 A：直式 9:16（像 Shorts）‧ 完成後長這樣（可左右滑）</div>
           <div class="preview">
   <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
@@ -297,13 +297,13 @@
           </div>
           <div class="seg-label"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>版本 B：橫式 16:9（一般橫拍）‧ 完成後長這樣（可左右滑）</div>
           <div class="preview">
-  <div style="max-width:1080px;margin:0 auto;padding:0 20px;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
+  <div style="max-width:1080px;margin:0 auto;font-family:-apple-system,'PingFang TC','Noto Sans TC','Segoe UI',sans-serif">
     <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
       <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">Hands On</div>
       <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0 0 16px">實拍開箱</h2>
-      <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;margin:0 -20px;padding:0 20px 4px">
-        <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center"><div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">Full Install<br>完整安裝過程</div><div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000"><iframe src="https://www.youtube.com/embed/Tqc4kZTM_ms" title="完整安裝過程" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div></div>
-        <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center"><div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">Unboxing<br>開箱實拍</div><div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000"><iframe src="https://www.youtube.com/embed/s6Dyn_3h03s" title="開箱實拍" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div></div>
+      <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;padding:0 12px 4px">
+        <div style="flex:0 0 clamp(200px,calc(100% - 40px),480px);min-width:0;margin:0 6px;scroll-snap-align:center;text-align:center"><div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">Full Install<br>完整安裝過程</div><div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000"><iframe src="https://www.youtube.com/embed/Tqc4kZTM_ms" title="完整安裝過程" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div></div>
+        <div style="flex:0 0 clamp(200px,calc(100% - 40px),480px);min-width:0;margin:0 6px;scroll-snap-align:center;text-align:center"><div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">Unboxing<br>開箱實拍</div><div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000"><iframe src="https://www.youtube.com/embed/s6Dyn_3h03s" title="開箱實拍" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div></div>
       </div>
     </div>
   </div></div>
@@ -312,14 +312,14 @@
             <div class="code-bar"><span class="dots"><i></i><i></i><i></i></span><span class="fname">版本 B ‧ HTML</span><button class="copy-btn" onclick="copyCode(this)"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span class="lbl">複製語法</span></button></div>
             <textarea readonly spellcheck="false"><!-- ✏️ 改這裡：影片換 src 網址、文字填【】。長長的 style="…" 不要動。 -->
 <!-- 影音（版本 B：橫式 16:9）｜橫滑影片列 -->
-<div style="max-width:1080px;margin:0 auto;padding:0 20px">
+<div style="max-width:1080px;margin:0 auto">
   <div style="padding:clamp(16px,4vw,28px) 0;text-align:center">
     <div style="font-size:13px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 14px">✏️【英文小標，例：Hands On】</div>
     <h2 style="font-size:clamp(22px,3.4vw,32px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;margin:0 0 16px">✏️【區塊標題，例：實拍開箱】</h2>
-    <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;margin:0 -20px;padding:0 20px 4px">
+    <div style="display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;justify-content:safe center;padding:0 12px 4px">
 
       <!-- ↓↓ 一支影片（要多一支：整段 div 複製貼在後面）↓↓ -->
-      <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+      <div style="flex:0 0 clamp(200px,calc(100% - 40px),480px);min-width:0;margin:0 6px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題】</div>
         <div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000">
           <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
@@ -328,7 +328,7 @@
       <!-- ↑↑ 一支影片 ↑↑ -->
 
       <!-- ↓↓ 一支影片（要多一支：整段 div 複製貼在後面）↓↓ -->
-      <div style="flex:0 0 clamp(280px,85vw,480px);min-width:0;margin:0 12px;scroll-snap-align:center;text-align:center">
+      <div style="flex:0 0 clamp(200px,calc(100% - 40px),480px);min-width:0;margin:0 6px;scroll-snap-align:center;text-align:center">
         <div style="font-size:clamp(16px,2vw,20px);font-weight:600;color:#1a1a1a;line-height:1.3;min-height:1.6em;margin:0 0 12px">✏️【影片標題】</div>
         <div style="position:relative;width:100%;padding-bottom:56.25%;overflow:hidden;background:#000">
           <iframe src="✏️【YouTube 嵌入網址】" title="影片" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe>
