@@ -48,3 +48,9 @@ z19.html
 icons-bak/
 # 教學頁資料夾內的內部分析報告（含 GA4／熱點數據·公開 repo 不可推）
 product-page/2026-07-04_B67商品頁分析.html
+
+# 2026-08-14 londonimg-LP 由專案根目錄移入 iphone18/。它是「獨立的 git repo」
+# （GitHub: anita791122/londonimg-LP），不排除的話，這裡一個 git add . 就會把它
+# 當 embedded repo 收進來——記錄成一個空的 gitlink，clone 下來是空資料夾。
+# 它自己推自己的 repo，交付物 不要碰。
+iphone18/londonimg-LP/
