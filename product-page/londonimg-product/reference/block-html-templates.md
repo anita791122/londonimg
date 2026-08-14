@@ -641,6 +641,49 @@
 </div>
 ```
 
+## 07 多圖橫移（方形滑塊） — 版本 D：組合（用＋號把幾樣商品串成一組，圖下說明置中）
+
+```html
+<!-- ✏️ 多圖橫移（版本 D：組合·＋號把幾樣商品串成一組）：每張圖換 src、填圖下商品名；＋號是固定裝飾（想多加一樣商品，就複製「一個＋號 <div> ＋ 一張圖卡 <div>」貼在最後一張圖後面；只有兩樣就刪掉一組）。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（版本 D：組合·＋號串接·圖下說明置中）｜滿版·width:100vw 設定不要動 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
+  <div style="padding:clamp(16px,4vw,28px) 0;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-left:24px;-webkit-overflow-scrolling:touch">
+    <!-- 橫滑列（置中）：一張圖卡＝一個 <div>；圖卡之間夾一個「＋」<div>。想增減商品：複製／刪「＋號＋圖卡」一組 -->
+    <div style="display:flex;flex-wrap:nowrap;width:max-content;margin:0 auto;padding:4px 24px 14px">
+
+      <!-- 圖卡 1 -->
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0;text-align:center">✏️【商品名，例：防摔極地冰岩殼】</div>
+      </div>
+
+      <!-- ＋號（固定裝飾·不要動 style；要多一組商品就從這個＋號連同下面那張圖卡一起複製）-->
+      <div style="flex:0 0 auto;align-self:flex-start;width:36px;height:36px;border-radius:50%;background:#FE6801;color:#ffffff;font-size:22px;font-weight:700;line-height:36px;text-align:center;margin:132px 14px 0 0">+</div>
+      <!-- 圖卡 2 -->
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0;text-align:center">✏️【商品名，例：瞬貼無痕極地冰盾貼】</div>
+      </div>
+
+      <!-- ＋號 -->
+      <div style="flex:0 0 auto;align-self:flex-start;width:36px;height:36px;border-radius:50%;background:#FE6801;color:#ffffff;font-size:22px;font-weight:700;line-height:36px;text-align:center;margin:132px 14px 0 0">+</div>
+      <!-- 圖卡 3 -->
+      <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0;text-align:center">✏️【商品名，例：玻璃鏡頭環】</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+```
+
 ## 08 版本比較 — ① 對比合成圖（把差異畫進圖裡）
 
 ```html
