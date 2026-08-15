@@ -413,131 +413,11 @@
 </div>
 ```
 
-## 07 多圖橫移（方形滑塊） — 版本 A-2：有標題＋可連結圖（整張圖可點，連到商品／系列頁）
+## 07 多圖橫移（方形滑塊） — 版本 A-2：有標題＋圖下說明（純圖不連結，每張圖下面帶一行說明）
 
 ```html
-<!-- ✏️ 多圖橫移（版本 A-2：有標題＋可連結圖）：每張圖換 src、填說明、填 <a href> 的連結網址；增減圖就複製／刪整張 <a>。長長的 style="…" 不要動。 -->
-<!-- 多圖橫移（版本 A-2：有標題＋可連結圖·整張圖可點）｜滿版·width:100vw 設定不要動 -->
-<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
-  <div style="padding:clamp(16px,4vw,28px) 0">
-    <!-- 標題（不需要就把這段整個刪掉）-->
-    <div style="max-width:1080px;margin:0 auto;padding:0 24px 4px">
-      <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Gallery】</div>
-      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0">✏️【標題，例：多角度實拍，細節看得更清楚】</h2>
-      <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
-    </div>
-    <!-- 橫滑列：每張圖都是連結（整張可點）；某張不想連，把它的 <a …>…</a> 換回 <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">…</div> 即可 -->
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-      </a>
-
-    </div>
-  </div>
-</div>
-```
-
-## 07 多圖橫移（方形滑塊） — 版本 A-3：有標題＋可連結圖＋圖下說明（整張卡可點，圖下多一行說明）
-
-```html
-<!-- ✏️ 多圖橫移（版本 A-3：有標題＋可連結圖＋圖下說明）：每張圖換 src、填說明、填 <a href> 連結、填圖下說明文字；整張卡（含說明）都可點；增減圖就複製／刪整張 <a>。長長的 style="…" 不要動。 -->
-<!-- 多圖橫移（版本 A-3：有標題＋可連結圖＋圖下說明·整張卡可點）｜滿版·width:100vw 設定不要動 -->
-<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
-  <div style="padding:clamp(16px,4vw,28px) 0">
-    <!-- 標題（不需要就把這段整個刪掉）-->
-    <div style="max-width:1080px;margin:0 auto;padding:0 24px 4px">
-      <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Shop the Look】</div>
-      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0">✏️【標題，例：點圖逛同款，一次擁有】</h2>
-      <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
-    </div>
-    <!-- 橫滑列：每張＝可連結卡片（整張含說明都可點）；某張不想連，把它的 <a …>…</a> 換回 <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">…</div> 即可 -->
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
-      </a>
-
-      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
-        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
-          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
-      </a>
-
-    </div>
-  </div>
-</div>
-```
-
-## 07 多圖橫移（方形滑塊） — 版本 A-4：有標題＋圖下說明（純圖不連結，每張圖下面帶一行說明）
-
-```html
-<!-- ✏️ 多圖橫移（版本 A-4：有標題＋圖下說明·純圖不連結）：每張圖換 src、填圖下說明；增減圖就複製／刪整張 <div>。長長的 style="…" 不要動。 -->
-<!-- 多圖橫移（版本 A-4：有標題＋圖下說明·純圖不連結）｜滿版·width:100vw 設定不要動 -->
+<!-- ✏️ 多圖橫移（版本 A-2：有標題＋圖下說明·純圖不連結）：每張圖換 src、填圖下說明；增減圖就複製／刪整張 <div>。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（版本 A-2：有標題＋圖下說明·純圖不連結）｜滿版·width:100vw 設定不要動 -->
 <div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
   <div style="padding:clamp(16px,4vw,28px) 0">
     <!-- 標題（不需要就把這段整個刪掉）-->
@@ -590,6 +470,126 @@
         </div>
         <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明】</div>
       </div>
+
+    </div>
+  </div>
+</div>
+```
+
+## 07 多圖橫移（方形滑塊） — 版本 A-3：有標題＋可連結圖（整張圖可點，連到商品／系列頁）
+
+```html
+<!-- ✏️ 多圖橫移（版本 A-3：有標題＋可連結圖）：每張圖換 src、填說明、填 <a href> 的連結網址；增減圖就複製／刪整張 <a>。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（版本 A-3：有標題＋可連結圖·整張圖可點）｜滿版·width:100vw 設定不要動 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
+  <div style="padding:clamp(16px,4vw,28px) 0">
+    <!-- 標題（不需要就把這段整個刪掉）-->
+    <div style="max-width:1080px;margin:0 auto;padding:0 24px 4px">
+      <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Gallery】</div>
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0">✏️【標題，例：多角度實拍，細節看得更清楚】</h2>
+      <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
+    </div>
+    <!-- 橫滑列：每張圖都是連結（整張可點）；某張不想連，把它的 <a …>…</a> 換回 <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">…</div> 即可 -->
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+      </a>
+
+    </div>
+  </div>
+</div>
+```
+
+## 07 多圖橫移（方形滑塊） — 版本 A-4：有標題＋可連結圖＋圖下說明（整張卡可點，圖下多一行說明）
+
+```html
+<!-- ✏️ 多圖橫移（版本 A-4：有標題＋可連結圖＋圖下說明）：每張圖換 src、填說明、填 <a href> 連結、填圖下說明文字；整張卡（含說明）都可點；增減圖就複製／刪整張 <a>。長長的 style="…" 不要動。 -->
+<!-- 多圖橫移（版本 A-4：有標題＋可連結圖＋圖下說明·整張卡可點）｜滿版·width:100vw 設定不要動 -->
+<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">
+  <div style="padding:clamp(16px,4vw,28px) 0">
+    <!-- 標題（不需要就把這段整個刪掉）-->
+    <div style="max-width:1080px;margin:0 auto;padding:0 24px 4px">
+      <div style="font-size:clamp(11px,1.4vw,15px);font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#fe5226;margin:0 0 8px">✏️【英文小標，例：Shop the Look】</div>
+      <h2 style="font-size:clamp(21px,3.4vw,35px);font-weight:600;letter-spacing:.5px;color:#1a1a1a;line-height:1.2;margin:0">✏️【標題，例：點圖逛同款，一次擁有】</h2>
+      <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
+    </div>
+    <!-- 橫滑列：每張＝可連結卡片（整張含說明都可點）；某張不想連，把它的 <a …>…</a> 換回 <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">…</div> 即可 -->
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
+      </a>
+
+      <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
+        <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
+          <img src="✏️【請貼上正方形圖片網址】" alt="✏️【這張圖的說明】" loading="lazy" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block">
+        </div>
+        <div style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:10px 2px 0">✏️【圖下說明，例：商品名或一句話】</div>
+      </a>
 
     </div>
   </div>
