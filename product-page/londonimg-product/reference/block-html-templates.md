@@ -370,7 +370,7 @@
       <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
     </div>
     <!-- 橫滑列：每張正方形圖＝一個 <div>（想增減就複製／刪一整張）-->
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:1080px;margin:0 auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;padding-left:max(24px,calc((100% - 1080px)/2));scroll-padding-left:max(24px,calc((100% - 1080px)/2));scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
@@ -427,7 +427,7 @@
       <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
     </div>
     <!-- 橫滑列：每張＝正方圖＋圖下說明（想增減就複製／刪一整張 <div>）-->
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:1080px;margin:0 auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;padding-left:max(24px,calc((100% - 1080px)/2));scroll-padding-left:max(24px,calc((100% - 1080px)/2));scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
       <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
@@ -490,7 +490,7 @@
       <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
     </div>
     <!-- 橫滑列：每張圖都是連結（整張可點）；某張不想連，把它的 <a …>…</a> 換回 <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">…</div> 即可 -->
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:1080px;margin:0 auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;padding-left:max(24px,calc((100% - 1080px)/2));scroll-padding-left:max(24px,calc((100% - 1080px)/2));scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
       <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
@@ -547,7 +547,7 @@
       <p style="font-size:clamp(16px,2vw,18px);color:#6E6E73;line-height:1.5;margin:8px 0 0">左右滑看更多 →</p>
     </div>
     <!-- 橫滑列：每張＝可連結卡片（整張含說明都可點）；某張不想連，把它的 <a …>…</a> 換回 <div style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px">…</div> 即可 -->
-    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;max-width:1080px;margin:0 auto;padding:18px 24px 14px;scroll-padding-left:24px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
+    <div style="display:flex;flex-wrap:nowrap;overflow-x:auto;padding:18px 24px 14px;padding-left:max(24px,calc((100% - 1080px)/2));scroll-padding-left:max(24px,calc((100% - 1080px)/2));scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch">
 
       <a href="✏️【要連到的完整網址，例：https://www.londonimg.tw/products/xxx】" target="_blank" rel="noopener" style="flex:0 0 auto;width:300px;scroll-snap-align:start;margin-right:14px;text-decoration:none;display:block">
         <div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f4f4f4">
