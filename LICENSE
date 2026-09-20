@@ -1,21 +1,22 @@
-MIT License
+Copyright (c) 2026 Anita (anita791122). All rights reserved.
+著作權所有，保留一切權利。
 
-Copyright (c) 2026 Anita (anita791122)
+This repository and its contents — including the Claude Skill, HTML block
+templates, build guide, and stylesheets — are proprietary.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+No license is granted, express or implied, to copy, modify, distribute,
+sublicense, sell, or create derivative works from any part of this repository.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+PUBLIC HOSTING IS NOT A LICENSE
+Certain static assets are served over public URLs (GitHub Pages / jsDelivr)
+for the sole technical purpose of allowing the authorized client site and its
+staff to load them. Public reachability does not grant any right of use.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+PRIOR MIT RELEASE
+This repository was published under the MIT License from 2026-06-09 until
+2026-09-20. Copies obtained during that period remain governed by the MIT
+terms for those copies; that grant cannot be revoked retroactively.
+此 repo 於 2026-06-09 至 2026-09-20 期間採 MIT 授權。該期間已取得的副本，
+其 MIT 權利無法追溯撤回；本聲明自 2026-09-20 起對新的取得者生效。
+
+Contact: anita791122

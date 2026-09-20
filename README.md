@@ -1,12 +1,13 @@
 # londonimg-product — Sanitization-proof product-page toolkit for SHOPLINE
 
-An open toolkit + [Claude](https://claude.com) Skill that helps SHOPLINE (and other
+A private toolkit + [Claude](https://claude.com) Skill that helps SHOPLINE (and other
 sanitizing-CMS) store owners build **conversion-oriented, SEO/GEO-friendly product
 description pages** — despite the platform stripping out most of the HTML you'd
 normally rely on.
 
-> 一套開源的 SHOPLINE 商品頁工具鏈：**Claude Skill ＋ 抗淨化 HTML 積木模板 ＋ 教學頁**。
-> 這是我們（londonimg.tw）實際在用的工具，整理後開源給遇到相同問題的店家與開發者。
+> 一套 SHOPLINE 商品頁工具鏈：**Claude Skill ＋ 抗淨化 HTML 積木模板 ＋ 教學頁**。
+> ⚠️ **非開源專案。** 本 repo 為專有內容，僅供授權的客戶網站與其同仁使用。
+> 部分靜態檔案以公開網址託管，純粹是為了讓客戶網站載得到 —— **公開可存取不等於授權使用**。
 
 ## The problem it solves
 
@@ -52,7 +53,7 @@ reference docs so you can swap them for your own.
 
 ## Loading `yu-pdp.css` via jsDelivr
 
-This repo is **public**. In SHOPLINE's "header custom code", add:
+This repo is **publicly reachable** (required so the client store can load the file — not an open-source grant). In SHOPLINE's "header custom code", add:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/anita791122/londonimg@main/yu-pdp.css">
@@ -63,4 +64,6 @@ This repo is **public**. In SHOPLINE's "header custom code", add:
 
 ## License
 
-[MIT](./LICENSE) — free to use, adapt, and ship.
+**專有／All rights reserved** —— 見 [LICENSE](./LICENSE)。不授權複製、修改、散布或再販售。
+
+> 本 repo 於 2026-06-09 至 2026-09-20 期間曾採 MIT 授權；該期間已取得的副本仍受 MIT 保障，無法追溯撤回。
