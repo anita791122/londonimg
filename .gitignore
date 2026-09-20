@@ -70,3 +70,7 @@ icons-bak/
 # 通則：往 交付物/ 放「給自己或給 Raymond 看的報告」時，同時把檔名加進這裡。
 # （2026-09-11 那兩份月報檔已改放 ../分析/ —— 歸 LONDON IMG repo，無遠端，有版控也不外推。
 #   內部報告的預設家就是那裡；真的要放這一層，記得回來加檔名。）
+
+# 2026-09-20 品牌策略文件不公開托管（含客戶品牌背景、客群分類、差異化定位）
+# 同事需要時由私有管道提供，放進 reference/ 即可。SKILL.md 已註明缺檔的降級行為。
+product-page/londonimg-product/reference/brand-voice.md

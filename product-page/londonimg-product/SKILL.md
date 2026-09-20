@@ -70,6 +70,9 @@ description: 為倫敦印象（londonimg.tw，SHOPLINE 平台的 iPhone 配件�
    - **平常產文字版（A／B／C）只讀這 4 個小檔**：
      - `reference/page-blocks.md` — 商品描述的區塊與欄位（B 部分照這個產）
      - `reference/brand-voice.md` — 品牌語氣與定位
+       ⚠️ **此檔不隨公開下載包提供**（含品牌策略，屬內部文件）。
+       向專案負責人索取後放到 `reference/` 底下即可。
+       **沒有這個檔也能跑**，但語氣與定位的護欄會失效，產出需要人工覆核。
      - `reference/seo-geo-rules.md` — SEO/GEO 各欄位寫法與字數（C 部分）
      - `reference/shopline-output.md` — SHOPLINE 平台限制與輸出格式
    - ⚡ **`reference/block-html-templates.md`（檔案大）只有在使用者明確要「可貼 HTML」時才讀**；不需要可貼 HTML 就**完全不要載入**它（這是加快產出的關鍵）。
