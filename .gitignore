@@ -1,74 +1,46 @@
-.DS_Store
-*.pxbak
-Thumbs.db
-
-# 僅保留本機、不托管於 GitHub（只托管教學頁＋skill＋yu-pdp.css）
-b67-description-v3.html
-b67-description-v3-1.html
-b67-description-v2.html
-b67-description-merged.html
-b67-description-inline.html
-b67-description-css-separated.html
-pdp-layered-vs-overlay-demo.html
-b67-product-page-prototype.html
-LandingPage_prototype.html
-londonimg_optimization_handbook.html
-londonimg_homepage_audit.html
-index-member.html
-images/
-prototype-assets/
-_tools/
-
-# 2026-07-16 新增本機工作檔（非教學頁·不托管 GitHub；內部提案與草稿）
-index/
-# 2026-07-17 首頁客製 HTML 區塊的本機預覽檔（index-hero/line/member/promo…）整個資料夾都不托管
-londonimg/
-index-hero.html
-raymond-proposal-summary.html
-site-architecture-overview.html
-
-# 教學頁資料夾內的內部分析報告（公開 repo 不可推）
-product-page/2026-07-04_B67商品頁分析.html
-
 # ══════════════════════════════════════════════════════════════════
-# 2026-08-14　iphone18/ 整個資料夾一律不托管（使用者指示）
+# 白名單制（2026-09-20 改）：預設全部不托管，只有下列公開資產例外
 # ══════════════════════════════════════════════════════════════════
-# 這個資料夾裡全是內部工作檔，一律不公開：
-#   · 內部報告與提案
-#   · 頁面原型與實作工作檔
-#   · 佔位素材（未授權上線）
-#   · londonimg-LP/——它是獨立的 git repo（anita791122/londonimg-LP），
-#     有自己的 remote 與 GitHub Pages。不擋的話，這裡一個 git add . 會把它
-#     收成一個空的 gitlink：clone 下來是空資料夾，歷史一點都不會進來。
-#     它自己推自己的，交付物 不要碰。
+# 為什麼從黑名單改成白名單：
+#   黑名單漏列一個檔，它會自動被追蹤並公開——而且失敗是安靜的，
+#   等到發現時東西已經在網路上了。（2026-08-14 踩過：檔案一改名，
+#   按檔名寫的規則當場失效，差一步就被推上來。）
+#   白名單相反：漏列只會「沒被托管」，看得見也修得掉。
 #
-# ⚠️ 用「資料夾」擋，不要退回按檔名擋。
-#    2026-08-14 發生過：3set.html 改名成 s1-3.html，按檔名的規則當場失效、
-#    檔案變成未追蹤，差一步就被 git add . 推上這個公開 repo。
-#    資料夾規則不受改名影響，這是它取代整串檔名的原因。
-iphone18/
+#   附帶好處：黑名單必須寫出內部檔案的名字，那些名字本身就是
+#   內部訊息（這個檔是公開可讀的）。白名單不需要提到它們。
+#
+# ⚠️ 新增公開資產時，要在下面補一條 ! 規則，否則不會被追蹤。
+# ⚠️ 目錄要先 ! 解除忽略，才進得去裡面的檔案。
 
-# ── 保險絲：萬一哪天把上面某個檔案「搬出」iphone18/，靠檔名再擋一次 ──
-# （純備援。要真的公開其中某一份，是把它從這裡拿掉，而不是搬出資料夾就當它可公開。）
-raymond-brief-homepage-iphone18.html
-promo-page-proposal.html
-iphone18-promo-prototype.html
-pdp-triple-protection-prototype.html
-pdp-triple-protection-proposal.html
-ai-placeholder/
-icon-row.html
-icons/
-z19.html
-3set.html
-s1-3.html
-4set-1.html
-icons-bak/
+# ── 1) 預設：全部忽略 ──
+*
 
-# 2026-09-11 🔴 內部報告一律不托管：這個 repo 是公開定位，
-# 而 .gitignore 是黑名單——沒列到的檔案會自動被追蹤。
-# 通則：往 交付物/ 放內部報告時，同時把檔名加進這裡。
-# （內部報告的預設家是 ../分析/ —— 無遠端、不外推。真要放這一層，記得回來加檔名。）
+# ── 2) 例外：根目錄的公開資產 ──
+!.gitignore
+!.nojekyll
+!LICENSE
+!README.md
+!index.html
+!yu-pdp.css
 
-# 2026-09-20 內部策略文件不公開托管。
-# 需要時由私有管道提供，放進 reference/ 即可。SKILL.md 已註明缺檔的降級行為。
-product-page/londonimg-product/reference/brand-voice.md
+# ── 3) 例外：教學頁 ──
+!product-page/
+product-page/*
+!product-page/product-page-guide.html
+!product-page/product-page-guide.css
+!product-page/product-page-guide.js
+
+# ── 4) 例外：Skill 下載包與本體 ──
+!product-page/londonimg-product.zip
+!product-page/londonimg-product/
+product-page/londonimg-product/*
+!product-page/londonimg-product/README.md
+!product-page/londonimg-product/SKILL.md
+!product-page/londonimg-product/reference/
+product-page/londonimg-product/reference/*
+!product-page/londonimg-product/reference/block-html-templates.md
+!product-page/londonimg-product/reference/page-blocks.md
+!product-page/londonimg-product/reference/seo-geo-rules.md
+!product-page/londonimg-product/reference/shopline-output.md
+# 註：reference/ 底下只開上面四個檔。內部策略文件不在其中，維持不托管。
