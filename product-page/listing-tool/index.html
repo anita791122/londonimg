@@ -909,7 +909,7 @@ window.LN_ADDON_KIT = {"head":"<div style=\"position:relative;width:100vw;left:5
       }
       const info = imgs[url];
 
-      if (!info || info.state === 'loading') { add(key + '.url', 'orange', '正在讀取圖片尺寸…（讀不到網路會一直停在這裡，這時尺寸沒有被檢查）', sec, 'pending'); return; }
+      if (!info || info.state === 'loading') { add(key + '.url', 'orange', '正在讀取圖片尺寸…（還沒讀到之前尺寸沒有被檢查；20 秒還讀不到會變成紅字）', sec, 'pending'); return; }
       if (info.state === 'error') { add(key + '.url', 'red', '這個網址讀不到圖（打錯、還沒上傳，或沒有網路）', sec); return; }
       const sp = IMG_SPEC[specKey];
       if (info.w < sp.minW || info.h < sp.minH) {
