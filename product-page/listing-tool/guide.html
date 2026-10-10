@@ -14,7 +14,10 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink);
   font: 16px/1.75 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
-main { max-width: 720px; margin: 0 auto; padding: 32px 16px 64px; }
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+.layout { display: grid; grid-template-columns: 220px minmax(0, 720px); gap: 48px; justify-content: center; padding: 0 24px; }
+main { min-width: 0; padding: 32px 0 64px; }
 h1 { font-size: 26px; line-height: 1.35; margin: 0 0 8px; }
 h2 { font-size: 19px; line-height: 1.4; margin: 40px 0 10px; padding-top: 20px; border-top: 1px solid var(--line); }
 h2 .n { display: inline-block; min-width: 1.6em; color: var(--muted); font-weight: 500; }
@@ -39,6 +42,40 @@ th { background: var(--soft); font-weight: 600; }
 .chip.orange { background: #fff4e5; color: var(--orange); border-color: #f1c58f; }
 .chip.white { background: #fff; color: var(--ink); }
 footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
+/* 側選單 */
+.toc { position: sticky; top: 0; align-self: start; max-height: 100vh; max-height: 100dvh; overflow-y: auto; padding: 32px 0 24px; }
+.toc-bar { display: none; }
+.toc-head { margin: 0 0 10px; padding: 0 12px; font-size: 14px; line-height: 1.5; color: var(--muted); }
+.toc-head b { display: block; color: var(--ink); font-size: 15px; }
+.toc ol { list-style: none; margin: 0; padding: 0; }
+.toc li { margin: 0; }
+.toc ol a { display: flex; gap: 6px; padding: 7px 12px 7px 9px; border-left: 3px solid transparent; border-radius: 0 6px 6px 0;
+  color: var(--ink); text-decoration: none; font-size: 15px; line-height: 1.45; }
+.toc ol a .n { min-width: 1.3em; color: var(--muted); font-variant-numeric: tabular-nums; }
+.toc ol a:hover { background: var(--soft); }
+.toc ol a[aria-current="true"] { background: var(--soft); border-left-color: var(--ink); font-weight: 600; }
+.toc a:focus-visible, .toc-btn:focus-visible { outline: 3px solid var(--accent); outline-offset: 1px; }
+.toc-tool { display: block; margin: 16px 12px 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 15px; font-weight: 600; }
+@media (max-width: 959px) {
+  .layout { display: block; padding: 0; }
+  html.js { scroll-padding-top: 64px; }
+  main { max-width: 720px; margin: 0 auto; padding: 24px 16px 64px; }
+  .toc { position: static; z-index: 10; max-height: none; overflow: visible; padding: 16px 4px 8px; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .js .toc { position: sticky; padding: 0; }
+  .js .toc-bar { display: block; }
+  .toc-btn { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 48px; padding: 0 16px; border: 0; background: var(--bg);
+    font: inherit; font-size: 15px; color: var(--ink); text-align: left; cursor: pointer; }
+  .toc-btn .lbl { font-weight: 600; flex: none; }
+  .toc-btn .cur { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--muted); }
+  .toc-btn .chev { flex: none; width: 10px; height: 10px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: translateY(-3px) rotate(45deg); transition: transform .15s; }
+  .toc-btn[aria-expanded="true"] .chev { transform: translateY(2px) rotate(-135deg); }
+  .js .toc-panel { display: none; position: absolute; left: 0; right: 0; top: 100%; max-height: calc(100vh - 56px); max-height: calc(100dvh - 56px); overflow-y: auto;
+    background: var(--bg); border-bottom: 1px solid var(--line); box-shadow: 0 12px 24px rgba(29, 33, 40, .12); padding: 8px 4px 16px; }
+  .js .toc.is-open .toc-panel { display: block; }
+  .js .toc-head { display: none; }
+  .toc ol a { padding: 12px 12px 12px 13px; }
+  .toc-tool { padding: 12px 0 10px; }
+}
 @media (max-width: 480px) {
   h1 { font-size: 23px; }
   th, td { padding: 7px 6px; }
@@ -46,6 +83,26 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
 </style>
 </head>
 <body>
+<div class="layout">
+  <nav class="toc" id="toc" aria-label="這一頁的目錄">
+    <div class="toc-bar">
+      <button type="button" class="toc-btn" aria-expanded="false" aria-controls="toc-panel"><span class="lbl">目錄</span><span class="cur"></span><span class="chev" aria-hidden="true"></span></button>
+    </div>
+    <div class="toc-panel" id="toc-panel">
+      <p class="toc-head"><b>商品頁上架工具</b>第一次用</p>
+      <ol>
+        <li><a href="#photos"><span class="n">1</span><span class="t">先準備照片</span></a></li>
+        <li><a href="#image-url"><span class="n">2</span><span class="t">拿到圖片網址</span></a></li>
+        <li><a href="#form"><span class="n">3</span><span class="t">填表單</span></a></li>
+        <li><a href="#button-colors"><span class="n">4</span><span class="t">按鈕的顏色</span></a></li>
+        <li><a href="#paste"><span class="n">5</span><span class="t">貼進後台</span></a></li>
+        <li><a href="#save-file"><span class="n">6</span><span class="t">存成檔案</span></a></li>
+        <li><a href="#skill"><span class="n">7</span><span class="t">商品頁設定（Skill）</span></a></li>
+        <li><a href="#help"><span class="n">8</span><span class="t">卡住的時候</span></a></li>
+      </ol>
+      <a class="toc-tool" href="./">打開上架工具</a>
+    </div>
+  </nav>
 <main>
   <h1>商品頁上架工具｜第一次用</h1>
   <p class="intro">工具做兩件事：產出「商品描述」的語法，和「商品摘要」的文字。你把圖片網址和文字填進表單，按複製，再貼進後台。<br>工具不會自己寫進後台，也不會動到後台的價格和規格選單。</p>
@@ -53,7 +110,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   <a class="open" href="./">打開上架工具</a>
   <p class="intro">目前只在 Chrome 上測過，建議用 Chrome 開。工具要讀圖片的尺寸，所以要有網路。</p>
 
-  <h2><span class="n">1</span>先準備照片</h2>
+  <h2 id="photos"><span class="n">1</span>先準備照片</h2>
   <p>照片要夠大，不然在高解析螢幕（Mac、手機）上會糊。工具會自己讀每張圖的尺寸，太小會出現紅字。</p>
   <table>
     <thead><tr><th>放在哪一區</th><th>圖框</th><th>最小尺寸（寬 × 高，px）</th></tr></thead>
@@ -67,7 +124,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   <p>拍攝建議：遠一點拍；同一個商品的照片，用同一個背景或同一個顏色；至少帶一點散景。</p>
   <p>工具右邊的「圖片規格」分頁也有這張表。</p>
 
-  <h2><span class="n">2</span>拿到圖片網址</h2>
+  <h2 id="image-url"><span class="n">2</span>拿到圖片網址</h2>
   <p>工具要的是 SHOPLINE 上的圖片網址。拿網址的方法：</p>
   <ol>
     <li>後台 → 商品 → 編輯這個商品 → 商品描述。</li>
@@ -78,7 +135,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   <div class="note">網址的結尾要是 <code>original.副檔名</code>（例如 <code>original.png</code>、<code>original.jpg</code>），後面多一段 <code>?…</code> 沒關係。<br>網址裡如果是 <code>800x</code>、<code>1080x</code> 這種縮圖網址，工具會標紅字「網址格式不對」，請換成 original 那一串。</div>
   <p>剛才插進描述裡的圖，等一下貼語法時會一起被換掉，不用留。</p>
 
-  <h2><span class="n">3</span>填表單</h2>
+  <h2 id="form"><span class="n">3</span>填表單</h2>
   <ol>
     <li>最上面先回答「這個商品有沒有比較區」。比較區是拿同一款商品的兩個版本（例如一般款和進階款）並排比；沒有兩個版本可比，就選「沒有」。</li>
     <li>從上往下填。灰色的字是 B67（YU 360°無段支架手機殼）的例子，照它的格式寫。</li>
@@ -94,7 +151,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
     <li>清單裡的安心扣【S75】寫著「先不放」，沒有「加入」鈕：它的加價購頁和加購價還沒好。直接貼它的網址會出現紅字，這張卡也不會放進語法。</li>
   </ul>
 
-  <h2><span class="n">4</span>看懂「複製語法」按鈕的顏色</h2>
+  <h2 id="button-colors"><span class="n">4</span>看懂「複製語法」按鈕的顏色</h2>
   <table>
     <thead><tr><th>按鈕長這樣</th><th>意思</th></tr></thead>
     <tbody>
@@ -110,7 +167,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   <p>「商品摘要」分頁的「複製摘要」也是同一套顏色和規則（只看摘要用得到的欄位）。</p>
   <p>右邊的「檢查清單」分頁會列出每一項問題。點一下，就會跳到那一格。</p>
 
-  <h2><span class="n">5</span>貼進後台</h2>
+  <h2 id="paste"><span class="n">5</span>貼進後台</h2>
   <ol>
     <li>後台原本的描述如果要留，先複製起來，存到別的地方。電腦一次只記得一份複製的東西，後複製的會蓋掉先複製的。</li>
     <li>回到工具，按「複製語法」。</li>
@@ -122,7 +179,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   <p>後台的<span class="key">商品名稱由你自己取</span>，工具和 Claude Skill 都不會產。</p>
   <div class="note warn"><span class="key">用這個工具做的第一個商品，先存成隱藏商品。</span><br>把網址傳給工具負責人，看過沒問題再上架。</div>
 
-  <h2><span class="n">6</span>換下一個商品之前，先「存成檔案」</h2>
+  <h2 id="save-file"><span class="n">6</span>換下一個商品之前，先「存成檔案」</h2>
   <p>工具會自動把填到一半的內容存在這台電腦的瀏覽器裡，<span class="key">但只記得一份</span>。開始填下一個商品，上一個就被蓋掉了。</p>
   <ol>
     <li>做完一個商品，按工具右上角的「存成檔案」。會下載一個 <code>上架草稿_商品名.json</code>，檔名用的是 Hero 區填的商品名。</li>
@@ -131,7 +188,7 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   </ol>
   <p>換電腦或清掉瀏覽器資料，瀏覽器裡那一份就沒了。存成檔案的不會。</p>
 
-  <h2><span class="n">7</span>商品頁設定（搜尋用的四欄）</h2>
+  <h2 id="skill"><span class="n">7</span>商品頁設定（搜尋用的四欄）</h2>
   <p>後台「網路搜尋最佳化」的標題、簡介、關鍵字、描述性網址，工具不產，改用 Claude（AI 助手）的一個 Skill 來產。寫法的規則都已經放在 Skill 裡。</p>
   <a class="open" href="https://re4790150.github.io/londonimg-listing-tool/londonimg-product.zip" download>下載 Skill（londonimg-product.zip）</a>
   <p class="intro">下載後不要解壓縮，直接上傳整個 zip。自己解壓再壓回去，裡面的資料夾名稱可能會變，上傳就會失敗。下載完如果看到的是資料夾、不是 .zip（Mac 的 Safari 預設會自動解壓縮），改用 Chrome 再下載一次。</p>
@@ -147,11 +204,45 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   <p>Skill 不會自動更新。先在 Skills 清單找到 <code>londonimg-product</code>，點右邊的 ••• → Delete 刪掉舊的，再照上面的步驟上傳新的。下載資料夾裡有好幾個 zip 的話，挑最新下載的那個。</p>
   <p>已經上架的商品，「描述性網址」那一欄先不要貼。網址一改，舊的連結和 Google 排名會斷，要另外設轉址（讓舊網址自動跳到新網址）。要改先問工具負責人。</p>
 
-  <h2><span class="n">8</span>卡住的時候</h2>
+  <h2 id="help"><span class="n">8</span>卡住的時候</h2>
   <p>把整個畫面截圖，紅字那一格和左上角的版本日期都要看得到，傳給工具負責人。</p>
   <p>工具左上角、標題旁邊，寫著版本和日期（「基本版 v0.1」後面那個日期）。工具更新後，重新整理網頁就是最新版。加價購的價格是哪一天跟商城對過的，寫在加價購區裡（要先勾「這個商品要放這一區」才看得到）。</p>
 
   <footer>商品頁上架工具 · 基本版 v0.1</footer>
 </main>
+</div>
+<script>
+(function () {
+  var root = document.documentElement, toc = document.getElementById('toc');
+  root.classList.add('js');
+  var btn = toc.querySelector('.toc-btn'), cur = toc.querySelector('.cur');
+  var links = [].slice.call(toc.querySelectorAll('ol a'));
+  var heads = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var clicked = -1;
+  function isOpen() { return toc.classList.contains('is-open'); }
+  function setOpen(open) { toc.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  btn.addEventListener('click', function () { setOpen(!isOpen()); });
+  links.forEach(function (a, i) { a.addEventListener('click', function () { clicked = i; setOpen(false); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && isOpen()) { setOpen(false); btn.focus(); } });
+  document.addEventListener('click', function (e) { if (!toc.contains(e.target)) setOpen(false); });
+  toc.addEventListener('focusout', function (e) { if (e.relatedTarget && !toc.contains(e.relatedTarget)) setOpen(false); });
+  ['wheel', 'touchstart', 'keydown'].forEach(function (ev) { window.addEventListener(ev, function () { clicked = -1; }, { passive: true }); });
+  var active = -1;
+  function spy() {
+    var line = toc.querySelector('.toc-bar').offsetHeight + 24, idx = -1;
+    for (var i = 0; i < heads.length; i++) { if (heads[i].getBoundingClientRect().top <= line) idx = i; }
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) idx = clicked >= 0 ? clicked : heads.length - 1;
+    if (idx === active) return;
+    active = idx;
+    links.forEach(function (a, i) { if (i === idx) a.setAttribute('aria-current', 'true'); else a.removeAttribute('aria-current'); });
+    cur.textContent = idx < 0 ? '' : links[idx].querySelector('.n').textContent + ' ' + links[idx].querySelector('.t').textContent;
+  }
+  window.addEventListener('scroll', spy, { passive: true });
+  window.addEventListener('resize', spy);
+  window.addEventListener('hashchange', spy);
+  window.addEventListener('scrollend', spy);
+  spy();
+})();
+</script>
 </body>
 </html>
