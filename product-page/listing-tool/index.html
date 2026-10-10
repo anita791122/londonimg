@@ -46,6 +46,8 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 .top h1 { font-size: 17px; margin: 0; font-weight: 600; letter-spacing: .2px; }
 .top .ver { font-size: 12px; color: var(--ink-3); }
+.top .guide-link { font-size: 13px; color: var(--ink-2); text-decoration: underline; text-underline-offset: 3px; padding: 8px 2px; white-space: nowrap; }
+.top .guide-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
 .top .sp { flex: 1; }
 .btn {
   min-height: 38px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line-2);
@@ -329,6 +331,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 <header class="top">
   <h1>倫敦印象｜商品頁上架工具</h1>
   <span class="ver">基本版 v0.1 · 2026-10-10</span>
+  <a class="guide-link" href="guide.html" target="_blank" rel="noopener">第一次用？看說明</a>
   <span class="sp"></span>
   <span class="draftnote" id="draftnote"></span>
   <button type="button" class="btn" id="btn-sample" title="填入 B67 的內容，只用來看樣子">載入 B67 範例</button>
@@ -344,7 +347,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       <summary><b>怎麼用</b><span class="safe">這個工具只產生語法，不會寫進後台，也不會碰價格和規格。</span></summary>
       <ol>
         <li>先回答「有沒有比較區」，再從上往下把每一區填完。灰色字是 B67 的例子，照著格式寫。</li>
-        <li>圖要先上傳到 SHOPLINE 後台，再把圖片網址貼進來（結尾是 <code>original.png</code> 或 <code>original.jpg</code>）。工具會讀圖，告訴你夠不夠大。</li>
+        <li>圖要先上傳到 SHOPLINE 後台，再把圖片網址貼進來（結尾是 <code>original.副檔名</code>，例如 <code>original.png</code>、<code>original.jpg</code>）。工具會讀圖，告訴你夠不夠大。</li>
         <li>預覽上方的「複製語法」變成黑色，才是全部處理好：沒有紅字、沒有待填、沒有 B67 範例字。後台原本的描述要留的話，先存好舊的再按（剪貼簿只有一格，後複製的會蓋掉先複製的）。按下去，貼進商品描述的「HTML 原始碼」。</li>
         <li>再到「商品摘要」分頁按「複製摘要」，貼進後台的「商品摘要」欄（另一格，不是商品描述）。</li>
       </ol>
