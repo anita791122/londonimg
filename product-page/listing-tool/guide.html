@@ -134,19 +134,18 @@ footer { margin-top: 48px; color: var(--muted); font-size: 14px; }
   <h2><span class="n">7</span>商品頁設定（搜尋用的四欄）</h2>
   <p>後台「網路搜尋最佳化」的標題、簡介、關鍵字、描述性網址，工具不產，改用 Claude（AI 助手）的一個 Skill 來產。寫法的規則都已經放在 Skill 裡。</p>
   <a class="open" href="https://re4790150.github.io/londonimg-listing-tool/londonimg-product.zip" download>下載 Skill（londonimg-product.zip）</a>
-  <p class="intro">下載後不要解壓縮、不要改名，下一步要上傳整個 zip 檔。</p>
+  <p class="intro">下載後不要解壓縮，直接上傳整個 zip。自己解壓再壓回去，裡面的資料夾名稱可能會變，上傳就會失敗。下載完如果看到的是資料夾、不是 .zip（Mac 的 Safari 預設會自動解壓縮），改用 Chrome 再下載一次。</p>
   <p class="key">安裝（只做一次）</p>
   <ol>
-    <li>打開 claude.ai，左邊側欄點 Customize → Skills。</li>
-    <li>右上角點 Add → 選最下面的 Upload a skill，挑剛下載的 zip 檔。</li>
-    <li>清單裡出現 <code>londonimg-product</code>、開關是開的，就裝好了。</li>
+    <li>打開 claude.ai，先到 Settings → Capabilities，打開 Code execution and file creation。沒開的話 Skill 不會跑。</li>
+    <li>左邊側欄點 Customize → Skills。</li>
+    <li>右上角點 Add → 選最下面的 Upload a skill，挑剛下載的 zip 檔。清單裡出現 <code>londonimg-product</code>、開關是開的，就裝好了。</li>
   </ol>
-  <p>找不到 Skills 或不能上傳：先到 Settings → Capabilities，打開 Code execution and file creation，再回去找。</p>
   <p class="key">使用</p>
-  <p>在 Claude 的對話裡說「幫［商品名］寫商品頁設定」，把賣點和工具「商品摘要」分頁裡的「適用機型」那一行一起貼上。Claude 會產出四欄，分別複製，貼進後台 → 商品 → 編輯這個商品 → 網路搜尋最佳化。</p>
+  <p>在 Claude 的對話裡說「幫［商品名］寫商品頁設定」，把賣點一起貼上；有分機型的商品，再加上工具「商品摘要」分頁裡的「適用機型」那一行。Claude 會產出四欄，分別複製，貼進後台 → 商品 → 編輯這個商品 → 網路搜尋最佳化。</p>
   <p class="key">收到新版的時候</p>
-  <p>Skill 不會自動更新。先在 Skills 清單找到 <code>londonimg-product</code>，點右邊的 ••• → Delete 刪掉舊的，再照上面的步驟上傳新的。</p>
-  <p>已經上架的商品不要自己改網址：改了要另外設轉址，先問工具負責人。</p>
+  <p>Skill 不會自動更新。先在 Skills 清單找到 <code>londonimg-product</code>，點右邊的 ••• → Delete 刪掉舊的，再照上面的步驟上傳新的。下載資料夾裡有好幾個 zip 的話，挑最新下載的那個。</p>
+  <p>已經上架的商品，「描述性網址」那一欄先不要貼。網址一改，舊的連結和 Google 排名會斷，要另外設轉址（讓舊網址自動跳到新網址）。要改先問工具負責人。</p>
 
   <h2><span class="n">8</span>卡住的時候</h2>
   <p>把整個畫面截圖，紅字那一格和左上角的版本日期都要看得到，傳給工具負責人。</p>
