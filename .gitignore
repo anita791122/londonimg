@@ -44,3 +44,10 @@ product-page/londonimg-product/reference/*
 !product-page/londonimg-product/reference/seo-geo-rules.md
 !product-page/londonimg-product/reference/shopline-output.md
 # 註：reference/ 底下只開上面四個檔。內部策略文件不在其中，維持不托管。
+
+# ── 5) 例外：上架工具公開版（給同事開網址用；由 product-page/上架工具/build.js 產生，沒有註解、不列人名）──
+#    原始碼（src、測試、打包程式）在 product-page/上架工具/，不托管。
+!product-page/listing-tool/
+product-page/listing-tool/*
+!product-page/listing-tool/index.html
+!product-page/listing-tool/guide.html

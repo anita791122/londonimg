@@ -1,0 +1,2263 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<meta name="robots" content="noindex">
+<title>商品頁上架工具</title>
+<style>
+:root {
+  --bg: #f4f5f7;
+  --card: #ffffff;
+  --ink: #1d1f23;
+  --ink-2: #4a4f5a;
+  --ink-3: #6b717d;
+  --line: #e3e5e9;
+  --line-2: #cfd3da;
+  --field-line: #8a909b;
+  --accent: #1d1f23;
+  --red: #b4232a;
+  --red-bg: #fdf0f0;
+  --orange: #9a5b00;
+  --orange-bg: #fff6e5;
+  --hint: #355a7c;
+  --hint-bg: #eef3f8;
+  --green: #1a7f4b;
+  --green-bg: #e9f6ee;
+  --todo: #5b6472;
+  --todo-bg: #eceef2;
+  --focus: #2a5bd7;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+
+html { scroll-padding-top: calc(var(--top-h, 60px) + var(--nav-h, 0px) + 12px); }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 15px/1.6 -apple-system, "PingFang TC", "Noto Sans TC", "Helvetica Neue", Arial, sans-serif;
+}
+button, input, select, textarea { font: inherit; color: inherit; }
+[hidden] { display: none !important; }
+
+.top {
+  position: sticky; top: 0; z-index: 20; background: var(--card); border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 12px; padding: 10px 20px; flex-wrap: wrap;
+}
+.top h1 { font-size: 17px; margin: 0; font-weight: 600; letter-spacing: .2px; }
+.top .ver { font-size: 12px; color: var(--ink-3); }
+.top .sp { flex: 1; }
+.btn {
+  min-height: 38px; padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line-2);
+  background: var(--card); cursor: pointer; font-size: 14px; white-space: nowrap;
+}
+.btn:hover { background: #f0f1f4; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, summary:focus-visible, a:focus-visible, .sec h2:focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 2px;
+}
+.pv-wrap iframe:focus-visible { outline: 2px solid var(--focus); outline-offset: -2px; }
+
+.skip { position: absolute; left: 12px; top: -60px; z-index: 30; background: var(--ink); color: #fff; padding: 8px 14px; border-radius: 8px; text-decoration: none; }
+.skip:focus { top: 10px; }
+.btn.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.btn.primary:hover { background: #2f3238; }
+.btn.warn { background: var(--red); border-color: var(--red); color: #fff; }
+.btn.warn:hover { background: #961c22; }
+.btn.caution { background: var(--orange-bg); border-color: #e29a1f; color: var(--orange); }
+.btn.caution:hover { background: #ffedcc; }
+.btn.small { min-height: 30px; padding: 3px 10px; font-size: 13px; }
+.btn.ghost { border-color: transparent; color: var(--ink-3); }
+.btn.ghost:hover { color: var(--ink-2); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+.layout {
+  display: grid; grid-template-columns: minmax(480px, 660px) minmax(420px, 1fr); gap: 20px;
+  max-width: 1560px; margin: 0 auto; padding: 18px 20px 60px; align-items: start;
+}
+@media (max-width: 1000px) { .layout { grid-template-columns: 1fr; } .panel { position: static !important; height: auto !important; } }
+.layout > * { min-width: 0; }
+
+.nav {
+  display: flex; flex-wrap: wrap; gap: 5px; margin: 0 0 8px; padding: 8px 0;
+  position: sticky; top: var(--top-h, 60px); z-index: 10; background: var(--bg);
+}
+
+@media (max-width: 600px) { .nav { position: static; } }
+.chip {
+  border: 1px solid var(--line-2); background: var(--card); border-radius: 999px; padding: 2px 9px;
+  font-size: 12.5px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px; text-decoration: none; color: var(--ink);
+}
+.chip[aria-current] { border-color: var(--ink); font-weight: 600; }
+.chip.only-narrow { display: none; }
+@media (max-width: 1000px) { .chip.only-narrow { display: inline-flex; } }
+.chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--line-2); display: inline-block; }
+.chip.st-ok i { background: var(--green); }
+.chip.st-red i { background: var(--red); }
+
+.chip.st-orange i { background: #b8790f; }
+.chip.st-todo i { background: #7d8592; }
+.chip.st-sugg i { background: var(--hint); }
+.chip.off { color: var(--ink-3); border-style: dashed; }
+
+.howto {
+  background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin: 0 0 14px;
+  font-size: 14px; color: var(--ink-2);
+}
+.howto > summary { cursor: pointer; }
+.howto b { color: var(--ink); margin-right: 10px; }
+.howto .safe { color: var(--ink); }
+.howto ol { margin: 6px 0 0; padding-left: 20px; }
+.howto li { margin: 2px 0; }
+
+.samplebar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 14px; padding: 10px 14px;
+  background: var(--orange-bg); border: 1px solid #e29a1f; border-radius: 10px; color: var(--orange); font-size: 14px;
+}
+.samplebar p { margin: 0; flex: 1; min-width: 240px; }
+
+.sec { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin: 0 0 14px; }
+.sec > header { display: flex; align-items: center; flex-wrap: wrap; gap: 6px 10px; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+.sec > header .badge {
+  min-width: 28px; height: 28px; padding: 0 8px; border-radius: 7px; background: var(--ink); color: #fff;
+  display: inline-flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600;
+}
+.sec > header h2 { margin: 0; font-size: 16px; font-weight: 600; white-space: nowrap; }
+.sec > header .sub { flex: 1 1 120px; color: var(--ink-3); font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sec.folded > .body { display: none; }
+.sec.folded > header { border-bottom: 0; }
+.foldbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin: 0 0 6px; }
+.sec > header .sp { flex: 0 0 0; }
+.sec > header label.toggle { font-size: 13px; color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px; cursor: pointer; white-space: nowrap; }
+.sec .body { padding: 14px 16px 6px; }
+.sec .note { font-size: 13px; color: var(--ink-3); margin: 0 0 12px; }
+.sec .note b { color: var(--ink-2); }
+
+.pick { list-style: none; margin: 8px 0 4px; padding: 0; border: 1px solid var(--line); border-radius: 8px; }
+.pick li { display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-top: 1px solid var(--line); font-size: 13.5px; }
+.pick li:first-child { border-top: 0; }
+.pick .nm { flex: 1; min-width: 0; }
+.pick .vr { display: block; color: var(--ink-3); font-size: 12px; }
+.pick .pr { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pick .pr s { color: var(--ink-3); margin-left: 5px; font-size: 12px; }
+.pick .hold { font-size: 12px; color: var(--ink-3); white-space: nowrap; padding: 0 4px; }
+.pick .btn:disabled { color: var(--ink-2); background: var(--bg); cursor: default; }
+.addon-src { font-size: 12.5px; color: var(--ink-3); margin: 6px 0 12px; }
+.addon-src.warn { color: var(--orange); }
+
+.msg.lines > span { display: block; }
+.msg.lines .red { color: var(--red); }
+.msg.lines .todo { color: var(--todo); }
+.msg.lines .sugg, .msg.lines .orange { color: var(--hint); }
+.msg.lines .sample { color: var(--orange); }
+.st { font-size: 12px; padding: 2px 9px; border-radius: 999px; background: var(--todo-bg); color: var(--todo); white-space: nowrap; }
+.st.ok { background: var(--green-bg); color: var(--green); }
+.st.red { background: var(--red-bg); color: var(--red); }
+.st.orange { background: var(--orange-bg); color: var(--orange); }
+.st.sugg { background: var(--hint-bg); color: var(--hint); }
+
+.q {
+  background: var(--card); border: 2px solid var(--ink); border-radius: 12px; padding: 14px 16px; margin: 0 0 14px;
+}
+.q.answered { border: 1px solid var(--line); }
+.q h2 { font-size: 16px; margin: 0 0 8px; }
+.q .opts { display: flex; gap: 10px; flex-wrap: wrap; }
+.q label.opt {
+  border: 1px solid var(--line-2); border-radius: 9px; padding: 8px 16px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center; background: #fff;
+}
+.q label.opt:has(input:checked) { border-color: var(--ink); background: #f0f1f4; font-weight: 600; }
+
+.f { margin: 0 0 12px; }
+.f > label, .f > .lab { display: flex; align-items: baseline; gap: 8px; font-size: 14px; font-weight: 600; margin: 0 0 4px; }
+.f .req { font-weight: 400; font-size: 12px; color: var(--ink-3); }
+.f .cnt { margin-left: auto; font-weight: 400; font-size: 12px; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+.f .cnt.over { color: var(--hint); font-weight: 600; }
+.f .hint { font-size: 12.5px; color: var(--ink-3); margin: 3px 0 0; }
+
+.f .ex { display: none; font-size: 12.5px; color: var(--ink-3); margin: 3px 0 0; }
+.f:focus-within:has(> :is(input, textarea):not(:placeholder-shown)) > .ex { display: block; }
+.f input[type=text], .f textarea, .f select {
+  width: 100%; padding: 8px 11px; border: 1px solid var(--field-line); border-radius: 8px; background: #fff; min-height: 38px;
+}
+.f textarea { resize: vertical; line-height: 1.55; }
+.f input::placeholder, .f textarea::placeholder { color: var(--ink-3); }
+.f.is-red input, .f.is-red textarea, .f.is-red select { border-color: var(--red); background: var(--red-bg); }
+.f.is-orange input, .f.is-orange textarea { border-color: #b8790f; background: var(--orange-bg); }
+.f.is-sugg input, .f.is-sugg textarea { border-color: #6c8aa8; }
+.msg { font-size: 12.5px; margin: 4px 0 0; }
+.msg.red { color: var(--red); }
+.msg.orange, .msg.sample { color: var(--orange); }
+.msg.sugg { color: var(--hint); }
+.msg.todo { color: var(--todo); }
+.msg.ok { color: var(--green); }
+
+.pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pair > .f { min-width: 0; }
+@media (max-width: 560px) { .pair { grid-template-columns: 1fr; } }
+
+.imgf { border: 1px dashed var(--line-2); border-radius: 10px; padding: 12px; margin: 0 0 12px; background: #fafbfc; }
+.imgf .row { display: flex; gap: 12px; align-items: flex-start; }
+.imgf .row .f { flex: 1; min-width: 0; margin-bottom: 8px; }
+.imgf .thumb {
+  width: 76px; height: 76px; border-radius: 8px; border: 1px solid var(--line); background: #eef0f2 center / cover no-repeat; flex: none; margin-top: 22px;
+}
+.imgf .size { font-size: 12.5px; color: var(--ink-3); margin: 0; }
+.imgf .size.ok { color: var(--green); }
+.imgf .size.bad { color: var(--red); }
+
+.item { border: 1px solid var(--line); border-radius: 10px; padding: 12px 12px 2px; margin: 0 0 12px; background: #fff; }
+.item > .ih { display: flex; align-items: center; gap: 8px; margin: 0 0 8px; }
+.item > .ih b { font-size: 14px; }
+.item > .ih .sp { flex: 1; }
+.item.off { background: #f7f8fa; }
+.addrow { margin: 0 0 14px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+
+.rowline { display: grid; gap: 10px; align-items: start; margin: 0 0 8px; }
+.rowline .f { margin: 0; min-width: 0; }
+.rowline.cmp { grid-template-columns: 1.2fr 1fr 1fr auto; }
+.rowline.compat { grid-template-columns: 1fr 120px auto; }
+.rowline.spec { grid-template-columns: 110px 1fr auto auto; }
+.rowline.sumf { grid-template-columns: 1fr auto; }
+.rowline.sumf .del { margin-top: 27px; }
+.sumcb { display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--ink-2); white-space: nowrap; min-height: 38px; cursor: pointer; }
+.sec .body > .lab { font-size: 14px; font-weight: 600; margin: 16px 0 6px; }
+.sec .body > .lab:first-child { margin-top: 0; }
+.chk { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: var(--ink-2); margin: 0 0 6px; cursor: pointer; }
+.chk input { margin-top: 3px; }
+.sumhead { display: flex; align-items: center; gap: 10px; }
+.sumhead > span.small { flex: 1; }
+.sumpv { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; font: 14px/1.75 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang TC', 'Microsoft JhengHei', sans-serif; color: #333; max-height: 45%; overflow: auto; }
+.sumpv img { max-width: 100%; height: auto; display: block; }
+#tab-summary .copymsg, #tab-code .copymsg { padding: 0; min-height: 0; }
+.mini { display: grid; grid-template-columns: 118px 1fr; gap: 6px; align-items: start; }
+.mini .f { margin: 0; min-width: 0; }
+.rowline .del { margin-top: 0; }
+.colhead { display: grid; gap: 10px; font-size: 12.5px; color: var(--ink-3); margin: 0 0 4px; }
+.colhead.cmp { grid-template-columns: 1.2fr 1fr 1fr auto; }
+
+.panel {
+  position: sticky; top: calc(var(--top-h, 60px) + 6px); height: calc(100vh - var(--top-h, 60px) - 22px); display: flex; flex-direction: column;
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+}
+.panel-head { padding: 12px 14px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.panel-head .sum { flex: 1; min-width: 180px; font-size: 13.5px; }
+.panel-head .sum b { font-weight: 600; }
+.pill { display: inline-block; padding: 1px 9px; border-radius: 999px; font-size: 12.5px; margin-right: 4px; }
+.pill.red { background: var(--red-bg); color: var(--red); }
+.pill.orange { background: var(--orange-bg); color: var(--orange); }
+.pill.sugg { background: var(--hint-bg); color: var(--hint); }
+.pill.todo { background: var(--todo-bg); color: var(--todo); }
+.pill.ok { background: var(--green-bg); color: var(--green); }
+.copymsg { font-size: 13.5px; padding: 0 14px 8px; min-height: 22px; color: var(--green); }
+.copymsg .warnline { display: block; color: var(--red); }
+.copymsg .next { display: block; margin-top: 2px; color: var(--ink); }
+.copymsg .next .btn { margin-left: 2px; }
+.copymsg .aside { display: block; margin-top: 2px; font-size: 12.5px; color: var(--ink-3); }
+
+.tab[data-st]::after { content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-left: 6px; vertical-align: 2px; background: #7d8592; }
+.tab[data-st=ok]::after { background: var(--green); }
+.tab[data-st=red]::after { background: var(--red); }
+.tab[data-st=orange]::after { background: #b8790f; }
+
+.undo { position: fixed; right: 20px; bottom: 20px; z-index: 40; display: flex; align-items: center; gap: 10px; background: var(--ink); color: #fff; padding: 8px 10px 8px 14px; border-radius: 10px; font-size: 14px; box-shadow: 0 4px 16px rgba(0,0,0,.18); }
+.undo .btn { color: var(--ink); }
+.undo .btn:focus-visible { outline-color: #fff; }
+.copymsg.err { color: var(--red); }
+.tabs { display: flex; border-bottom: 1px solid var(--line); padding: 0 8px; }
+.tab { border: 0; background: none; padding: 9px 12px; cursor: pointer; font-size: 14px; color: var(--ink-3); border-bottom: 2px solid transparent; }
+.tab[aria-selected=true] { color: var(--ink); border-bottom-color: var(--ink); font-weight: 600; }
+.tabbody { flex: 1; min-height: 0; overflow: auto; }
+.tabbody > div[role=tabpanel] { height: 100%; }
+
+#tab-preview { display: flex; flex-direction: column; }
+.pv-bar { display: flex; gap: 8px; align-items: center; padding: 8px 12px; border-bottom: 1px solid var(--line); flex-wrap: wrap; font-size: 13px; color: var(--ink-3); }
+.pv-bar .btn { color: var(--ink); }
+.pv-bar .btn[aria-pressed=true] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.pv-bar .pvscale { font-variant-numeric: tabular-nums; }
+.pv-note { margin-left: auto; }
+.pv-note summary { cursor: pointer; }
+.pv-note[open] { flex-basis: 100%; margin-left: 0; }
+.pv-note p { margin: 6px 0 2px; line-height: 1.6; }
+.pv-wrap { position: relative; flex: 1; min-height: 0; overflow: hidden; background: #e8eaee; }
+.pv-wrap iframe { border: 0; background: #fff; transform-origin: top left; position: absolute; top: 0; left: 0; }
+.codebox { padding: 12px 14px; height: 100%; display: flex; flex-direction: column; gap: 8px; }
+.codebox textarea {
+  flex: 1; width: 100%; font: 12px/1.5 Menlo, Consolas, monospace; border: 1px solid var(--line-2); border-radius: 8px; padding: 10px;
+  background: #f7f8fa; white-space: pre-wrap; word-break: break-all; resize: none;
+}
+
+#code { white-space: pre; word-break: normal; overflow-wrap: normal; overflow-x: auto; tab-size: 2; }
+#code.wrap { white-space: pre-wrap; overflow-wrap: anywhere; }
+.codehead { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.codehead > span.small { flex: 1; }
+.wrapcb { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; color: var(--ink-2); cursor: pointer; min-height: 30px; }
+.list { padding: 12px 14px; }
+.list h3 { margin: 12px 0 6px; font-size: 14px; }
+.list h3:first-child { margin-top: 0; }
+.list ul { margin: 0; padding: 0; list-style: none; }
+.list li { margin: 0 0 6px; }
+.list li button {
+  width: 100%; text-align: left; border: 1px solid var(--line); background: #fff; border-radius: 8px; padding: 7px 10px; cursor: pointer; font-size: 13.5px;
+}
+.list li button:hover { background: #f7f8fa; }
+.list li small { display: block; color: var(--ink-3); font-size: 12px; }
+.list li small.red { color: var(--red); }
+.list li small.orange { color: var(--orange); }
+.list li small.sugg { color: var(--hint); }
+.list p { overflow-wrap: anywhere; }
+.list .empty { color: var(--green); font-size: 14px; }
+table.spec { border-collapse: collapse; width: 100%; font-size: 13.5px; margin: 8px 0 0; }
+table.spec th, table.spec td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; vertical-align: top; }
+table.spec th { background: #f2f3f6; font-weight: 600; }
+.small:not(.btn) { font-size: 12.5px; color: var(--ink-3); }
+.draftnote { font-size: 12px; color: var(--ink-3); }
+
+@media (max-width: 1000px) {
+  .pv-wrap { flex: none; height: 70vh; }
+  .codebox textarea { flex: none; height: 60vh; }
+  #sumcode { height: 30vh; }
+}
+
+@media (max-width: 600px) {
+  .top { position: static; }
+  html { scroll-padding-top: 12px; }
+}
+
+</style>
+</head>
+<body>
+<a class="skip" id="skip" href="#copy">跳到預覽與複製</a>
+<header class="top">
+  <h1>倫敦印象｜商品頁上架工具</h1>
+  <span class="ver">基本版 v0.1 · 2026-10-10</span>
+  <span class="sp"></span>
+  <span class="draftnote" id="draftnote"></span>
+  <button type="button" class="btn" id="btn-sample" title="填入 B67 的內容，只用來看樣子">載入 B67 範例</button>
+  <button type="button" class="btn" id="btn-load">讀取草稿檔</button>
+  <button type="button" class="btn" id="btn-save">存成檔案</button>
+  <button type="button" class="btn ghost" id="btn-clear">清空重填</button>
+  <input type="file" id="file" accept=".json,application/json" hidden aria-label="選擇草稿檔">
+</header>
+
+<main class="layout">
+  <div>
+    <details class="howto" id="howto" open>
+      <summary><b>怎麼用</b><span class="safe">這個工具只產生語法，不會寫進後台，也不會碰價格和規格。</span></summary>
+      <ol>
+        <li>先回答「有沒有比較區」，再從上往下把每一區填完。灰色字是 B67 的例子，照著格式寫。</li>
+        <li>圖要先上傳到 SHOPLINE 後台，再把圖片網址貼進來（結尾是 <code>original.png</code> 或 <code>original.jpg</code>）。工具會讀圖，告訴你夠不夠大。</li>
+        <li>預覽上方的「複製語法」變成黑色，才是全部處理好：沒有紅字、沒有待填、沒有 B67 範例字。後台原本的描述要留的話，先存好舊的再按（剪貼簿只有一格，後複製的會蓋掉先複製的）。按下去，貼進商品描述的「HTML 原始碼」。</li>
+        <li>再到「商品摘要」分頁按「複製摘要」，貼進後台的「商品摘要」欄（另一格，不是商品描述）。</li>
+      </ol>
+    </details>
+    <form id="form" autocomplete="off" onsubmit="return false"></form>
+  </div>
+
+  <aside class="panel" id="panel" aria-label="預覽與語法">
+    <div class="panel-head">
+      <div class="sum" id="sum"></div>
+      <button type="button" class="btn primary" id="copy" data-label="複製語法">複製語法</button>
+    </div>
+    <div class="copymsg" id="copymsg" role="status" aria-live="polite"></div>
+    <div class="tabs" role="tablist" aria-label="右欄分頁">
+      <button type="button" class="tab" role="tab" id="tabbtn-preview" aria-controls="tab-preview" data-tab="preview" aria-selected="true">預覽</button>
+      <button type="button" class="tab" role="tab" id="tabbtn-code" aria-controls="tab-code" data-tab="code" aria-selected="false">語法</button>
+      <button type="button" class="tab" role="tab" id="tabbtn-summary" aria-controls="tab-summary" data-tab="summary" aria-selected="false">商品摘要</button>
+      <button type="button" class="tab" role="tab" id="tabbtn-list" aria-controls="tab-list" data-tab="list" aria-selected="false">檢查清單</button>
+      <button type="button" class="tab" role="tab" id="tabbtn-spec" aria-controls="tab-spec" data-tab="spec" aria-selected="false">圖片規格</button>
+    </div>
+    <div class="tabbody">
+      <div role="tabpanel" id="tab-preview" aria-labelledby="tabbtn-preview">
+        <div class="pv-bar">
+          <button type="button" class="btn small" data-w="375" aria-pressed="true">手機 375</button>
+          <button type="button" class="btn small" data-w="768" aria-pressed="false">平板 768</button>
+          <button type="button" class="btn small" data-w="1280" aria-pressed="false">桌機 1280</button>
+          <span class="pvscale" id="pvscale"></span>
+          <details class="pv-note">
+            <summary>字型跟客人看到的一樣嗎？</summary>
+            <p>英數用系統字。中文寫的是 Noto Sans TC，但 iPhone、Mac 沒有內建它，客人看到的是蘋方（Windows 是微軟正黑，Chrome／Edge 的標題會用正黑體粗體；Android 才是 Noto）。你的電腦如果自己裝了 Noto，這裡的中文會跟客人看到的不一樣。</p>
+          </details>
+        </div>
+        <div class="pv-wrap" id="pv-wrap"></div>
+      </div>
+      <div role="tabpanel" id="tab-code" aria-labelledby="tabbtn-code" hidden>
+        <div class="codebox">
+          <div class="codehead"><span class="small">和預覽、「複製語法」用的是同一份，一行一個標籤。<span id="codesize"></span></span><label class="wrapcb"><input type="checkbox" id="code-wrap"> 自動換行</label><button type="button" class="btn small" id="copy-code">複製全部語法</button></div>
+          <div class="copymsg" id="copymsg-code" role="status" aria-live="polite"></div>
+          <textarea id="code" readonly spellcheck="false" aria-label="商品描述語法（HTML 原始碼）"></textarea>
+        </div>
+      </div>
+      <div role="tabpanel" id="tab-summary" aria-labelledby="tabbtn-summary" hidden>
+        <div class="codebox">
+          <div class="sumhead"><span class="small">貼到後台商品的「商品摘要」欄，不是商品描述。換行要留著。</span><button type="button" class="btn primary small" id="copy-sum" data-label="複製摘要">複製摘要</button></div>
+          <div class="copymsg" id="copymsg-sum" role="status" aria-live="polite"></div>
+          <div class="sumpv" id="sumpv" aria-label="商品摘要預覽"></div>
+          <textarea id="sumcode" readonly spellcheck="false" aria-label="商品摘要（貼進後台商品摘要欄的內容）"></textarea>
+        </div>
+      </div>
+      <div role="tabpanel" id="tab-list" aria-labelledby="tabbtn-list" class="list" hidden></div>
+      <div role="tabpanel" id="tab-spec" aria-labelledby="tabbtn-spec" class="list" hidden></div>
+    </div>
+  </aside>
+</main>
+
+<div class="undo" id="undo" role="status" hidden><span id="undo-text"></span><button type="button" class="btn small" id="undo-btn">復原</button></div>
+
+<script>
+window.LN_ADDON_KIT = {"head":"<div style=\"position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip\"><div style=\"border-top:1px solid #ededed;padding:clamp(12px,3vw,20px) 0 16px\"><div style=\"text-align:center;padding:0 24px;margin:0\"><div style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:clamp(25px,calc(25px + (100vw - 767px)*999),36px);font-weight:400;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;color:#1d1f23\">Add-on Deals</div><div style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:clamp(14px,calc(14px + (100vw - 767px)*999),16px);font-weight:400;line-height:1.4;margin:0 0 clamp(20px,calc(20px + (100vw - 767px)*999),32px);color:#1d1f23\">加價購，省更多</div></div><div style=\"overflow-x:auto;text-align:center;padding:0 0 8px;white-space:nowrap\"><div style=\"display:inline-flex;flex-wrap:nowrap;padding:0 24px;text-align:left;vertical-align:top\">","tail":"</div></div></div></div>","cards":[{"slug":"【加價購】n08","href":"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08","name":"耐磨鏡頭玻璃金屬環【N08】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg\" alt=\"耐磨鏡頭玻璃金屬環【N08】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">耐磨鏡頭玻璃金屬環【N08】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""},{"slug":"b147-1","href":"https://www.londonimg.tw/products/b147-1","name":"不挑殼 Pro 隱形鏡頭組底膜【B147】","sale":99,"orig":100,"html":"<a href=\"https://www.londonimg.tw/products/b147-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/6aa251a61a78a82d5d69c7a7/original.jpg?1789022630=&amp;owner_id=57975b626170691220930c00\" alt=\"不挑殼 Pro 隱形鏡頭組底膜【B147】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">不挑殼 Pro 隱形鏡頭組底膜【B147】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$99</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$100</span></div></div></a>","variant":""},{"slug":"z19-8","href":"https://www.londonimg.tw/products/z19-8","name":"瞬貼無痕極地冰盾貼【Z19】","sale":349,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/z19-8\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg\" alt=\"瞬貼無痕極地冰盾貼【Z19】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">瞬貼無痕極地冰盾貼【Z19】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b51-2","href":"https://www.londonimg.tw/products/b51-2","name":"IceRen 手機掛繩＋送夾片【B51】","sale":200,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/b51-2\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/64bf7416b98c2700148e354b/400x.webp?source_format=jpeg\" alt=\"IceRen 手機掛繩＋送夾片【B51】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">IceRen 手機掛繩＋送夾片【B51】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$200</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b57-1","href":"https://www.londonimg.tw/products/b57-1","name":"HANG 22W 雙孔快充頭＋PD 快充線【B57】","sale":479,"orig":790,"html":"<a href=\"https://www.londonimg.tw/products/b57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg\" alt=\"HANG 22W 雙孔快充頭＋PD 快充線【B57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">HANG 22W 雙孔快充頭＋PD 快充線【B57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$790</span></div></div></a>","variant":""},{"slug":"t57-1","href":"https://www.londonimg.tw/products/t57-1","name":"iPhone 磁吸四合一快充線【T57】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/t57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/68807839047bdd000a8a9180/original.png?1753249848=&amp;owner_id=57975b626170691220930c00\" alt=\"iPhone 磁吸四合一快充線【T57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">iPhone 磁吸四合一快充線【T57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":"1M"},{"slug":"t61-1","href":"https://www.londonimg.tw/products/t61-1","name":"30W 單孔 PD 快充頭【T61】","sale":189,"orig":450,"html":"<a href=\"https://www.londonimg.tw/products/t61-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/6894695ca1787800182812ba/400x.webp?source_format=jpeg\" alt=\"30W 單孔 PD 快充頭【T61】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">30W 單孔 PD 快充頭【T61】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$189</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$450</span></div></div></a>","variant":"30W 單孔"},{"slug":"s75","href":"https://www.londonimg.tw/products/s75","name":"安心扣 全球定位器 AirTag 平替【S75】","sale":479,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/s75\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/67ecf39d5d18a9000cb42ccc/400x.webp?source_format=jpeg\" alt=\"安心扣 全球定位器 AirTag 平替【S75】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">安心扣 全球定位器 AirTag 平替【S75】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""}],"check":{"at":"2026-10-10"}};
+</script>
+<script>
+
+
+(function (root) {
+  'use strict';
+
+  const R = (a, b) => `clamp(${a}px,calc(${a}px + (100vw - 767px)*999),${b}px)`;
+  const COL = 'clamp(1080px,calc(100vw - 200px),1410px)';
+  const clean = s => String(s == null ? '' : s).replace(/\s*[\r\n]+\s*/g, ' ').trim();
+  const esc = s => clean(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const escA = s => esc(s).replace(/"/g, '&quot;');
+
+  const width = s => Math.ceil([...clean(s)].reduce((n, c) => n + (c.charCodeAt(0) <= 0x7f ? 0.5 : 1), 0));
+
+  const pos = p => {
+    const t = clean(p);
+    if (t === '') return 'center';
+    const n = parseFloat(t);
+    return Number.isFinite(n) ? `center ${n}%` : 'center';
+  };
+
+  const YT_ID = /^[A-Za-z0-9_-]{11}$/;
+  function youtubeId(input) {
+    const t = clean(input);
+    if (YT_ID.test(t)) return t;
+    let m = t.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+    if (m) return m[1];
+    m = t.match(/(?:youtu\.be\/|\/shorts\/|\/embed\/|\/live\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : '';
+  }
+
+  function normalize(html) {
+    return String(html)
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/\r/g, '').replace(/\n/g, '')
+      .replace(/>\s+</g, '><')
+      .trim();
+  }
+
+  const ADDON_A0 = '<!-- 加價購區：開始 -->', ADDON_A1 = '<!-- 加價購區：結束 -->';
+  let KIT = root.LN_ADDON_KIT || null;
+  function useAddonKit(k) { KIT = k || null; }
+
+  const ADDON_HOLD = {
+    s75: '安心扣【S75】先不要放：加價購頁和加購價還沒好，到齊才放。這張不會出現，把這一行刪掉',
+  };
+  const unesc = x => String(x).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+
+  function slugOf(u) {
+    let t = String(u || '').trim();
+    if (!t) return null;
+    const i = t.toLowerCase().indexOf('/products/');
+    if (i >= 0) {
+      const host = t.slice(0, i).replace(/^[a-z]+:\/\//i, '').toLowerCase();
+      if (host && !/(^|\.)londonimg\.(tw|com)$/.test(host)) return null;
+      t = t.slice(i + '/products/'.length);
+    } else if (/[\/:]/.test(t)) return null;
+    t = t.split(/[?#]/)[0].replace(/\/+$/, '');
+    try { t = decodeURIComponent(t); } catch (e) {   }
+    return t && !t.includes('/') ? t.toLowerCase() : null;
+  }
+
+  function addonKitFrom(text) {
+    const a = text.indexOf(ADDON_A0), b = text.indexOf(ADDON_A1);
+    if (a < 0 || b < a) throw new Error('定版檔找不到「加價購區：開始／結束」');
+    const seg = normalize(text.slice(a + ADDON_A0.length, b));
+    const first = seg.indexOf('<a '), last = seg.lastIndexOf('</a>') + 4;
+    if (first < 0 || last < first) throw new Error('定版檔的加價購區裡沒有卡片');
+    const mid = seg.slice(first, last), cards = [];
+    const re = /<a [^>]*href="([^"]+)"[^>]*>[\s\S]*?<\/a>/g;
+    let m, pos = 0;
+    while ((m = re.exec(mid))) {
+      if (m.index !== pos) throw new Error('加價購卡片之間有認不出來的東西');
+      pos = re.lastIndex;
+      const h = m[0], pick = r => { const x = h.match(r); return x ? x[1] : ''; };
+      const num = x => +String(x).replace(/,/g, '') || null;
+      cards.push({
+        slug: slugOf(m[1]), href: m[1], name: unesc(pick(/-webkit-box-orient:vertical">([^<]*)</)),
+        sale: num(pick(/color:#fe5226">NT\$([0-9,]+)</)), orig: num(pick(/line-through">NT\$([0-9,]+)</)), html: h,
+      });
+    }
+    if (pos !== mid.length) throw new Error('最後一張加價購卡片後面有認不出來的東西');
+    const bad = cards.find(c => !c.slug || !c.name || !c.sale);
+    if (bad) throw new Error('有一張加價購卡片讀不到網址、名稱或加購價：' + bad.href);
+    return { head: seg.slice(0, first), tail: seg.slice(last), cards };
+  }
+
+  const addonText = t => String(t || '').replace(/<((?:https?:\/\/|www\.)[^<>\s]*)>/gi, '$1');
+  const addonMode = t => { const x = addonText(t); return clean(x) === '' ? 'none' : x.includes('<') ? 'html' : 'urls'; };
+
+  function strayText(html) {
+    let depth = 0, out = '';
+    const re = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>|([^<]+)|</g;
+    let m;
+    while ((m = re.exec(html))) {
+      if (m[2]) { if (!VOID_TAGS.has(m[2].toLowerCase()) && !/\/\s*$/.test(m[3])) depth = Math.max(0, depth + (m[1] ? -1 : 1)); }
+      else if (depth === 0) out += m[4] != null ? m[4] : '<';
+    }
+    return clean(out);
+  }
+
+  const codeOf = c => { const m = c.name.match(/【([A-Za-z0-9]+)】/); return m ? m[1].toLowerCase() : null; };
+
+  const addonOn = s => (s.on && typeof s.on.addon === 'boolean') ? s.on.addon : addonMode(s.addon) !== 'none';
+
+  function addonItems(t) {
+    return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {
+      const slug = slugOf(raw);
+      return { raw, slug, line: i + 1, card: slug && KIT ? KIT.cards.find(c => c.slug === slug) || null : null };
+    }));
+  }
+
+  function addonHtml(s) {
+    if (!addonOn(s)) return '';
+    const t = String(s.addon || ''), mode = addonMode(t);
+    if (mode === 'html') return normalize(addonText(t));
+    if (mode !== 'urls' || !KIT) return '';
+    const seen = new Set(), cards = [];
+    addonItems(t).forEach(x => {
+      if (!x.card || seen.has(x.slug) || ADDON_HOLD[x.slug]) return;
+      seen.add(x.slug); cards.push(x.card.html);
+    });
+
+    const gapped = cards.map((h, i) => h.replace(/^(<a [^>]*?)margin-right:(?:12px|0)/, '$1margin-right:' + (i === cards.length - 1 ? '0' : '12px')));
+    return gapped.length ? KIT.head + gapped.join('') + KIT.tail : '';
+  }
+
+  const FF = "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif";
+
+  const FFH = "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif";
+  const sectionHead = (en, zh, bottom) =>
+    `<div style="font-size:${R(25, 36)};font-weight:400;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;${FF}">${en}</div>` +
+    `<div style="font-size:${R(14, 16)};font-weight:400;line-height:1.4;margin:0 0 ${bottom || R(20, 32)};${FF}">${zh}</div>`;
+
+  const SEC_TOP = R(64, 104);
+
+  function hero(h) {
+    return `<div style="position:relative;overflow:hidden;background:#e9eaec">` +
+      `<div style="position:relative;width:100%;height:clamp(400px,56.25vw,720px)">` +
+      `<img src="${escA(h.img.url)}" alt="${escA(h.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">` +
+      `<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(to top,rgba(0,0,0,.78),rgba(0,0,0,.28) 38%,rgba(0,0,0,0) 68%);pointer-events:none"></div>` +
+      `</div>` +
+      `<div style="position:absolute;top:0;left:0;right:0;bottom:0">` +
+      `<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px;height:100%;position:relative">` +
+      `<div style="position:absolute;left:20px;right:20px;bottom:clamp(18px,5vw,44px);text-align:left;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.5)">` +
+      `<div style="font-size:clamp(24px,3.4vw,40px);font-weight:500;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff;${FFH}">${esc(h.name)}</div>` +
+      `<p style="font-size:clamp(15px,1.6vw,18px);font-weight:500;line-height:1.5;margin:clamp(6px,.8vw,10px) 0 0;color:rgba(255,255,255,.92);${FFH}">${esc(h.sub)}</p>` +
+      `</div></div></div></div>`;
+  }
+
+  function intro(sentences) {
+    const list = sentences.map(clean).filter(Boolean);
+    const p = (t, last) =>
+      `<div><p style="display:inline-block;vertical-align:top;text-align:left;font-size:${R(15, 16)};line-height:1.85;margin:${last ? '0' : '0 0 .6em'};${FF}">${esc(t)}</p></div>`;
+    return `<div style="max-width:728px;margin:0 auto;padding:${R(28, 44)} 0 0;text-align:center">` +
+      list.map((t, i) => p(t, i === list.length - 1)).join('') + `</div>`;
+  }
+
+  function gridSeg(g, reverse) {
+    const img = g.img;
+    const title = [clean(g.t1), clean(g.t2)].filter(Boolean).map(esc).join('<br>');
+    const note = clean(g.note);
+    const noteText = note ? (note.startsWith('※') ? note : '※ ' + note) : '';
+    const sideMargin = reverse ? 'margin-right' : 'margin-left';
+    return `<div style="display:flex;flex-wrap:wrap;${reverse ? 'flex-direction:row-reverse;' : ''}align-items:center;margin:${R(56, 88)} 0 0">` +
+      `<div style="flex:1 1 clamp(300px,calc(100% + (767px - 100vw)*999),100%);min-width:0;margin:0 0 clamp(0px,calc((768px - 100vw)*999),18px)">` +
+      `<div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#eef0f2">` +
+      `<img src="${escA(img.url)}" alt="${escA(img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${pos(g.pos)};display:block">` +
+      `</div></div>` +
+      `<div style="flex:1 1 clamp(300px,calc(100% + (767px - 100vw)*999),100%);min-width:0;${sideMargin}:clamp(0px,calc((100vw - 767px)*999),56px)">` +
+      `<h2 style="padding:0;${FFH};font-size:${R(20, 26)};font-weight:500;letter-spacing:-.4px;line-height:1.5;margin:0 0 ${R(10, 16)};color:#1d1f23">${title}</h2>` +
+      `<p style="font-size:${R(15, 16)};line-height:1.75;margin:${noteText ? '0 0 ' + R(12, 18) : '0'};${FF}">${esc(g.body)}</p>` +
+      (noteText ? `<p style="font-size:${R(12, 13)};line-height:1.6;margin:0;color:#626877;${FF}">${esc(noteText)}</p>` : '') +
+      `</div></div>`;
+  }
+
+  const TAG_BASE = 'display:inline-block;font-size:14px;font-weight:500;line-height:1.4;padding:5px 14px';
+
+  function features(list) {
+    const cards = list.map((c, i) => {
+      const last = i === list.length - 1;
+      const label = clean(c.label);
+      return `<div style="flex:1 0 clamp(258px,calc((100% - 40px)/3),600px);min-width:0${last ? '' : ';margin-right:' + R(12, 20)}">` +
+        `<div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#eef0f2">` +
+        `<img src="${escA(c.img.url)}" alt="${escA(c.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${pos(c.pos)};display:block">` +
+        (label ? `<span style="position:absolute;top:12px;left:12px;${TAG_BASE};border-radius:999px;background:#fff;color:#1d1f23;border:1px solid #1d1f23;${FFH}">${esc(label)}</span>` : '') +
+        `</div>` +
+        `<h3 style="padding:0;${FFH};font-size:${R(18, 22)};font-weight:500;letter-spacing:-.4px;line-height:1.4;margin:${R(14, 20)} 0 6px">${esc(c.title)}</h3>` +
+        `<p style="font-size:${R(14, 16)};line-height:1.7;margin:0;${FF}">${esc(c.body)}</p>` +
+        `</div>`;
+    }).join('');
+    return `<div style="position:relative;width:100vw;left:50%;margin:${SEC_TOP} 0 0 -50vw;background:#f2f3f6">` +
+      `<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:${R(25, 50)} 20px ${R(19, 44)}">` +
+      sectionHead('Other Features', '其他特色') +
+      `<div style="display:flex;overflow-x:auto;margin:0 -20px;padding:0 20px 6px">${cards}</div>` +
+      `</div></div>`;
+  }
+
+  function videos(list) {
+    const items = list.map((v, i) => {
+      const last = i === list.length - 1;
+      const cap = clean(v.caption);
+      const title = clean(v.title) || cap;
+      return `<div style="flex:0 0 ${R(240, 300)};min-width:0${last ? '' : ';margin-right:' + R(12, 20)}">` +
+        `<div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000">` +
+        `<iframe src="https://www.youtube.com/embed/${youtubeId(v.url)}" title="${escA(title)}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div>` +
+        (cap ? `<h3 style="padding:0;${FFH};font-size:${R(16, 18)};font-weight:500;line-height:1.4;margin:12px 0 0">${esc(cap)}</h3>` : '') +
+        `</div>`;
+    }).join('');
+    return `<div style="margin:${SEC_TOP} 0 0;text-align:center">` +
+      sectionHead('In Action', '影音實測') +
+      `<div style="display:flex;justify-content:safe center;text-align:left;overflow-x:auto;margin:0 -20px;padding:0 20px 6px">${items}</div>` +
+      `</div>`;
+  }
+
+  const TBL = `width:100%;margin:0;border-collapse:separate;border-spacing:0;border:1px solid #e3e5e9;font-size:${R(15, 16)};line-height:1.5;color:#1d1f23`;
+  const GREEN = '#2e7d52', GRAY = '#626877';
+
+  function compare(c) {
+    const va = esc(c.va), vb = esc(c.vb);
+    const pad = R(10, 14);
+    const rows = c.rows.map(r =>
+      `<tr><td style="padding:${pad} 10px;border-top:1px solid #e3e5e9;padding-left:12px;text-align:left;font-weight:500;${FFH}">${esc(r.label)}</td>` +
+      [r.a, r.b].map(x =>
+        `<td style="padding:${pad} 10px;border-top:1px solid #e3e5e9;border-left:1px solid #e3e5e9;text-align:center;font-weight:500;color:${x.ok ? GREEN : GRAY};${FFH}">● ${esc(x.text)}</td>`
+      ).join('') + `</tr>`).join('');
+    const card = (k, border) =>
+      `<figure style="flex:1 1 300px;min-width:0;margin:0 8px 16px;border:1px solid #ededed;overflow:hidden;position:relative;background:#fff">` +
+      `<div style="position:relative;width:100%;padding-bottom:75%;overflow:hidden"><img src="${escA(k.img.url)}" alt="${escA(k.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>` +
+      `<span style="position:absolute;top:12px;left:12px;${TAG_BASE};border-radius:999px;background:#fff;color:#1d1f23;border:1px solid ${border};${FFH}">${k === c.cardA ? va : vb}</span>` +
+      `<figcaption style="padding:15px 16px"><b style="display:block;font-size:clamp(16px,2.1vw,20px);font-weight:500;margin-bottom:6px;${FFH}">${esc(k.title)}</b>` +
+      `<span style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;${FF}">${esc(k.body)}</span></figcaption></figure>`;
+    return `<div style="margin:${SEC_TOP} 0 0;text-align:center">` +
+      sectionHead('Compare', esc(c.question), R(18, 26)) +
+      `<div style="margin:0 0 ${R(16, 22)}"><span style="${TAG_BASE};border:1px solid #d5d7dc;border-radius:999px;margin:0 4px;${FFH}">${va}</span>` +
+      `<span style="display:inline-block;font-size:13px;color:#626877;margin:0 4px;${FF}">vs</span>` +
+      `<span style="${TAG_BASE};border:1px solid #1d1f23;border-radius:999px;margin:0 4px;${FFH}">${vb}</span></div>` +
+      `<table style="${TBL}">` +
+      `<thead><tr><th style="padding:${pad} 12px;background:#f2f3f6;font-weight:500;text-align:left;width:40%"></th>` +
+      `<th style="padding:${pad} 10px;background:#f2f3f6;font-weight:500;text-align:center;border-left:1px solid #e3e5e9;${FFH}">${va}</th>` +
+      `<th style="padding:${pad} 10px;background:#f2f3f6;font-weight:500;text-align:center;border-left:1px solid #e3e5e9;${FFH}">${vb}</th></tr></thead>` +
+      `<tbody>${rows}</tbody></table>` +
+      `<div style="font-size:${R(20, 26)};font-weight:500;letter-spacing:-.4px;line-height:1.5;margin:${R(40, 64)} 0 ${R(16, 24)};${FFH}">${va} vs ${vb}</div>` +
+      `<div style="display:flex;flex-wrap:wrap;justify-content:center;text-align:left;margin:0 -8px">${card(c.cardA, '#d5d7dc')}${card(c.cardB, '#1d1f23')}</div>` +
+      `</div>`;
+  }
+
+  const splitNames = s => clean(s).split(/\s*[／/]\s*/).filter(Boolean);
+  function compat(c) {
+    const pad = R(10, 14);
+    const rows = c.rows.map(r => {
+      const names = splitNames(r.names);
+      const cell = names.length > 1
+        ? names.map(n => `<span style="white-space:nowrap;${FFH}">${esc(n)}</span>`).join(' ／ ')
+        : esc(names[0] || '');
+      return `<tr><td style="padding:${pad} 10px;border-top:1px solid #e3e5e9;padding-left:12px;text-align:left;font-weight:500;${FFH}">${cell}</td>` +
+        `<td style="padding:${pad} 12px;border-top:1px solid #e3e5e9;border-left:1px solid #e3e5e9;text-align:center;font-weight:500;color:${r.ok ? GREEN : GRAY};white-space:nowrap;${FFH}">● ${r.ok ? '相容' : '不適用'}</td></tr>`;
+    }).join('');
+    return `<div style="margin:${SEC_TOP} 0 0"><div style="text-align:center">${sectionHead('Compatibility', '適用機型')}</div>` +
+      `<table style="${TBL}">` +
+      `<thead><tr><th style="padding:${pad} 12px;background:#f2f3f6;font-weight:500;text-align:left;${FFH}">機型</th>` +
+      `<th style="padding:${pad} 12px;background:#f2f3f6;font-weight:500;text-align:center;border-left:1px solid #e3e5e9;white-space:nowrap;${FFH}">適用</th></tr></thead>` +
+      `<tbody>${rows}</tbody></table>` +
+      `<p style="font-size:${R(12, 13)};line-height:1.6;margin:10px 0 0;color:#626877;text-align:left;${FF}">※ 實際可選機型與顏色以上方購買區的規格選單為準。</p></div>`;
+  }
+
+  function specs(list) {
+    const pad = R(10, 14);
+    const rows = list.map(r =>
+      `<tr><th style="padding:${pad} 12px;border-top:1px solid #e3e5e9;background:#f2f3f6;font-weight:500;text-align:left;vertical-align:top;white-space:nowrap;width:1%;${FFH}">${esc(r.label)}</th>` +
+      `<td style="padding:${pad} 12px;border-top:1px solid #e3e5e9;border-left:1px solid #e3e5e9;text-align:left;color:#3d4047;${FF}">${esc(r.value)}</td></tr>`).join('');
+    return `<div style="margin:${SEC_TOP} 0 0"><div style="text-align:center">${sectionHead('Specs', '規格')}</div>` +
+      `<table style="${TBL.replace('border:1px solid #e3e5e9;', 'border:1px solid #e3e5e9;border-top:0;')}"><tbody>${rows}</tbody></table></div>`;
+  }
+
+  function faq(list) {
+    const items = list.map((x, i) =>
+      `<div style="background:#f2f3f6;padding:14px 16px;margin:${i === list.length - 1 ? '0' : '0 0 9px'}">` +
+      `<p style="font-size:clamp(16px,2.1vw,18px);font-weight:500;line-height:1.45;margin:0 0 5px;color:#1a1a1a;${FFH}">` +
+      `<span style="display:inline-block;background:#3d4047;color:#fff;font-size:12px;font-weight:500;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px;${FFH}">Q</span>${esc(x.q)}</p>` +
+      `<p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0;${FF}">${esc(x.a)}</p></div>`).join('');
+    return `<div style="margin:${SEC_TOP} 0 0"><div style="text-align:center">${sectionHead('FAQ', '常見問題')}</div>` +
+      `<div style="text-align:left">${items}</div></div>`;
+  }
+
+  const SUM_BANNER = '<a href="https://lihi.cc/PfsP1"><img src="https://www.londonimg.com/2020/ADD.png"></a>';
+
+  const LINEUP = {
+    11: ['11', '11 Pro', '11 Pro Max'],
+    12: ['12 mini', '12', '12 Pro', '12 Pro Max'],
+    13: ['13 mini', '13', '13 Pro', '13 Pro Max'],
+    14: ['14', '14 Plus', '14 Pro', '14 Pro Max'],
+    15: ['15', '15 Plus', '15 Pro', '15 Pro Max'],
+    16: ['16', '16 Plus', '16 Pro', '16 Pro Max', '16e'],
+    17: ['17', '17 Pro', '17 Pro Max', 'Air', '17e'],
+    18: ['18 Pro', '18 Pro Max'],
+  };
+  const OPEN_GEN = 18;
+  const genOf = k => k === 'air' ? 17 : (k.match(/^(\d{2})/) ? +k.match(/^(\d{2})/)[1] : null);
+  const showModel = m => m === 'Air' ? 'iPhone Air' : m;
+
+  function modelPhrase(c) {
+    const have = new Map();
+    const unknown = [];
+    (c && c.rows || []).forEach((r, i) => {
+      if (!r.ok) return;
+      splitNames(r.names).forEach(n => {
+        const k = normModel(n), g = genOf(k);
+        if (!k) return;
+        const known = g != null && LINEUP[g] && LINEUP[g].find(m => normModel(m) === k);
+        if (known) have.set(k, known);
+        else if (g === OPEN_GEN) have.set(k, clean(n).replace(/^iphone\s*/i, ''));
+        else unknown.push({ row: i, name: clean(n) });
+      });
+    });
+    const gens = [...new Set([...have.keys()].map(genOf))].sort((a, b) => a - b);
+    const parts = [];
+
+    if (gens.includes(OPEN_GEN)) {
+      const open = [...have.entries()].filter(([k]) => genOf(k) === OPEN_GEN);
+      const order = (LINEUP[OPEN_GEN] || []).map(normModel);
+      open.sort((a, b) => (order.indexOf(a[0]) + 1 || 99) - (order.indexOf(b[0]) + 1 || 99));
+      parts.push('iPhone ' + open.map(([, v]) => showModel(v)).join('／'));
+    }
+
+    const closed = gens.filter(g => g !== OPEN_GEN);
+    let excl = [];
+    if (closed.length === 1) {
+      const g = closed[0];
+      parts.push('iPhone ' + LINEUP[g].filter(m => have.has(normModel(m))).map(showModel).join('／'));
+    } else if (closed.length > 1) {
+      const lo = closed[0], hi = closed[closed.length - 1];
+      const missing = [], whole = [];
+      for (let g = lo; g <= hi; g++) {
+        const ms = LINEUP[g] || [];
+        if (!ms.some(m => have.has(normModel(m)))) { whole.push(g); continue; }
+        ms.forEach(m => { if (!have.has(normModel(m))) missing.push(m); });
+      }
+      const inRange = g => g >= lo && g <= hi && !whole.includes(g);
+      const family = suf => {
+        const all = Object.keys(LINEUP).map(Number).filter(inRange).flatMap(g => LINEUP[g]).filter(m => m.endsWith(suf));
+        return all.length > 0 && all.every(m => missing.includes(m)) ? all : null;
+      };
+      const plus = family(' Plus'), mini = family(' mini');
+      const singles = [];
+      for (let g = lo; g <= hi; g++) {
+        if (whole.includes(g)) { singles.push(g + ' 系列'); continue; }
+        missing.filter(m => genOf(normModel(m)) === g && !(plus || []).includes(m) && !(mini || []).includes(m)).forEach(m => singles.push(showModel(m)));
+      }
+      excl = [...(plus ? ['Plus'] : []), ...singles, ...(mini ? ['mini'] : [])];
+      parts.push(`iPhone ${lo}–${hi} 系列` + (excl.length ? `（${excl.join('、')} 除外）` : ''));
+    }
+    return { text: parts.join('，'), excl, unknown };
+  }
+
+  const isModelLabel = l => /機型/.test(clean(l));
+  const stripBullet = t => clean(t).replace(/^[•・·●▪■◆\-–*]+\s*/, '');
+
+  function summary(s) {
+    const sm = s.summary || {};
+    const lines = [];
+    if (sm.banner) lines.push(SUM_BANNER);
+    lines.push('【產品特色】');
+    (sm.feats || []).map(stripBullet).filter(Boolean).forEach(t => lines.push('• ' + esc(t)));
+    const specLines = [];
+    const on = s.on || {};
+    const mp = on.compat ? modelPhrase(s.compat) : { text: '' };
+    if (mp.text) specLines.push('• 適用機型：' + esc(mp.text));
+    if (on.specs) (s.specs || []).forEach(r => {
+      if (r.sum && !isModelLabel(r.label) && clean(r.label) && clean(r.value)) specLines.push('• ' + esc(r.label) + '：' + esc(r.value));
+    });
+    if (specLines.length) lines.push('', '【商品規格】', ...specLines);
+    return lines.join('\n');
+  }
+
+  const OUTER =`<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip;background:#fff;color:#1d1f23;line-height:1.75;${FF}">`;
+
+  function generate(s) {
+    const on = s.on || {};
+    const parts = [OUTER];
+    const addon = addonHtml(s);
+    if (addon) parts.push(addon);
+    parts.push(hero(s.hero));
+    parts.push(`<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px ${R(56, 88)}">`);
+    parts.push(intro(s.intro));
+    const segs = s.grid.filter(g => g.on);
+    segs.forEach((g, i) => parts.push(gridSeg(g, i % 2 === 1)));
+    if (on.features) parts.push(features(s.features));
+    if (on.videos) parts.push(videos(s.videos));
+    if (s.compare === 'yes') parts.push(compare(s.cmp));
+    if (on.compat) parts.push(compat(s.compat));
+    if (on.specs) parts.push(specs(s.specs));
+    if (on.faq) parts.push(faq(s.faq));
+    parts.push('</div></div>');
+    return parts.join('');
+  }
+
+  const VOID_TAGS = new Set(['img', 'br', 'hr', 'input', 'meta', 'link', 'source', 'wbr', 'col', 'area', 'embed', 'track']);
+  const BLOCK_TAGS = new Set(['div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th',
+    'figure', 'figcaption', 'ul', 'ol', 'li', 'section', 'article', 'header', 'footer', 'nav', 'blockquote']);
+  function pretty(html) {
+    const root = { kids: [] }, stack = [root];
+    const re = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>|[^<]+/g;
+    let m, pos = 0;
+    while ((m = re.exec(html))) {
+      if (m.index !== pos) return null;
+      pos = re.lastIndex;
+      const top = stack[stack.length - 1];
+      if (!m[2]) { top.kids.push({ text: m[0] }); continue; }
+      const tag = m[2].toLowerCase();
+      if (m[1]) {
+        if (stack.length < 2 || top.tag !== tag) return null;
+        top.close = m[0]; stack.pop(); continue;
+      }
+      const el = { tag, open: m[0], kids: [], close: '' };
+      top.kids.push(el);
+      if (!VOID_TAGS.has(tag) && !/\/\s*$/.test(m[3])) stack.push(el);
+    }
+    if (pos !== html.length || stack.length !== 1) return null;
+    const styleOf = el => { const s = el.open.match(/\sstyle\s*=\s*"([^"]*)"/i); return s ? s[1].replace(/\s+/g, '').toLowerCase() : ''; };
+
+    const isBlock = el => {
+      if (el.text != null) return false;
+      const st = styleOf(el);
+      if (/position:(absolute|fixed)/.test(st)) return true;
+      const d = st.match(/(?:^|;)display:([a-z-]+)/);
+      if (d) return /^(block|flex|grid|table|table-row|table-cell|list-item|table-row-group|table-header-group)$/.test(d[1]);
+      return BLOCK_TAGS.has(el.tag);
+    };
+    const flat = el => el.text != null ? el.text : el.open + el.kids.map(flat).join('') + el.close;
+    const out = [];
+    const print = (el, depth) => {
+      const pad = '  '.repeat(depth);
+      if (el.kids.length && el.kids.every(isBlock)) {
+        out.push(pad + el.open);
+        el.kids.forEach(k => print(k, depth + 1));
+        out.push(pad + el.close);
+      } else out.push(pad + flat(el));
+    };
+    if (!root.kids.length || !root.kids.every(k => k.text == null)) return null;
+    root.kids.forEach(k => print(k, 0));
+    return out.join('\n');
+  }
+
+  function blockOrder(s) {
+    const on = s.on || {};
+    const out = ['B'];
+    s.grid.forEach((g, i) => { if (g.on) out.push(['D', 'E', 'F', 'G'][i]); });
+    if (on.features) out.push('H');
+    if (on.videos) out.push('C');
+    if (s.compare === 'yes') out.push('Compare');
+    if (on.compat) out.push('Compat');
+    if (on.specs) out.push('Specs');
+    if (on.faq) out.push('FAQ');
+    return out;
+  }
+
+  const IMG_SPEC = {
+    hero:    { label: 'Hero 大圖',      minW: 1920, minH: 720,  ratioText: '橫圖，商品放中間一半', ratio: null },
+    grid:    { label: '棋盤格（D～G）', minW: 1320, minH: 880,  ratioText: '3:2 橫框',            ratio: 3 / 2 },
+    feature: { label: '其他特色卡片',   minW: 900,  minH: 900,  ratioText: '1:1 方框',            ratio: 1 },
+    cmp:     { label: '比較區卡片',     minW: 1350, minH: 1012, ratioText: '4:3 橫框',            ratio: 4 / 3 },
+  };
+
+  const LIMIT = {
+    heroName: 12, heroSub: 20,
+    intro: 50,
+    gridLine: 16, gridBody: 60, gridNote: 50,
+    featTitle: 11, featBody: 36, featLabel: 8,
+    videoCaption: 10,
+    cmpTitle: 24, cmpBody: 40, cmpCell: 12,
+    faqQ: 30, faqA: 90,
+    sumFeat: 24,
+  };
+
+  const SHOPLINE_IMG = /^https:\/\/img\.shoplineapp\.com\/media\/image_clips\/[0-9a-f]{20,}\/original\.[a-z]{3,4}(\?.*)?$/i;
+
+  const INTERNAL_WORDS = ["Claude","定版","{{","}}"];
+  const BAD_MARKUP = ['<style', '<script', '<details', '<svg', 'src="data:'];
+
+  const get = (o, path) => path.split('.').reduce((v, k) => (v == null ? v : v[k]), o);
+
+  function validate(s, imgs, sample) {
+    const out = [];
+    const add = (key, level, msg, sec, kind) => out.push({ key, level, msg, sec, kind: kind || (level === 'red' ? 'rule' : 'hint') });
+    const empty = v => clean(v) === '';
+    const need = (key, v, what, sec) => { if (empty(v)) add(key, 'red', `${what}還沒填`, sec, 'todo'); };
+    const over = (key, v, max, what, sec) => {
+      const n = width(v);
+      if (n > max) add(key, 'orange', `${what} ${n} 字，建議 ${max} 字內`, sec);
+    };
+    imgs = imgs || {};
+
+    const img = (key, im, specKey, sec) => {
+      need(key + '.url', im.url, '圖片網址', sec);
+      need(key + '.alt', im.alt, '圖片說明（alt）', sec);
+      const url = clean(im.url);
+      if (!url) return;
+      if (!SHOPLINE_IMG.test(url)) {
+        add(key + '.url', 'red', '網址要長這樣：https://img.shoplineapp.com/media/image_clips/…/original.png（結尾一定是 original.副檔名；800x、1080x 這種縮圖網址對新圖會讀到空檔）', sec);
+        return;
+      }
+      const info = imgs[url];
+
+      if (!info || info.state === 'loading') { add(key + '.url', 'orange', '正在讀取圖片尺寸…（讀不到網路會一直停在這裡，這時尺寸沒有被檢查）', sec, 'pending'); return; }
+      if (info.state === 'error') { add(key + '.url', 'red', '這個網址讀不到圖（打錯、還沒上傳，或沒有網路）', sec); return; }
+      const sp = IMG_SPEC[specKey];
+      if (info.w < sp.minW || info.h < sp.minH) {
+        add(key + '.url', 'red', `圖片 ${info.w}×${info.h}，要至少 ${sp.minW}×${sp.minH}（${sp.label}）。不夠大放在高解析螢幕上會糊`, sec);
+      } else if (sp.ratio) {
+        const r = info.w / info.h;
+        if (Math.abs(r / sp.ratio - 1) > 0.2) add(key + '.url', 'orange', `圖片比例 ${r.toFixed(2)}:1，框是 ${sp.ratioText}，會被裁掉一大塊`, sec);
+      } else if (specKey === 'hero' && info.w / info.h < 1.6) {
+        add(key + '.url', 'orange', `圖片比例 ${(info.w / info.h).toFixed(2)}:1 偏方，桌機版上下會被裁掉很多`, sec);
+      }
+    };
+
+    if (s.compare !== 'yes' && s.compare !== 'no') add('compare', 'red', '先回答最上面那題：這個商品有沒有比較區？', 'top', 'todo');
+
+    const addon = String(s.addon || ''), addonM = addonOn(s) ? addonMode(addon) : 'off';
+    if (addonM === 'none') add('addon', 'red', '加價購商品網址還沒貼（這個商品沒有加價購，就把「這個商品要放這一區」的勾拿掉）', 'A', 'todo');
+    else if (addonM === 'html') {
+      const norm = normalize(addonText(addon)), stray = strayText(norm);
+      if (stray) add('addon', 'red', `整段語法外面還有別的字：「${stray.length > 40 ? stray.slice(0, 40) + '…' : stray}」。一格只能放一種：要用網址，就把整段語法刪掉；要用整段語法，就把多的字刪掉`, 'A');
+      if (!/Add-on Deals/.test(addon)) add('addon', 'red', '這段看起來不是加價購區語法（裡面沒有 Add-on Deals）', 'A');
+      else if (!addon.includes(FFH)) add('addon', 'orange', '這是舊版的加價購區語法（字型是舊的），到加價購語法頁重新複製一次', 'A');
+
+      [...new Set([...norm.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => slugOf(m[1])))].forEach(slug => {
+        if (slug && ADDON_HOLD[slug]) add('addon', 'red', ADDON_HOLD[slug].replace('這張不會出現，把這一行刪掉', '這段語法裡有這張卡：改用網址貼（工具會自動拿掉），或把這張卡從語法裡刪掉'), 'A');
+      });
+    } else if (addonM === 'urls') {
+      if (!KIT) add('addon', 'red', '這一版工具沒有帶加價購卡片的資料，請找工具負責人重新做一版工具', 'A');
+      else {
+        const seen = new Set();
+        addonItems(addon).forEach(x => {
+          const shown = x.raw.length > 40 ? x.raw.slice(0, 40) + '…' : x.raw, at = `第 ${x.line} 行：`;
+          if (!x.slug) add('addon', 'red', `${at}「${shown}」不是倫敦印象的商品網址。短網址要先打開，再複製網址列裡的完整網址`, 'A');
+          else if (seen.has(x.slug)) add('addon', 'orange', `${at}「${x.card ? x.card.name : x.slug}」前面已經貼過，只會放一張`, 'A');
+          else if (!x.card) {
+            const near = KIT.cards.find(c => codeOf(c) === x.slug.replace(/^【加價購】/, '').replace(/-\d+$/, ''));
+            add('addon', 'red', at + (near
+              ? `「${x.slug}」是一般賣場的網址。加價購要用加價購頁「${near.slug}」（${near.name}），換成那個網址，或按下面清單的「加入」`
+              : `工具還不認得「${x.slug}」，這張卡不會出現。要放新的加價購商品，請找工具負責人加進工具`), 'A');
+          }
+          else if (ADDON_HOLD[x.slug]) add('addon', 'red', at + ADDON_HOLD[x.slug], 'A');
+          if (x.slug) seen.add(x.slug);
+        });
+      }
+    }
+
+    img('hero.img', s.hero.img, 'hero', 'Hero');
+    need('hero.name', s.hero.name, '商品名', 'Hero'); over('hero.name', s.hero.name, LIMIT.heroName, '商品名', 'Hero');
+    need('hero.sub', s.hero.sub, '主標', 'Hero'); over('hero.sub', s.hero.sub, LIMIT.heroSub, '主標', 'Hero');
+
+    const filled = s.intro.filter(x => !empty(x)).length;
+    if (filled < 2) add('intro.0', 'red', '介紹段至少要 2 句', 'B', 'todo');
+    s.intro.forEach((t, i) => { if (!empty(t)) over('intro.' + i, t, LIMIT.intro, '這句', 'B'); });
+
+    const letters = ['D', 'E', 'F', 'G'];
+    if (!s.grid.some(g => g.on)) add('grid.0.on', 'red', '棋盤格至少要用一段：在 D～G 其中一段勾「這個商品要放這一區」', 'D', 'todo');
+    s.grid.forEach((g, i) => {
+      if (!g.on) return;
+      const k = 'grid.' + i, sec = letters[i];
+      img(k + '.img', g.img, 'grid', sec);
+      need(k + '.t1', g.t1, '標題', sec);
+      need(k + '.body', g.body, '內文', sec);
+      [['t1', g.t1], ['t2', g.t2]].forEach(([f, v]) => {
+        if (/[，,]/.test(v || '')) add(k + '.' + f, 'red', '標題不能有逗號。要斷句就把後半放到「標題第 2 行」', sec);
+        if (!empty(v)) over(k + '.' + f, v, LIMIT.gridLine, '這一行', sec);
+      });
+      if (!empty(g.t2) && empty(g.t1)) add(k + '.t1', 'red', '有第 2 行就要有第 1 行', sec);
+      over(k + '.body', g.body, LIMIT.gridBody, '內文', sec);
+      if (!empty(g.note)) over(k + '.note', g.note, LIMIT.gridNote, '備註', sec);
+      if (!empty(g.pos) && !Number.isFinite(parseFloat(g.pos))) add(k + '.pos', 'red', '焦點位置只能填數字（0～100）', sec);
+    });
+
+    if (s.on.features) {
+      if (s.features.length < 3) add('features.add', 'red', '其他特色至少 3 張卡', 'H', 'todo');
+      s.features.forEach((c, i) => {
+        const k = 'features.' + i;
+        img(k + '.img', c.img, 'feature', 'H');
+        need(k + '.title', c.title, '小標', 'H'); over(k + '.title', c.title, LIMIT.featTitle, '小標', 'H');
+        need(k + '.body', c.body, '內文', 'H'); over(k + '.body', c.body, LIMIT.featBody, '內文', 'H');
+        if (!empty(c.label)) over(k + '.label', c.label, LIMIT.featLabel, '標籤', 'H');
+        if (!empty(c.pos) && !Number.isFinite(parseFloat(c.pos))) add(k + '.pos', 'red', '焦點位置只能填數字（0～100）', 'H');
+      });
+    }
+
+    if (s.on.videos) {
+      if (s.videos.length < 1) add('videos.add', 'red', '影片至少 1 支', 'C', 'todo');
+      s.videos.forEach((v, i) => {
+        const k = 'videos.' + i;
+        if (empty(v.url)) add(k + '.url', 'red', 'YouTube 網址還沒填', 'C', 'todo');
+        else if (!youtubeId(v.url)) add(k + '.url', 'red', '看不出是哪支 YouTube 影片。貼瀏覽器網址列的整串，或 youtu.be 分享連結', 'C');
+        if (!empty(v.caption)) over(k + '.caption', v.caption, LIMIT.videoCaption, '小標', 'C');
+      });
+    }
+
+    if (s.compare === 'yes') {
+      const c = s.cmp;
+      need('cmp.question', c.question, '問句', 'Compare');
+      need('cmp.va', c.va, '版本 1 名稱', 'Compare'); need('cmp.vb', c.vb, '版本 2 名稱', 'Compare');
+      if (c.rows.length < 1) add('cmp.add', 'red', '比較表至少 1 列', 'Compare', 'todo');
+      c.rows.forEach((r, i) => {
+        const k = 'cmp.rows.' + i;
+        need(k + '.label', r.label, '項目', 'Compare');
+        need(k + '.a.text', r.a.text, '版本 1 的內容', 'Compare');
+        need(k + '.b.text', r.b.text, '版本 2 的內容', 'Compare');
+        [r.a.text, r.b.text].forEach((t, j) => { if (!empty(t)) over(k + (j ? '.b.text' : '.a.text'), t, LIMIT.cmpCell, '這格', 'Compare'); });
+      });
+      [['cardA', c.cardA], ['cardB', c.cardB]].forEach(([n, k]) => {
+        img('cmp.' + n + '.img', k.img, 'cmp', 'Compare');
+        need('cmp.' + n + '.title', k.title, '卡片小標', 'Compare'); over('cmp.' + n + '.title', k.title, LIMIT.cmpTitle, '卡片小標', 'Compare');
+        need('cmp.' + n + '.body', k.body, '卡片內文', 'Compare'); over('cmp.' + n + '.body', k.body, LIMIT.cmpBody, '卡片內文', 'Compare');
+      });
+    }
+
+    if (s.on.compat) {
+      if (s.compat.rows.length < 1) add('compat.add', 'red', '適用機型至少 1 列', 'Compat', 'todo');
+      const menu = new Set(String(s.compat.menu || '').split(/[\n,，、／/]+/).map(normModel).filter(Boolean));
+      s.compat.rows.forEach((r, i) => {
+        need('compat.rows.' + i + '.names', r.names, '機型', 'Compat');
+        if (menu.size && r.ok) {
+          const miss = splitNames(r.names).filter(n => !menu.has(normModel(n)));
+          if (miss.length) add('compat.rows.' + i + '.names', 'orange', `規格選單清單裡找不到：${miss.join('、')}（只寫買得到的）`, 'Compat');
+        }
+      });
+
+      if (menu.size) {
+        const listed = new Set(s.compat.rows.filter(r => r.ok).flatMap(r => splitNames(r.names).map(normModel)));
+        const notListed = String(s.compat.menu || '').split(/[\n,，、／/]+/).map(clean).filter(n => n && genOf(normModel(n)) != null && !listed.has(normModel(n)));
+        if (notListed.length) add('compat.menu', 'orange', `選單有、上面的表沒寫：${[...new Set(notListed)].join('、')}。表漏寫的話，商品摘要會寫成「除外」`, 'Compat');
+      }
+      modelPhrase(s.compat).unknown.forEach(u => add('compat.rows.' + u.row + '.names', 'orange', `工具不認得「${u.name}」這個機型，商品摘要的適用機型那句沒有算到它`, 'Compat'));
+    }
+
+    if (s.on.specs) {
+      if (s.specs.length < 1) add('specs.add', 'red', '規格至少 1 列', 'Specs', 'todo');
+      s.specs.forEach((r, i) => { need('specs.' + i + '.label', r.label, '項目', 'Specs'); need('specs.' + i + '.value', r.value, '內容', 'Specs'); });
+    }
+    if (s.on.faq) {
+      if (s.faq.length < 1) add('faq.add', 'red', 'FAQ 至少 1 題', 'FAQ', 'todo');
+      s.faq.forEach((x, i) => {
+        need('faq.' + i + '.q', x.q, '問題', 'FAQ'); over('faq.' + i + '.q', x.q, LIMIT.faqQ, '問題', 'FAQ');
+        need('faq.' + i + '.a', x.a, '回答', 'FAQ'); over('faq.' + i + '.a', x.a, LIMIT.faqA, '回答', 'FAQ');
+      });
+    }
+
+    {
+      const sm = s.summary || {};
+      const feats = sm.feats || [];
+      if (feats.filter(t => stripBullet(t) !== '').length < 2) add('summary.add', 'red', '產品特色至少要 2 行', 'Summary', 'todo');
+      feats.forEach((t, i) => { if (stripBullet(t) !== '') over('summary.feats.' + i, stripBullet(t), LIMIT.sumFeat, '這一行', 'Summary'); });
+      const mp = s.on.compat ? modelPhrase(s.compat) : { text: '', excl: [] };
+      if (!mp.text) add('summary.model', 'orange', '摘要沒有「適用機型」那一行：上面的適用機型表沒開、還沒填，或沒有「相容」的列。手機殼一定要有', 'Summary');
+      if (s.on.specs) s.specs.forEach((r, i) => {
+        if (r.sum && isModelLabel(r.label)) add('specs.' + i + '.label', 'orange', '摘要的適用機型由工具從適用機型表算，這一列不用勾「摘要」（勾了也不會放）', 'Specs');
+
+        if (isModelLabel(r.label) && mp.excl.length && clean(r.value)) {
+          const v = normModel(r.value);
+          const lack = mp.excl.filter(x => !v.includes(normModel(x.replace(' 系列', '').replace('iPhone ', ''))));
+          if (lack.length) add('specs.' + i + '.value', 'orange', `適用機型表算出來是「${lack.join('、')} 除外」，這一列沒寫到。同一頁的機型寫法要一致`, 'Specs');
+        }
+      });
+    }
+
+    const html = safeGenerate(s);
+    if (html) {
+      BAD_MARKUP.forEach(b => { if (html.includes(b)) add('output', 'red', `輸出裡有 ${b}，SHOPLINE 商品描述會把它濾掉（多半是加價購那格貼進來的）`, 'A'); });
+      const visible = html.replace(/<[^>]*>/g, ' ');
+      INTERNAL_WORDS.forEach(w => { if (visible.includes(w)) add('output', 'red', `顧客看得到的內容裡有內部用語「${w}」`, 'top'); });
+    }
+    {
+      let sumText = '';
+      try { sumText = summary(s); } catch (e) {   }
+      const visible = sumText.replace(/<[^>]*>/g, ' ');
+      INTERNAL_WORDS.forEach(w => { if (visible.includes(w)) add('summary.out', 'red', `商品摘要裡有內部用語「${w}」`, 'Summary'); });
+    }
+
+    if (sample) {
+      const on = s.on || {};
+      const skip = p =>
+        /^(compat\.menu|addon)$/.test(p) || /\.(url|id)$/.test(p) ||
+        /^compat\.rows\.\d+\.names$/.test(p) || /^specs\.\d+\.label$/.test(p) ||
+        (/^grid\.(\d+)\./.test(p) && !(s.grid[+p.split('.')[1]] || {}).on) ||
+        (/^features\./.test(p) && !on.features) || (/^videos\./.test(p) && !on.videos) ||
+        (/^cmp\./.test(p) && s.compare !== 'yes') || (/^compat\./.test(p) && !on.compat) ||
+        (/^specs\./.test(p) && !on.specs) || (/^faq\./.test(p) && !on.faq);
+      const soft = p => /^specs\.\d+\.value$/.test(p) || /^faq\.\d+\.q$/.test(p);
+      const seen = new Set();
+      (function walk(a, b, path) {
+        if (typeof a === 'string' && typeof b === 'string') {
+          if (clean(a).length >= 6 && clean(a) === clean(b) && !skip(path)) seen.add(path);
+        } else if (a && b && typeof a === 'object') {
+          Object.keys(a).forEach(k => walk(a[k], b[k], path ? path + '.' + k : k));
+        }
+      })(s, sample, '');
+      seen.forEach(p => soft(p)
+        ? add(p, 'orange', '跟 B67 範例一模一樣。這個商品也是這樣就不用改', secOf(p), 'sampleSoft')
+        : add(p, 'orange', '這是 B67 的範例文字，不是這個商品的', secOf(p), 'sample'));
+    }
+    return out;
+  }
+
+  const normModel = s => clean(s).toLowerCase().replace(/iphone/g, '').replace(/\s+/g, '');
+  const secOf = p => {
+    if (p.startsWith('hero')) return 'Hero';
+    if (p.startsWith('intro')) return 'B';
+    if (p.startsWith('grid.')) return ['D', 'E', 'F', 'G'][+p.split('.')[1]];
+    if (p.startsWith('features')) return 'H';
+    if (p.startsWith('videos')) return 'C';
+    if (p.startsWith('cmp')) return 'Compare';
+    if (p.startsWith('compat')) return 'Compat';
+    if (p.startsWith('specs')) return 'Specs';
+    if (p.startsWith('faq')) return 'FAQ';
+    if (p.startsWith('summary')) return 'Summary';
+    return 'top';
+  };
+
+  function safeGenerate(s) { try { return generate(s); } catch (e) { return ''; } }
+
+  const api = { generate, pretty, blockOrder, summary, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+    slugOf, addonKitFrom, useAddonKit, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+
+
+(function (root) {
+  'use strict';
+  const IMG = id => 'https://img.shoplineapp.com/media/image_clips/' + id + '/original.';
+  const SAMPLE = {
+    compare: 'yes',
+    on: { features: true, videos: true, compat: true, specs: true, faq: true },
+    addon: '',
+    hero: {
+      img: { url: IMG('6a8728487cede3d13413d971') + 'jpg', alt: '淺灰色 YU 360°無段支架手機殼平放在木質圓桌上，黑色金屬指環已翻出立起，右側疊放多色款' },
+      name: 'YU 360°無段支架手機殼',
+      sub: '防摔、立架、手持一次到位',
+    },
+    intro: [
+      'YU 360°無段支架手機殼是一款背面內建 360° 無段旋轉支架指環的 MagSafe 防摔手機殼。',
+      '適用 iPhone 12 至 18 系列共 24 款（含 iPhone Air 與 16e，mini 除外）。',
+      '一個殼同時解決防摔、立架與手持；邊框與鏡頭框皆有墊高。',
+    ],
+    grid: [
+      { on: true, img: { url: IMG('6a3e0c7544f42230e076178a') + 'png', alt: '透明 YU 360°無段支架手機殼翻出金屬指環，立在咖啡廳桌上' },
+        pos: '', t1: '360° 旋轉支架', t2: '持久耐用',
+        body: '金屬轉軸無段微調，長期使用不鬆軟，任意角度都立得穩、看得久。', note: '' },
+      { on: true, img: { url: IMG('6a87186ae915bcdd8ae9b0c6') + 'png', alt: '手持 YU 黑色手機殼，MagSafe 圓形充電器磁吸貼合背面、免脫殼充電' },
+        pos: '45', t1: '內建強效 MagSafe 磁吸圈', t2: '',
+        body: '精準對位、一貼即合，磁吸充電免脫殼、配件秒上身；磁力穩固，掛在磁吸支架或車架也牢靠。',
+        note: '雙向吸 3.0 款另可吸附冰箱、健身器材等鐵製金屬表面；一般款不吸金屬。' },
+      { on: true, img: { url: IMG('6a3c30a893bc25df6f0ad2d7') + 'png', alt: 'YU 透明防摔手機殼平放於木桌，金屬指環支架翻出，鏡頭框墊高' },
+        pos: '42', t1: '四角氣墊 × 鏡頭墊高防摔', t2: '',
+        body: '四邊與四角強化緩衝、分散撞擊力道；鏡頭框微增高、高於鏡頭表面，平放不刮鏡頭，日常碰撞更安心。', note: '' },
+      { on: true, img: { url: IMG('6a22588145293afcdfcfd196') + 'jpeg', alt: 'YU 霧面 PU 觸感手機殼藍色款以指環立於桌面，背後疊放多色霧面殼' },
+        pos: '68', t1: 'PU 觸感表面防汙抗指紋', t2: '乾淨俐落更耐看',
+        body: '細緻 PU 觸感塗層，霧面質感、不易留指紋與油汙，輕輕一擦即淨；長時間使用不顯髒、不泛油光，握感溫潤舒適。', note: '' },
+    ],
+    features: [
+      { img: { url: IMG('6a3933293524d2891848cf97') + 'png', alt: '隨身自拍神器，野餐聚會戶外旅行完美角度' }, pos: '', label: '',
+        title: '隨身自拍神器', body: '野餐、聚會、出遊，找得到角度就架得住' },
+      { img: { url: IMG('6a3e2a60a2d8349437537d12') + 'png', alt: '變身增高支架，卡入寶特瓶讓螢幕與視線齊平' }, pos: '', label: '',
+        title: '變身增高支架', body: '卡入寶特瓶、飲料瓶，讓螢幕與視線齊平，久看不痠。' },
+      { img: { url: IMG('6a3e2a8a8ec17281adec6c70') + 'png', alt: '卡在行李箱拉桿上拍 Vlog 與團體自拍' }, pos: '', label: '',
+        title: '行李箱卡位', body: '卡在行李箱拉桿上，拍 Vlog、團體自拍不求人。' },
+      { img: { url: IMG('6a3e2ac99c7c7a6a30a0f610') + 'png', alt: '卡住縫隙把手機架高，無桌板也能追劇' }, pos: '', label: '',
+        title: '無桌板追劇神器', body: '卡住垂直或橫向的縫隙，把手機架高、不用一直低頭。' },
+      { img: { url: IMG('6a3e0ba8531ebd049936513f') + 'png', alt: 'YU 雙向吸 3.0 手機殼吸附不鏽鋼冰箱門，邊看食譜影片邊備料下廚' }, pos: '42', label: '雙向吸 3.0',
+        title: '吸上冰箱門，下廚看食譜', body: '將手機吸附在冰箱門或金屬廚櫃上，邊看食譜邊下廚，不佔用檯面空間' },
+      { img: { url: IMG('6a3e141dfa2b574eecd3a7de') + 'png', alt: 'YU 雙向吸 3.0 手機殼吸附健身房啞鈴架，錄影確認重訓姿勢' }, pos: '45', label: '雙向吸 3.0',
+        title: '吸上重訓機，自錄不求人', body: '固定在健身房重訓器材上錄影確認姿勢，雙向吸 3.0 都給你絕對的信心！' },
+    ],
+    videos: [
+      { url: 'https://www.youtube.com/embed/h0I1yNF_jfc', title: '360° 無段支架實測', caption: '無段支架實測' },
+    ],
+    cmp: {
+      question: '一般款？雙向吸 3.0？', va: '一般款', vb: '雙向吸 3.0',
+      rows: [
+        { label: '直立 / 橫放支撐', a: { ok: true, text: '支援' }, b: { ok: true, text: '支援' } },
+        { label: '無段式角度調整', a: { ok: true, text: '支援' }, b: { ok: true, text: '支援' } },
+        { label: '雙向吸附金屬', a: { ok: false, text: '無' }, b: { ok: true, text: '可雙向吸附' } },
+      ],
+      cardA: { img: { url: IMG('6a22b395c114b032942ef3f4') + 'png', alt: '一般款 360° 支架手機殼' },
+        title: '要追劇、視訊免手扶 → 選一般款', body: '內建 360° 旋轉支架，桌上、床頭一掰即站；同時支援 MagSafe 與四角防摔。' },
+      cardB: { img: { url: IMG('6a22b396e716f82e433e839a') + 'png', alt: '雙向吸 3.0 款手機殼' },
+        title: '要極致輕薄、雙向都能吸 → 選雙向吸 3.0', body: '雙向皆可 MagSafe 磁吸，貼牆架、車架、行動電源更彈性；機身更輕薄貼手。' },
+    },
+    compat: {
+      menu: '',
+      rows: [
+        { names: 'iPhone 18 Pro／18 Pro Max', ok: true },
+        { names: 'iPhone 17／17 Pro／17 Pro Max／iPhone Air', ok: true },
+        { names: 'iPhone 16／16 Plus／16 Pro／16 Pro Max／16e', ok: true },
+        { names: 'iPhone 15／15 Plus／15 Pro／15 Pro Max', ok: true },
+        { names: 'iPhone 14／14 Plus／14 Pro／14 Pro Max', ok: true },
+        { names: 'iPhone 13／13 Pro／13 Pro Max', ok: true },
+        { names: 'iPhone 12／12 Pro／12 Pro Max', ok: true },
+        { names: '各系列 mini', ok: false },
+      ],
+    },
+
+    specs: [
+      { label: '材質', value: 'TPU＋PC 複合', sum: true },
+      { label: '支架', value: '360° 無段金屬轉軸', sum: false },
+      { label: '顏色', value: '黑、鈦灰、墨綠、藍、紫、透明（黑／鈦灰／墨綠另有雙向吸 3.0）', sum: true },
+      { label: '適用機型', value: 'iPhone 18 Pro／18 Pro Max，並向下相容 iPhone 12–17 全系列（含 16e，mini 除外）', sum: false },
+      { label: '充電', value: '支援 MagSafe 磁吸', sum: false },
+    ],
+
+    summary: {
+      banner: true,
+      feats: [
+        '全機邊框精心墊高，超防摔保護手機鏡頭。',
+        '360度環繞支架，追劇滑手機隨心所欲。',
+        '獨家PU觸感材質，防汙耐髒。',
+        '具備Magsafe磁吸充電，一殼多用。',
+        '平放時背板穩固不突出，操作流暢無障礙。',
+      ],
+    },
+    faq: [
+      { q: '「雙向吸 3.0」跟一般款差在哪？', a: '一般款內建強效 MagSafe 磁吸；雙向吸 3.0 背殼可額外吸附冰箱、健身器材等鐵製金屬表面，下廚追劇、健身自錄都方便，機身也更輕薄；一般款則不吸金屬。' },
+      { q: '還能貼鏡頭貼嗎？', a: '可以！YU 360° 支架殼的鏡頭孔位有預留空間，非過厚的特殊款基本都相容。' },
+      { q: '不用支架時，背板會不會凸起、不好平放？', a: '不會。支架收合後背板平整穩固、不突出，放桌面操作滑順無障礙，攜帶也不卡口袋。' },
+      { q: '有支架還能用 MagSafe 磁吸嗎？', a: '可以。YU 360° 支架殼支援 MagSafe 磁吸充電與配件，一殼多用，磁吸行充、支架都能搭配使用。' },
+      { q: '觸感表面會不會很容易髒？', a: '不會。PU 觸感塗層防汙耐髒、親膚不滑手，沾到髒污用乾淨軟布輕拭即可，長保質感。' },
+      { q: '適用哪些 iPhone？', a: 'iPhone 18 Pro 與 18 Pro Max 都有；也向下相容 iPhone 12–17 全系列（含 16e），mini 除外。實際可選機型與顏色以上方購買區的規格選單為準。' },
+    ],
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = SAMPLE; else root.LN_SAMPLE_B67 = SAMPLE;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+
+
+(function () {
+  'use strict';
+  const G = window.LNGen, SAMPLE = window.LN_SAMPLE_B67;
+  const DRAFT_KEY = 'lnimg_listing_tool_draft_v1';
+  const L = G.LIMIT;
+
+  const img0 = () => ({ url: '', alt: '' });
+
+  const grid0 = () => ({ on: false, img: img0(), pos: '', t1: '', t2: '', body: '', note: '' });
+  const feat0 = () => ({ img: img0(), pos: '', label: '', title: '', body: '' });
+  const video0 = () => ({ url: '', title: '', caption: '' });
+  const cmpRow0 = () => ({ label: '', a: { ok: true, text: '' }, b: { ok: true, text: '' } });
+  const compatRow0 = () => ({ names: '', ok: true });
+  const spec0 = () => ({ label: '', value: '', sum: false });
+  const faq0 = () => ({ q: '', a: '' });
+  const card0 = () => ({ img: img0(), title: '', body: '' });
+  const blank = () => ({
+    compare: '',
+    on: { addon: false, features: true, videos: true, compat: true, specs: true, faq: true },
+    addon: '',
+    hero: { img: img0(), name: '', sub: '' },
+    intro: ['', '', ''],
+    grid: [grid0(), grid0(), grid0(), grid0()],
+    features: [feat0(), feat0(), feat0()],
+    videos: [video0()],
+    cmp: { question: '', va: '', vb: '', rows: [cmpRow0()], cardA: card0(), cardB: card0() },
+    compat: { menu: '', rows: [compatRow0()] },
+    specs: [spec0()],
+    faq: [faq0()],
+    summary: { banner: true, feats: ['', '', ''] },
+  });
+  const clone = o => JSON.parse(JSON.stringify(o));
+
+  function fill(data, tpl) {
+    if (Array.isArray(tpl)) return Array.isArray(data) ? data : tpl;
+    if (tpl && typeof tpl === 'object') {
+      const o = {};
+      for (const k in tpl) o[k] = fill(data && data[k] !== undefined ? data[k] : undefined, tpl[k]);
+      return o;
+    }
+    return data === undefined ? tpl : data;
+  }
+  function normalizeState(d) {
+    const b = blank(), s = fill(d, b);
+
+    if (!(d && d.on && typeof d.on.addon === 'boolean')) s.on.addon = G.addonMode(s.addon) !== 'none';
+    while (s.grid.length < 4) s.grid.push(grid0());
+    s.grid = s.grid.slice(0, 4).map(g => fill(g, grid0()));
+    s.features = s.features.map(x => fill(x, feat0()));
+    s.videos = s.videos.map(x => fill(x, video0()));
+    s.cmp.rows = s.cmp.rows.map(x => fill(x, cmpRow0()));
+    s.cmp.cardA = fill(s.cmp.cardA, card0()); s.cmp.cardB = fill(s.cmp.cardB, card0());
+    s.compat.rows = s.compat.rows.map(x => fill(x, compatRow0()));
+    s.specs = s.specs.map(x => fill(x, spec0()));
+    s.faq = s.faq.map(x => fill(x, faq0()));
+    s.intro = [0, 1, 2].map(i => String(s.intro[i] == null ? '' : s.intro[i]));
+    s.summary.feats = s.summary.feats.map(x => String(x == null ? '' : x));
+    while (s.summary.feats.length < 2) s.summary.feats.push('');
+    return s;
+  }
+  let state = blank();
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (raw) state = normalizeState(JSON.parse(raw));
+  } catch (e) {   }
+
+  function h(tag, attrs) {
+    const e = document.createElement(tag);
+    for (const k in attrs || {}) {
+      const v = attrs[k];
+      if (v === false || v == null) continue;
+      if (k === 'class') e.className = v;
+      else if (k === 'html') e.innerHTML = v;
+      else if (k.startsWith('on')) e[k] = v;
+      else e.setAttribute(k, v === true ? '' : v);
+    }
+    for (let i = 2; i < arguments.length; i++) [].concat(arguments[i]).forEach(c => {
+      if (c == null || c === false) return;
+      e.append(c.nodeType ? c : document.createTextNode(c));
+    });
+    return e;
+  }
+  const getp = (o, p) => p.split('.').reduce((v, k) => (v == null ? v : v[k]), o);
+  const setp = (o, p, val) => { const ks = p.split('.'), last = ks.pop(); ks.reduce((v, k) => v[k], o)[last] = val; };
+  const $ = s => document.querySelector(s);
+  const debounce = (fn, ms) => { let t; return (...a) => { clearTimeout(t); t = setTimeout(() => fn(...a), ms); }; };
+
+  const imgCache = {};
+  function probe(url) {
+    url = G.clean(url);
+    if (!url || !G.SHOPLINE_IMG.test(url) || imgCache[url]) return;
+    imgCache[url] = { state: 'loading' };
+    const im = new Image();
+    const timer = setTimeout(() => { if (imgCache[url].state === 'loading') { imgCache[url] = { state: 'error' }; refresh(); } }, 20000);
+    im.onload = () => { clearTimeout(timer); imgCache[url] = { state: 'ok', w: im.naturalWidth, h: im.naturalHeight }; refresh(); };
+    im.onerror = () => { clearTimeout(timer); imgCache[url] = { state: 'error' }; refresh(); };
+    im.src = url;
+  }
+  const probeAll = () => {
+    (function walk(o) {
+      if (!o || typeof o !== 'object') return;
+      if (typeof o.url === 'string' && 'alt' in o) probe(o.url);
+      for (const k in o) walk(o[k]);
+    })(state);
+  };
+
+  const reg = {};
+  let pickBtns = [];
+  let pickNote = null;
+  const secEls = {};
+  let navRO = null;
+  const changed = () => { saveDraftSoon(); probeSoon(); refreshSoon(); };
+
+  const fid = path => 'f-' + path.replace(/[^A-Za-z0-9_-]/g, '-');
+
+  function field(path, label, o) {
+    o = o || {};
+    const sample = getp(SAMPLE, path);
+    const ph = o.ph !== undefined ? o.ph : (typeof sample === 'string' && sample ? '例：' + sample : '');
+    const val = getp(state, path);
+    const id = fid(path);
+    const input = o.area
+      ? h('textarea', { id, rows: o.rows || 2, placeholder: ph })
+      : h('input', { id, type: 'text', placeholder: ph, inputmode: o.num ? 'numeric' : false });
+    if (!label && o.aria) input.setAttribute('aria-label', o.aria);
+    input.value = val == null ? '' : val;
+    input.dataset.key = path;
+    input.oninput = () => { setp(state, path, input.value); changed(); };
+    const cnt = o.max ? h('span', { class: 'cnt', 'aria-hidden': 'true' }) : null;
+    const msg = h('div', { class: 'msg', id: id + '-m' });
+    const hint = o.hint ? h('div', { class: 'hint', id: id + '-h' }, o.hint) : null;
+
+    const ex = /^例：/.test(ph) ? h('div', { class: 'ex', id: id + '-x' }, ph) : null;
+    input.setAttribute('aria-describedby', [hint, ex, msg].filter(Boolean).map(e => e.id).join(' '));
+    const wrap = h('div', { class: 'f', 'data-wrap': path },
+      label ? h('label', { for: id }, label, o.req === false ? h('span', { class: 'req' }, '選填') : null, cnt) : null,
+      input, ex, hint, msg);
+    reg[path] = { wrap, msg, cnt, max: o.max, input };
+    return wrap;
+  }
+
+  function select(path, label, opts, o) {
+    o = o || {};
+    const id = fid(path);
+    const sel = h('select', { id }, ...opts.map(([v, t]) => h('option', { value: v }, t)));
+    if (!label && o.aria) sel.setAttribute('aria-label', o.aria);
+    sel.value = String(getp(state, path));
+    sel.dataset.key = path;
+    sel.onchange = () => { const v = sel.value; setp(state, path, v === 'true' ? true : v === 'false' ? false : v); changed(); };
+    const msg = h('div', { class: 'msg', id: id + '-m' });
+    sel.setAttribute('aria-describedby', msg.id);
+    const wrap = h('div', { class: 'f', 'data-wrap': path }, label ? h('label', { for: id }, label) : null, sel, msg);
+    reg[path] = { wrap, msg, input: sel };
+    return wrap;
+  }
+
+  function imageField(base, specKey, o) {
+    o = o || {};
+    const sp = G.IMG_SPEC[specKey];
+    const thumb = h('div', { class: 'thumb' });
+    const size = h('p', { class: 'size' }, '貼上網址後，這裡會顯示圖片實際尺寸');
+    const urlF = field(base + '.url', '圖片網址', { ph: '例：https://img.shoplineapp.com/media/image_clips/…/original.png', hint: o.hint });
+    reg[base + '.url'].thumb = thumb; reg[base + '.url'].size = size; reg[base + '.url'].spec = sp;
+    const altF = field(base + '.alt', '圖片說明（alt）', { ph: o.altPh !== undefined ? o.altPh : '用一句話描述圖裡有什麼；給看不到圖的人與搜尋引擎讀', hint: '不是行銷口號，是描述圖。' });
+    const posF = o.pos ? field(base.replace(/\.img$/, '') + '.pos', '圖片焦點位置（上下）', { req: false, num: true, ph: '空白＝置中；0＝靠上，100＝靠下', hint: '圖被框裁掉時，要留住上面還是下面。填 0 到 100 的數字。' }) : null;
+    return h('div', { class: 'imgf' },
+      h('div', { class: 'row' }, urlF, thumb),
+      altF, posF,
+      h('p', { class: 'size' }, `規格：${sp.ratioText}，至少 ${sp.minW}×${sp.minH}`),
+      size);
+  }
+
+  function section(code, title, sub, bodyEls, o) {
+    o = o || {};
+    const st = h('span', { class: 'st' }, '');
+    let toggle = null;
+    const body = h('div', { class: 'body', id: 'secbody-' + code }, ...bodyEls);
+    if (o.toggle) {
+      const cb = h('input', { type: 'checkbox' });
+      cb.checked = !!state.on[o.toggle];
+      body.hidden = !cb.checked;
+      cb.onchange = () => {
+        state.on[o.toggle] = cb.checked; body.hidden = !cb.checked; secEls[code].classList.toggle('off', !cb.checked);
+        if (cb.checked && folded.has(code)) setFold(code, false);
+        changed();
+      };
+      cb.setAttribute('aria-label', `這個商品要放「${SEC_NAMES[code] || title}」`);
+      toggle = h('label', { class: 'toggle' }, cb, '這個商品要放這一區');
+    }
+
+    const fold = h('button', { type: 'button', class: 'btn small ghost fold', 'aria-controls': 'secbody-' + code, onclick: () => setFold(code, !folded.has(code)) });
+    const el = h('section', { class: 'sec' + (o.toggle && !state.on[o.toggle] ? ' off' : ''), id: 'sec-' + code },
+      h('header', null, h('span', { class: 'badge' }, o.badge || code), h('h2', { tabindex: '-1' }, title), h('span', { class: 'sub', title: sub || false }, sub || ''), h('span', { class: 'sp' }), toggle, st, fold),
+      body);
+    el._st = st; el._code = code; el._fold = fold;
+    secEls[code] = el;
+    paintFold(code);
+    return el;
+  }
+
+  const FOLD_KEY = 'lnimg_listing_tool_folded_v1';
+  const folded = (() => { try { const v = localStorage.getItem(FOLD_KEY); if (v) return new Set(JSON.parse(v)); } catch (e) {   } return new Set(); })();
+  function paintFold(code) {
+    const el = secEls[code]; if (!el) return;
+    const on = folded.has(code);
+    el.classList.toggle('folded', on);
+    el._fold.textContent = on ? '展開' : '收起';
+    el._fold.setAttribute('aria-expanded', on ? 'false' : 'true');
+    el._fold.setAttribute('aria-label', (on ? '展開' : '收起') + ' ' + (SEC_NAMES[code] || code));
+  }
+  function setFold(code, on) {
+    if (on) folded.add(code); else folded.delete(code);
+    try { localStorage.setItem(FOLD_KEY, JSON.stringify([...folded])); } catch (e) {   }
+    paintFold(code);
+  }
+
+  let delFrom = null;
+  function removeBtn(fn, aria) { return h('button', { type: 'button', class: 'btn small ghost del', onclick: e => { delFrom = e.currentTarget.closest('section.sec'); fn(); }, title: aria || '刪掉', 'aria-label': aria || false }, '刪掉'); }
+
+  let undo = null, undoTimer = 0;
+  function removeAt(arr, i, what) {
+    const item = arr.splice(i, 1)[0];
+    undo = { st: state, arr, i, item, sec: delFrom ? delFrom.id : '' };
+    buildForm(); changed();
+    $('#undo-text').textContent = `已刪掉：${what}`;
+    $('#undo').hidden = false;
+    $('#undo-btn').focus();
+    clearTimeout(undoTimer);
+    undoTimer = setTimeout(hideUndo, 10000);
+  }
+  function hideUndo() { undo = null; clearTimeout(undoTimer); $('#undo').hidden = true; }
+  function doUndo() {
+
+    const back = undo && undo.st === state ? undo : null;
+    if (back) { back.arr.splice(back.i, 0, back.item); buildForm(); changed(); }
+    hideUndo();
+
+    const h2 = back && back.sec && document.querySelector('#' + back.sec + ' header h2');
+    if (h2) h2.focus();
+  }
+  function addBtn(label, fn) { return h('button', { type: 'button', class: 'btn small', onclick: fn }, label); }
+
+  function buildForm() {
+    const y = window.scrollY;
+    for (const k in reg) delete reg[k];
+    for (const k in secEls) delete secEls[k];
+    const form = $('#form');
+    form.innerHTML = '';
+
+    const q = h('div', { class: 'q' + (state.compare ? ' answered' : ''), id: 'sec-top' },
+      h('h2', { id: 'q-cmp' }, '先回答：這個商品有沒有比較區？'),
+      h('div', { class: 'opts', role: 'radiogroup', 'aria-labelledby': 'q-cmp' },
+        ...[['yes', '有，要放比較區'], ['no', '沒有']].map(([v, t]) => {
+          const r = h('input', { type: 'radio', name: 'cmp', value: v });
+          r.checked = state.compare === v;
+          r.onchange = () => { state.compare = v; buildForm(); changed(); };
+          return h('label', { class: 'opt' }, r, t);
+        })),
+      h('div', { class: 'msg', 'data-qmsg': '1' }),
+      h('p', { class: 'small', style: 'margin:8px 0 0' }, '比較區＝拿同一款商品的兩個版本（例如一般款和進階款）並排比。沒有兩個版本可比就選「沒有」。'));
+    reg.compare = { msg: q.querySelector('[data-qmsg]'), wrap: q };
+    form.append(q);
+
+    form.append(h('div', { class: 'samplebar', id: 'samplebar', role: 'status', hidden: true },
+      h('p', { id: 'samplebar-text' }),
+      h('button', { type: 'button', class: 'btn small', id: 'samplebar-go' }, '跳到第一欄')));
+
+    form.append(h('div', { class: 'foldbar' },
+      h('span', { class: 'small' }, '做完的區可以收起來，表單比較短：'),
+      h('button', { type: 'button', class: 'btn small', onclick: () => { for (const c in secEls) if (secEls[c]._st.classList.contains('ok')) setFold(c, true); } }, '收起完成的區'),
+      h('button', { type: 'button', class: 'btn small', onclick: () => { for (const c in secEls) setFold(c, false); } }, '全部展開')));
+
+    const nav = h('nav', { class: 'nav', id: 'nav', 'aria-label': '表單各區' });
+    form.append(nav);
+
+    const setNavH = () => document.documentElement.style.setProperty('--nav-h', (getComputedStyle(nav).position === 'sticky' ? nav.offsetHeight : 0) + 'px');
+    if (navRO) navRO.disconnect();
+    navRO = new ResizeObserver(setNavH);
+    navRO.observe(nav);
+
+    {
+      const kit = G.addonKit();
+      pickBtns = [];
+      const done = () => { buildForm(); changed(); reg.addon.input.focus({ preventScroll: true }); };
+      const addUrl = c => {
+        const cur = String(state.addon || '');
+        state.addon = (cur.trim() ? cur.replace(/\s*$/, '\n') : '') + c.href;
+        done();
+      };
+
+      const removeUrl = c => {
+        state.addon = String(state.addon || '').split(/\r?\n/)
+          .map(line => line.split(/([\s,，、]+)/).filter(tok => G.slugOf(tok.replace(/^<|>$/g, '')) !== c.slug).join('').trim())
+          .filter(Boolean).join('\n');
+        done();
+      };
+      pickNote = h('p', { class: 'addon-src warn', hidden: true }, '格子裡現在是整段語法，清單不能加。要改用網址，先把整段語法刪掉。');
+      const pick = !kit ? h('p', { class: 'addon-src warn' }, '這一版工具沒有帶加價購卡片的資料，只能整段貼語法。') : h('div', null,
+        pickNote,
+        h('ul', { class: 'pick', 'aria-label': '可以放的加價購商品' }, ...kit.cards.map(c => {
+          const hold = G.ADDON_HOLD[c.slug];
+          const btn = hold ? null : h('button', { type: 'button', class: 'btn small', 'aria-label': '加入 ' + c.name,
+            onclick: () => (btn.dataset.added ? removeUrl(c) : addUrl(c)) }, '加入');
+          if (btn) pickBtns.push({ slug: c.slug, name: c.name, btn });
+          return h('li', null,
+            h('span', { class: 'nm' }, c.name, c.variant ? h('span', { class: 'vr' }, '規格：' + c.variant) : null),
+            h('span', { class: 'pr' }, 'NT$' + c.sale, c.orig ? h('s', null, 'NT$' + c.orig) : null),
+            hold ? h('span', { class: 'hold' }, '先不放') : btn);
+        })),
+        h('p', { class: 'addon-src' + (kit.check && kit.check.at ? '' : ' warn') },
+          `卡片的名稱、圖、加購價、原價都照 B67 定版樣式（${kit.cards.length} 張）。` +
+          (kit.check && kit.check.at ? `價格 ${kit.check.at} 對過商城。` : '這一版工具做的時候沒有對過商城的價格，用之前先確認。')));
+      form.append(section('A', '加價購區', '貼加價購商品的網址', [
+        h('p', { class: 'note' }, '一行貼一個加價購商品的網址，貼的順序就是卡片的順序；也可以按下面的「加入」。'),
+        field('addon', '加價購商品網址', { area: true, rows: 4,
+          ph: '一行一個，例如：\nhttps://www.londonimg.tw/products/b51-2',
+          hint: '只認得下面清單裡的商品；要放新的加價購商品，請找工具負責人加進工具。以前整段貼語法的做法也還能用。' }),
+        pick,
+      ], { badge: 'A', toggle: 'addon' }));
+    }
+
+    form.append(section('Hero', 'Hero 大圖', '第一眼的大圖，字壓在圖上', [
+      imageField('hero.img', 'hero', { hint: '商品要放在圖的中間一半：手機版左右會被裁掉。字在左下，那一角不要太亮。' }),
+      field('hero.name', '商品名', { max: L.heroName, hint: '一行放得下。白字壓在圖上。' }),
+      field('hero.sub', '主標（一句話）', { max: L.heroSub }),
+    ]));
+
+    form.append(section('B', '介紹段', '2 到 3 句，每句整塊置中', [
+      h('p', { class: 'note' }, '第 2 句寫給人看的用途，不寫機型。機型寫在下面的適用機型表，商品摘要那句工具會從表自動算。'),
+      field('intro.0', '第 1 句', { area: true, max: L.intro }),
+
+      field('intro.1', '第 2 句', { area: true, max: L.intro, ph: '例：追劇、視訊時把指環轉開就能立起來，不用另外帶支架。' }),
+      field('intro.2', '第 3 句', { area: true, max: L.intro, req: false }),
+    ]));
+
+    const letters = ['D', 'E', 'F', 'G'];
+    letters.forEach((c, i) => {
+      const k = 'grid.' + i;
+      const cb = h('input', { type: 'checkbox' });
+      cb.checked = state.grid[i].on;
+      const wrapBody = h('div', null,
+        imageField(k + '.img', 'grid', { pos: true }),
+        field(k + '.t1', '標題第 1 行', { max: L.gridLine, hint: '標題不要放逗號。想斷句，就把後半放到第 2 行。' }),
+        field(k + '.t2', '標題第 2 行', { max: L.gridLine, req: false }),
+        field(k + '.body', '內文', { area: true, max: L.gridBody }),
+        field(k + '.note', '備註', { max: L.gridNote, req: false, hint: '小字，會自動加「※ 」。不需要就留空。' }));
+      wrapBody.hidden = !cb.checked;
+      cb.onchange = () => {
+        state.grid[i].on = cb.checked; wrapBody.hidden = !cb.checked; secEls[c].classList.toggle('off', !cb.checked);
+        if (cb.checked && folded.has(c)) setFold(c, false);
+        changed();
+      };
+
+      let gridMsg = null;
+      if (i === 0) { gridMsg = h('div', { class: 'msg', 'data-qmsg': '1' }); reg['grid.0.on'] = { msg: gridMsg }; }
+      const el = section(c, '棋盤格 ' + c, '圖文一組，用到的段左右交錯', [gridMsg, wrapBody].filter(Boolean), { badge: c });
+      cb.setAttribute('aria-label', `這個商品要放「${SEC_NAMES[c]}」`);
+      el.querySelector('header .sp').after(h('label', { class: 'toggle' }, cb, '這個商品要放這一區'));
+      el.classList.toggle('off', !cb.checked);
+      form.append(el);
+    });
+
+    {
+      const items = state.features.map((c, i) => {
+        const k = 'features.' + i;
+        return h('div', { class: 'item' },
+          h('div', { class: 'ih' }, h('b', null, '第 ' + (i + 1) + ' 張'), h('span', { class: 'sp' }),
+            state.features.length > 3 ? removeBtn(() => removeAt(state.features, i, `H 第 ${i + 1} 張`), `刪掉第 ${i + 1} 張`) : null),
+          imageField(k + '.img', 'feature', { pos: true }),
+          h('div', { class: 'pair' }, field(k + '.title', '小標', { max: L.featTitle, hint: '一行放得下。' }), field(k + '.label', '圖左上角標籤', { max: L.featLabel, req: false, ph: '例：雙向吸 3.0' })),
+          field(k + '.body', '內文', { area: true, max: L.featBody }));
+      });
+      const add = h('div', { class: 'addrow' }, state.features.length < 8 ? addBtn('＋ 再加一張卡', () => { state.features.push(feat0()); buildForm(); changed(); }) : null,
+        h('span', { class: 'small' }, '3 到 8 張，左右滑'));
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['features.add'] = { msg: addMsg };
+      form.append(section('H', '其他特色', '灰底整排卡片，可左右滑', [...items, add, addMsg], { toggle: 'features' }));
+    }
+
+    {
+      const items = state.videos.map((v, i) => {
+        const k = 'videos.' + i;
+        return h('div', { class: 'item' },
+          h('div', { class: 'ih' }, h('b', null, '第 ' + (i + 1) + ' 支'), h('span', { class: 'sp' }),
+            state.videos.length > 1 ? removeBtn(() => removeAt(state.videos, i, `影片第 ${i + 1} 支`), `刪掉第 ${i + 1} 支`) : null),
+          field(k + '.url', 'YouTube 網址', { hint: '貼瀏覽器網址列的整串，或「分享」給的短連結都可以。這一版只支援直式（9:16，Shorts）影片。' }),
+          h('div', { class: 'pair' },
+            field(k + '.caption', '影片下方的小標', { max: L.videoCaption, req: false }),
+            field(k + '.title', '影片名稱（輔助說明用，不會顯示）', { req: false, hint: '空白就用小標。' })));
+      });
+      const add = h('div', { class: 'addrow' }, state.videos.length < 3 ? addBtn('＋ 再加一支', () => { state.videos.push(video0()); buildForm(); changed(); }) : null, h('span', { class: 'small' }, '1 到 3 支'));
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['videos.add'] = { msg: addMsg };
+      form.append(section('C', '影片', 'In Action', [...items, add, addMsg], { toggle: 'videos' }));
+    }
+
+    if (state.compare === 'yes') {
+      const rows = state.cmp.rows.map((r, i) => {
+        const k = 'cmp.rows.' + i;
+        const okOpts = [['true', '有（綠字）'], ['false', '沒有（灰字）']];
+        return h('div', { class: 'item' },
+          h('div', { class: 'ih' }, h('b', null, '第 ' + (i + 1) + ' 列'), h('span', { class: 'sp' }),
+            state.cmp.rows.length > 1 ? removeBtn(() => removeAt(state.cmp.rows, i, `比較表第 ${i + 1} 列`), `刪掉比較表第 ${i + 1} 列`) : null),
+          field(k + '.label', '比較的項目', { ph: i === 0 ? '例：無段式角度調整' : '' }),
+          h('div', { class: 'pair' },
+            h('div', { class: 'f' }, h('div', { class: 'lab' }, '版本 1'), h('div', { class: 'mini' }, select(k + '.a.ok', null, okOpts, { aria: `第 ${i + 1} 列：版本 1 有沒有` }), field(k + '.a.text', null, { ph: i === 0 ? '例：支援' : '', max: L.cmpCell, aria: `第 ${i + 1} 列：版本 1 的內容` }))),
+            h('div', { class: 'f' }, h('div', { class: 'lab' }, '版本 2'), h('div', { class: 'mini' }, select(k + '.b.ok', null, okOpts, { aria: `第 ${i + 1} 列：版本 2 有沒有` }), field(k + '.b.text', null, { ph: i === 0 ? '例：可雙向吸附' : '', max: L.cmpCell, aria: `第 ${i + 1} 列：版本 2 的內容` })))));
+      });
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['cmp.add'] = { msg: addMsg };
+      const cardEls = [['cardA', '版本 1 卡片'], ['cardB', '版本 2 卡片']].map(([n, t]) =>
+        h('div', { class: 'item' }, h('div', { class: 'ih' }, h('b', null, t)),
+          imageField('cmp.' + n + '.img', 'cmp'),
+          field('cmp.' + n + '.title', '卡片小標', { max: L.cmpTitle, hint: '例：要追劇、視訊免手扶 → 選一般款' }),
+          field('cmp.' + n + '.body', '卡片內文', { area: true, max: L.cmpBody })));
+      form.append(section('Compare', '比較區', '兩個版本並排比', [
+        field('cmp.question', '問句', { hint: '標題下面那一行，例：一般款？雙向吸 3.0？' }),
+        h('div', { class: 'pair' }, field('cmp.va', '版本 1 名稱'), field('cmp.vb', '版本 2 名稱')),
+        h('p', { class: 'note' }, '表格每一列比一個項目。「有」顯示綠字，「沒有」顯示灰字，前面會自動加「●」。'),
+        ...rows,
+        h('div', { class: 'addrow' }, state.cmp.rows.length < 8 ? addBtn('＋ 再加一列', () => { state.cmp.rows.push(cmpRow0()); buildForm(); changed(); }) : null),
+        addMsg,
+        ...cardEls,
+      ], { badge: '比較' }));
+    }
+
+    {
+      const rows = state.compat.rows.map((r, i) => {
+        const k = 'compat.rows.' + i;
+        return h('div', { class: 'rowline compat' },
+          field(k + '.names', null, { ph: i === 0 ? '例：iPhone 18 Pro／18 Pro Max（用「／」隔開）' : '', aria: `第 ${i + 1} 列：機型` }),
+          select(k + '.ok', null, [['true', '相容'], ['false', '不適用']], { aria: `第 ${i + 1} 列：相容或不適用` }),
+          state.compat.rows.length > 1 ? removeBtn(() => removeAt(state.compat.rows, i, `機型表第 ${i + 1} 列`), `刪掉機型表第 ${i + 1} 列`) : h('span'));
+      });
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['compat.add'] = { msg: addMsg };
+      form.append(section('Compat', '適用機型', '機型表', [
+        h('p', { class: 'note' }, '⚠️ 這是相容性的承諾。', h('b', null, '只寫賣場規格選單真的選得到的機型'), '，不寫推測的。一列放一代，機型用「／」隔開。'),
+        ...rows,
+        h('div', { class: 'addrow' }, state.compat.rows.length < 14 ? addBtn('＋ 再加一列', () => { state.compat.rows.push(compatRow0()); buildForm(); changed(); }) : null),
+        addMsg,
+        field('compat.menu', '（選填）貼上賣場規格選單的機型清單', { area: true, rows: 3, req: false, ph: '一行一個，從後台規格選單複製。貼了之後，上面寫的機型不在清單裡會提醒你', hint: '工具沒辦法自己讀到規格選單，這格是讓它幫你對一次。只比對「相容」的列。' }),
+      ], { toggle: 'compat', badge: '機型' }));
+    }
+
+    {
+      const rows = state.specs.map((r, i) => {
+        const cb = h('input', { type: 'checkbox', 'aria-label': `第 ${i + 1} 列：放進商品摘要` });
+        cb.checked = !!r.sum;
+        cb.onchange = () => { state.specs[i].sum = cb.checked; changed(); };
+        return h('div', { class: 'rowline spec' },
+          field('specs.' + i + '.label', null, { ph: i === 0 ? '項目，例：材質' : '', aria: `第 ${i + 1} 列：項目` }),
+          field('specs.' + i + '.value', null, { ph: i === 0 ? '例：TPU＋PC 複合' : '', aria: `第 ${i + 1} 列：內容` }),
+          h('label', { class: 'sumcb', title: '這一列也放進購買區的商品摘要' }, cb, '摘要'),
+          state.specs.length > 1 ? removeBtn(() => removeAt(state.specs, i, `規格表第 ${i + 1} 列`), `刪掉規格表第 ${i + 1} 列`) : h('span'));
+      });
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['specs.add'] = { msg: addMsg };
+      form.append(section('Specs', '規格表', '左邊項目、右邊內容', [
+        h('p', { class: 'note' }, '勾「摘要」的列也會放進商品摘要的【商品規格】，通常是材質、顏色。適用機型那一行工具自己算，不用勾。'),
+        ...rows,
+        h('div', { class: 'addrow' }, state.specs.length < 12 ? addBtn('＋ 再加一列', () => { state.specs.push(spec0()); buildForm(); changed(); }) : null),
+        addMsg,
+      ], { toggle: 'specs', badge: '規格' }));
+    }
+
+    {
+      const items = state.faq.map((x, i) => h('div', { class: 'item' },
+        h('div', { class: 'ih' }, h('b', null, 'Q' + (i + 1)), h('span', { class: 'sp' }),
+          state.faq.length > 1 ? removeBtn(() => removeAt(state.faq, i, `FAQ Q${i + 1}`), `刪掉 Q${i + 1}`) : null),
+        field('faq.' + i + '.q', '問題', { max: L.faqQ }),
+        field('faq.' + i + '.a', '回答', { area: true, max: L.faqA })));
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['faq.add'] = { msg: addMsg };
+      form.append(section('FAQ', '常見問題', '放在最下面', [
+        ...items,
+        h('div', { class: 'addrow' }, state.faq.length < 10 ? addBtn('＋ 再加一題', () => { state.faq.push(faq0()); buildForm(); changed(); }) : null),
+        addMsg,
+      ], { toggle: 'faq' }));
+    }
+
+    {
+      const sm = state.summary;
+      const cb = h('input', { type: 'checkbox' });
+      cb.checked = !!sm.banner;
+      cb.onchange = () => { state.summary.banner = cb.checked; changed(); };
+      const items = sm.feats.map((t, i) => h('div', { class: 'rowline sumf' },
+        field('summary.feats.' + i, '第 ' + (i + 1) + ' 行', { max: L.sumFeat, req: i < 2 ? undefined : false }),
+        sm.feats.length > 2 ? removeBtn(() => removeAt(state.summary.feats, i, `摘要第 ${i + 1} 行`), `刪掉第 ${i + 1} 行`) : h('span')));
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['summary.add'] = { msg: addMsg };
+      const modelMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['summary.model'] = { msg: modelMsg };
+      const outMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['summary.out'] = { msg: outMsg };
+      form.append(section('Summary', '商品摘要', '另一格：購買區的短介紹', [
+        h('p', { class: 'note' }, h('b', null, '這段不是貼進商品描述。'), '後台商品編輯頁有一格「商品摘要」，貼在那裡。右邊「商品摘要」分頁有自己的複製鈕。'),
+        h('label', { class: 'chk' }, cb, '開頭放「一鍵加購」橫幅（連到「加價購(iPhone)」頁；6 個主賣場現在都有）'),
+        h('div', { class: 'lab' }, '【產品特色】每行一個重點，前面的「•」會自動加'),
+        ...items,
+        h('div', { class: 'addrow' }, sm.feats.length < 6 ? addBtn('＋ 再加一行', () => { state.summary.feats.push(''); buildForm(); changed(); }) : null, h('span', { class: 'small' }, '2 到 6 行')),
+        addMsg,
+        h('div', { class: 'lab' }, '【商品規格】自動帶入，不用打'),
+        h('p', { class: 'note', id: 'sum-model' }),
+        modelMsg,
+        h('p', { class: 'note' }, '其他行來自上面「規格」區勾了「摘要」的列。要改內容，回規格區改。'),
+        outMsg,
+      ], { badge: '摘要' }));
+    }
+
+    refresh();
+    setNavH();
+    window.scrollTo(0, y);
+  }
+
+  let lastIssues = [];
+  const SEC_NAMES = { top: '最上面', A: 'A 加價購', Hero: 'Hero', B: 'B 介紹段', D: 'D 棋盤格', E: 'E 棋盤格', F: 'F 棋盤格', G: 'G 棋盤格', H: 'H 其他特色', C: 'C 影片', Compare: '比較區', Compat: '適用機型', Specs: '規格表', FAQ: 'FAQ', Summary: '商品摘要' };
+
+  const NAV_NAMES = { A: 'A 加購', Hero: 'Hero 大圖', B: 'B 介紹', D: 'D 棋盤', E: 'E 棋盤', F: 'F 棋盤', G: 'G 棋盤', H: 'H 特色', C: 'C 影片', Compare: '比較', Compat: '機型', Specs: '規格', FAQ: 'FAQ', Summary: '摘要' };
+  const ORDER = ['top', 'A', 'Hero', 'B', 'D', 'E', 'F', 'G', 'H', 'C', 'Compare', 'Compat', 'Specs', 'FAQ', 'Summary'];
+  const sevOf = i => i.level === 'red' ? (i.kind === 'todo' ? 'todo' : 'red') : 'orange';
+  const isSample = i => i.kind === 'sample';
+  const isSoft = i => i.kind === 'sampleSoft';
+
+  const uiOf = i => sevOf(i) !== 'orange' ? sevOf(i) : isSample(i) ? 'sample' : isSoft(i) ? 'soft' : 'sugg';
+
+  const rankOf = i => ({ red: 0, todo: 1, sugg: 2, soft: 3, sample: 4 })[uiOf(i)];
+
+  function paintCopyBtn(btn, issues, small) {
+    const red = issues.filter(i => sevOf(i) === 'red').length;
+    const todo = issues.filter(i => sevOf(i) === 'todo').length;
+    const sam = issues.filter(isSample).length;
+    const pend = issues.filter(i => i.kind === 'pending').length;
+    let status = '', cls = 'primary';
+    if (red) { status = `有 ${red} 項紅字`; cls = 'warn'; }
+    else if (sam) { status = `${sam} 欄範例字要換`; cls = 'caution'; }
+    else if (todo) { status = `還有 ${todo} 處待填`; cls = ''; }
+    else if (pend) { status = `還在讀 ${pend} 張圖`; cls = ''; }
+    btn.textContent = btn.dataset.label + (status ? '｜' + status : '');
+    btn.dataset.status = status;
+    btn.className = 'btn' + (cls ? ' ' + cls : '') + (small ? ' small' : '');
+    return { primary: 'ok', warn: 'red', caution: 'orange', '': 'todo' }[cls];
+  }
+
+  let curSec = '';
+  let showTab = () => {};
+
+  function paintPick() {
+    const html = G.addonMode(state.addon) === 'html';
+    const have = new Set(G.addonItems(state.addon).map(x => x.slug));
+    if (pickNote) pickNote.hidden = !html;
+    pickBtns.forEach(({ slug, name, btn }) => {
+      const added = !html && have.has(slug);
+      btn.disabled = html;
+      btn.textContent = added ? '移除' : '加入';
+      btn.setAttribute('aria-label', (added ? '移除 ' : '加入 ') + name);
+      btn.classList.toggle('ghost', added);
+      if (added) btn.dataset.added = '1'; else delete btn.dataset.added;
+    });
+  }
+
+  function paintIssues() {
+    paintPick();
+    const issues = G.validate(state, imgCache, SAMPLE);
+    lastIssues = issues;
+    const byKey = {};
+    issues.forEach(i => (byKey[i.key] = byKey[i.key] || []).push(i));
+
+    for (const path in reg) {
+      const r = reg[path], list = (byKey[path] || []).slice().sort((a, b) => rankOf(a) - rankOf(b));
+      const top = list[0];
+      if (r.wrap && r.wrap.classList.contains('f')) {
+        r.wrap.classList.toggle('is-red', !!top && uiOf(top) === 'red');
+        r.wrap.classList.toggle('is-orange', !!top && uiOf(top) === 'sample');
+        r.wrap.classList.toggle('is-sugg', !!top && uiOf(top) === 'sugg');
+      }
+      if (r.input) { if (top && sevOf(top) === 'red') r.input.setAttribute('aria-invalid', 'true'); else r.input.removeAttribute('aria-invalid'); }
+      if (r.msg) {
+        r.msg.className = 'msg' + (top ? ' ' + (uiOf(top) === 'soft' ? 'sugg' : uiOf(top)) : '');
+        r.msg.textContent = top ? (sevOf(top) === 'todo' ? '' : top.msg) : '';
+
+        if (top && sevOf(top) === 'todo' && r.msg.dataset.qmsg && path !== 'compare') r.msg.textContent = top.msg;
+
+        if (top && isSample(top)) { r.msg.textContent = ''; r.msg.append(h('span', { class: 'sr' }, 'B67 範例文字，要換成這個商品的')); }
+        const more = list.filter(i => i !== top && !isSample(i) && !isSoft(i)).length;
+
+        if (path === 'addon' && more) {
+          r.msg.className = 'msg lines';
+          r.msg.replaceChildren(...byKey[path].map(i => h('span', { class: uiOf(i) === 'soft' ? 'sugg' : uiOf(i) }, i.msg)));
+        } else if (more && sevOf(top) !== 'todo' && !isSample(top)) r.msg.textContent += `（還有 ${more} 項，看「檢查清單」分頁）`;
+      }
+      if (r.cnt && r.input) {
+        const n = G.width(r.input.value);
+        r.cnt.textContent = n + ' / ' + r.max;
+        r.cnt.classList.toggle('over', n > r.max);
+      }
+      if (r.thumb) {
+        const url = G.clean(r.input.value), info = imgCache[url];
+        r.thumb.style.backgroundImage = info && info.state === 'ok' ? `url("${url}")` : '';
+        let txt = '貼上網址後，這裡會顯示圖片實際尺寸', cls = 'size';
+        if (url && !G.SHOPLINE_IMG.test(url)) { txt = '網址格式不對'; cls += ' bad'; }
+        else if (info && info.state === 'loading') txt = '讀取中…';
+        else if (info && info.state === 'error') { txt = '讀不到這張圖'; cls += ' bad'; }
+        else if (info && info.state === 'ok') {
+          const good = info.w >= r.spec.minW && info.h >= r.spec.minH;
+          txt = `實際 ${info.w}×${info.h}` + (good ? '　✓ 夠大' : '');
+        }
+        r.size.textContent = txt; r.size.className = cls;
+      }
+    }
+
+    const bySec = {};
+    issues.forEach(i => (bySec[i.sec] = bySec[i.sec] || []).push(i));
+    const stOf = list => {
+      const n = k => list.filter(i => uiOf(i) === k).length;
+      const nRed = n('red'), nTodo = n('todo'), nSam = n('sample'), nHint = n('sugg');
+      if (nRed) return { t: `紅字 ${nRed}`, c: 'red' };
+      if (nTodo) return { t: `待填 ${nTodo}`, c: 'todo' };
+      if (nSam) return { t: `範例字要換 ${nSam}` + (nHint ? `・建議 ${nHint}` : ''), c: 'orange' };
+      if (nHint) return { t: `建議 ${nHint}`, c: 'sugg' };
+      return { t: '✓', c: 'ok' };
+    };
+
+    const offOnly = (el, code) => el.classList.contains('off') && !(bySec[code] || []).length;
+    for (const code in secEls) {
+      const el = secEls[code], s = offOnly(el, code) ? { t: '不放', c: '' } : stOf(bySec[code] || []);
+      el._st.textContent = s.t;
+      el._st.className = 'st' + (s.c && s.c !== 'todo' ? ' ' + s.c : '');
+    }
+
+    const nav = $('#nav');
+    if (nav) {
+      nav.innerHTML = '';
+      ORDER.filter(c => c !== 'top').forEach(c => {
+        const el = secEls[c]; if (!el) return;
+        const off = offOnly(el, c);
+        const s = off ? { t: '不放', c: 'off' } : stOf(bySec[c] || []);
+        const stTxt = s.t === '✓' ? '完成' : s.t;
+        nav.append(h('a', {
+          class: 'chip ' + (off ? 'off' : 'st-' + s.c), href: '#sec-' + c, title: stTxt, 'aria-current': c === curSec ? 'location' : false,
+          onclick: e => {
+            e.preventDefault();
+            if (folded.has(c)) setFold(c, false);
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' }); syncPreview(c, true);
+            el.querySelector('header h2').focus({ preventScroll: true });
+          },
+        }, h('i', { 'aria-hidden': 'true' }), NAV_NAMES[c] || c, h('span', { class: 'sr' }, '：' + stTxt)));
+      });
+      nav.append(h('a', { class: 'chip only-narrow', href: '#panel', onclick: e => { e.preventDefault(); $('#panel').scrollIntoView({ behavior: 'smooth', block: 'start' }); $('#copy').focus({ preventScroll: true }); } }, '預覽與複製'));
+    }
+
+    const cnt = k => issues.filter(i => uiOf(i) === k).length;
+    const cRed = cnt('red'), cTodo = cnt('todo'), cSam = cnt('sample'), cHint = cnt('sugg');
+    const sum = $('#sum');
+    sum.innerHTML = '';
+    if (!cRed && !cTodo && !cSam) sum.append(h('span', { class: 'pill ok' }, '沒有紅字、沒有待填'));
+    if (cTodo) sum.append(h('span', { class: 'pill todo' }, `還有 ${cTodo} 處待填`));
+    if (cRed) sum.append(h('span', { class: 'pill red' }, `${cRed} 項紅字`));
+    if (cSam) sum.append(h('span', { class: 'pill orange' }, `${cSam} 欄範例字要換`));
+    if (cHint) sum.append(h('span', { class: 'pill sugg' }, `${cHint} 項建議`));
+    paintCopyBtn($('#copy'), issues);
+
+    const feedsSum = i => {
+      if (i.sec === 'Summary') return true;
+      if (state.on.compat && /^compat\./.test(i.key)) return true;
+      const m = state.on.specs && String(i.key).match(/^specs\.(\d+)\./);
+      return !!(m && state.specs[+m[1]] && state.specs[+m[1]].sum);
+    };
+    const sumSt = paintCopyBtn($('#copy-sum'), issues.filter(feedsSum), true);
+
+    const tb = $('#tabbtn-summary'), stName = { ok: '好了', red: '有紅字', orange: '有範例字要換', todo: '還沒填完' }[sumSt];
+    tb.dataset.st = sumSt; tb.title = '商品摘要：' + stName;
+    const sr = tb.querySelector('.sr') || tb.appendChild(h('span', { class: 'sr' }));
+    sr.textContent = '：' + stName;
+
+    const bar = $('#samplebar');
+    if (bar) {
+      bar.hidden = !cSam;
+      const t = cSam ? `這份草稿還有 ${cSam} 欄是 B67 範例的字（欄位是橘色的）。這個商品不是 B67 的話，全部要換掉；換完「複製語法」才會變黑色。` : '';
+      const bt = $('#samplebar-text'); if (bt.textContent !== t) bt.textContent = t;
+      const first = issues.filter(isSample).sort((a, b) => ORDER.indexOf(a.sec) - ORDER.indexOf(b.sec))[0];
+      $('#samplebar-go').onclick = first ? () => jump(first.key, first.sec) : null;
+    }
+    paintList();
+    const q = $('#sec-top'); if (q) q.classList.toggle('answered', !!state.compare);
+  }
+
+  const WHERE = [
+    [/^features\.(\d+)/, n => `第 ${n} 張`], [/^videos\.(\d+)/, n => `第 ${n} 支`], [/^cmp\.rows\.(\d+)/, n => `第 ${n} 列`],
+    [/^cmp\.cardA/, () => '版本 1 卡片'], [/^cmp\.cardB/, () => '版本 2 卡片'], [/^compat\.rows\.(\d+)/, n => `第 ${n} 列`],
+    [/^specs\.(\d+)/, n => `第 ${n} 列`], [/^faq\.(\d+)/, n => `Q${n}`], [/^summary\.feats\.(\d+)/, n => `第 ${n} 行`],
+  ];
+  const whereOf = key => {
+    for (const [re, f] of WHERE) { const m = String(key).match(re); if (m) return f(m[1] != null ? +m[1] + 1 : 0); }
+    return '';
+  };
+
+  function paintList() {
+    const box = $('#tab-list');
+    box.innerHTML = '';
+    const groups = [['red', '紅字：不合規則，要改'], ['todo', '待填：還沒填'], ['sugg', '建議：可以不改，但看一下']];
+
+    const nodeOf = r => r.wrap || r.msg || r.input;
+    const placed = Object.keys(reg).filter(k => nodeOf(reg[k]) && nodeOf(reg[k]).isConnected)
+      .sort((a, b) => nodeOf(reg[a]).compareDocumentPosition(nodeOf(reg[b])) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1);
+    const formPos = new Map(placed.map((k, i) => [k, i]));
+    const posOf = k => formPos.has(k) ? formPos.get(k) : Infinity;
+    const byPlace = (a, b) => ORDER.indexOf(a.sec) - ORDER.indexOf(b.sec) || (posOf(a.key) - posOf(b.key) || 0) ||
+      String(a.key).localeCompare(String(b.key), 'en', { numeric: true });
+    let any = false;
+    groups.forEach(([sv, title]) => {
+      const list = lastIssues.filter(i => uiOf(i) === sv).sort(byPlace);
+      if (!list.length) return;
+      any = true;
+      box.append(h('h3', null, `${title}（${list.length}）`));
+      box.append(h('ul', null, ...list.map(i => {
+        const where = whereOf(i.key);
+        return h('li', null, h('button', { type: 'button', onclick: () => jump(i.key, i.sec) },
+          h('small', { class: sv === 'todo' ? null : sv }, (SEC_NAMES[i.sec] || i.sec) + (where ? '・' + where : '')), i.msg));
+      })));
+    });
+
+    const soft = lastIssues.filter(isSoft).sort(byPlace);
+    if (soft.length) {
+      any = true;
+      if (!lastIssues.some(i => uiOf(i) === 'sugg')) box.append(h('h3', null, '建議：可以不改，但看一下'));
+      box.append(h('ul', null, h('li', null, h('button', { type: 'button', onclick: () => jump(soft[0].key, soft[0].sec) },
+        h('small', { class: 'sugg' }, '規格內容、FAQ 問句'), `${soft.length} 欄跟 B67 範例一模一樣。這個商品也是這樣就不用改；按一下看第一欄。`))));
+    }
+    const sam = lastIssues.filter(isSample).sort(byPlace);
+    if (sam.length) {
+      any = true;
+      box.append(h('h3', null, `B67 範例文字（${sam.length} 欄）`));
+      box.append(h('ul', null, h('li', null, h('button', { type: 'button', onclick: () => jump(sam[0].key, sam[0].sec) },
+        h('small', null, '從第一欄開始換'), `還有 ${sam.length} 欄跟 B67 範例一字不差。如果這不是 B67，這些都要換成這個商品的內容；欄位底色是橘的就是。`))));
+    }
+    if (!any) box.append(h('p', { class: 'empty' }, '✓ 沒有要處理的項目。'));
+  }
+
+  function jump(key, sec) {
+    const r = reg[key];
+    const target = (r && (r.input || r.wrap || r.msg)) || secEls[sec] || (sec === 'top' ? $('#sec-top') : null);
+    if (!target) return;
+    if (folded.has(sec)) setFold(sec, false);
+    const sc = (r && r.wrap) || target;
+    sc.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (r && r.input) setTimeout(() => r.input.focus({ preventScroll: true }), 350);
+  }
+
+  let pvWidth = 375, html = '', sumText = '', pvOrder = [], pvSec = '', pvWarned = false;
+  const pvIframe = h('iframe', { title: '預覽' });
+  function layoutPreview() {
+    const wrap = $('#pv-wrap'); if (!wrap || wrap.offsetParent === null) return;
+    const s = Math.min(1, wrap.clientWidth / pvWidth);
+    pvIframe.style.width = pvWidth + 'px';
+    pvIframe.style.height = Math.round(wrap.clientHeight / s) + 'px';
+    pvIframe.style.transform = `scale(${s})`;
+    pvIframe.style.left = Math.max(0, Math.round((wrap.clientWidth - pvWidth * s) / 2)) + 'px';
+    $('#pvscale').textContent = s < 1 ? `縮小成 ${Math.round(s * 100)}%` : '';
+  }
+
+  function previewBlock(code) {
+    let d; try { d = pvIframe.contentDocument; } catch (e) { return null; }
+    const outer = d && d.body && d.body.firstElementChild; if (!outer) return null;
+    const col = outer.lastElementChild, hero = col && col.previousElementSibling;
+    if (code === 'Hero') return hero;
+    if (code === 'A') return outer.firstElementChild !== hero ? outer.firstElementChild : null;
+    const kids = col ? [...col.children] : [];
+    if (kids.length !== pvOrder.length) {
+
+      pvIframe.dataset.sync = 'mismatch';
+      if (!pvWarned) { pvWarned = true; console.warn('預覽區塊對不上：內容欄有', kids.length, '個子元素，blockOrder 是', pvOrder); }
+      return null;
+    }
+    pvIframe.dataset.sync = 'ok';
+    const i = pvOrder.indexOf(code);
+    return i < 0 ? null : kids[i];
+  }
+
+  function syncPreview(code, force) {
+    if (!code || (code === pvSec && !force)) return;
+    const wrap = $('#pv-wrap'); if (!wrap || wrap.offsetParent === null) return;
+    const el = previewBlock(code); if (!el) return;
+    pvSec = code;
+    const w = pvIframe.contentWindow;
+
+    w.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + w.scrollY - 12), behavior: 'smooth' });
+  }
+  function paintOutput() {
+    try { html = G.generate(state); } catch (e) { html = ''; console.error('產生失敗', e); }
+
+    const pv = html ? G.pretty(html) : '';
+    if (html && pv == null) console.warn('語法排版失敗：結構對不起來，語法框顯示沒排版的原樣');
+    $('#code').dataset.pretty = html && pv == null ? 'failed' : 'ok';
+    if (pv) html = pv;
+    $('#code').value = html;
+    $('#codesize').textContent = `${new Blob([html]).size.toLocaleString()} bytes`;
+    let sy = 0;
+    try { sy = pvIframe.contentWindow.scrollY || 0; } catch (e) {   }
+
+    pvIframe.onload = () => { try { if (sy) pvIframe.contentWindow.scrollTo(0, sy); else if (curSec) syncPreview(curSec, true); } catch (e) {   } };
+    try { sumText = G.summary(state); } catch (e) { sumText = ''; console.error('摘要產生失敗', e); }
+    $('#sumcode').value = sumText;
+    $('#sumpv').innerHTML = sumText.replace(/\n/g, '<br>');
+    const ml = $('#sum-model');
+    if (ml) { const mp = state.on.compat ? G.modelPhrase(state.compat).text : ''; ml.textContent = '• 適用機型：' + (mp || '（沒有，看下面的提醒）'); }
+    pvOrder = G.blockOrder(state);
+
+    pvIframe.srcdoc = '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>img[src=""],iframe[src$="/embed/"]{visibility:hidden}</style></head><body style="margin:0;background:#fff">' + html.replace(/<script\b[\s\S]*?<\/script>/gi, '') + '</body></html>';
+    layoutPreview();
+    markStale();
+  }
+
+  const paintOutputSoon = debounce(paintOutput, 450);
+  function refresh() { paintIssues(); paintOutputSoon(); }
+  const refreshSoon = debounce(refresh, 120);
+  const probeSoon = debounce(probeAll, 400);
+  const saveDraftSoon = debounce(() => {
+    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); $('#draftnote').textContent = '草稿已自動存在這個瀏覽器裡'; }
+    catch (e) { $('#draftnote').textContent = '這個瀏覽器不讓我存草稿，離開前請按「存成檔案」'; }
+  }, 500);
+
+  function copyText(text, ta, msg, okText, failText) {
+
+    let settled = false;
+    const timer = setTimeout(() => { if (!settled) { settled = true; msg.className = 'copymsg err'; msg.textContent = '瀏覽器沒有回應，不確定有沒有複製到。' + failText.replace(/^沒有複製成功：/, ''); } }, 3000);
+    const done = ok => {
+      if (settled) return;
+      settled = true; clearTimeout(timer);
+      msg.className = 'copymsg' + (ok ? '' : ' err');
+      if (ok && typeof okText === 'function') msg.replaceChildren(...okText().filter(Boolean)); else msg.textContent = ok ? okText : failText;
+      if (ok) { msg._copied = text; onCopied(); }
+    };
+    msg.className = 'copymsg'; msg.textContent = '複製中…';
+    const fb = () => {
+      ta.focus(); ta.select();
+      let ok = false; try { ok = document.execCommand('copy'); } catch (e) {   }
+      done(ok);
+    };
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(() => done(true), fb); else fb();
+  }
+
+  function confirmFirst(btn, msg) {
+    const risky = btn.classList.contains('warn') || btn.classList.contains('caution');
+    if (!risky || msg._armed) { msg._armed = false; clearTimeout(msg._armTimer); return true; }
+    msg._armed = true; msg._copied = null;
+    msg.className = 'copymsg err';
+    msg.replaceChildren(h('b', null, `還沒全部處理好：${btn.dataset.status}。`), '確定要先複製這一版，就再按一次。');
+    clearTimeout(msg._armTimer);
+    msg._armTimer = setTimeout(() => { if (msg._armed) { msg._armed = false; msg.className = 'copymsg'; msg.textContent = ''; } }, 10000);
+    return false;
+  }
+
+  function paintNow() { paintIssues(); paintOutput(); }
+
+  function copy(msg, failText) {
+    paintNow();
+    if (!confirmFirst($('#copy'), msg)) return;
+    const st = $('#copy').dataset.status;
+    copyText(html, $('#code'), msg, () => [
+      h('b', null, '已複製商品描述語法。'),
+      st ? h('span', { class: 'warnline' }, `還沒全部處理好：${st}。`) : null,
+      h('span', { class: 'next' }, '下一步：貼進「HTML 原始碼」存檔 → ',
+        h('button', { type: 'button', class: 'btn small', onclick: () => showTab('summary', true) }, '去複製商品摘要')),
+      h('span', { class: 'aside' }, '要留後台原本的描述：先存好，再回來重按一次複製。'),
+    ], failText);
+  }
+  function copySum() {
+    paintNow();
+    const msg = $('#copymsg-sum');
+    if (!confirmFirst($('#copy-sum'), msg)) return;
+    const st = $('#copy-sum').dataset.status;
+    copyText(sumText, $('#sumcode'), msg, () => [
+      h('b', null, '已複製商品摘要。'),
+      st ? h('span', { class: 'warnline' }, `還沒全部處理好：${st}。`) : null,
+      h('span', { class: 'next' }, '貼進後台商品的「商品摘要」欄（不是商品描述）。兩格都存檔後，打開前台商品頁看一次。'),
+    ], '沒有複製成功：點進下面的框，按 ⌘A 再按 ⌘C。');
+  }
+
+  function markStale() {
+    [['#copymsg', html, '複製語法'], ['#copymsg-code', html, '複製全部語法'], ['#copymsg-sum', sumText, '複製摘要']].forEach(([sel, now, label]) => {
+      const m = $(sel);
+      if (m && m._copied != null && m._copied !== now) {
+        m._copied = null; m.className = 'copymsg err';
+        m.textContent = `內容改過了，剪貼簿裡還是改之前的版本。要再按一次「${label}」。`;
+      }
+    });
+  }
+
+  const HOWTO_KEY = 'lnimg_listing_tool_howto_v1';
+  function onCopied() { try { if (!localStorage.getItem(HOWTO_KEY)) localStorage.setItem(HOWTO_KEY, 'closed'); } catch (e) {   } }
+
+  function download() {
+    const name = G.clean(state.hero.name) || '未命名';
+    const a = h('a', { href: URL.createObjectURL(new Blob([JSON.stringify(state, null, 1)], { type: 'application/json' })), download: `上架草稿_${name}.json` });
+    document.body.append(a); a.click(); a.remove();
+  }
+  function upload(file) {
+    const rd = new FileReader();
+    rd.onload = () => {
+      try {
+        const d = JSON.parse(rd.result);
+        if (!d || !d.hero || !d.grid) throw new Error('不是上架草稿');
+        hideUndo(); state = normalizeState(d); buildForm(); probeAll(); changed();
+      } catch (e) { alert('這個檔案讀不進來：' + e.message); }
+    };
+    rd.readAsText(file);
+  }
+  const isEmpty = () => JSON.stringify(state) === JSON.stringify(blank());
+
+  function init() {
+    $('#btn-sample').onclick = () => {
+      if (!isEmpty() && !confirm('目前填的內容會被 B67 範例換掉。確定嗎？\n（範例是 B67 的內容，只用來看樣子，不要拿去上別的商品。）')) return;
+      hideUndo(); state = normalizeState(clone(SAMPLE)); buildForm(); probeAll(); changed();
+    };
+    $('#btn-clear').onclick = () => {
+      if (!isEmpty() && !confirm('清空目前填的所有內容，從空白開始。確定嗎？\n（想留著就先按「存成檔案」。）')) return;
+      hideUndo(); state = blank(); buildForm(); changed();
+    };
+    $('#btn-save').onclick = download;
+    $('#file').onchange = e => { if (e.target.files[0]) upload(e.target.files[0]); e.target.value = ''; };
+    $('#btn-load').onclick = () => $('#file').click();
+    $('#copy').onclick = () => copy($('#copymsg'), '沒有複製成功：到「語法」分頁，點進框裡按 ⌘A 再按 ⌘C。');
+    $('#copy-code').onclick = () => copy($('#copymsg-code'), '沒有複製成功：點進下面的框，按 ⌘A 再按 ⌘C。');
+    $('#copy-sum').onclick = copySum;
+    $('#code-wrap').onchange = e => $('#code').classList.toggle('wrap', e.target.checked);
+    $('#undo-btn').onclick = doUndo;
+
+    const ub = $('#undo');
+    ['mouseenter', 'focusin'].forEach(ev => ub.addEventListener(ev, () => clearTimeout(undoTimer)));
+    ['mouseleave', 'focusout'].forEach(ev => ub.addEventListener(ev, () => { if (undo) { clearTimeout(undoTimer); undoTimer = setTimeout(hideUndo, 6000); } }));
+    $('#skip').onclick = e => { e.preventDefault(); $('#panel').scrollIntoView({ block: 'nearest' }); $('#copy').focus(); };
+    const howto = $('#howto');
+    try { if (localStorage.getItem(HOWTO_KEY) === 'closed') howto.open = false; } catch (e) {   }
+
+    let howtoTouched = false;
+    howto.querySelector('summary').addEventListener('click', () => { howtoTouched = true; });
+    howto.addEventListener('toggle', () => { if (!howtoTouched) return; try { localStorage.setItem(HOWTO_KEY, howto.open ? 'open' : 'closed'); } catch (e) {   } });
+
+    const pane = $('#pv-wrap'); pane.append(pvIframe);
+    document.querySelectorAll('[data-w]').forEach(b => b.onclick = () => {
+      pvWidth = +b.dataset.w;
+      document.querySelectorAll('[data-w]').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+      layoutPreview();
+    });
+    const tabs = [...document.querySelectorAll('.tab')];
+    const show = showTab = (id, focus) => {
+      tabs.forEach(t => {
+        const on = t.dataset.tab === id;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+      });
+      document.querySelectorAll('[role=tabpanel]').forEach(p => (p.hidden = p.id !== 'tab-' + id));
+      if (id === 'preview') requestAnimationFrame(layoutPreview);
+      if (focus) tabs.find(t => t.dataset.tab === id).focus();
+    };
+    tabs.forEach((t, i) => {
+      t.onclick = () => show(t.dataset.tab);
+      t.onkeydown = e => {
+        const j = { ArrowRight: i + 1, ArrowLeft: i - 1, Home: 0, End: tabs.length - 1 }[e.key];
+        if (j == null) return;
+        e.preventDefault();
+        const next = tabs[(j + tabs.length) % tabs.length];
+        show(next.dataset.tab); next.focus();
+      };
+    });
+    window.addEventListener('resize', debounce(layoutPreview, 100));
+    new ResizeObserver(() => layoutPreview()).observe(pane);
+
+    const topBar = $('.top');
+    const setTopH = () => document.documentElement.style.setProperty('--top-h', topBar.offsetHeight + 'px');
+    setTopH();
+    new ResizeObserver(setTopH).observe(topBar);
+
+    $('#form').addEventListener('focusin', e => {
+      const sec = e.target.closest('section.sec');
+      if (sec) syncPreview(sec._code);
+    });
+
+    const markCurrent = () => {
+      const line = topBar.offsetHeight + (parseFloat(document.documentElement.style.getPropertyValue('--nav-h')) || 0) + 24;
+      let cur = '';
+      ORDER.forEach(c => { const el = secEls[c]; if (el && el.getBoundingClientRect().top <= line) cur = c; });
+      if (cur === curSec) return;
+      curSec = cur;
+      syncPreview(cur);
+      document.querySelectorAll('#nav .chip').forEach(a => {
+        if (a.getAttribute('href') === '#sec-' + cur) a.setAttribute('aria-current', 'location'); else a.removeAttribute('aria-current');
+      });
+    };
+    let ticking = false;
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; markCurrent(); }); } }, { passive: true });
+    show('preview');
+    paintSpecTable();
+    buildForm();
+    probeAll();
+    paintOutput();
+    markCurrent();
+  }
+
+  function paintSpecTable() {
+    const S = G.IMG_SPEC;
+    const rows = ['hero', 'grid', 'feature', 'cmp'].map(k => h('tr', null, h('td', null, S[k].label), h('td', null, S[k].ratioText), h('td', null, `${S[k].minW} × ${S[k].minH}`)));
+    $('#tab-spec').append(
+      h('p', { class: 'small', style: 'margin:0 0 4px' }, '給拍照、修圖的人看：圖要至少這麼大。高解析螢幕（Mac、手機）要 2 倍像素才不糊。'),
+      h('table', { class: 'spec' }, h('thead', null, h('tr', null, h('th', null, '放哪'), h('th', null, '圖框'), h('th', null, '最小尺寸（寬×高 px）'))), h('tbody', null, ...rows)),
+      h('p', { class: 'small', style: 'margin:12px 0 0' }, '拍攝建議：①遠一點拍 ②同一個背景或同一個顏色 ③至少帶一點散景。'),
+      h('p', { class: 'small', style: 'margin:6px 0 0' }, '圖網址一定要長這樣：https://img.shoplineapp.com/media/image_clips/…/original.png（結尾是 original.副檔名）。縮圖網址（800x、1080x…）對新上傳的圖會讀到空檔。'),
+      h('p', { class: 'small', style: 'margin:6px 0 0' }, 'Hero 的高度下限（720）是用 1920 寬時的框高推出來的。'));
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+
+</script>
+</body>
+</html>
