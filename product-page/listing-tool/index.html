@@ -331,7 +331,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 <header class="top">
   <h1>倫敦印象｜商品頁上架工具</h1>
   <span class="ver">基本版 v0.1 · 2026-10-10</span>
-  <a class="guide-link" href="guide.html" target="_blank" rel="noopener">第一次用？看說明</a>
+  <a class="guide-link" href="skill.html">說明與 Skill</a>
   <span class="sp"></span>
   <span class="draftnote" id="draftnote"></span>
   <button type="button" class="btn" id="btn-sample" title="填入 B67 的內容，只用來看樣子">載入 B67 範例</button>
@@ -2064,10 +2064,18 @@ window.LN_ADDON_KIT = {"head":"<div style=\"position:relative;width:100vw;left:5
   function refresh() { paintIssues(); paintOutputSoon(); }
   const refreshSoon = debounce(refresh, 120);
   const probeSoon = debounce(probeAll, 400);
-  const saveDraftSoon = debounce(() => {
+  let draftDirty = false;
+  const saveDraftNow = () => {
+    draftDirty = false;
     try { localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); $('#draftnote').textContent = '草稿已自動存在這個瀏覽器裡'; }
     catch (e) { $('#draftnote').textContent = '這個瀏覽器不讓我存草稿，離開前請按「存成檔案」'; }
-  }, 500);
+  };
+  const saveDraftLater = debounce(saveDraftNow, 500);
+  const saveDraftSoon = () => { draftDirty = true; saveDraftLater(); };
+
+  window.addEventListener('pagehide', () => { if (draftDirty) saveDraftNow(); });
+
+  window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
 
   function copyText(text, ta, msg, okText, failText) {
 
