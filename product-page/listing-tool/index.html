@@ -413,12 +413,12 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       </div>
       <div role="tabpanel" id="tab-seo" aria-labelledby="tabbtn-seo" hidden>
         <div class="codebox">
-          <div class="sumhead"><span class="small">產後台「網路搜尋最佳化」四欄（標題、簡介、關鍵字、描述性網址）用的指令。</span><button type="button" class="btn primary small" id="copy-seo" data-label="複製指令">複製指令</button></div>
+          <div class="sumhead"><span class="small">產後台「網路搜尋最佳化」四欄（標題、簡介、關鍵字、描述性URL）用的指令。</span><button type="button" class="btn primary small" id="copy-seo" data-label="複製指令">複製指令</button></div>
           <div class="copymsg" id="copymsg-seo" role="status" aria-live="polite"></div>
           <ol class="seo-steps">
             <li>按「複製指令」。</li>
             <li>到 claude.ai 開一個新對話，貼上、送出。不用裝 skill。資料不夠時 Claude 會先問你，回答它就好。</li>
-            <li>四欄各自複製，貼進後台：商品 → 編輯這個商品 →「網路搜尋最佳化」。<b>已經上架的商品，描述性網址先不要換</b>，要換先問工具負責人。</li>
+            <li>四欄各自複製，貼進後台：商品 → 編輯這個商品 →「網路搜尋最佳化」，切到「繁體中文」分頁，照欄位名對應貼。<b>已經上架的商品，描述性URL先不要換</b>，要換先問工具負責人。</li>
           </ol>
           <div class="seo-facts" id="seofacts" aria-label="指令會帶的商品資料"></div>
           <details class="seo-full">
@@ -830,7 +830,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const f = seoFacts(s);
     const ask = '（工具裡沒填，請先問我）';
     return [
-      '請幫我產倫敦印象官網商品頁，後台「網路搜尋最佳化」的四欄：標題、簡介、關鍵字、描述性網址。',
+      '請幫我產倫敦印象官網商品頁，後台「網路搜尋最佳化」的四欄：標題、簡介、關鍵字、描述性URL。',
       '只產這四欄。商品描述、商品摘要和 HTML 都不要寫，就算我之後要也一樣（那些用上架工具做）。後台的商品名稱我自己定，你不用寫。',
       '',
       '【商品資料】從上架工具帶過來的',
@@ -853,7 +853,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       SEO_RULES_END,
       '',
       '【交出格式】',
-      '1. 四欄各放一個程式碼框，方便我一鍵複製。',
+      '1. 四欄各放一個程式碼框，方便我一鍵複製。框上面寫後台的欄位名：標題、簡介、關鍵字、描述性URL（規則裡的「描述性網址」就是後台的「描述性URL」）。',
       '2. 交出前，逐條對上面規則最後的「自我檢查清單」。有一條不符合，先改好再交。',
       '3. 四欄下面把自我檢查清單列出來，每一條標 ✅；改過的寫改了什麼。',
     ].join('\n');
@@ -2233,7 +2233,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     copyText(seoText, $('#seocode'), msg, () => [
       h('b', null, '已複製指令。'),
       st ? h('span', { class: 'warnline' }, `還沒全部處理好：${st}。`) : null,
-      h('span', { class: 'next' }, '到 claude.ai 開新對話貼上、送出。產出的四欄貼進後台的「網路搜尋最佳化」。'),
+      h('span', { class: 'next' }, '到 claude.ai 開新對話貼上、送出。產出的四欄貼進後台「網路搜尋最佳化」的「繁體中文」分頁。'),
     ], '沒有複製成功：打開下面「看完整指令」，點進框裡按 ⌘A 再按 ⌘C。');
   }
 
