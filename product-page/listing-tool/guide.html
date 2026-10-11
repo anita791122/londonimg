@@ -30,24 +30,24 @@
         <a href="#form"><span class="sub-i">3</span><span>填表單</span></a>
         <a href="#button-colors"><span class="sub-i">4</span><span>按鈕的顏色</span></a>
         <a href="#paste"><span class="sub-i">5</span><span>貼進後台</span></a>
-        <a href="#save-file"><span class="sub-i">6</span><span>存成檔案</span></a>
-        <a href="#help"><span class="sub-i">7</span><span>卡住的時候</span></a>
+        <a href="#seo"><span class="sub-i">6</span><span>網路搜尋最佳化</span></a>
+        <a href="#save-file"><span class="sub-i">7</span><span>存成檔案</span></a>
+        <a href="#help"><span class="sub-i">8</span><span>卡住的時候</span></a>
       </div>
-      <a href="skill.html"><svg class="ic" aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.6 4.9a2 2 0 0 0 1.3 1.3L19.8 11l-4.9 1.6a2 2 0 0 0-1.3 1.3L12 19.8l-1.6-4.9a2 2 0 0 0-1.3-1.3L4.2 12l4.9-1.6a2 2 0 0 0 1.3-1.3L12 3z"/></svg><span>Claude Skill</span></a>
     </nav>
-    <div class="side-foot">新上架的商品，商品描述和商品摘要用上架工具產生；搜尋用的四欄用 Claude Skill 產生。</div>
+    <div class="side-foot">新上架的商品，商品描述、商品摘要和網路搜尋最佳化的指令，都在上架工具裡產生。</div>
   </aside>
 
   <main class="content">
   <div class="hero">
     <span class="hero-eyebrow">第一次用說明</span>
     <h1 class="hero-title">商品頁上架工具</h1>
-    <p class="hero-sub">工具做兩件事：產出「商品描述」的語法，和「商品摘要」的文字。你把圖片網址和文字填進表單，按複製，再貼進後台。<br>工具不會自己寫進後台，也不會動到後台的價格和規格選單。</p>
+    <p class="hero-sub">工具做三件事：產出「商品描述」的語法、「商品摘要」的文字，和一段給 Claude 的指令，用來產「網路搜尋最佳化」四欄。你把圖片網址和文字填進表單，按複製，再貼進後台。<br>工具不會自己寫進後台，也不會動到後台的價格和規格選單。</p>
   </div>
 
   <div class="howto">
     <p style="margin:0 0 14px"><a class="dl-btn" href="./">打開上架工具</a></p>
-    目前只在 Chrome 上測過，建議用 Chrome 開。工具要讀圖片的尺寸，所以要有網路。<br>後台「網路搜尋最佳化」的四欄，工具不產，改用 Claude Skill 產生。下載和安裝看 <a class="tool-link" href="skill.html">Claude Skill</a> 那一頁。
+    目前只在 Chrome 上測過，建議用 Chrome 開。工具要讀圖片的尺寸，所以要有網路。<br>後台「網路搜尋最佳化」的四欄：工具產一段指令，你貼給 Claude，它照規則寫好。做法看 <a class="tool-link" href="#seo">第 6 節</a>。
   </div>
 
   <section class="card" id="photos">
@@ -125,12 +125,24 @@
       <li>貼進後台的「商品摘要」欄，原本有字的話，全選後貼上取代。這是另一格，不是商品描述。</li>
       <li>存檔。</li>
     </ol>
-    <p>後台的<span class="key">商品名稱由你自己取</span>，工具和 Claude Skill 都不會產。</p>
+    <p>後台的<span class="key">商品名稱由你自己取</span>，工具和給 Claude 的指令都不會產。</p>
     <div class="callout warn"><span class="key">用這個工具做的第一個商品，先存成隱藏商品。</span><br>把網址傳給工具負責人，看過沒問題再上架。</div>
   </section>
 
+  <section class="card" id="seo">
+    <h2 class="card-h"><span class="num">6</span>產「網路搜尋最佳化」四欄</h2>
+    <p>後台商品編輯頁有一區「網路搜尋最佳化」，裡面四格：標題、簡介、關鍵字、描述性網址。這四格是給 Google 看的。工具產一段指令，你貼給 Claude，它照規則寫好。</p>
+    <ol>
+      <li>先把表單填好：Hero 的商品名、商品摘要的產品特色、適用機型表。指令會帶這些資料。</li>
+      <li>點工具右邊的「搜尋最佳化」分頁 → 按「複製指令」。</li>
+      <li>到 claude.ai 開一個新對話，貼上、送出。不用裝 skill。資料不夠時 Claude 會先問你，回答它就好。</li>
+      <li>Claude 會給四個框，下面附一張檢查清單。四個框各自複製，貼進後台「網路搜尋最佳化」對應的格子，存檔。</li>
+    </ol>
+    <div class="callout warn"><span class="key">已經上架的商品，「描述性網址」先不要換。</span><br>網址一換，舊連結和 Google 排名會斷。要換先問工具負責人。新商品照貼。</div>
+  </section>
+
   <section class="card" id="save-file">
-    <h2 class="card-h"><span class="num">6</span>換下一個商品之前，先「存成檔案」</h2>
+    <h2 class="card-h"><span class="num">7</span>換下一個商品之前，先「存成檔案」</h2>
     <p>工具會自動把填到一半的內容存在這台電腦的瀏覽器裡，<span class="key">但只記得一份</span>。開始填下一個商品，上一個就被蓋掉了。</p>
     <ol>
       <li>做完一個商品，按工具右上角的「存成檔案」。會下載一個 <code>上架草稿_商品名.json</code>，檔名用的是 Hero 區填的商品名。</li>
@@ -141,7 +153,7 @@
   </section>
 
   <section class="card" id="help">
-    <h2 class="card-h"><span class="num">7</span>卡住的時候</h2>
+    <h2 class="card-h"><span class="num">8</span>卡住的時候</h2>
     <p>把整個畫面截圖，紅字那一格和左上角的版本日期都要看得到，傳給工具負責人。</p>
     <p>工具左上角、標題旁邊，寫著版本和日期（「基本版 v0.1」後面那個日期）。工具更新後，重新整理網頁就是最新版。加價購的價格是哪一天跟商城對過的，寫在加價購區裡（要先勾「這個商品要放這一區」才看得到）。</p>
   </section>
