@@ -35,19 +35,19 @@
         <a href="#help"><span class="sub-i">8</span><span>卡住的時候</span></a>
       </div>
     </nav>
-    <div class="side-foot">新上架的商品，商品描述、商品摘要和網路搜尋最佳化的指令，都在上架工具裡產生。</div>
+    <div class="side-foot">新上架的商品，商品描述、商品摘要和網路搜尋最佳化的四欄，都在上架工具裡產生。</div>
   </aside>
 
   <main class="content">
   <div class="hero">
     <span class="hero-eyebrow">第一次用說明</span>
     <h1 class="hero-title">商品頁上架工具</h1>
-    <p class="hero-sub">工具做三件事：產出「商品描述」的語法、「商品摘要」的文字，和一段給 Claude 的指令，用來產「網路搜尋最佳化」四欄。你把圖片網址和文字填進表單，按複製，再貼進後台。<br>工具不會自己寫進後台，也不會動到後台的價格和規格選單。</p>
+    <p class="hero-sub">工具做三件事：產出「商品描述」的語法、「商品摘要」的文字，和「網路搜尋最佳化」的四欄。你把圖片網址和文字填進表單，按複製，再貼進後台。<br>工具不會自己寫進後台，也不會動到後台的價格和規格選單。</p>
   </div>
 
   <div class="howto">
     <p style="margin:0 0 14px"><a class="dl-btn" href="./">打開上架工具</a></p>
-    目前只在 Chrome 上測過，建議用 Chrome 開。工具要讀圖片的尺寸，所以要有網路。<br>後台「網路搜尋最佳化」的四欄：工具產一段指令，你貼給 Claude，它照規則寫好。做法看 <a class="tool-link" href="#seo">第 6 節</a>。
+    目前只在 Chrome 上測過，建議用 Chrome 開。工具要讀圖片的尺寸，所以要有網路。<br>後台「網路搜尋最佳化」的四欄，工具直接產好，不用另外開 Claude。做法看 <a class="tool-link" href="#seo">第 6 節</a>。
   </div>
 
   <section class="card" id="photos">
@@ -125,19 +125,26 @@
       <li>貼進後台的「商品摘要」欄，原本有字的話，全選後貼上取代。這是另一格，不是商品描述。</li>
       <li>存檔。</li>
     </ol>
-    <p>後台的<span class="key">商品名稱由你自己取</span>，工具和給 Claude 的指令都不會產。</p>
+    <p>後台的<span class="key">商品名稱由你自己取</span>，工具不會產。</p>
     <div class="callout warn"><span class="key">用這個工具做的第一個商品，先存成隱藏商品。</span><br>把網址傳給工具負責人，看過沒問題再上架。</div>
   </section>
 
   <section class="card" id="seo">
     <h2 class="card-h"><span class="num">6</span>產「網路搜尋最佳化」四欄</h2>
-    <p>後台商品編輯頁有一區「網路搜尋最佳化」，裡面四格：標題、簡介、關鍵字、描述性URL。這四格是給 Google 看的。工具產一段指令，你貼給 Claude，它照規則寫好。</p>
+    <p>後台商品編輯頁有一區「網路搜尋最佳化」，裡面四格：標題、簡介、關鍵字、描述性URL。這四格是給 Google 看的。工具照你填的表單直接產好，不用另外開 Claude。</p>
     <ol>
-      <li>先把表單填好：Hero 的商品名、商品摘要的產品特色、適用機型表。指令會帶這些資料。</li>
-      <li>點工具右邊的「搜尋最佳化」分頁 → 按「複製指令」。</li>
-      <li>到 claude.ai 開一個新對話，貼上、送出。不用裝 skill。資料不夠時 Claude 會先問你，回答它就好。</li>
-      <li>Claude 會給四個框，下面附一張檢查清單。四個框各自複製，貼進後台「網路搜尋最佳化」的「繁體中文」分頁，照欄位名對應貼，存檔。</li>
+      <li>先把表單填好：Hero 的商品名、商品摘要的產品特色、適用機型表。四欄從這些資料來，賣點寫得越多，四欄越完整。</li>
+      <li>點工具右邊的「搜尋最佳化」分頁，看上面三個小欄位：
+        <ul>
+          <li><b>品類</b>：工具會從商品名猜（例如「手機殼」）。猜錯就自己選。</li>
+          <li><b>這個賣場有一般版和 MagSafe 版</b>：同一個賣場有沒有磁吸的版本也有賣，就勾。勾了，標題和簡介會寫「可選 MagSafe 版」。</li>
+          <li><b>網址英文</b>：沒填就照商品名猜。工具提醒「網址只有品牌和品類」時，填這個商品的特色，例如極地冰岩殼可以填 ice-rock。</li>
+        </ul>
+      </li>
+      <li>四格底下的字是<span class="key">建議，不是錯誤</span>。可以照著改，也可以不改，都能複製。格子裡的字可以直接改，改過的會記住。</li>
+      <li>四格各自按「複製」，貼進後台「網路搜尋最佳化」的「繁體中文」分頁，照欄位名對應貼，存檔。</li>
     </ol>
+    <p>想讓文字讀起來更順，分頁最下面有「想讓 Claude 寫得更順（選用）」：按「複製指令」貼進 claude.ai，Claude 會照同一份規則重寫四欄。不用也可以。</p>
     <div class="callout warn"><span class="key">已經上架的商品，「描述性URL」先不要換。</span><br>網址一換，舊連結和 Google 排名會斷。要換先問工具負責人。新商品照貼。</div>
   </section>
 
