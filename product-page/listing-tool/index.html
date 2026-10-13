@@ -650,7 +650,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const P = heroPos(h.pos), S = heroSize(h.size);
     return `<div style="position:relative;overflow:hidden;background:#e9eaec">` +
       `<div style="position:relative;width:100%;height:clamp(400px,56.25vw,720px)">` +
-      `<img src="${escA(h.img.url)}" alt="${escA(h.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">` +
+      `<img src="${escA(h.img.url)}" alt="${escA(h.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${pos(h.focus)};display:block">` +
       `<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(${P.v === 'top' ? 'to bottom' : 'to top'},rgba(0,0,0,.78),rgba(0,0,0,.28) 38%,rgba(0,0,0,0) 68%);pointer-events:none"></div>` +
       `</div>` +
       `<div style="position:absolute;top:0;left:0;right:0;bottom:0">` +
@@ -1304,6 +1304,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     }
 
     img('hero.img', s.hero.img, 'hero', 'Hero');
+
+    if (!empty(s.hero.focus)) { const n = parseFloat(s.hero.focus); if (!Number.isFinite(n) || n < 0 || n > 100) add('hero.focus', 'red', '桌機版裁切位置只能填 0 到 100 的數字（空白＝置中）', 'Hero'); }
     need('hero.name', s.hero.name, '商品名', 'Hero'); over('hero.name', s.hero.name, LIMIT.heroName, '商品名', 'Hero');
     need('hero.sub', s.hero.sub, '主標', 'Hero'); over('hero.sub', s.hero.sub, LIMIT.heroSub, '主標', 'Hero');
 
@@ -1617,7 +1619,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     compare: '',
     on: { addon: false, intro: true, features: true, videos: true, compat: true, specs: true, faq: true },
     addon: '',
-    hero: { img: img0(), name: '', sub: '', pos: 'bl', size: 'm' },
+    hero: { img: img0(), name: '', sub: '', pos: 'bl', size: 'm', focus: '' },
     intro: ['', '', ''],
     grid: [grid0(), grid0(), grid0(), grid0()],
     features: [feat0(), feat0(), feat0()],
@@ -1763,7 +1765,9 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const urlF = field(base + '.url', '圖片網址', { ph: '例：https://img.shoplineapp.com/media/image_clips/…/original.png', hint: o.hint });
     reg[base + '.url'].thumb = thumb; reg[base + '.url'].size = size; reg[base + '.url'].spec = sp;
     const altF = field(base + '.alt', '圖片說明（alt）', { ph: o.altPh !== undefined ? o.altPh : '用一句話描述圖裡有什麼；給看不到圖的人與搜尋引擎讀', hint: '不是行銷口號，是描述圖。' });
-    const posF = o.pos ? field(base.replace(/\.img$/, '') + '.pos', '圖片焦點位置（上下）', { req: false, num: true, ph: '空白＝置中；0＝靠上，100＝靠下', hint: '圖被框裁掉時，要留住上面還是下面。填 0 到 100 的數字。' }) : null;
+
+    const posKey = o.pos === true ? base.replace(/\.img$/, '') + '.pos' : o.pos;
+    const posF = o.pos ? field(posKey, o.posLabel || '圖片焦點位置（上下）', { req: false, num: true, ph: '空白＝置中；0＝靠上，100＝靠下', hint: o.posHint || '圖被框裁掉時，要留住上面還是下面。填 0 到 100 的數字。' }) : null;
     return h('div', { class: 'imgf' },
       h('div', { class: 'row' }, urlF, thumb),
       altF, posF,
@@ -1941,7 +1945,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     }
 
     form.append(section('Hero', 'Hero 大圖', '第一眼的大圖，字壓在圖上', [
-      imageField('hero.img', 'hero', { hint: G.heroImgHint(state.hero.pos) }),
+      imageField('hero.img', 'hero', { hint: G.heroImgHint(state.hero.pos), pos: 'hero.focus', posLabel: '桌機版裁切位置（上下）',
+        posHint: '電腦和平板會裁掉圖的上下：要留住上面還是下面。填 0 到 100 的數字，切到預覽的「桌機 1280」看效果。橫圖在手機上看得到整個高度，這格對手機沒有作用。' }),
       heroPosSelect(),
       heroSizeSelect(),
       field('hero.name', '商品名', { max: L.heroName, hint: '一行放得下。白字壓在圖上。' }),
