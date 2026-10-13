@@ -630,6 +630,13 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   };
   const heroPos = p => HERO_POS[p] || HERO_POS.bl;
 
+  const HERO_SIZE = {
+    s: { label: '小', name: 'clamp(20px,2.8vw,32px)', sub: 'clamp(14px,1.4vw,16px)' },
+    m: { label: '中', name: 'clamp(24px,3.4vw,40px)', sub: 'clamp(15px,1.6vw,18px)' },
+    l: { label: '大', name: 'clamp(24px,calc(2.9vw + 15px),52px)', sub: 'clamp(15px,calc(.6vw + 13.4px),21px)' },
+  };
+  const heroSize = k => HERO_SIZE[k] || HERO_SIZE.m;
+
   function heroImgHint(p) {
     const P = heroPos(p), up = P.v === 'top';
     const base = '商品要放在圖的中間一半：手機版左右會被裁掉。';
@@ -638,7 +645,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   }
 
   function hero(h) {
-    const P = heroPos(h.pos);
+    const P = heroPos(h.pos), S = heroSize(h.size);
     return `<div style="position:relative;overflow:hidden;background:#e9eaec">` +
       `<div style="position:relative;width:100%;height:clamp(400px,56.25vw,720px)">` +
       `<img src="${escA(h.img.url)}" alt="${escA(h.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block">` +
@@ -647,8 +654,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       `<div style="position:absolute;top:0;left:0;right:0;bottom:0">` +
       `<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px;height:100%;position:relative">` +
       `<div style="position:absolute;left:20px;right:20px;${P.v}:clamp(18px,5vw,44px);text-align:${P.a};color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.5)">` +
-      `<div style="font-size:clamp(24px,3.4vw,40px);font-weight:500;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff;${FFH}">${esc(h.name)}</div>` +
-      `<p style="font-size:clamp(15px,1.6vw,18px);font-weight:500;line-height:1.5;margin:clamp(6px,.8vw,10px) 0 0;color:rgba(255,255,255,.92);${FFH}">${esc(h.sub)}</p>` +
+      `<div style="font-size:${S.name};font-weight:500;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff;${FFH}">${esc(h.name)}</div>` +
+      `<p style="font-size:${S.sub};font-weight:500;line-height:1.5;margin:clamp(6px,.8vw,10px) 0 0;color:rgba(255,255,255,.92);${FFH}">${esc(h.sub)}</p>` +
       `</div></div></div></div>`;
   }
 
@@ -1470,7 +1477,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
   function safeGenerate(s) { try { return generate(s); } catch (e) { return ''; } }
 
-  const api = { generate, pretty, HERO_POS, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+  const api = { generate, pretty, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -1608,7 +1615,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     compare: '',
     on: { addon: false, intro: true, features: true, videos: true, compat: true, specs: true, faq: true },
     addon: '',
-    hero: { img: img0(), name: '', sub: '', pos: 'bl' },
+    hero: { img: img0(), name: '', sub: '', pos: 'bl', size: 'm' },
     intro: ['', '', ''],
     grid: [grid0(), grid0(), grid0(), grid0()],
     features: [feat0(), feat0(), feat0()],
@@ -1923,9 +1930,18 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       return w;
     }
 
+    function heroSizeSelect() {
+      const w = select('hero.size', '字的大小', Object.entries(G.HERO_SIZE).map(([k, v]) => [k, v.label + (k === 'm' ? '（預設）' : '')]));
+      const sel = w.querySelector('select'), note = h('div', { class: 'hint', id: sel.id + '-h' }, '商品名和主標一起變大變小。手機畫面窄，商品名要排得下一行，所以手機上差得不多，電腦上差得比較明顯。');
+      sel.setAttribute('aria-describedby', note.id + ' ' + sel.getAttribute('aria-describedby'));
+      sel.after(note);
+      return w;
+    }
+
     form.append(section('Hero', 'Hero 大圖', '第一眼的大圖，字壓在圖上', [
       imageField('hero.img', 'hero', { hint: G.heroImgHint(state.hero.pos) }),
       heroPosSelect(),
+      heroSizeSelect(),
       field('hero.name', '商品名', { max: L.heroName, hint: '一行放得下。白字壓在圖上。' }),
       field('hero.sub', '主標（一句話）', { max: L.heroSub }),
     ]));
