@@ -641,8 +641,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
   function heroImgHint(p) {
     const P = heroPos(p), up = P.v === 'top';
-    const base = '商品要放在圖的中間一半：手機版左右會被裁掉。';
-    if (P.a === 'center') return base + `字在${up ? '上方' : '下方'}中間，會疊在商品上：商品要往${up ? '下' : '上'}放，${up ? '上' : '下'}面那一段不要太亮。`;
+    const base = '手機版會裁掉左右，桌機版會裁掉上下：商品放中間，上下左右都多留空間。';
+    if (P.a === 'center') return base + `字在${up ? '上方' : '下方'}中間，容易疊在商品上：${up ? '上' : '下'}面再多留一段放字，那一段不要太亮。`;
     return base + `字在${P.a === 'left' ? '左' : '右'}${up ? '上' : '下'}，那一角不要太亮。`;
   }
 
@@ -1211,7 +1211,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   }
 
   const IMG_SPEC = {
-    hero:    { label: 'Hero 大圖',      minW: 1920, minH: 720,  ratioText: '橫圖，商品放中間一半', ratio: null },
+    hero:    { label: 'Hero 大圖',      minW: 1920, minH: 720,  ratioText: '橫圖，商品放中間、上下左右都多留空間', ratio: null },
     grid:    { label: '棋盤格（D～G）', minW: 1320, minH: 880,  ratioText: '3:2 橫框',            ratio: 3 / 2 },
     feature: { label: '其他特色卡片',   minW: 900,  minH: 900,  ratioText: '1:1 方框',            ratio: 1 },
     cmp:     { label: '比較區卡片',     minW: 1350, minH: 1012, ratioText: '4:3 橫框',            ratio: 4 / 3 },
@@ -2800,7 +2800,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       h('table', { class: 'spec' }, h('thead', null, h('tr', null, h('th', null, '放哪'), h('th', null, '圖框'), h('th', null, '最小尺寸（寬×高 px）'))), h('tbody', null, ...rows)),
       h('p', { class: 'small', style: 'margin:12px 0 0' }, '拍攝建議：①遠一點拍 ②同一個背景或同一個顏色 ③至少帶一點散景。'),
       h('p', { class: 'small', style: 'margin:6px 0 0' }, '圖網址一定要長這樣：https://img.shoplineapp.com/media/image_clips/…/original.png（結尾是 original.副檔名）。縮圖網址（800x、1080x…）對新上傳的圖會讀到空檔。'),
-      h('p', { class: 'small', style: 'margin:6px 0 0' }, 'Hero 的高度下限（720）是用 1920 寬時的框高推出來的。'));
+      h('p', { class: 'small', style: 'margin:6px 0 0' }, 'Hero 大圖：手機版會裁掉左右，桌機版會裁掉上下，所以商品本體的上下左右都要多留空間。照原本的尺寸做就好（至少 1920×720）。桌機要留住上面還是下面，可以用 Hero 區的「桌機版裁切位置」調。'));
   }
 
   document.addEventListener('DOMContentLoaded', init);
