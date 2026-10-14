@@ -50,5 +50,6 @@ product-page/listing-tool/*
 !product-page/listing-tool/index.html
 !product-page/listing-tool/guide.html
 !product-page/listing-tool/skill.html
+!product-page/listing-tool/addon.html
 !product-page/listing-tool/site.css
 !product-page/listing-tool/site.js
