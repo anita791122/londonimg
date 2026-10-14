@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>上架工具｜加價購區・Z35 錶帶</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+/* 只有加價購區這兩頁用 */
+.addon-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:6px 0 12px}
+.addon-copy{border:0;cursor:pointer;min-height:44px}
+.addon-msg{font-size:15px;min-height:22px}
+.addon-msg.is-ok{color:var(--ok);font-weight:600}
+.addon-msg.is-bad{color:var(--red)}
+.addon-code{display:block;width:100%;height:260px;margin:0 0 6px;padding:12px;border:1px solid var(--border);border-radius:10px;background:#f7f9fc;color:var(--ink);font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;white-space:pre;overflow:auto;resize:vertical}
+.addon-code:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pg-tbl td:first-child,.pg-tbl th:first-child{width:2.2em;color:var(--faint)}
+.pg-code{white-space:nowrap;font-weight:600}
+.pg-link{color:var(--accent);font-size:13px;overflow-wrap:anywhere;word-break:break-all}
+.fhint a,.callout a{color:var(--accent);text-underline-offset:2px}
+.pg-note{color:var(--orange);font-size:13px}
+.pg-strike{color:var(--faint);font-size:13px;text-decoration:line-through}
+.nowrap{white-space:nowrap}
+.card ol ul{margin:6px 0 0;padding-left:20px;list-style:disc}
+.card ol ul li{margin:0 0 4px}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="./" title="回到上架工具">
+      <img class="brand-logo" src="https://shoplineimg.com/57975b626170691220930c00/5f7ee62005a89e001d7bc417/1200x.webp?source_format=png" alt="倫敦印象">
+      <div class="txt">上架工具<small>給同事的說明</small></div>
+    </a>
+    <button type="button" class="hamburger" aria-label="開關選單" aria-expanded="false" aria-controls="site-nav">
+      <svg class="ic ham-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="ic ham-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="網站選單">
+      <a href="./"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="20"/></svg><span>上架工具</span></a>
+      <a href="guide.html"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg><span>第一次用說明</span></a>
+      <a href="addon.html"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>加價購區・手機殼</span></a>
+      <a href="addon-watch.html" aria-current="page"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="3"/><path d="M9 6V2h6v4"/><path d="M9 18v4h6v-4"/><path d="M12 9.5V12l1.5 1.5"/></svg><span>加價購區・Z35 錶帶</span></a>
+      <div class="subnav" role="group" aria-label="這一頁的分節">
+        <a href="#pages"><span class="sub-i">1</span><span>只貼這 2 頁</span></a>
+        <a href="#copy"><span class="sub-i">2</span><span>複製語法</span></a>
+        <a href="#paste"><span class="sub-i">3</span><span>怎麼貼</span></a>
+        <a href="#after"><span class="sub-i">4</span><span>貼完之後</span></a>
+      </div>
+    </nav>
+    <div class="side-foot">Z35 錶帶 2 頁的加價購區，一律從這一頁複製整段。</div>
+  </aside>
+
+  <main class="content">
+  <div class="hero">
+    <span class="hero-eyebrow">加價購區</span>
+    <h1 class="hero-title">Z35 錶帶 2 頁的加價購區</h1>
+    <p class="hero-sub">商品描述最上面那一排橫滑的加價購卡片。這 2 頁都是把這一頁的語法貼在商品描述最上面，不是換掉舊的。</p>
+  </div>
+
+  <div class="callout warn"><span class="key">不要用上架工具自己挑卡，一律貼這一頁的整段語法。</span><br>這 2 頁要拿來算加價購的成效，兩頁的卡片和順序要一模一樣。</div>
+
+  <section class="card" id="pages">
+    <h2 class="card-h"><span class="num">1</span>只貼這 2 頁</h2>
+    <table class="tbl pg-tbl">
+      <thead><tr><th>#</th><th>編號</th><th>商品名和前台網址</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td class="pg-code">Z35</td><td>【錶帶+錶框】F&amp;W 未來錶Apple Watch金屬錶帶+錶框 組合【Z35】<br><a class="pg-link" href="https://www.londonimg.tw/products/z35-1" target="_blank" rel="noopener">londonimg.tw/products/z35-1</a></td></tr>
+        <tr><td>2</td><td class="pg-code">ZZ35</td><td>【錶帶+錶框】F&amp;W 未來錶Apple Watch金屬錶帶+錶框 組合【ZZ35】<br><a class="pg-link" href="https://www.londonimg.tw/products/z35" target="_blank" rel="noopener">londonimg.tw/products/z35</a><br><span class="pg-note">最上面原本有幾張加價購圖片，留著，新的貼在它們上面</span></td></tr>
+      </tbody>
+    </table>
+    <p class="fhint">兩頁的網址很像：/products/z35-1 是【Z35】，/products/z35 是【ZZ35】。兩頁都要貼。</p>
+    <p class="fhint">不在這 2 頁裡的商品，都不要貼這個區塊。手機殼那 14 頁用的是另一段語法，在<a href="addon.html">加價購區・手機殼</a>那一頁。</p>
+  </section>
+
+  <section class="card" id="copy">
+    <h2 class="card-h"><span class="num">2</span>複製語法</h2>
+    <p>按「複製語法」，看到「已複製」再去後台。這一頁就是唯一的版本，不要從舊檔案或聊天紀錄裡複製。</p>
+    <div class="addon-bar">
+      <button type="button" class="dl-btn addon-copy" id="watch-copy">複製語法</button>
+      <span id="watch-msg" class="addon-msg" role="status" aria-live="polite"></span>
+    </div>
+    <textarea id="watch-code" class="addon-code" readonly spellcheck="false" aria-label="Z35 錶帶加價購區的語法">&lt;div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip"&gt;
+  &lt;div style="border-top:1px solid #ededed;padding:clamp(12px,3vw,20px) 0 16px"&gt;
+    &lt;div style="text-align:center;padding:0 24px;margin:0"&gt;
+      &lt;div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:clamp(25px,calc(25px + (100vw - 767px)*999),36px);font-weight:400;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;color:#1d1f23"&gt;Add-on Deals&lt;/div&gt;
+      &lt;div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:clamp(14px,calc(14px + (100vw - 767px)*999),16px);font-weight:400;line-height:1.4;margin:0 0 clamp(20px,calc(20px + (100vw - 767px)*999),32px);color:#1d1f23"&gt;加價購，省更多&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div style="overflow-x:auto;text-align:center;padding:0 0 8px;white-space:nowrap"&gt;
+      &lt;div style="display:inline-flex;flex-wrap:nowrap;padding:0 24px;text-align:left;vertical-align:top"&gt;
+    &lt;a href="https://www.londonimg.tw/products/s06" target="_blank" style="flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal"&gt;
+      &lt;div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"&gt;
+        &lt;img src="https://img.shoplineapp.com/media/image_clips/66dff3ad7d4868000d50ba9b/original.png?1725952941" alt="Apple Watch 無線充電底座【S06】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"&gt;
+      &lt;/div&gt;
+      &lt;div style="padding:10px 11px 12px"&gt;
+        &lt;p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical"&gt;Apple Watch 無線充電底座【S06】&lt;/p&gt;
+        &lt;div&gt;
+          &lt;span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226"&gt;NT$99&lt;/span&gt;
+          &lt;span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through"&gt;NT$290&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+    &lt;a href="https://www.londonimg.tw/products/z33" target="_blank" style="flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal"&gt;
+      &lt;div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"&gt;
+        &lt;img src="https://img.shoplineapp.com/media/image_clips/661ce11db0c98d002383d731/original.jpg?1713168668" alt="未來錶 Apple Watch 金屬錶帶【Z33】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"&gt;
+      &lt;/div&gt;
+      &lt;div style="padding:10px 11px 12px"&gt;
+        &lt;p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical"&gt;未來錶 Apple Watch 金屬錶帶【Z33】&lt;/p&gt;
+        &lt;div&gt;
+          &lt;span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226"&gt;NT$790&lt;/span&gt;
+          &lt;span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through"&gt;NT$990&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+    &lt;a href="https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91z34" target="_blank" style="flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal"&gt;
+      &lt;div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7"&gt;
+        &lt;img src="https://img.shoplineapp.com/media/image_clips/661e3e682c6343000e8689ef/original.jpg?1713258088" alt="未來錶 Apple Watch 金屬錶框【Z34】" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"&gt;
+      &lt;/div&gt;
+      &lt;div style="padding:10px 11px 12px"&gt;
+        &lt;p style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical"&gt;未來錶 Apple Watch 金屬錶框【Z34】&lt;/p&gt;
+        &lt;div&gt;
+          &lt;span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226"&gt;NT$290&lt;/span&gt;
+          &lt;span style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through"&gt;NT$490&lt;/span&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/a&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</textarea>
+    <p class="fhint">語法 5,586 字。卡片的價格是寫在語法裡的，賣場改價，這裡不會跟著變。</p>
+    <p style="margin-top:16px">語法裡的 3 張卡（照順序）：</p>
+    <table class="tbl pg-tbl">
+      <thead><tr><th>#</th><th>卡片</th><th>卡片價／原價</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Apple Watch 無線充電底座【S06】</td><td class="nowrap">NT$99<br><span class="pg-strike">NT$290</span></td></tr>
+        <tr><td>2</td><td>未來錶 Apple Watch 金屬錶帶【Z33】<br><span class="pg-note">暫放：連一般賣場、一般售價</span></td><td class="nowrap">NT$790<br><span class="pg-strike">NT$990</span></td></tr>
+        <tr><td>3</td><td>未來錶 Apple Watch 金屬錶框【Z34】</td><td class="nowrap">NT$290<br><span class="pg-strike">NT$490</span></td></tr>
+      </tbody>
+    </table>
+    <div class="callout"><span class="key">第 2 張金屬錶帶是暫放的。</span>它現在連的是一般賣場、價格是一般售價，不是錯。錶帶的加價購頁建好、收納架那張卡也有了之後，這一頁的語法會換成新版，到時候 2 頁要再整段重貼一次。重貼是把貼過的那段換掉，方法跟<a href="addon.html#paste">手機殼那一頁的「怎麼換」</a>一樣。</div>
+  </section>
+
+  <section class="card" id="paste">
+    <h2 class="card-h"><span class="num">3</span>怎麼貼</h2>
+    <div class="callout warn"><span class="key">這 2 頁都是「加在最上面」，不是「換掉舊的」。</span><br>手機殼那 14 頁是把舊的一段換掉；這 2 頁原本的內容一個字都不要刪。<br><span class="key">【ZZ35】：這頁最上面原本有幾張加價購圖片，留著不要刪，新的貼在它們上面。</span></div>
+    <ol class="steps">
+      <li>後台打開商品 → 商品描述 → HTML 原始碼。</li>
+      <li>先看最上面：如果已經有一段寫著 <code class="nowrap">Add-on Deals</code> 的語法，代表貼過了，<span class="key">不要再貼一次</span>，傳給工具負責人。舊的加價購圖片不算。</li>
+      <li>把游標放在最前面，也就是第一個字的前面。【ZZ35】也一樣，放在那幾張舊圖片的前面。</li>
+      <li>貼上剛複製的語法。</li>
+      <li>存檔。</li>
+    </ol>
+  </section>
+
+  <section class="card" id="after">
+    <h2 class="card-h"><span class="num">4</span>貼完之後</h2>
+    <ol class="steps">
+      <li>用手機打開這一頁的前台，看這幾件事：
+        <ul>
+          <li>3 張卡都在，可以滑到最後一張。</li>
+          <li>「Add-on Deals」只出現一次。</li>
+          <li>卡片前後沒有多出空白的方塊或空白的一格。</li>
+          <li>下面原本的內容（圖片、文字）都還在，順序沒變。</li>
+          <li>【ZZ35】多看一項：新的卡片在最上面，舊的三張加價購圖片還在它下面。</li>
+        </ul>
+      </li>
+      <li><span class="key">記下這一頁存檔的日期和時間</span>（例如 10/15 14:30），傳給工具負責人。算成效要從每一頁貼上的那天開始算。每一頁都要記，【Z35】和【ZZ35】分開寫。</li>
+    </ol>
+    <p>看起來不對，先不要貼下一頁。整個畫面截圖，傳給工具負責人。</p>
+  </section>
+  </main>
+</div>
+<script src="site.js"></script>
+<script>
+(function () {
+  var btn = document.getElementById('watch-copy'), t = document.getElementById('watch-code'), m = document.getElementById('watch-msg');
+  function done(ok) {
+    m.textContent = ok ? '已複製' : '沒有複製成功：點一下下面的框，按 ⌘A 再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）';
+    m.className = 'addon-msg ' + (ok ? 'is-ok' : 'is-bad');
+  }
+  function fallback() { var ok = false; t.focus(); t.select(); try { ok = document.execCommand('copy'); } catch (e) {} done(ok); }
+  btn.addEventListener('click', function () {
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t.value).then(function () { done(true); }, fallback);
+    else fallback();
+  });
+})();
+</script>
+</body>
+</html>
