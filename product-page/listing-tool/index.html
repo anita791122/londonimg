@@ -529,7 +529,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   let KIT = root.LN_ADDON_KIT || null;
   function useAddonKit(k) { KIT = k || null; }
 
-  let ADDON_HEAD_CHECK = false;
+  let ADDON_HEAD_CHECK = true;
   function useAddonHeadCheck(v) { ADDON_HEAD_CHECK = !!v; }
 
   const ADDON_HOLD = {
@@ -1355,7 +1355,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       if (!/Add-on Deals/.test(addon)) add('addon', 'red', '這段看起來不是加價購區語法（裡面沒有 Add-on Deals）', 'A');
       else if (!addon.includes(FFH_ADDON)) add('addon', 'orange', '這是舊版的加價購區語法（字型是舊的），到加價購語法頁重新複製一次', 'A');
 
-      else if (ADDON_HEAD_CHECK && !/>加價購，省更多<\/h2>/.test(addon)) add('addon', 'orange', '這是舊版的加價購區語法（標題還是英文在上），到加價購語法頁重新複製一次', 'A');
+      else if (ADDON_HEAD_CHECK && !/>加價購，省更多<\/h2>\s*<div[^>]*color:#fe5226">Add-on Deals<\/div>/.test(addon)) add('addon', 'orange', '這是舊版的加價購區語法（標題還是英文在上），到加價購語法頁重新複製一次', 'A');
 
       [...new Set([...norm.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => slugOf(m[1])))].forEach(slug => {
         if (slug && ADDON_HOLD[slug]) add('addon', 'red', ADDON_HOLD[slug].replace('這張不會出現，把這一行刪掉', '這段語法裡有這張卡：改用網址貼（工具會自動拿掉），或把這張卡從語法裡刪掉'), 'A');
