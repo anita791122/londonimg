@@ -60,9 +60,10 @@
       <svg class="ic ham-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
     </button>
     <nav class="nav" id="site-nav" aria-label="網站選單">
+      <a href="guide.html"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg><span>第一次使用</span></a>
       <a href="./"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="20"/></svg><span>上架工具</span></a>
-      <a href="guide.html"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg><span>第一次用說明</span></a>
-      <a href="addon-update.html" aria-current="page"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>加價購區</span></a>
+      <a href="addon-update.html" aria-current="page"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>加價購區工具</span></a>
+      <a href="long-image.html"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="6" y1="8.5" x2="18" y2="8.5"/><line x1="6" y1="15" x2="18" y2="15"/></svg><span>長條圖區工具</span></a>
     </nav>
     <div class="side-foot">每半個月換加價購商品，一律在這一頁產生語法。</div>
   </aside>
@@ -1016,6 +1017,36 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     return out;
   }
 
+  const nbModel = x => String(x).replace(/(iPhone|\d+e?|Pro) (?=Pro|Max|Air|\d)/g, '$1\u00a0');
+
+  function beforeBuy(list) {
+    const cards = list.map((x, i) =>
+      `<div style="flex:1 0 clamp(258px,calc((100% - 40px)/3.25),600px);min-width:0;box-sizing:border-box;background:#ffffff;padding:${R(18, 24)}${i === list.length - 1 ? '' : ';margin-right:' + R(12, 20)}">` +
+      `<h3 style="padding:0;${FFH};font-size:${R(17, 20)};font-weight:700;letter-spacing:-.3px;line-height:1.45;margin:0 0 8px;color:#1d1f23">${ARROW}${tail(esc(nbModel(clean(x.q))))}</h3>` +
+      `<p style="font-size:${R(15, 17)};line-height:1.75;margin:0;color:#3f434b;${FF}">${tail(esc(nbModel(clean(x.a))))}</p></div>`).join('');
+
+    return `<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip;margin-top:14pt;font-size:16px;line-height:1.75;text-align:left;background:#e7e7e8;color:#1d1f23;${FF}">` +
+      `<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:${R(25, 50)} 20px ${R(19, 44)}">` +
+
+      `<h2 style="padding:0;font-size:${R(25, 36)};font-weight:700;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;${FF};text-align:center;color:#1d1f23">選購前先看</h2>` +
+      `<div style="font-size:${R(14, 16)};font-weight:400;line-height:1.4;margin:0 0 ${R(20, 32)};${FF};text-align:center;color:#fe5226">Before You Buy</div>` +
+      `<div style="display:flex;overflow-x:auto;margin:0 -20px;padding:0 20px 6px">${cards}</div></div></div>`;
+  }
+
+  const LONG_FRAME = `<div style="box-sizing:border-box;max-width:1080px;margin:0 auto;padding:0 0 ${R(40, 64)};font-size:16px;font-weight:400;font-style:normal;line-height:1.75;letter-spacing:normal;color:#1d1f23;text-align:left;font-family:-apple-system,'PingFang TC','Noto Sans TC','Helvetica Neue',Arial,sans-serif">`;
+
+  function longImageGenerate(s) {
+    const on = s.on || {};
+    const parts = [];
+    if (on.before && s.before.length) parts.push(beforeBuy(s.before));
+    const tables = [];
+    if (on.compat && s.compat.rows.length) tables.push(compat(s.compat));
+    if (on.specs && s.specs.length) tables.push(specs(s.specs));
+    if (on.faq && s.faq.length) tables.push(faq(s.faq));
+    if (tables.length) parts.push(LONG_FRAME + tables.join('') + '</div>');
+    return parts.join('');
+  }
+
   const OUTER =`<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip;background:#fff;color:#1d1f23;line-height:1.75;${FF}">`;
 
   function generate(s) {
@@ -1152,6 +1183,40 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   }
 
   const get = (o, path) => path.split('.').reduce((v, k) => (v == null ? v : v[k]), o);
+
+  function tableChecks(s, add, need, over, long) {
+
+    if (s.on.compat) {
+      if (s.compat.rows.length < 1) add('compat.add', 'red', '適用機型至少 1 列', 'Compat', 'todo');
+      const menu = new Set(String(s.compat.menu || '').split(/[\n,，、／/]+/).map(normModel).filter(Boolean));
+      s.compat.rows.forEach((r, i) => {
+        need('compat.rows.' + i + '.names', r.names, '機型', 'Compat');
+        if (menu.size && r.ok) {
+          const miss = splitNames(r.names).filter(n => !menu.has(normModel(n)));
+          if (miss.length) add('compat.rows.' + i + '.names', 'orange', `規格選單清單裡找不到：${miss.join('、')}（只寫買得到的）`, 'Compat');
+        }
+      });
+
+      if (menu.size) {
+        const listed = new Set(s.compat.rows.filter(r => r.ok).flatMap(r => splitNames(r.names).map(normModel)));
+        const notListed = String(s.compat.menu || '').split(/[\n,，、／/]+/).map(clean).filter(n => n && genOf(normModel(n)) != null && !listed.has(normModel(n)));
+        if (notListed.length) add('compat.menu', 'orange', `選單有、上面的表沒寫：${[...new Set(notListed)].join('、')}。` + (long ? '表上沒寫的機型，客人會以為不能用' : '表漏寫的話，商品摘要會寫成「除外」'), 'Compat');
+      }
+      if (!long) modelPhrase(s.compat).unknown.forEach(u => add('compat.rows.' + u.row + '.names', 'orange', `工具不認得「${u.name}」這個機型，商品摘要的適用機型那句沒有算到它`, 'Compat'));
+    }
+
+    if (s.on.specs) {
+      if (s.specs.length < 1) add('specs.add', 'red', '規格至少 1 列', 'Specs', 'todo');
+      s.specs.forEach((r, i) => { need('specs.' + i + '.label', r.label, '項目', 'Specs'); need('specs.' + i + '.value', r.value, '內容', 'Specs'); });
+    }
+    if (s.on.faq) {
+      if (s.faq.length < 1) add('faq.add', 'red', 'FAQ 至少 1 題', 'FAQ', 'todo');
+      s.faq.forEach((x, i) => {
+        need('faq.' + i + '.q', x.q, '問題', 'FAQ'); over('faq.' + i + '.q', x.q, LIMIT.faqQ, '問題', 'FAQ');
+        need('faq.' + i + '.a', x.a, '回答', 'FAQ'); over('faq.' + i + '.a', x.a, LIMIT.faqA, '回答', 'FAQ');
+      });
+    }
+  }
 
   function validate(s, imgs, sample) {
     const out = [];
@@ -1297,36 +1362,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       });
     }
 
-    if (s.on.compat) {
-      if (s.compat.rows.length < 1) add('compat.add', 'red', '適用機型至少 1 列', 'Compat', 'todo');
-      const menu = new Set(String(s.compat.menu || '').split(/[\n,，、／/]+/).map(normModel).filter(Boolean));
-      s.compat.rows.forEach((r, i) => {
-        need('compat.rows.' + i + '.names', r.names, '機型', 'Compat');
-        if (menu.size && r.ok) {
-          const miss = splitNames(r.names).filter(n => !menu.has(normModel(n)));
-          if (miss.length) add('compat.rows.' + i + '.names', 'orange', `規格選單清單裡找不到：${miss.join('、')}（只寫買得到的）`, 'Compat');
-        }
-      });
-
-      if (menu.size) {
-        const listed = new Set(s.compat.rows.filter(r => r.ok).flatMap(r => splitNames(r.names).map(normModel)));
-        const notListed = String(s.compat.menu || '').split(/[\n,，、／/]+/).map(clean).filter(n => n && genOf(normModel(n)) != null && !listed.has(normModel(n)));
-        if (notListed.length) add('compat.menu', 'orange', `選單有、上面的表沒寫：${[...new Set(notListed)].join('、')}。表漏寫的話，商品摘要會寫成「除外」`, 'Compat');
-      }
-      modelPhrase(s.compat).unknown.forEach(u => add('compat.rows.' + u.row + '.names', 'orange', `工具不認得「${u.name}」這個機型，商品摘要的適用機型那句沒有算到它`, 'Compat'));
-    }
-
-    if (s.on.specs) {
-      if (s.specs.length < 1) add('specs.add', 'red', '規格至少 1 列', 'Specs', 'todo');
-      s.specs.forEach((r, i) => { need('specs.' + i + '.label', r.label, '項目', 'Specs'); need('specs.' + i + '.value', r.value, '內容', 'Specs'); });
-    }
-    if (s.on.faq) {
-      if (s.faq.length < 1) add('faq.add', 'red', 'FAQ 至少 1 題', 'FAQ', 'todo');
-      s.faq.forEach((x, i) => {
-        need('faq.' + i + '.q', x.q, '問題', 'FAQ'); over('faq.' + i + '.q', x.q, LIMIT.faqQ, '問題', 'FAQ');
-        need('faq.' + i + '.a', x.a, '回答', 'FAQ'); over('faq.' + i + '.a', x.a, LIMIT.faqA, '回答', 'FAQ');
-      });
-    }
+    tableChecks(s, add, need, over, false);
 
     {
       const sm = s.summary || {};
@@ -1410,7 +1446,44 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
 
   function safeGenerate(s) { try { return generate(s); } catch (e) { return ''; } }
 
-  const api = { generate, pretty, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+  const BB_HOLD = [[/9\s*H/i, '9H'], [/軍規/, '軍規'], [/保固/, '保固'], [/(^|[^A-Za-z])PC([^A-Za-z]|$)|聚碳酸酯/i, '背板材質（PC）']];
+
+  const BB_STALE = /NT\s*\$|\$\s*\d|\d\s*元|工作天|出貨/;
+  const sameQ = x => clean(x).replace(/[\s?？!！。，、：:．.「」（）()]/g, '').toLowerCase();
+  function longImageValidate(s) {
+    const out = [];
+    const add = (key, level, msg, sec, kind) => out.push({ key, level, msg, sec, kind: kind || (level === 'red' ? 'rule' : 'hint') });
+    const empty = v => clean(v) === '';
+    const need = (key, v, what, sec) => { if (empty(v)) add(key, 'red', `${what}還沒填`, sec, 'todo'); };
+    const over = (key, v, max, what, sec) => { const n = width(v); if (n > max) add(key, 'orange', `${what} ${n} 字，建議 ${max} 字內`, sec); };
+    const on = s.on || {};
+    if (!on.before && !on.compat && !on.specs && !on.faq) add('top', 'red', '四區都沒勾，沒有東西可以貼', 'top', 'todo');
+    if (on.before) {
+      if (s.before.length < 1) add('before.add', 'red', '選購前先看至少 1 題', 'Before', 'todo');
+      const faqQs = on.faq ? new Set(s.faq.map(x => sameQ(x.q)).filter(Boolean)) : new Set();
+      s.before.forEach((x, i) => {
+        const k = 'before.' + i;
+        need(k + '.q', x.q, '問題', 'Before'); need(k + '.a', x.a, '回答', 'Before');
+        const both = clean(x.q) + ' ' + clean(x.a);
+        const hold = BB_HOLD.filter(([re]) => re.test(both)).map(([, w]) => w);
+        if (hold.length) add(k + '.a', 'orange', `寫到「${hold.join('、')}」：公司還在確認背板材質、保固、軍規這幾類說法，選購前先看先不要寫`, 'Before');
+        if (BB_STALE.test(both)) add(k + '.a', 'orange', '價格和出貨天數不要寫進卡片：檔期一換就過期', 'Before');
+        if (sameQ(x.q) && faqQs.has(sameQ(x.q))) add(k + '.q', 'orange', '下面「常見問題」也有這一題：選購前先看挑別的題目，不要講兩次', 'Before');
+      });
+    }
+    tableChecks(s, add, need, over, true);
+    const html = (() => { try { return longImageGenerate(s); } catch (e) { return ''; } })();
+    if (html) {
+      BAD_MARKUP.forEach(b => { if (html.includes(b)) add('output', 'red', `輸出裡有 ${b}，SHOPLINE 商品描述會把它濾掉`, 'top'); });
+      const visible = html.replace(/<[^>]*>/g, ' ');
+      INTERNAL_WORDS.forEach(w => { if (visible.includes(w)) add('output', 'red', `顧客看得到的內容裡有內部用語「${w}」`, 'top'); });
+      const air = bareAir(visible.replace(/\u00a0/g, ' '));
+      if (air.length) add('output', 'orange', `機型要寫全名：「${air[0]}」的 Air 前面加 iPhone，寫成「iPhone Air」（只寫 Air，AI 和搜尋分不出是 iPhone、iPad 還是 MacBook）`, 'top');
+    }
+    return out;
+  }
+
+  const api = { generate, pretty, beforeBuy, longImageGenerate, longImageValidate, compat, specs, faq, nbModel, LONG_FRAME, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
 })(typeof window !== 'undefined' ? window : globalThis);
