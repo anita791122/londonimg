@@ -626,13 +626,21 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
   const ADDON_NEW0 = () => ({ name: '', img: '', sale: '', orig: '', ok: '' });
   const ADDON_IMG_MIN = 200;
+
+  const addonNear = slug => {
+    const code = String(slug).replace(/^【加價購】/, '').replace(/-\d+$/, '');
+    return KIT ? KIT.cards.find(c => codeOf(c) && codeOf(c) === code && c.slug !== code) || null : null;
+  };
   function addonNewCheck(slug, e, o) {
     e = e || ADDON_NEW0(); o = o || {};
     const msgs = [], str = k => String(e[k] == null ? '' : e[k]).trim();
     const num = x => { const t = String(x == null ? '' : x).replace(/[,\s]/g, ''); return /^\d+$/.test(t) && +t > 0 ? +t : null; };
-    const code = String(slug).replace(/^【加價購】/, '').replace(/-\d+$/, '');
-    const near = KIT ? KIT.cards.find(c => codeOf(c) && codeOf(c) === code) || null : null;
-    if (near) msgs.push(['orange', '這像是一般賣場的網址。加價購要用加價購頁（' + near.name + '）的網址，確定要放一般賣場就照填']);
+    const near = addonNear(slug);
+
+    if (near) {
+      let to = near.href; try { to = decodeURI(near.href); } catch (err) {   }
+      return { msgs: [['red', '這是一般賣場的網址。這個商品有加價購頁（' + near.name + '），把這一行換成 ' + to]], card: null, html: '', near };
+    }
     const name = str('name'), img = str('img'), sale = num(e.sale), orig = str('orig') ? num(e.orig) : null;
     if (!name) msgs.push(['todo', '填商品名']);
     else if (!/【[A-Za-z0-9]+】/.test(name)) msgs.push(['orange', '商品名後面加【編號】，像「…【B51】」']);
@@ -1606,8 +1614,12 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
             const e = extra[x.slug], r = addonNewCheck(x.slug, e, { today: day, img: imgs[clean(e && e.img)] });
 
-            const LV = { todo: ['red', 'todo'], red: ['red', 'rule'], orange: ['orange', 'hint'], wait: ['orange', 'pending'] };
-            r.msgs.forEach(([k, m]) => add('addon.new.' + x.slug, LV[k][0], at + m, 'A', LV[k][1]));
+            if (r.near) add('addon', 'red', at + r.msgs[0][1] + '，或按下面清單的「加入」', 'A');
+            else {
+
+              const LV = { todo: ['red', 'todo'], red: ['red', 'rule'], orange: ['orange', 'hint'], wait: ['orange', 'pending'] };
+              r.msgs.forEach(([k, m]) => add('addon.new.' + x.slug, LV[k][0], at + m, 'A', LV[k][1]));
+            }
           }
           else if (ADDON_HOLD[x.slug]) add('addon', 'red', at + ADDON_HOLD[x.slug], 'A');
           if (x.slug) seen.add(x.slug);
@@ -1811,7 +1823,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   const api = { generate, pretty, beforeBuy, longImageGenerate, longImageValidate, compat, specs, faq, nbModel, LONG_FRAME, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
-    addonNewCheck, addonNewReady, ADDON_NEW0, today };
+    addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
 })(typeof window !== 'undefined' ? window : globalThis);
 
