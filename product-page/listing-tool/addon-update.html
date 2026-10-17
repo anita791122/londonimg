@@ -307,10 +307,13 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     const t = String(s.addon || ''), mode = addonMode(t);
     if (mode === 'html') return normalizeAddon(addonText(t));
     if (mode !== 'urls' || !KIT) return '';
-    const seen = new Set(), cards = [];
+    const seen = new Set(), cards = [], extra = s.addonExtra || {};
     addonItems(t).forEach(x => {
-      if (!x.card || seen.has(x.slug) || ADDON_HOLD[x.slug]) return;
-      seen.add(x.slug); cards.push(x.card.html);
+      if (!x.slug || seen.has(x.slug)) return;
+      if (x.card) { if (!ADDON_HOLD[x.slug]) { seen.add(x.slug); cards.push(x.card.html); } return; }
+      seen.add(x.slug);
+      const r = addonNewCheck(x.slug, extra[x.slug]);
+      if (addonNewReady(r)) cards.push(r.html);
     });
     return addonAssemble(cards);
   }
@@ -336,6 +339,43 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       : sub(h, / ?<span [^>]*line-through[^>]*>NT\$[0-9,]+<\/span>/, '', '原價');
     return h;
   }
+
+  const today = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+  const ADDON_NEW0 = () => ({ name: '', img: '', sale: '', orig: '', ok: '' });
+  const ADDON_IMG_MIN = 200;
+  function addonNewCheck(slug, e, o) {
+    e = e || ADDON_NEW0(); o = o || {};
+    const msgs = [], str = k => String(e[k] == null ? '' : e[k]).trim();
+    const num = x => { const t = String(x == null ? '' : x).replace(/[,\s]/g, ''); return /^\d+$/.test(t) && +t > 0 ? +t : null; };
+    const code = String(slug).replace(/^【加價購】/, '').replace(/-\d+$/, '');
+    const near = KIT ? KIT.cards.find(c => codeOf(c) && codeOf(c) === code) || null : null;
+    if (near) msgs.push(['orange', '這像是一般賣場的網址。加價購要用加價購頁（' + near.name + '）的網址，確定要放一般賣場就照填']);
+    const name = str('name'), img = str('img'), sale = num(e.sale), orig = str('orig') ? num(e.orig) : null;
+    if (!name) msgs.push(['todo', '填商品名']);
+    else if (!/【[A-Za-z0-9]+】/.test(name)) msgs.push(['orange', '商品名後面加【編號】，像「…【B51】」']);
+    if (!img) msgs.push(['todo', '填圖片網址']);
+    else if (!/^https:\/\//.test(img)) msgs.push(['red', '圖片網址要是 https:// 開頭的完整網址']);
+    else {
+      const s = o.img;
+      if (!s || s.state === 'loading') msgs.push(['wait', '圖片載入中…']);
+      else if (s.state !== 'ok' || !(s.w >= ADDON_IMG_MIN && s.h >= ADDON_IMG_MIN)) msgs.push(['red', '圖片載不出來，或小於 200×200。到商品頁右鍵複製圖片網址，網址結尾要是 original.jpg 這種']);
+    }
+    if (!str('sale')) msgs.push(['todo', '填加購價']);
+    else if (!sale) msgs.push(['red', '加購價只能填數字']);
+    if (str('orig') && !orig) msgs.push(['red', '原價只能填數字（沒有原價就空著）']);
+    else if (sale && orig && orig <= sale) msgs.push(['orange', '原價沒有比加購價高，卡片上會看起來沒有折扣']);
+    if (e.ok !== (o.today || today())) msgs.push(['todo', '打開連結確認價格，勾「價格我打開連結對過了」']);
+    const href = 'https://www.londonimg.tw/products/' + encodeURIComponent(slug);
+    let card = null, html = '';
+    if (name && sale && /^https:\/\//.test(img)) {
+      card = { href, slug, img, name, sale, orig };
+      try { html = addonCardFrom(KIT.cards[0].html, card); }
+      catch (err) { msgs.push(['red', '做不出這張卡（' + err.message + '），請找工具負責人']); }
+    }
+    return { msgs, card, html, near };
+  }
+
+  const addonNewReady = r => !!r.html && !r.msgs.some(m => m[0] === 'red' || m[0] === 'todo');
 
   const ADDON_WRAP = 'position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip';
   function addonOldCheck(text) {
@@ -1218,7 +1258,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     }
   }
 
-  function validate(s, imgs, sample) {
+  function validate(s, imgs, sample, opts) {
     const out = [];
     const add = (key, level, msg, sec, kind) => out.push({ key, level, msg, sec, kind: kind || (level === 'red' ? 'rule' : 'hint') });
     const empty = v => clean(v) === '';
@@ -1274,16 +1314,17 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     } else if (addonM === 'urls') {
       if (!KIT) add('addon', 'red', '這一版工具沒有帶加價購卡片的資料，請找工具負責人重新做一版工具', 'A');
       else {
-        const seen = new Set();
+        const seen = new Set(), extra = s.addonExtra || {}, day = (opts && opts.today) || today();
         addonItems(addon).forEach(x => {
           const shown = x.raw.length > 40 ? x.raw.slice(0, 40) + '…' : x.raw, at = `第 ${x.line} 行：`;
           if (!x.slug) add('addon', 'red', `${at}「${shown}」不是倫敦印象的商品網址。短網址要先打開，再複製網址列裡的完整網址`, 'A');
           else if (seen.has(x.slug)) add('addon', 'orange', `${at}「${x.card ? x.card.name : x.slug}」前面已經貼過，只會放一張`, 'A');
           else if (!x.card) {
-            const near = KIT.cards.find(c => codeOf(c) === x.slug.replace(/^【加價購】/, '').replace(/-\d+$/, ''));
-            add('addon', 'red', at + (near
-              ? `「${x.slug}」是一般賣場的網址。加價購要用加價購頁「${near.slug}」（${near.name}），換成那個網址，或按下面清單的「加入」`
-              : `工具還不認得「${x.slug}」，這張卡不會出現。要放新的加價購商品：到工具網站的「加價購區」頁產生語法，整段貼進這一格`), 'A');
+
+            const e = extra[x.slug], r = addonNewCheck(x.slug, e, { today: day, img: imgs[clean(e && e.img)] });
+
+            const LV = { todo: ['red', 'todo'], red: ['red', 'rule'], orange: ['orange', 'hint'], wait: ['orange', 'pending'] };
+            r.msgs.forEach(([k, m]) => add('addon.new.' + x.slug, LV[k][0], at + m, 'A', LV[k][1]));
           }
           else if (ADDON_HOLD[x.slug]) add('addon', 'red', at + ADDON_HOLD[x.slug], 'A');
           if (x.slug) seen.add(x.slug);
@@ -1486,7 +1527,8 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   }
 
   const api = { generate, pretty, beforeBuy, longImageGenerate, longImageValidate, compat, specs, faq, nbModel, LONG_FRAME, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
-    slugOf, addonKitFrom, useAddonKit, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD };
+    slugOf, addonKitFrom, useAddonKit, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
+    addonNewCheck, addonNewReady, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -1506,7 +1548,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   G.useAddonKit(KIT);
   var $ = function (id) { return document.getElementById(id); };
   var KEY = 'ln-addon-update-v1';
-  function today() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  var today = G.today;
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {   } }
   var st = Object.assign({ urls: '', extra: {}, who: '' }, load());
@@ -1514,16 +1556,14 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   var pg = { url: '', had: '', way: 'whole', whole: '', old: '', date: '', time: '' };
   var imgs = {};
   var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
-  var codeOfName = function (n) { var m = String(n || '').match(/【([A-Za-z0-9]+)】/); return m ? m[1].toLowerCase() : ''; };
   var money = function (n) { return Number(n).toLocaleString('en-US'); };
-  var num = function (x) { var t = String(x == null ? '' : x).replace(/[,\s]/g, ''); return /^\d+$/.test(t) && +t > 0 ? +t : null; };
 
   function checkImg(u) {
     if (!u || imgs[u]) return;
-    imgs[u] = 'loading';
+    imgs[u] = { state: 'loading' };
     var im = new Image();
-    im.onload = function () { imgs[u] = im.naturalWidth >= 200 && im.naturalHeight >= 200 ? 'ok' : 'bad'; render(); };
-    im.onerror = function () { imgs[u] = 'bad'; render(); };
+    im.onload = function () { imgs[u] = { state: 'ok', w: im.naturalWidth, h: im.naturalHeight }; render(); };
+    im.onerror = function () { imgs[u] = { state: 'error' }; render(); };
     im.src = u;
   }
 
@@ -1544,28 +1584,15 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
         return;
       }
 
-      var e = st.extra[x.slug] || (st.extra[x.slug] = { name: '', img: '', sale: '', orig: '', ok: '' });
+      var e = st.extra[x.slug] || (st.extra[x.slug] = G.ADDON_NEW0());
       it.form = e;
-      var near = KIT.cards.filter(function (c) { return codeOfName(c.name) && codeOfName(c.name) === x.slug.replace(/^【加價購】/, '').replace(/-\d+$/, ''); })[0];
-      if (near) it.msgs.push(['orange', '這像是一般賣場的網址。加價購要用加價購頁（' + near.name + '）的網址，確定要放一般賣場就照填']);
-      var sale = num(e.sale), orig = String(e.orig).trim() ? num(e.orig) : null;
-      if (!String(e.name).trim()) it.msgs.push(['todo', '填商品名']);
-      else if (!codeOfName(e.name)) it.msgs.push(['orange', '商品名後面加【編號】，像「…【B51】」']);
-      if (!String(e.img).trim()) it.msgs.push(['todo', '填圖片網址']);
-      else if (!/^https:\/\//.test(e.img.trim())) it.msgs.push(['red', '圖片網址要是 https:// 開頭的完整網址']);
-      else { checkImg(e.img.trim()); var s = imgs[e.img.trim()];
-        if (s === 'loading') it.msgs.push(['todo', '圖片載入中…']);
-        else if (s === 'bad') it.msgs.push(['red', '圖片載不出來，或小於 200×200。到商品頁右鍵複製圖片網址，網址結尾要是 original.jpg 這種']); }
-      if (!String(e.sale).trim()) it.msgs.push(['todo', '填加購價']);
-      else if (!sale) it.msgs.push(['red', '加購價只能填數字']);
-      if (String(e.orig).trim() && !orig) it.msgs.push(['red', '原價只能填數字（沒有原價就空著）']);
-      else if (sale && orig && orig <= sale) it.msgs.push(['orange', '原價沒有比加購價高，卡片上會看起來沒有折扣']);
-      if (e.ok !== today()) it.msgs.push(['todo', '打開連結確認價格，勾「價格我打開連結對過了」']);
-      var href = 'https://www.londonimg.tw/products/' + encodeURIComponent(x.slug);
-      if (String(e.name).trim() && sale && /^https:\/\//.test(String(e.img).trim())) {
-        it.data = { href: href, slug: x.slug, name: e.name.trim(), sale: sale, orig: orig };
-        try { it.html = G.addonCardFrom(KIT.cards[0].html, { href: href, img: e.img.trim(), name: e.name.trim(), sale: sale, orig: orig }); }
-        catch (err) { it.msgs.push(['red', '做不出這張卡（' + err.message + '），請找工具負責人']); it.html = ''; }
+      var img = String(e.img == null ? '' : e.img).trim();
+      if (/^https:\/\//.test(img)) checkImg(img);
+      var r = G.addonNewCheck(x.slug, e, { today: today(), img: imgs[img] });
+      r.msgs.forEach(function (m) { it.msgs.push([m[0] === 'wait' ? 'todo' : m[0], m[1]]); });
+      if (r.card) {
+        it.data = { href: r.card.href, slug: x.slug, name: r.card.name, sale: r.card.sale, orig: r.card.orig };
+        it.html = r.html;
       }
     });
     return out;
