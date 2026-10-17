@@ -1754,7 +1754,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
   const BB_HOLD = [[/9\s*H/i, '9H'], [/軍規/, '軍規'], [/保固/, '保固'], [/(^|[^A-Za-z])PC([^A-Za-z]|$)|聚碳酸酯/i, '背板材質（PC）']];
 
-  const BB_STALE = /NT\s*\$|\$\s*\d|\d\s*元|工作天|出貨/;
+  const BB_PRICE = /NT\s*\$|\$\s*\d|\d\s*元/;
+  const BB_SHIP = /工作天|出貨|到貨/;
   const sameQ = x => clean(x).replace(/[\s?？!！。，、：:．.「」（）()]/g, '').toLowerCase();
   function longImageValidate(s) {
     const out = [];
@@ -1773,7 +1774,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
         const both = clean(x.q) + ' ' + clean(x.a);
         const hold = BB_HOLD.filter(([re]) => re.test(both)).map(([, w]) => w);
         if (hold.length) add(k + '.a', 'orange', `寫到「${hold.join('、')}」：公司還在確認背板材質、保固、軍規這幾類說法，選購前先看先不要寫`, 'Before');
-        if (BB_STALE.test(both)) add(k + '.a', 'orange', '價格和出貨天數不要寫進卡片：檔期一換就過期', 'Before');
+        if (BB_PRICE.test(both)) add(k + '.a', 'orange', '價格不要寫進卡片：檔期一換就過期', 'Before');
+        if (BB_SHIP.test(both)) add(k + '.a', 'orange', '出貨、到貨天數不要寫進卡片：公司對這類說法目前先暫緩', 'Before');
         if (sameQ(x.q) && faqQs.has(sameQ(x.q))) add(k + '.q', 'orange', '下面「常見問題」也有這一題：選購前先看挑別的題目，不要講兩次', 'Before');
       });
     }

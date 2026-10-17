@@ -1723,7 +1723,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   const BB_HOLD = [[/9\s*H/i, '9H'], [/軍規/, '軍規'], [/保固/, '保固'], [/(^|[^A-Za-z])PC([^A-Za-z]|$)|聚碳酸酯/i, '背板材質（PC）']];
 
-  const BB_STALE = /NT\s*\$|\$\s*\d|\d\s*元|工作天|出貨/;
+  const BB_PRICE = /NT\s*\$|\$\s*\d|\d\s*元/;
+  const BB_SHIP = /工作天|出貨|到貨/;
   const sameQ = x => clean(x).replace(/[\s?？!！。，、：:．.「」（）()]/g, '').toLowerCase();
   function longImageValidate(s) {
     const out = [];
@@ -1742,7 +1743,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         const both = clean(x.q) + ' ' + clean(x.a);
         const hold = BB_HOLD.filter(([re]) => re.test(both)).map(([, w]) => w);
         if (hold.length) add(k + '.a', 'orange', `寫到「${hold.join('、')}」：公司還在確認背板材質、保固、軍規這幾類說法，選購前先看先不要寫`, 'Before');
-        if (BB_STALE.test(both)) add(k + '.a', 'orange', '價格和出貨天數不要寫進卡片：檔期一換就過期', 'Before');
+        if (BB_PRICE.test(both)) add(k + '.a', 'orange', '價格不要寫進卡片：檔期一換就過期', 'Before');
+        if (BB_SHIP.test(both)) add(k + '.a', 'orange', '出貨、到貨天數不要寫進卡片：公司對這類說法目前先暫緩', 'Before');
         if (sameQ(x.q) && faqQs.has(sameQ(x.q))) add(k + '.q', 'orange', '下面「常見問題」也有這一題：選購前先看挑別的題目，不要講兩次', 'Before');
       });
     }
@@ -1916,8 +1918,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     ['機型照這個商品購買區的規格選單數。', '每個商品各數各的，不要從別頁抄。'],
     ['公司自己的說法（頁面上沒有測試依據的），照原句的強度寫。', '不要在前面加「不容易。」這種下結論的字。'],
     ['講到別的商品（例如加購的玻璃貼），只講你確認過的那一款。', '那一款缺某些機型，就不要寫「點進去可以選機型」。'],
-    ['第一句就回答，句子裡寫出商品的短名。', '例如「明岳殼支援 MagSafe」。'],
-    ['價格和出貨天數不要寫進卡片。', '檔期一換就過期。'],
+    ['講商品本身能不能用、適不適用的卡，第一句就回答，並寫出商品的短名。', '例如「明岳殼支援 MagSafe」：卡片被單獨摘走時，才知道在講哪個商品。例外：商品名一放上去，句子就變成公司沒給依據的保證時，不要放。例如「明岳殼適合怕變黃的人」讀起來像保證不會變黃，所以下面範例第 3 張沒寫商品名。'],
+    ['價格和出貨、到貨天數都不要寫進卡片。', '價格：檔期一換就過期。出貨、到貨天數：公司對這類說法目前先暫緩。'],
   ];
   const BB_PH = [
     ['例：支援 MagSafe 嗎？', '例：明岳殼支援 MagSafe，殼裡內建強化磁圈。'],
@@ -1936,7 +1938,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       const advice = h('details', { class: 'advice', open: true },
         h('summary', null, h('b', null, '怎麼寫'), '寫之前先看這 10 條'),
         h('ol', null, ...ADVICE.map(([a, b]) => h('li', null, h('b', null, a), b))),
-        h('p', { class: 'advice-foot' }, '工具會幫你抓：寫到 9H、軍規、保固、PC、價格、出貨，或跟下面常見問題同一題，欄位底下會出現藍灰色的提醒（不擋複製，但請照著改）。'));
+        h('p', { class: 'advice-foot' }, '工具會幫你抓：寫到 9H、軍規、保固、PC、價格、出貨、到貨，或跟下面常見問題同一題，欄位底下會出現藍灰色的提醒（不擋複製，但請照著改）。'));
       const items = state.before.map((x, i) => h('div', { class: 'item' },
         h('div', { class: 'ih' }, h('b', null, '第 ' + (i + 1) + ' 張'), h('span', { class: 'sp' }),
           state.before.length > 1 ? removeBtn(() => removeAt(state.before, i, `選購前先看第 ${i + 1} 張`), `刪掉選購前先看第 ${i + 1} 張`) : null),
