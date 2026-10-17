@@ -1637,7 +1637,8 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
 
     var keep = {};
     [].slice.call(box.querySelectorAll('[data-slug]')).forEach(function (n) { keep[n.getAttribute('data-slug')] = n; });
-    var frag = document.createDocumentFragment();
+
+    var at = box.firstChild;
     items.forEach(function (it, i) {
       var key = (it.x.slug || 'bad') + '#' + i, n = keep[key];
       if (!n) { n = document.createElement('div'); n.setAttribute('data-slug', key); n.className = 'au-item'; if (it.form) buildForm(n, it); }
@@ -1653,10 +1654,9 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       paintMsg(msg, it.msgs);
       var cb = it.form && n.querySelector('[data-k="ok"]');
       if (cb) cb.checked = it.form.ok === today();
-      frag.appendChild(n);
+      if (n === at) at = at.nextSibling; else box.insertBefore(n, at);
     });
-    box.innerHTML = '';
-    box.appendChild(frag);
+    while (at) { var nx = at.nextSibling; box.removeChild(at); at = nx; }
 
     var block = good.length ? G.addonAssemble(good.map(function (it) { return it.html; })) : '';
     var pv = $('au-preview');
