@@ -31,6 +31,11 @@ product-page/*
 !product-page/product-page-guide.css
 !product-page/product-page-guide.js
 !product-page/2026-10-10_product-page-guide-blocks.html
+!product-page/2026-10-10-blocks/
+product-page/2026-10-10-blocks/*
+!product-page/2026-10-10-blocks/index.html
+!product-page/2026-10-10-blocks/product-page-guide.css
+!product-page/2026-10-10-blocks/product-page-guide.js
 
 # ── 4) 例外：Skill 下載包與本體 ──
 !product-page/londonimg-product.zip
