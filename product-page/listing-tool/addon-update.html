@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>上架工具｜加價購區更新器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+/* 只有加價購區更新器這一頁用 */
+.au-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin:10px 0}
+.au-btn{min-height:44px;padding:8px 16px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--ink);font:inherit;cursor:pointer}
+.au-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.au-btn:disabled{opacity:.5;cursor:not-allowed}
+.au-btn:focus-visible,.au-input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.dl-btn.au-copy{border:0;cursor:pointer;min-height:44px}
+.dl-btn.au-copy:disabled{filter:grayscale(1);opacity:.55;cursor:not-allowed;box-shadow:none}
+#au-next{border:0;cursor:pointer;min-height:44px}
+.au-label{display:block;margin:14px 0 6px;font-weight:600}
+.au-input{display:block;width:100%;box-sizing:border-box;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff;color:var(--ink);font:15px/1.5 var(--font-b)}
+.au-short{max-width:260px}
+.au-mono{font:13px/1.5 ui-monospace,Menlo,Consolas,monospace}
+.au-pair{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.au-q{border:0;margin:16px 0 0;padding:0}
+.au-q legend{font-weight:600;margin:0 0 6px}
+.au-opt{display:inline-flex;align-items:center;gap:8px;min-height:44px;margin:0 18px 0 0;cursor:pointer}
+.au-check{margin-top:6px}
+.au-items{margin:10px 0 0}
+.au-item{border:1px solid var(--border);border-radius:12px;padding:10px 12px;margin:0 0 8px;background:#fff}
+.au-item-h{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 10px}
+.au-pos{color:var(--faint);min-width:1.2em}
+.au-tag{font-size:12px;padding:1px 8px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.au-tag.au-new{background:#fff4e5;color:var(--orange)}
+.au-name{font-weight:600}
+.au-price{color:#fe5226;font-weight:600}
+.au-price s{color:var(--faint);font-weight:400;margin-left:4px}
+.au-form{margin:8px 0 0;padding:4px 0 0;border-top:1px dashed var(--border)}
+.au-m{font-size:14px;margin:4px 0 0;line-height:1.55}
+.au-red{color:var(--red)} .au-orange{color:var(--orange)} .au-todo{color:var(--muted)} .au-ok{color:var(--ok);font-weight:600}
+.au-msg{min-height:20px}
+.au-h3{margin:18px 0 4px;font-size:16px}
+.au-preview{display:block;width:100%;height:330px;border:1px solid var(--border);border-radius:12px;background:#fff}
+.au-next{margin-top:18px}
+.au-nowrap{white-space:nowrap}
+@media(max-width:520px){.au-pair{grid-template-columns:1fr}.au-nowrap{white-space:normal;word-break:break-all}}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <a class="brand" href="./" title="回到上架工具">
+      <img class="brand-logo" src="https://shoplineimg.com/57975b626170691220930c00/5f7ee62005a89e001d7bc417/1200x.webp?source_format=png" alt="倫敦印象">
+      <div class="txt">上架工具<small>給同事的說明</small></div>
+    </a>
+    <button type="button" class="hamburger" aria-label="開關選單" aria-expanded="false" aria-controls="site-nav">
+      <svg class="ic ham-open" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <svg class="ic ham-close" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="6" y1="18" x2="18" y2="6"/></svg>
+    </button>
+    <nav class="nav" id="site-nav" aria-label="網站選單">
+      <a href="./"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="9" x2="9" y2="20"/></svg><span>上架工具</span></a>
+      <a href="guide.html"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg><span>第一次用說明</span></a>
+      <a href="addon-update.html" aria-current="page"><svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>加價購區</span></a>
+    </nav>
+    <div class="side-foot">每半個月換加價購商品，一律在這一頁產生語法。</div>
+  </aside>
+
+  <main class="content">
+  <div class="hero">
+    <span class="hero-eyebrow">加價購區</span>
+    <h1 class="hero-title">加價購區更新器</h1>
+    <p class="hero-sub">商品描述最上面那一排橫滑的加價購卡片。貼上這次要放的商品網址，工具產出整段語法，你再到後台把舊的那段換掉。一次換很多頁時，卡片填一次就好，然後一頁一頁換。</p>
+  </div>
+
+  <div class="callout warn"><span class="key">iPhone 18 專頁的 35 個賣場不要貼這個區塊。</span></div>
+
+  <section class="card" id="cards">
+    <h2 class="card-h"><span class="num">1</span>這次要放的卡</h2>
+    <p>一行貼一個加價購商品的網址，順序就是卡片從左到右的順序。手機殼那一組、Z35 錶帶頁那一組，可以直接按下面的按鈕帶入。</p>
+    <div class="au-row">
+      <button type="button" class="au-btn" id="au-preset-phone">帶入手機殼這一組</button>
+      <button type="button" class="au-btn" id="au-preset-watch" disabled title="錶帶組的卡片還在整理，這個按鈕之後會打開">錶帶這一組（準備中）</button>
+    </div>
+    <label class="au-label" for="au-urls">加價購商品網址（一行一個）</label>
+    <textarea id="au-urls" class="au-input au-mono" rows="7" spellcheck="false" placeholder="https://www.londonimg.tw/products/..."></textarea>
+    <div id="au-items" class="au-items" aria-live="polite"></div>
+    <p class="fhint" id="au-kit-note"></p>
+    <h3 class="au-h3">預覽</h3>
+    <p class="fhint">只是大概的樣子，實際以前台為準（前台的英文和數字是網站字體）。</p>
+    <iframe id="au-preview" class="au-preview" title="加價購區預覽"></iframe>
+  </section>
+
+  <section class="card" id="page">
+    <h2 class="card-h"><span class="num">2</span>這一頁</h2>
+    <label class="au-label" for="au-page">這一頁的前台網址</label>
+    <input id="au-page" class="au-input" type="url" spellcheck="false" placeholder="https://www.londonimg.tw/products/...">
+    <div id="au-page-msg" class="au-msg"></div>
+    <label class="au-label" for="au-who">你的名字（記在換品紀錄裡）</label>
+    <input id="au-who" class="au-input au-short" type="text">
+    <fieldset class="au-q">
+      <legend>這一頁的商品描述裡，原本有加價購區嗎？</legend>
+      <label class="au-opt"><input type="radio" name="au-had" value="yes"> 有，要換掉</label>
+      <label class="au-opt"><input type="radio" name="au-had" value="no"> 沒有，第一次放</label>
+    </fieldset>
+    <p class="fhint">【ZZ35】（/products/z35）最上面有舊的圖片版加價購區（三張圖）：那個不算，第一次放選「沒有」，新的貼在它上面，舊的三張圖留著。</p>
+    <p class="fhint">算成效的 8 頁（B67、K50s、S12、D12、D43、B53、Z19、N08）要放同一組卡、同樣的順序。鏡頭環 N08、冰盾貼 Z19 這兩頁，區塊裡有一張連回自己的卡，留著。</p>
+    <div id="au-old-wrap" hidden>
+      <fieldset class="au-q">
+        <legend>用哪一種方法換？</legend>
+        <label class="au-opt"><input type="radio" name="au-way" value="whole" checked> 整段描述貼進來（建議）</label>
+        <label class="au-opt"><input type="radio" name="au-way" value="block"> 只選舊的加價購區</label>
+      </fieldset>
+      <div id="au-whole-wrap">
+        <ol class="steps">
+          <li>後台打開這個商品 → 商品描述 → HTML 原始碼。</li>
+          <li>點一下那一格裡面，按 ⌘A 全選（只會選到格子裡的字），再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）。</li>
+          <li>貼到下面這一格。工具只換加價購區，其他的字一個都不動，會在下面告訴你。</li>
+        </ol>
+        <label class="au-label" for="au-whole">整段商品描述（HTML 原始碼）</label>
+        <textarea id="au-whole" class="au-input au-mono" rows="5" spellcheck="false"></textarea>
+        <div id="au-whole-msg" class="au-msg" aria-live="polite"></div>
+      </div>
+      <div id="au-block-wrap" hidden>
+        <p class="fhint">整段貼不進來、或工具說找不到加價購區的時候，才用這個方法。</p>
+        <ol class="steps">
+          <li>後台打開這個商品 → 商品描述 → HTML 原始碼。</li>
+          <li>找到 <code>&lt;div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip"&gt;</code> 這一串（clip 後面直接是 <code>"&gt;</code>），從它最前面的 <code>&lt;</code> 開始，往下選到加價購區的結尾（最後一張卡後面的幾個 <code>&lt;/div&gt;</code>），按 ⌘C（Windows 是 Ctrl+C）。上架工具做的頁，最前面還有一個很像的整頁外框（後面多了 background 等設定），不是那一個。</li>
+          <li>貼到下面這一格，工具會告訴你選得對不對。不用自己數 <code>&lt;/div&gt;</code>，每一頁的結尾不一樣，工具會算。</li>
+        </ol>
+        <label class="au-label" for="au-old">選好的舊區塊</label>
+        <textarea id="au-old" class="au-input au-mono" rows="5" spellcheck="false"></textarea>
+        <div id="au-old-msg" class="au-msg" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="copy">
+    <h2 class="card-h"><span class="num">3</span>複製，貼回後台</h2>
+    <div id="au-todo" class="au-msg" aria-live="polite"></div>
+    <div class="au-row">
+      <button type="button" class="dl-btn au-copy" id="au-copy" disabled>複製語法</button>
+      <span id="au-copy-msg" class="au-msg"></span>
+    </div>
+    <ol class="steps" id="au-steps-whole">
+      <li>回到後台的 HTML 原始碼，點一下那一格裡面，按 ⌘A 全選，再按 ⌘V，整段換成工具給的。</li>
+      <li>存檔，記下存檔的日期和時間。</li>
+      <li>用手機打開前台看：卡片都在、可以滑到最後一張；「Add-on Deals」只出現一次；下面原本的內容都還在。</li>
+    </ol>
+    <ol class="steps" id="au-steps-yes" hidden>
+      <li>回到後台的 HTML 原始碼。剛剛選的那段如果還反白，直接按 ⌘V 貼上。</li>
+      <li>反白不見了，就照剛剛的範圍重選一次（工具上面說「選得剛好」的那一段），再按 ⌘V。</li>
+      <li>存檔，記下存檔的日期和時間。</li>
+      <li>用手機打開前台看：卡片都在、可以滑到最後一張；「Add-on Deals」只出現一次；下面原本的內容都還在。</li>
+    </ol>
+    <ol class="steps" id="au-steps-no" hidden>
+      <li>後台打開這個商品 → 商品描述 → HTML 原始碼，游標放在最前面（第一行的第一個字前面），按 ⌘V。</li>
+      <li>存檔，記下存檔的日期和時間。</li>
+      <li>用手機打開前台看：卡片都在、可以滑到最後一張；「Add-on Deals」只出現一次；下面原本的內容都還在。</li>
+    </ol>
+  </section>
+
+  <section class="card" id="log">
+    <h2 class="card-h"><span class="num">4</span>換品紀錄</h2>
+    <p>每換完一頁，填後台存檔的日期和時間，複製這一列傳給工具負責人。算成效要從每一頁換上去的那天開始算。</p>
+    <div class="au-pair">
+      <label class="au-label">後台存檔的日期<input id="au-date" class="au-input" type="date"></label>
+      <label class="au-label">後台存檔的時間（到分）<input id="au-time" class="au-input" type="time"></label>
+    </div>
+    <div id="au-log-todo" class="au-msg" aria-live="polite"></div>
+    <textarea id="au-log" class="au-input au-mono" rows="2" readonly aria-label="換品紀錄這一列（用 tab 分格）"></textarea>
+    <div class="au-row"><button type="button" class="au-btn" id="au-log-copy">複製這一列</button><span id="au-log-msg" class="au-msg"></span></div>
+    <p>這次的卡片清單（同一組卡只要傳一次）：</p>
+    <textarea id="au-set" class="au-input au-mono" rows="4" readonly aria-label="這次的卡片清單（用 tab 分格）"></textarea>
+    <div class="au-row"><button type="button" class="au-btn" id="au-set-copy">複製卡片清單</button><span id="au-set-msg" class="au-msg"></span></div>
+    <div class="au-row au-next"><button type="button" class="dl-btn" id="au-next">換下一頁</button><span class="fhint">卡片和名字留著，只清掉這一頁的網址和舊區塊。</span></div>
+  </section>
+  </main>
+</div>
+<script>window.LN_ADDON_KIT = {"head":"<div style=\"position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip\"><div style=\"border-top:1px solid #ededed;padding:clamp(12px,3vw,20px) 0 16px\"><div style=\"text-align:center;padding:0 24px;margin:0\"><h2 style=\"padding:0;text-transform:none;font-size:clamp(25px,calc(25px + (100vw - 767px)*999),36px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;text-align:center;color:#1d1f23\">加價購，省更多</h2><div style=\"font-size:clamp(14px,calc(14px + (100vw - 767px)*999),16px);font-weight:400;line-height:1.4;margin:0 0 clamp(20px,calc(20px + (100vw - 767px)*999),32px);font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;text-align:center;color:#fe5226\">Add-on Deals</div></div><div style=\"overflow-x:auto;text-align:center;padding:0 0 8px;white-space:nowrap\"><div style=\"display:inline-flex;flex-wrap:nowrap;padding:0 24px;text-align:left;vertical-align:top\">","tail":"</div></div></div></div>","cards":[{"slug":"【加價購】n08","href":"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08","name":"耐磨鏡頭玻璃金屬環【N08】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg\" alt=\"耐磨鏡頭玻璃金屬環【N08】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">耐磨鏡頭玻璃金屬環【N08】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""},{"slug":"b147-1","href":"https://www.londonimg.tw/products/b147-1","name":"不挑殼 Pro 隱形鏡頭組底膜【B147】","sale":99,"orig":100,"html":"<a href=\"https://www.londonimg.tw/products/b147-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/6aa251a61a78a82d5d69c7a7/original.jpg?1789022630=&amp;owner_id=57975b626170691220930c00\" alt=\"不挑殼 Pro 隱形鏡頭組底膜【B147】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">不挑殼 Pro 隱形鏡頭組底膜【B147】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$99</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$100</span></div></div></a>","variant":""},{"slug":"z19-8","href":"https://www.londonimg.tw/products/z19-8","name":"瞬貼無痕極地冰盾貼【Z19】","sale":349,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/z19-8\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg\" alt=\"瞬貼無痕極地冰盾貼【Z19】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">瞬貼無痕極地冰盾貼【Z19】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b51-2","href":"https://www.londonimg.tw/products/b51-2","name":"IceRen 手機掛繩＋送夾片【B51】","sale":200,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/b51-2\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/64bf7416b98c2700148e354b/400x.webp?source_format=jpeg\" alt=\"IceRen 手機掛繩＋送夾片【B51】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">IceRen 手機掛繩＋送夾片【B51】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$200</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b57-1","href":"https://www.londonimg.tw/products/b57-1","name":"HANG 22W 雙孔快充頭＋PD 快充線【B57】","sale":479,"orig":790,"html":"<a href=\"https://www.londonimg.tw/products/b57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg\" alt=\"HANG 22W 雙孔快充頭＋PD 快充線【B57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">HANG 22W 雙孔快充頭＋PD 快充線【B57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$790</span></div></div></a>","variant":""},{"slug":"t57-1","href":"https://www.londonimg.tw/products/t57-1","name":"iPhone 磁吸四合一快充線【T57】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/t57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/68807839047bdd000a8a9180/original.png?1753249848=&amp;owner_id=57975b626170691220930c00\" alt=\"iPhone 磁吸四合一快充線【T57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">iPhone 磁吸四合一快充線【T57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":"1M"},{"slug":"t61-1","href":"https://www.londonimg.tw/products/t61-1","name":"30W 單孔 PD 快充頭【T61】","sale":189,"orig":450,"html":"<a href=\"https://www.londonimg.tw/products/t61-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/6894695ca1787800182812ba/400x.webp?source_format=jpeg\" alt=\"30W 單孔 PD 快充頭【T61】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">30W 單孔 PD 快充頭【T61】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$189</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$450</span></div></div></a>","variant":"30W 單孔"},{"slug":"s75","href":"https://www.londonimg.tw/products/s75","name":"安心扣 全球定位器 AirTag 平替【S75】","sale":479,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/s75\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/67ecf39d5d18a9000cb42ccc/400x.webp?source_format=jpeg\" alt=\"安心扣 全球定位器 AirTag 平替【S75】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">安心扣 全球定位器 AirTag 平替【S75】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""}],"check":{"at":"2026-10-17"}};
+window.LN_ADDON_WATCH = {"cards":[{"slug":"s06","href":"https://www.londonimg.tw/products/s06","name":"Apple Watch 無線充電底座【S06】","sale":99,"orig":290,"html":"<a href=\"https://www.londonimg.tw/products/s06\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/66dff3ad7d4868000d50ba9b/original.png?1725952941\" alt=\"Apple Watch 無線充電底座【S06】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">Apple Watch 無線充電底座【S06】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$99</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$290</span></div></div></a>","variant":""},{"slug":"z33","href":"https://www.londonimg.tw/products/z33","name":"未來錶 Apple Watch 金屬錶帶【Z33】","sale":790,"orig":990,"html":"<a href=\"https://www.londonimg.tw/products/z33\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/661ce11db0c98d002383d731/original.jpg?1713168668\" alt=\"未來錶 Apple Watch 金屬錶帶【Z33】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">未來錶 Apple Watch 金屬錶帶【Z33】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$790</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$990</span></div></div></a>","variant":""},{"slug":"【加價購】z34","href":"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91z34","name":"未來錶 Apple Watch 金屬錶框【Z34】","sale":290,"orig":490,"html":"<a href=\"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91z34\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/661e3e682c6343000e8689ef/original.jpg?1713258088\" alt=\"未來錶 Apple Watch 金屬錶框【Z34】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">未來錶 Apple Watch 金屬錶框【Z34】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$290</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$490</span></div></div></a>","variant":""}],"chars":5672,"sha":"1f7cf1d5426b6d3a","check":{"at":"2026-10-17"}};
+window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"b51-2":true,"b57-1":true,"t57-1":true,"t61-1":true,"s75":false,"s06":true,"z33":false,"【加價購】z34":true};</script>
+<script>
+
+
+(function (root) {
+  'use strict';
+
+  const R = (a, b) => `clamp(${a}px,calc(${a}px + (100vw - 767px)*999),${b}px)`;
+
+  const BODY_D = 18;
+  const COL = 'clamp(1080px,calc(100vw - 200px),1410px)';
+  const clean = s => String(s == null ? '' : s).replace(/\s*[\r\n]+\s*/g, ' ').trim();
+  const esc = s => clean(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const escA = s => esc(s).replace(/"/g, '&quot;');
+
+  const width = s => Math.ceil([...clean(s)].reduce((n, c) => n + (c.charCodeAt(0) <= 0x7f ? 0.5 : 1), 0));
+
+  const pos = p => {
+    const t = clean(p);
+    if (t === '') return 'center';
+    const n = parseFloat(t);
+    return Number.isFinite(n) ? `center ${n}%` : 'center';
+  };
+
+  const YT_ID = /^[A-Za-z0-9_-]{11}$/;
+  function youtubeId(input) {
+    const t = clean(input);
+    if (YT_ID.test(t)) return t;
+    let m = t.match(/[?&]v=([A-Za-z0-9_-]{11})/);
+    if (m) return m[1];
+    m = t.match(/(?:youtu\.be\/|\/shorts\/|\/embed\/|\/live\/)([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : '';
+  }
+
+  function normalize(html) {
+    return String(html)
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/\r/g, '').replace(/\n/g, '')
+      .replace(/>\s+</g, '><')
+      .trim();
+  }
+
+  const ADDON_A0 = '<!-- 加價購區：開始 -->', ADDON_A1 = '<!-- 加價購區：結束 -->';
+  let KIT = root.LN_ADDON_KIT || null;
+  function useAddonKit(k) { KIT = k || null; }
+
+  let ADDON_HEAD_CHECK = true;
+  function useAddonHeadCheck(v) { ADDON_HEAD_CHECK = !!v; }
+
+  const ADDON_HOLD = {
+    s75: '安心扣【S75】先不要放：加價購頁和加購價還沒好，到齊才放。這張不會出現，把這一行刪掉',
+  };
+  const unesc = x => String(x).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
+
+  function slugOf(u) {
+    let t = String(u || '').trim();
+    if (!t) return null;
+    const i = t.toLowerCase().indexOf('/products/');
+    if (i >= 0) {
+      const host = t.slice(0, i).replace(/^[a-z]+:\/\//i, '').toLowerCase();
+
+      if (host && (!/^[a-z0-9.-]+$/.test(host) || !/(^|\.)londonimg\.(tw|com)$/.test(host))) return null;
+      t = t.slice(i + '/products/'.length);
+    } else if (/[\/:]/.test(t)) return null;
+    t = t.split(/[?#]/)[0].replace(/\/+$/, '');
+    try { t = decodeURIComponent(t); } catch (e) {   }
+    return t && !t.includes('/') ? t.toLowerCase() : null;
+  }
+
+  const normalizeAddon = html => normalize(String(html).replace(/<\/span>\s+<span/g, '</span>\u0001<span')).replace(/\u0001/g, ' ');
+
+  function addonKitFrom(text) {
+    const a = text.indexOf(ADDON_A0), b = text.indexOf(ADDON_A1);
+    if (a < 0 || b < a) throw new Error('定版檔找不到「加價購區：開始／結束」');
+    const seg = normalizeAddon(text.slice(a + ADDON_A0.length, b));
+    const first = seg.indexOf('<a '), last = seg.lastIndexOf('</a>') + 4;
+    if (first < 0 || last < first) throw new Error('定版檔的加價購區裡沒有卡片');
+    const mid = seg.slice(first, last), cards = [];
+    const re = /<a [^>]*href="([^"]+)"[^>]*>[\s\S]*?<\/a>/g;
+    let m, pos = 0;
+    while ((m = re.exec(mid))) {
+      if (m.index !== pos) throw new Error('加價購卡片之間有認不出來的東西');
+      pos = re.lastIndex;
+      const h = m[0], pick = r => { const x = h.match(r); return x ? x[1] : ''; };
+      const num = x => +String(x).replace(/,/g, '') || null;
+      cards.push({
+        slug: slugOf(m[1]), href: m[1], name: unesc(pick(/-webkit-box-orient:vertical">([^<]*)</)),
+        sale: num(pick(/color:#fe5226">NT\$([0-9,]+)</)), orig: num(pick(/line-through">NT\$([0-9,]+)</)), html: h,
+      });
+    }
+    if (pos !== mid.length) throw new Error('最後一張加價購卡片後面有認不出來的東西');
+    const bad = cards.find(c => !c.slug || !c.name || !c.sale);
+    if (bad) throw new Error('有一張加價購卡片讀不到網址、名稱或加購價：' + bad.href);
+    return { head: seg.slice(0, first), tail: seg.slice(last), cards };
+  }
+
+  const addonText = t => String(t || '').replace(/<((?:https?:\/\/|www\.)[^<>\s]*)>/gi, '$1');
+  const addonMode = t => { const x = addonText(t); return clean(x) === '' ? 'none' : x.includes('<') ? 'html' : 'urls'; };
+
+  function strayText(html) {
+    let depth = 0, out = '';
+    const re = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>|([^<]+)|</g;
+    let m;
+    while ((m = re.exec(html))) {
+      if (m[2]) { if (!VOID_TAGS.has(m[2].toLowerCase()) && !/\/\s*$/.test(m[3])) depth = Math.max(0, depth + (m[1] ? -1 : 1)); }
+      else if (depth === 0) out += m[4] != null ? m[4] : '<';
+    }
+    return clean(out);
+  }
+
+  const codeOf = c => { const m = c.name.match(/【([A-Za-z0-9]+)】/); return m ? m[1].toLowerCase() : null; };
+
+  const addonOn = s => (s.on && typeof s.on.addon === 'boolean') ? s.on.addon : addonMode(s.addon) !== 'none';
+
+  function addonItems(t) {
+    return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {
+      const slug = slugOf(raw);
+      return { raw, slug, line: i + 1, card: slug && KIT ? KIT.cards.find(c => c.slug === slug) || null : null };
+    }));
+  }
+
+  function addonHtml(s) {
+    if (!addonOn(s)) return '';
+    const t = String(s.addon || ''), mode = addonMode(t);
+    if (mode === 'html') return normalizeAddon(addonText(t));
+    if (mode !== 'urls' || !KIT) return '';
+    const seen = new Set(), cards = [];
+    addonItems(t).forEach(x => {
+      if (!x.card || seen.has(x.slug) || ADDON_HOLD[x.slug]) return;
+      seen.add(x.slug); cards.push(x.card.html);
+    });
+    return addonAssemble(cards);
+  }
+
+  function addonAssemble(cards) {
+    const gapped = cards.map((h, i) => h.replace(/^(<a [^>]*?)margin-right:(?:12px|0)/, '$1margin-right:' + (i === cards.length - 1 ? '0' : '12px')));
+    return gapped.length && KIT ? KIT.head + gapped.join('') + KIT.tail : '';
+  }
+
+  const escAttr = x => String(x).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const escText = x => String(x).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const money = n => Number(n).toLocaleString('en-US');
+  function addonCardFrom(tpl, c) {
+
+    const sub = (h, re, rep, what) => { if (!re.test(h)) throw new Error('加價購卡片模板找不到' + what); return h.replace(re, rep); };
+    let h = tpl;
+    h = sub(h, /^(<a [^>]*?)href="[^"]*"/, (m, a) => a + 'href="' + escAttr(c.href) + '"', '連結');
+    h = sub(h, /(<img [^>]*?)src="[^"]*"/, (m, a) => a + 'src="' + escAttr(c.img) + '"', '圖片網址');
+    h = sub(h, /(<img [^>]*?)alt="[^"]*"/, (m, a) => a + 'alt="' + escAttr(c.name) + '"', '圖片說明');
+    h = sub(h, /(-webkit-box-orient:vertical">)[^<]*/, (m, a) => a + escText(c.name), '商品名');
+    h = sub(h, /(color:#fe5226">NT\$)[0-9,]+/, (m, a) => a + money(c.sale), '加購價');
+    h = c.orig ? sub(h, /(line-through">NT\$)[0-9,]+/, (m, a) => a + money(c.orig), '原價')
+      : sub(h, / ?<span [^>]*line-through[^>]*>NT\$[0-9,]+<\/span>/, '', '原價');
+    return h;
+  }
+
+  const ADDON_WRAP = 'position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip';
+  function addonOldCheck(text) {
+    const t = String(text || '');
+    if (!t.trim()) return { kind: 'empty' };
+    const re = /<!--[\s\S]*?-->|<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g;
+
+    const TAG = /<(?:"[^"]*"|'[^']*'|[^'">])*>/g;
+    const ZW = /[\u200b-\u200d\ufeff]|&#8203;|&#x200b;/gi;
+    const peek = x => { const y = x.replace(TAG, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim(); return y ? (y.length > 30 ? y.slice(0, 30) + '…' : y) : (/<img/i.test(x) ? '一張圖' : /<iframe/i.test(x) ? '一段影片' : '空白行'); };
+    let m = re.exec(t);
+    while (m && !m[2]) m = re.exec(t);
+    if (!m) return { kind: 'plain' };
+    const pre = t.slice(0, m.index).replace(/<!--[\s\S]*?-->/g, '');
+    const first = m[0], isOuter = m[2].toLowerCase() === 'div' && !m[1] && /width:\s*100vw/i.test(first) && /overflow-x:\s*clip/i.test(first);
+
+    if (pre.trim() && /^\s*[a-z][a-z0-9]*\s[^<]*=[^<]*>\s*$/i.test(pre)) return { kind: 'cut' };
+    if (pre.trim()) return { kind: 'before', at: peek(pre) };
+    if (!isOuter) {
+
+      const w = t.search(/<div\s+style\s*=\s*"[^"]*width:\s*100vw[^"]*overflow-x:\s*clip[^"]*"\s*>/i);
+      if (w > 0 && /Add-on Deals/.test(t.slice(w))) return { kind: 'before', at: peek(t.slice(0, w)) };
+      if (!/Add-on Deals/.test(t) && /\/products\//.test(t)) return { kind: 'late' };
+      return { kind: /Add-on Deals/.test(t) ? 'start' : 'notaddon' };
+    }
+
+    const decl = x => x.replace(/\s+/g, '').toLowerCase().split(';').filter(Boolean).sort().join(';');
+    const style = (first.match(/style\s*=\s*"([^"]*)"/i) || first.match(/style\s*=\s*'([^']*)'/i) || [])[1] || '';
+    if (decl(style) !== decl(ADDON_WRAP)) return { kind: 'outer' };
+    const stack = [m[2].toLowerCase()];
+    let end = -1;
+    while ((m = re.exec(t))) {
+      if (!m[2]) continue;
+      const tag = m[2].toLowerCase();
+      if (VOID_TAGS.has(tag) || /\/\s*$/.test(m[3])) continue;
+      if (!m[1]) { stack.push(tag); continue; }
+      if (stack[stack.length - 1] !== tag) return { kind: 'broken', at: peek(t.slice(m.index, m.index + 60)) };
+      stack.pop();
+      if (!stack.length) { end = re.lastIndex; break; }
+    }
+    if (end < 0) {
+      const divs = stack.filter(x => x === 'div').length;
+      return { kind: 'short', missing: stack.length, divs, others: stack.length - divs };
+    }
+    const block = t.slice(0, end), rest = t.slice(end);
+    const n = (block.match(/Add-on Deals/g) || []).length;
+    if (n === 0) return { kind: 'notaddon' };
+    if (n > 1) return { kind: 'two' };
+    if (rest.replace(/<!--[\s\S]*?-->/g, '').trim()) return { kind: 'extra', at: peek(rest) };
+
+    const left = block.replace(/<a\b(?:"[^"]*"|'[^']*'|[^'">])*>[\s\S]*?<\/a>/gi, ' ').replace(/<!--[\s\S]*?-->/g, ' ').replace(TAG, ' ').replace(/&nbsp;/g, ' ').replace(ZW, '')
+      .replace(/Add-on Deals|加價購，省更多|結帳前一起帶，配件一次補齊/g, ' ').replace(/\s+/g, ' ').trim();
+    if (left) return { kind: 'toomuch', at: left.length > 30 ? left.slice(0, 30) + '…' : left };
+    const num = x => +String(x || '').replace(/[,\s]/g, '') || null;
+    const cards = (block.match(/<a\b[^>]*>[\s\S]*?<\/a>/gi) || []).map(h => {
+
+      const href = (h.match(/href\s*=\s*"([^"]*)"/i) || h.match(/href\s*=\s*'([^']*)'/i) || [])[1] || '';
+      const name = ((h.match(/-webkit-box-orient:\s*vertical[^"'>]*["']\s*>([^<]*)</i) || h.match(/alt\s*=\s*"([^"]*)"/i) || h.match(/alt\s*=\s*'([^']*)'/i) || [])[1] || '').trim();
+      const SALE = /(?:#fe5226|rgb\(\s*254\s*,\s*82\s*,\s*38\s*\))[^"'>]*["']\s*>\s*NT\$\s*([0-9,]+)/i;
+      return { href: unesc(href), slug: slugOf(unesc(href)) || '', name: unesc(name),
+        sale: num((h.match(SALE) || [])[1]),
+        orig: num((h.match(/line-through[^"'>]*["']\s*>\s*NT\$\s*([0-9,]+)/i) || [])[1]) };
+    });
+    return { kind: 'ok', cards, spacer: /empty\.jpg/i.test(block), chars: block.length };
+  }
+
+  const wrapDecl = x => String(x).replace(/\s+/g, '').toLowerCase().split(';').filter(Boolean).sort().join(';');
+  function addonFindIn(text) {
+    const t = String(text || '');
+    if (!t.trim()) return { kind: 'empty' };
+    if (!/<[a-zA-Z]/.test(t)) return { kind: 'plain' };
+    const open = /<div\b((?:"[^"]*"|'[^']*'|[^'">])*)>/gi, hits = [];
+    let m;
+    while ((m = open.exec(t))) {
+      const st = (m[1].match(/style\s*=\s*"([^"]*)"/i) || m[1].match(/style\s*=\s*'([^']*)'/i) || [])[1];
+      if (st != null && wrapDecl(st) === wrapDecl(ADDON_WRAP)) hits.push(m.index);
+    }
+    if (!hits.length) return { kind: /Add-on Deals/.test(t) ? 'nowrap' : 'none' };
+    if (hits.length > 1) return { kind: 'two' };
+    const at = hits[0], re = /<!--[\s\S]*?-->|<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g;
+    re.lastIndex = at;
+    const stack = [];
+    let end = -1;
+    while ((m = re.exec(t))) {
+      if (!m[2]) continue;
+      const tag = m[2].toLowerCase();
+      if (VOID_TAGS.has(tag) || /\/\s*$/.test(m[3])) continue;
+      if (!m[1]) { stack.push(tag); continue; }
+      if (stack[stack.length - 1] !== tag) return { kind: 'broken' };
+      stack.pop();
+      if (!stack.length) { end = re.lastIndex; break; }
+    }
+    if (end < 0) return { kind: 'broken' };
+    const block = t.slice(at, end), r = addonOldCheck(block);
+    if (r.kind !== 'ok') return { kind: 'bad', why: r.kind };
+    if (/Add-on Deals/.test(t.slice(0, at) + t.slice(end))) return { kind: 'two' };
+    return { kind: 'ok', before: t.slice(0, at), block, after: t.slice(end), cards: r.cards, spacer: r.spacer };
+  }
+
+  function addonSwap(text, newBlock) {
+    const f = addonFindIn(text);
+    if (f.kind !== 'ok') return f;
+    const out = f.before + newBlock + f.after, g = addonFindIn(out);
+    const same = g.kind === 'ok' && g.before === f.before && g.after === f.after && g.block === newBlock;
+    if (!same) return { kind: 'verify' };
+    return { kind: 'ok', out, old: f.cards, spacer: f.spacer, before: f.before.length, after: f.after.length, unchanged: f.block === newBlock };
+  }
+
+  const ADDON_COUNT8 = ['b67', 's12', 'd12', 'd43', 'z19', 'n08', 'k50s', 'b53'];
+  const tsvCell = x => String(x == null ? '' : x).replace(/[\t\r\n]+/g, ' ').trim();
+  const cardBrief = c => `${c.name || c.slug || '（讀不到商品名）'}${c.sale ? ' ' + c.sale + (c.orig ? '/' + c.orig : '') : ''}`;
+  const ADDON_REFILL = ['k50s', 'b53'];
+  function addonLogRow(o) {
+    const page = slugOf(o.page) || '';
+    const kind = o.old ? '換品' : ADDON_REFILL.includes(page) ? '補回' : '首貼';
+    return [ '待編號', kind, page, ADDON_COUNT8.includes(page) ? '是' : '否', o.date || '', o.time || '', '後台存檔時間', '', '', o.who, '', '',
+      (o.old ? '舊卡：' + o.old.map(cardBrief).join('、') + '；' : '原本沒有加價購區；') + '新卡：' + o.cards.map(cardBrief).join('、') ].map(tsvCell).join('\t');
+  }
+  function addonSetRows(cards, source) {
+
+    const kind = c => c.hidden === true ? '隱藏加價購頁' : c.hidden === false ? '一般賣場網址' : '沒查';
+    return cards.map((c, i) => [ '', i + 1, c.name, c.slug, kind(c), c.sale, c.orig || '', source, '' ].map(tsvCell).join('\t')).join('\n');
+  }
+
+  const FF = "font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif";
+
+  const FFH = "font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif";
+
+  const FFH_ADDON = "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif";
+
+  const sectionHead = (en, zh, bottom, center) =>
+    `<h2 style="padding:0;text-transform:none;font-size:${R(25, 36)};font-weight:700;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;${FF}${center ? ';text-align:center' : ''}">${zh}</h2>` +
+    `<div style="font-size:${R(14, 16)};font-weight:400;line-height:1.4;margin:0 0 ${bottom || R(20, 32)};${FF}${center ? ';text-align:center' : ''};color:#fe5226">${en}</div>`;
+
+  const TAIL_BRK = new Set(' \t。，、；：！？「」『』（）《》〈〉…—／·．,.;:!?()/｜|＋+');
+  const TAIL_CLOSE = new Set('。，、；：！？）」』》〉…．,.;:!?)');
+  const TAIL_ENT = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#39;': "'" };
+  function tail(inner) {
+    const parts = String(inner).split(/(<[^>]+>)/);
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      if (p.startsWith('<') || !p.trim()) continue;
+      const t = p.replace(/\s+$/, ''), rest = p.slice(t.length);
+
+      const ch = t.match(/&(?:#\d+|#x[0-9a-f]+|[a-z]+);|[\s\S]/giu);
+      const vis = x => x.length > 1 && x[0] === '&' ? (TAIL_ENT[x] || '?') : x;
+      if (ch.length < 8) return inner;
+      const cut = ch.length - 5;
+      let c = cut;
+      while (c > 0 && !(TAIL_BRK.has(vis(ch[c - 1])) && !TAIL_CLOSE.has(vis(ch[c])))) { c--; if (ch.length - c > 16) { c = cut; break; } }
+      parts[i] = ch.slice(0, c).join('') + '<span style="white-space:nowrap">' + ch.slice(c).join('') + '</span>' + rest;
+      return parts.join('');
+    }
+    return inner;
+  }
+
+  const HIGHLIGHT = 'background:linear-gradient(transparent 50%,#ffef5c 50%);-webkit-box-decoration-break:clone;box-decoration-break:clone;padding:0 .08em';
+
+  const ARROW = '<span style="color:#fe5226;font-weight:400;margin-right:.15em">➤</span>';
+
+  const SEC_TOP = R(64, 104);
+
+  const WALL = 'rgb(246,247,247)';
+
+  const FLOOR = '#e7e7e8';
+
+  const VIDEO_BG = '#ffffff';
+
+  const NOTE_ON_WALL = '#3f434b';
+
+  const HERO_POS = {
+    bl: { label: '下置左', v: 'bottom', a: 'left' },
+    bc: { label: '下置中', v: 'bottom', a: 'center' },
+    br: { label: '下置右', v: 'bottom', a: 'right' },
+    tl: { label: '上置左', v: 'top', a: 'left' },
+    tc: { label: '上置中', v: 'top', a: 'center' },
+    tr: { label: '上置右', v: 'top', a: 'right' },
+  };
+
+  const own = (o, k) => typeof k === 'string' && Object.prototype.hasOwnProperty.call(o, k);
+  const heroPos = p => own(HERO_POS, p) ? HERO_POS[p] : HERO_POS.bl;
+
+  const HERO_SIZE = {
+    s: { label: '小', name: 'clamp(20px,2.8vw,32px)', sub: 'clamp(14px,1.4vw,16px)' },
+    m: { label: '中', name: 'clamp(24px,3.4vw,40px)', sub: 'clamp(15px,1.6vw,18px)' },
+    l: { label: '大', name: 'clamp(24px,calc(2.9vw + 15px),52px)', sub: 'clamp(15px,calc(.6vw + 13.4px),21px)' },
+  };
+  const heroSize = k => own(HERO_SIZE, k) ? HERO_SIZE[k] : HERO_SIZE.m;
+
+  function heroImgHint(p) {
+    const P = heroPos(p), up = P.v === 'top';
+    const base = '手機版會裁掉左右，桌機版會裁掉上下：商品放中間，上下左右都多留空間。';
+    if (P.a === 'center') return base + `字在${up ? '上方' : '下方'}中間，容易疊在商品上：${up ? '上' : '下'}面再多留一段放字，那一段不要太亮。`;
+    return base + `字在${P.a === 'left' ? '左' : '右'}${up ? '上' : '下'}，那一角不要太亮。`;
+  }
+
+  function hero(h) {
+    const P = heroPos(h.pos), S = heroSize(h.size);
+    return `<div style="position:relative;overflow:hidden;background:#e9eaec">` +
+      `<div style="position:relative;width:100%;height:clamp(400px,56.25vw,720px)">` +
+      `<img src="${escA(h.img.url)}" alt="${escA(h.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${pos(h.focus)};display:block">` +
+      `<div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(${P.v === 'top' ? 'to bottom' : 'to top'},rgba(0,0,0,.78),rgba(0,0,0,.28) 38%,rgba(0,0,0,0) 68%);pointer-events:none"></div>` +
+      `</div>` +
+      `<div style="position:absolute;top:0;left:0;right:0;bottom:0">` +
+      `<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px;height:100%;position:relative">` +
+      `<div style="position:absolute;left:20px;right:20px;${P.v}:clamp(18px,5vw,44px);text-align:${P.a};color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.5)">` +
+      `<div style="font-size:${S.name};font-weight:700;letter-spacing:.5px;line-height:1.2;margin:0;color:#fff;${FFH}">${esc(h.name)}</div>` +
+      `<p style="font-size:${S.sub};font-weight:700;line-height:1.5;margin:clamp(6px,.8vw,10px) 0 0;color:rgba(255,255,255,.92);${FFH}">${tail(esc(h.sub))}</p>` +
+      `</div></div></div></div>`;
+  }
+
+  function intro(sentences) {
+    const list = sentences.map(clean).filter(Boolean);
+    const p = (t, last) =>
+      `<div><p style="display:inline-block;vertical-align:top;text-align:left;font-size:${R(15, BODY_D)};line-height:1.85;margin:${last ? '0' : '0 0 .6em'};${FF}">${tail(esc(t))}</p></div>`;
+    return `<div style="margin:0 auto;padding:${R(28, 44)} 0 0;text-align:center">` +
+      list.map((t, i) => p(t, i === list.length - 1)).join('') + `</div>`;
+  }
+
+  function gridSeg(g, reverse) {
+    const img = g.img;
+
+    const title = [clean(g.t1), clean(g.t2)].filter(Boolean).map(esc).join(' <br>');
+    const note = clean(g.note);
+    const noteText = note ? (note.startsWith('※') ? note : '※ ' + note) : '';
+    const sideMargin = reverse ? 'margin-right' : 'margin-left';
+    return `<div style="display:flex;flex-wrap:wrap;${reverse ? 'flex-direction:row-reverse;' : ''}align-items:center;margin:${R(56, 88)} 0 0">` +
+      `<div style="flex:1 1 clamp(300px,calc(100% + (767px - 100vw)*999),100%);min-width:0;margin:0 0 clamp(0px,calc((768px - 100vw)*999),18px)">` +
+      `<div style="position:relative;width:100%;padding-bottom:66.67%;overflow:hidden;background:#eef0f2">` +
+      `<img src="${escA(img.url)}" alt="${escA(img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${pos(g.pos)};display:block">` +
+      `</div></div>` +
+      `<div style="flex:1 1 clamp(300px,calc(100% + (767px - 100vw)*999),100%);min-width:0;${sideMargin}:clamp(0px,calc((100vw - 767px)*999),56px)">` +
+      `<h2 style="padding:0;text-transform:none;${FFH};font-size:${R(20, 26)};font-weight:700;letter-spacing:-.4px;line-height:1.5;margin:0 0 ${R(10, 16)};color:#1d1f23"><span style="${HIGHLIGHT}">${title}</span></h2>` +
+      `<p style="font-size:${R(15, BODY_D)};line-height:1.75;margin:${noteText ? '0 0 ' + R(12, 18) : '0'};${FF}">${tail(esc(g.body))}</p>` +
+      (noteText ? `<p style="font-size:${R(12, 13)};line-height:1.6;margin:0;color:${NOTE_ON_WALL};${FF}">${tail(esc(noteText))}</p>` : '') +
+      `</div></div>`;
+  }
+
+  const TAG_BASE = 'display:inline-block;font-size:14px;font-weight:500;line-height:1.4;padding:5px 14px';
+
+  function features(list, flush) {
+    const cards = list.map((c, i) => {
+      const last = i === list.length - 1;
+      const label = clean(c.label);
+      return `<div style="flex:1 0 clamp(258px,calc((100% - 40px)/3.25),600px);min-width:0${last ? '' : ';margin-right:' + R(12, 20)}">` +
+        `<div style="position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#eef0f2">` +
+        `<img src="${escA(c.img.url)}" alt="${escA(c.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;object-position:${pos(c.pos)};display:block">` +
+        (label ? `<span style="position:absolute;top:12px;left:12px;${TAG_BASE};border-radius:999px;background:#fff;color:#1d1f23;border:1px solid #1d1f23;${FFH}">${esc(label)}</span>` : '') +
+        `</div>` +
+        `<h3 style="padding:0;text-align:start;${FFH};font-size:${R(18, 22)};font-weight:700;letter-spacing:-.4px;line-height:1.4;margin:${R(14, 20)} 0 6px">${ARROW}${tail(esc(c.title))}</h3>` +
+        `<p style="font-size:${R(14, BODY_D)};line-height:1.7;margin:0;${FF}">${tail(esc(c.body))}</p>` +
+        `</div>`;
+    }).join('');
+    return `<div style="position:relative;width:100vw;left:50%;margin:${flush ? '0' : SEC_TOP} 0 0 -50vw;background:${FLOOR}">` +
+
+      `<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:${R(25, 50)} 20px ${R(19, 30)}">` +
+      sectionHead('More Features', '其他特色', '', true) +
+      `<div style="display:flex;overflow-x:auto;margin:0 -20px;padding:0 20px ${R(6, 20)}">${cards}</div>` +
+      `</div></div>`;
+  }
+
+  function videos(list, flush) {
+    const items = list.map((v, i) => {
+      const last = i === list.length - 1;
+      const cap = clean(v.caption);
+      const title = clean(v.title) || cap;
+      return `<div style="flex:0 0 ${R(240, 300)};min-width:0${last ? '' : ';margin-right:' + R(12, 20)}">` +
+        `<div style="position:relative;width:100%;padding-bottom:177.78%;overflow:hidden;background:#000">` +
+        `<iframe src="https://www.youtube.com/embed/${youtubeId(v.url)}" title="${escA(title)}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;display:block" loading="lazy"></iframe></div>` +
+        (cap ? `<h3 style="padding:0;${FFH};font-size:${R(16, 18)};font-weight:700;line-height:1.4;margin:12px 0 0;text-align:center">${esc(cap)}</h3>` : '') +
+        `</div>`;
+    }).join('');
+    return `<div style="position:relative;width:100vw;left:50%;margin:${flush ? '0' : SEC_TOP} 0 0 -50vw;background:${VIDEO_BG}">` +
+      `<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:${R(25, 50)} 20px ${R(19, 44)};text-align:center">` +
+      sectionHead('In Action', '影音實測') +
+      `<div style="display:flex;justify-content:safe center;text-align:left;overflow-x:auto;margin:0 -20px;padding:0 20px 6px">${items}</div>` +
+      `</div></div>`;
+  }
+
+  const TBL = `width:100%;margin:0;border-collapse:separate;border-spacing:0;border:1px solid #e3e5e9;font-size:${R(15, 16)};line-height:1.5;color:#1d1f23`;
+  const GREEN = '#2e7d52', GRAY = '#626877';
+
+  function compare(c) {
+    const va = esc(c.va), vb = esc(c.vb);
+    const pad = R(10, 14);
+    const rows = c.rows.map(r =>
+      `<tr><th style="padding:${pad} 10px;border-top:1px solid #e3e5e9;padding-left:12px;text-align:left;font-weight:500;${FFH}">${tail(esc(r.label))}</th>` +
+      [r.a, r.b].map(x =>
+        `<td style="padding:${pad} 10px;border-top:1px solid #e3e5e9;border-left:1px solid #e3e5e9;text-align:center;font-weight:500;color:${x.ok ? GREEN : GRAY};${FFH}">${tail('● ' + esc(x.text))}</td>`
+      ).join('') + `</tr>`).join('');
+    const card = (k, border) =>
+      `<figure style="flex:1 1 300px;min-width:0;margin:0 8px 16px;border:1px solid #ededed;overflow:hidden;position:relative;background:#fff">` +
+      `<div style="position:relative;width:100%;padding-bottom:75%;overflow:hidden"><img src="${escA(k.img.url)}" alt="${escA(k.img.alt)}" style="position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block"></div>` +
+      `<span style="position:absolute;top:12px;left:12px;${TAG_BASE};border-radius:999px;background:#fff;color:#1d1f23;border:1px solid ${border};${FFH}">${k === c.cardA ? va : vb}</span>` +
+      `<figcaption style="padding:15px 16px"><h3 style="padding:0;display:block;text-align:left;line-height:1.75;font-size:clamp(16px,2.1vw,20px);font-weight:700;margin:0 0 6px;${FFH}">${esc(k.title)}</h3>` +
+      `<span style="color:#6E6E73;font-size:clamp(16px,2vw,18px);line-height:1.5;${FF}">${esc(k.body)}</span></figcaption></figure>`;
+    return `<div style="margin:${SEC_TOP} 0 0;text-align:center">` +
+      sectionHead('Compare', esc(c.question), R(18, 26)) +
+      `<div style="margin:0 0 ${R(16, 22)}"><span style="${TAG_BASE};border:1px solid #d5d7dc;border-radius:999px;margin:0 4px;${FFH}">${va}</span>` +
+      `<span style="display:inline-block;font-size:13px;color:#626877;margin:0 4px;${FF}">vs</span>` +
+      `<span style="${TAG_BASE};border:1px solid #1d1f23;border-radius:999px;margin:0 4px;${FFH}">${vb}</span></div>` +
+      `<table style="${TBL}">` +
+      `<thead><tr><th style="padding:${pad} 12px;background:#f2f3f6;font-weight:700;text-align:left;width:40%"></th>` +
+      `<th style="padding:${pad} 10px;background:#f2f3f6;font-weight:700;text-align:center;border-left:1px solid #e3e5e9;${FFH}">${va}</th>` +
+      `<th style="padding:${pad} 10px;background:#f2f3f6;font-weight:700;text-align:center;border-left:1px solid #e3e5e9;${FFH}">${vb}</th></tr></thead>` +
+      `<tbody>${rows}</tbody></table>` +
+      `<h3 style="padding:0;text-align:center;font-size:${R(20, 26)};font-weight:700;letter-spacing:-.4px;line-height:1.5;margin:${R(40, 64)} 0 ${R(16, 24)};${FFH}">${va} vs ${vb}</h3>` +
+      `<div style="display:flex;flex-wrap:wrap;justify-content:center;text-align:left;margin:0 -8px">${card(c.cardA, '#d5d7dc')}${card(c.cardB, '#1d1f23')}</div>` +
+      `</div>`;
+  }
+
+  const splitNames = s => clean(s).split(/\s*[／/]\s*/).filter(Boolean);
+  function compat(c) {
+    const pad = R(10, 14);
+    const rows = c.rows.map(r => {
+      const names = splitNames(r.names);
+      const cell = names.length > 1
+        ? names.map(n => `<span style="white-space:nowrap;${FFH}">${esc(n)}</span>`).join(' ／ ')
+        : esc(names[0] || '');
+      return `<tr><th style="padding:${pad} 10px;border-top:1px solid #e3e5e9;padding-left:12px;text-align:left;font-weight:500;${FFH}">${tail(cell)}</th>` +
+        `<td style="padding:${pad} 12px;border-top:1px solid #e3e5e9;border-left:1px solid #e3e5e9;text-align:center;font-weight:500;color:${r.ok ? GREEN : GRAY};white-space:nowrap;${FFH}">${tail('● ' + (r.ok ? '相容' : '不適用'))}</td></tr>`;
+    }).join('');
+    return `<div style="margin:${SEC_TOP} 0 0"><div style="text-align:center">${sectionHead('Compatibility', '適用機型')}</div>` +
+      `<table style="${TBL}">` +
+      `<thead><tr><th style="padding:${pad} 12px;background:#f2f3f6;font-weight:700;text-align:left;${FFH}">機型</th>` +
+      `<th style="padding:${pad} 12px;background:#f2f3f6;font-weight:700;text-align:center;border-left:1px solid #e3e5e9;white-space:nowrap;${FFH}">適用</th></tr></thead>` +
+      `<tbody>${rows}</tbody></table>` +
+      `<p style="font-size:${R(12, 13)};line-height:1.6;margin:10px 0 0;color:#626877;text-align:left;${FF}">${tail('※ 實際可選機型與顏色以上方購買區的規格選單為準。')}</p></div>`;
+  }
+
+  function specs(list) {
+    const pad = R(10, 14);
+    const rows = list.map(r =>
+      `<tr><th style="padding:${pad} 12px;border-top:1px solid #e3e5e9;background:#f2f3f6;font-weight:700;text-align:left;vertical-align:top;white-space:nowrap;width:1%;${FFH}">${esc(r.label)}</th>` +
+      `<td style="padding:${pad} 12px;border-top:1px solid #e3e5e9;border-left:1px solid #e3e5e9;text-align:left;color:#3d4047;${FF}">${tail(esc(r.value))}</td></tr>`).join('');
+    return `<div style="margin:${SEC_TOP} 0 0"><div style="text-align:center">${sectionHead('Specs', '規格')}</div>` +
+      `<table style="${TBL.replace('border:1px solid #e3e5e9;', 'border:1px solid #e3e5e9;border-top:0;')}"><tbody>${rows}</tbody></table></div>`;
+  }
+
+  function faq(list) {
+    const items = list.map((x, i) =>
+      `<div style="background:#f2f3f6;padding:14px 16px;margin:${i === list.length - 1 ? '0' : '0 0 9px'}">` +
+      `<h3 style="padding:0;text-align:left;font-size:clamp(16px,2.1vw,18px);font-weight:700;line-height:1.45;margin:0 0 5px;color:#1a1a1a;${FFH}">` +
+
+      `<span style="display:inline-block;background:#3d4047;color:#fff;font-size:12px;font-weight:500;border-radius:5px;padding:1px 7px;margin-right:7px;vertical-align:1px;${FFH}">Q </span>${tail(esc(x.q))}</h3>` +
+      `<p style="font-size:16px;color:#6E6E73;line-height:1.5;margin:0;${FF}">${tail(esc(x.a))}</p></div>`).join('');
+    return `<div style="margin:${SEC_TOP} 0 0"><div style="text-align:center">${sectionHead('FAQ', '常見問題')}</div>` +
+      `<div style="text-align:left">${items}</div></div>`;
+  }
+
+  const SUM_BANNER = '<a href="https://lihi.cc/PfsP1"><img src="https://www.londonimg.com/2020/ADD.png"></a>';
+
+  const LINEUP = {
+    11: ['11', '11 Pro', '11 Pro Max'],
+    12: ['12 mini', '12', '12 Pro', '12 Pro Max'],
+    13: ['13 mini', '13', '13 Pro', '13 Pro Max'],
+    14: ['14', '14 Plus', '14 Pro', '14 Pro Max'],
+    15: ['15', '15 Plus', '15 Pro', '15 Pro Max'],
+    16: ['16', '16 Plus', '16 Pro', '16 Pro Max', '16e'],
+    17: ['17', '17 Pro', '17 Pro Max', 'Air', '17e'],
+    18: ['18 Pro', '18 Pro Max'],
+  };
+  const OPEN_GEN = 18;
+  const genOf = k => k === 'air' ? 17 : (k.match(/^(\d{2})/) ? +k.match(/^(\d{2})/)[1] : null);
+  const showModel = m => m === 'Air' ? 'iPhone Air' : m;
+
+  function modelPhrase(c) {
+    const have = new Map();
+    const unknown = [];
+    (c && c.rows || []).forEach((r, i) => {
+      if (!r.ok) return;
+      splitNames(r.names).forEach(n => {
+        const k = normModel(n), g = genOf(k);
+        if (!k) return;
+        const known = g != null && LINEUP[g] && LINEUP[g].find(m => normModel(m) === k);
+        if (known) have.set(k, known);
+        else if (g === OPEN_GEN) have.set(k, clean(n).replace(/^iphone\s*/i, ''));
+        else unknown.push({ row: i, name: clean(n) });
+      });
+    });
+    const gens = [...new Set([...have.keys()].map(genOf))].sort((a, b) => a - b);
+    const parts = [];
+
+    if (gens.includes(OPEN_GEN)) {
+      const open = [...have.entries()].filter(([k]) => genOf(k) === OPEN_GEN);
+      const order = (LINEUP[OPEN_GEN] || []).map(normModel);
+      open.sort((a, b) => (order.indexOf(a[0]) + 1 || 99) - (order.indexOf(b[0]) + 1 || 99));
+      parts.push('iPhone ' + open.map(([, v]) => showModel(v)).join('／'));
+    }
+
+    const closed = gens.filter(g => g !== OPEN_GEN);
+    let excl = [];
+    if (closed.length === 1) {
+      const g = closed[0];
+      parts.push('iPhone ' + LINEUP[g].filter(m => have.has(normModel(m))).map(showModel).join('／'));
+    } else if (closed.length > 1) {
+      const lo = closed[0], hi = closed[closed.length - 1];
+      const missing = [], whole = [];
+      for (let g = lo; g <= hi; g++) {
+        const ms = LINEUP[g] || [];
+        if (!ms.some(m => have.has(normModel(m)))) { whole.push(g); continue; }
+        ms.forEach(m => { if (!have.has(normModel(m))) missing.push(m); });
+      }
+      const inRange = g => g >= lo && g <= hi && !whole.includes(g);
+      const family = suf => {
+        const all = Object.keys(LINEUP).map(Number).filter(inRange).flatMap(g => LINEUP[g]).filter(m => m.endsWith(suf));
+        return all.length > 0 && all.every(m => missing.includes(m)) ? all : null;
+      };
+      const plus = family(' Plus'), mini = family(' mini');
+      const singles = [];
+      for (let g = lo; g <= hi; g++) {
+        if (whole.includes(g)) { singles.push(g + ' 系列'); continue; }
+        missing.filter(m => genOf(normModel(m)) === g && !(plus || []).includes(m) && !(mini || []).includes(m)).forEach(m => singles.push(showModel(m)));
+      }
+      excl = [...(plus ? ['Plus'] : []), ...singles, ...(mini ? ['mini'] : [])];
+      parts.push(`iPhone ${lo}–${hi} 系列` + (excl.length ? `（${excl.join('、')} 除外）` : ''));
+    }
+
+    const latest = gens.includes(OPEN_GEN) ? parts[0].replace(/^iPhone /, '').split('／') : [];
+    return { text: parts.join('，'), excl, unknown, latest, closed };
+  }
+
+  const isModelLabel = l => /機型/.test(clean(l));
+  const stripBullet = t => clean(t).replace(/^[•・·●▪■◆\-–*]+\s*/, '');
+
+  function summary(s) {
+    const sm = s.summary || {};
+    const lines = [];
+    if (sm.banner) lines.push(SUM_BANNER);
+    lines.push('【產品特色】');
+    (sm.feats || []).map(stripBullet).filter(Boolean).forEach(t => lines.push('• ' + esc(t)));
+    const specLines = [];
+    const on = s.on || {};
+    const mp = on.compat ? modelPhrase(s.compat) : { text: '' };
+    if (mp.text) specLines.push('• 適用機型：' + esc(mp.text));
+    if (on.specs) (s.specs || []).forEach(r => {
+      if (r.sum && !isModelLabel(r.label) && clean(r.label) && clean(r.value)) specLines.push('• ' + esc(r.label) + '：' + esc(r.value));
+    });
+    if (specLines.length) lines.push('', '【商品規格】', ...specLines);
+    return lines.join('\n');
+  }
+
+  function seoFacts(s) {
+    const on = s.on || {};
+    const name = clean((s.hero || {}).name);
+    const feats = ((s.summary || {}).feats || []).map(stripBullet).filter(Boolean);
+    const mp = on.compat ? modelPhrase(s.compat) : { text: '', unknown: [] };
+    const model = mp.text, unknown = [...new Set(mp.unknown.map(u => u.name))];
+    const menu = on.compat && clean((s.compat || {}).menu) !== '';
+    const specs = on.specs ? (s.specs || []).filter(r => r.sum && !isModelLabel(r.label) && clean(r.label) && clean(r.value)).map(r => clean(r.label) + '：' + clean(r.value)) : [];
+    return { name, feats, model, unknown, menu, specs };
+  }
+  const SEO_RULES_BEGIN = '===== 寫作規則（開始）=====', SEO_RULES_END = '===== 寫作規則（結束）=====';
+  function seoPrompt(s, rules) {
+    if (!rules || !String(rules).trim()) throw new Error('沒有寫作規則（打包時沒有把規則檔放進來）');
+    const f = seoFacts(s);
+    const ask = '（工具裡沒填，請先問我）';
+    return [
+      '請幫我產倫敦印象官網商品頁，後台「網路搜尋最佳化」的四欄：標題、簡介、關鍵字、描述性URL。',
+      '只產這四欄。商品描述、商品摘要和 HTML 都不要寫，就算我之後要也一樣（那些用上架工具做）。後台的商品名稱我自己定，你不用寫。',
+      '',
+      '【商品資料】從上架工具帶過來的',
+      '商品名：' + (f.name || ask),
+      '賣點：' + (f.feats.length ? '' : ask),
+      ...f.feats.map(t => '• ' + t),
+      '適用機型：' + (f.model || '（工具裡沒有這一行）'),
+      ...(f.unknown.length ? ['工具不認得、沒算進上面那一行的機型：' + f.unknown.join('、') + '。請先問我這些要不要加，不要自己猜。'] : []),
+      ...(f.specs.length ? ['其他規格：', ...f.specs.map(t => '• ' + t)] : []),
+      '',
+      '【開始前先確認】缺資料就先問我，問齊了再產，不要自己猜。',
+      '1. 品牌和品類：從商品名判斷。商品名看不出品牌或品類，先問我。',
+      f.model
+        ? '2. 適用機型：上面那一行是工具從適用機型表算的' + (f.menu ? '，表已經跟規格選單對過' : '') + '，就是規則裡說的「適用機型那一行」。照抄，不要自己補或改，也不要從商品名或賣點另外推機型。'
+        : '2. 適用機型：工具裡沒有這一行。不要從商品名或賣點推算機型，也不要自己補「iPhone 12–18 系列」這種範圍。這個商品要挑機型的話（例如手機殼、玻璃貼、鏡頭貼），先請我貼規格選單上的機型清單；不挑機型的通用品（例如掛繩、支架、線材）就寫不挑機型。',
+      '',
+      '【寫作規則】照下面這份寫。四欄的寫法、品類快查表、自我檢查清單都在裡面。',
+      SEO_RULES_BEGIN,
+      String(rules).trim(),
+      SEO_RULES_END,
+      '',
+      '【交出格式】',
+      '1. 四欄各放一個程式碼框，方便我一鍵複製。框上面寫後台的欄位名：標題、簡介、關鍵字、描述性URL（規則裡的「描述性網址」就是後台的「描述性URL」）。',
+      '2. 交出前，逐條對上面規則最後的「自我檢查清單」。有一條不符合，先改好再交。',
+      '3. 四欄下面把自我檢查清單列出來，每一條標 ✅；改過的寫改了什麼。',
+    ].join('\n');
+  }
+
+  const seoW = t => [...String(t || '')].reduce((n, c) => n + (c.charCodeAt(0) <= 0x7f ? 0.5 : 1), 0);
+  const seoSection = (rules, re) => {
+    const lines = String(rules || '').split('\n');
+    const i = lines.findIndex(l => /^## /.test(l) && re.test(l));
+    if (i < 0) return null;
+    const j = lines.findIndex((l, k) => k > i && /^## /.test(l));
+    return lines.slice(i + 1, j < 0 ? lines.length : j);
+  };
+
+  const seoWordRe = w => new RegExp(w.split('').map(c => c === '〇' ? '[^\\s，。、；：！？（）「」｜,.;:!?()]' : c === '＃' ? '[0-9０-９][0-9０-９.．]*\\s?' : c.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join(''), 'gi');
+
+  function seoRules(rules) {
+    const cl = seoSection(rules, /自我檢查清單/);
+    if (!cl) throw new Error('規則檔沒有「## 自我檢查清單」');
+    const checklist = cl.filter(l => /^- \[ \]/.test(l)).map(l => l.replace(/^- \[ \]\s*/, '').replace(/\*\*/g, ''));
+    const all = checklist.join('\n');
+    const mt = all.match(/標題約\s*(\d+)[–-](\d+)\s*個全形字/), md = all.match(/簡介約\s*(\d+)\s*個全形字[^\n]*?前\s*(\d+)\s*個全形字/), mk = all.match(/關鍵字[^\n]*?(\d+)[–-](\d+)\s*個/);
+    if (!mt || !md || !mk) throw new Error('自我檢查清單裡讀不到字數（標題約 N–N 個全形字／簡介約 N 個全形字、前 N 個全形字／關鍵字 N–N 個）');
+    const limits = { title: [+mt[1], +mt[2]], desc: +md[1], front: +md[2], kw: [+mk[1], +mk[2]] };
+    const ct = seoSection(rules, /品類快查表/);
+    if (!ct) throw new Error('規則檔沒有「品類快查表」那一節');
+    const cats = ct.filter(l => /^\|/.test(l) && !/^\|\s*-/.test(l)).map(l => l.split('|').slice(1, -1).map(x => x.trim()))
+      .filter(c => c.length >= 4 && !/品類（官網分類）|^品類$/.test(c[0]))
+      .map(c => ({ name: c[0].replace(/（[^）]*）/g, '').replace(/\*\*/g, '').trim(), kws: c[2].replace(/\*\*/g, '').split('、').map(x => x.replace(/＋?機型詞/, '').trim()).filter(Boolean), url: (c[3].match(/`([a-z0-9-]+)`/) || [])[1] || '' }));
+    if (!cats.length || cats.some(c => !c.kws.length || !c.url)) throw new Error('品類快查表讀不出來（每一列要有關鍵字素材和 `網址品類字`）');
+    const ws = seoSection(rules, /提醒字清單/);
+    if (!ws) throw new Error('規則檔沒有「提醒字清單」那一節');
+    const groups = [], skip = [];
+    ws.forEach(l => {
+      const m = l.match(/^- ([^：]+)：(.+)$/); if (!m) return;
+      const label = m[1].replace(/（[^）]*）/g, '').trim(), words = m[2].split('、').map(x => x.trim()).filter(Boolean);
+      if (label === '不提醒') skip.push(...words); else groups.push({ label, words: words.map(w => ({ w, re: seoWordRe(w) })) });
+    });
+    ['絕對化詞', '促銷字'].forEach(k => { if (!groups.some(g => g.label === k && g.words.length)) throw new Error(`提醒字清單沒有「${k}」那一行`); });
+    return { limits, cats, groups, skip, checklist };
+  }
+
+  const CAT_HINTS = [[/AirPods/i, 'AirPods'], [/Apple\s*Watch|錶帶|錶框/i, 'Apple Watch'], [/iPad/i, 'iPad'], [/鏡頭貼|鏡頭保護/, '鏡頭貼'],
+    [/玻璃貼|保護貼|螢幕貼/, '玻璃貼'], [/掛繩|夾片|頸繩|手腕繩|斜背/, '掛繩'], [/行動電源|行充/, '行動電源'], [/快充線|充電線|傳輸線/, '快充線'],
+    [/快充頭|充電頭|充電器/, '快充頭'], [/車用|車架|車充/, '車用'], [/殼|\bcase\b/i, '手機殼'], [/支架/, '支架'], [/MagSafe|磁吸/i, 'MagSafe']];
+  const seoGuessCat = (name, cats) => { for (const [re, k] of CAT_HINTS) if (re.test(name)) { const c = cats.find(x => x.name.includes(k)); if (c) return c; } return null; };
+
+  const URL_WORDS = [[/360/, '360'], [/指環/, 'ring'], [/支架/, 'stand'], [/皮革/, 'leather'], [/超薄/, 'slim'], [/磨砂|霧面/, 'matte'], [/透明/, 'clear'], [/寬版/, 'wide'],
+    [/防窺|防偷窺/, 'privacy'], [/抗藍光/, 'anti-blue-light'], [/編織/, 'braided'], [/磁吸/, 'magnetic'], [/防摔/, 'shockproof']];
+  const OWN_BRANDS = ['YU', 'Londonimg', 'J/arch.', 'LaPO'];
+  const seoSlug = t => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  function seoBrand(name) {
+    const own = OWN_BRANDS.find(b => name.toLowerCase().startsWith(b.toLowerCase() + ' '));
+    if (own) return own;
+    const m = name.match(/^([A-Za-z][A-Za-z0-9/.&'-]*)\s+(?=\S)/);
+    return m ? m[1] : '';
+  }
+
+  function seoDraft(s, R) {
+    const f = seoFacts(s), o = s.seo || {}, on = s.on || {};
+    const mp = on.compat ? modelPhrase(s.compat) : { text: '', latest: [], closed: [] };
+    const brand = seoBrand(f.name), rest = clean(brand ? f.name.slice(brand.length) : f.name);
+    const cat = R.cats.find(c => c.name === o.cat) || seoGuessCat(f.name, R.cats);
+    const noun = cat ? cat.kws[0].replace(/^iPhone\s*/i, '') : '';
+    const text = [f.name, ...f.feats, ...f.specs].join(' ');
+    const mag = /magsafe/i.test(text), both = !!o.both;
+
+    const core = k => k.replace(/^iPhone\s*/i, '').replace(noun, '').replace(/(手機殼|殼|保護貼|貼|掛繩|繩)$/, '');
+    const has = k => { const c = core(k); return c === '' || text.toLowerCase().includes(c.toLowerCase()); };
+    const catKws = cat ? cat.kws.filter((k, i) => i === 0 || has(k)) : [];
+
+    const latestTxt = mp.latest.length ? 'iPhone ' + mp.latest.join('／') : '';
+    let title = [brand, latestTxt, rest].filter(Boolean).join(' ');
+    const tags = [];
+    if (both) tags.push('可選 MagSafe 版');
+    else if (mag && !/magsafe/i.test(rest)) tags.push('MagSafe');
+
+    catKws.slice(1).forEach(k => { const c = core(k); if (c && c !== k.replace(/^iPhone\s*/i, '') && !/magsafe/i.test(k) && !title.includes(c)) tags.push(k); });
+    const max = R.limits.title[1];
+    while (tags.length > (both ? 1 : 0) && seoW(title + '｜' + tags.join(' ')) > max) tags.pop();
+    if (tags.length && (both || seoW(title + '｜' + tags.join(' ')) <= max)) title += '｜' + tags.join(' ');
+
+    const mat = (f.specs.find(t => /^材質：/.test(t)) || '');
+    let feats = f.feats.map(t => t.replace(/[。！!．.]+$/, ''));
+    const saysBoth = /可選\s*MagSafe|MagSafe\s*版可選|一般版/i.test(text);
+    const descOf = fs => (f.name ? f.name + (fs.length ? '，' : '。') : '') + (fs.length ? fs.join('；') + '。' : '') + (both && !saysBoth ? '可選 MagSafe 版。' : '') + (mp.text ? '適用 ' + mp.text + '。' : '') + (mat ? mat + '。' : '');
+    while (feats.length > 1 && seoW(descOf(feats)) > R.limits.desc) feats = feats.slice(0, -1);
+    const desc = descOf(feats);
+
+    const feat = noun ? URL_WORDS.map(([re]) => (rest.match(re) || [])[0]).filter(x => x && /[一-鿿]/.test(x) && x !== '防摔').map(x => x + noun) : [];
+    const latestKw = mp.latest.map(m => 'iPhone' + m.replace(/^iPhone\s*/i, '').replace(/\s+/g, '') + noun);
+    const olderKw = [...mp.closed].sort((a, b) => b - a).map(g => 'iPhone' + g + noun);
+    const tail = [brand && noun ? brand + noun : '', rest.replace(/[\s°]/g, '')].filter(Boolean);
+    const [kmin, kmax] = R.limits.kw;
+    const pack = n => [...new Set([...catKws, ...feat, ...latestKw, ...olderKw.slice(0, n), ...tail])];
+    let n = 2; while (n < olderKw.length && pack(n).length < kmin) n++;
+    let kws = pack(n); while (kws.length > kmax && n > 0) kws = pack(--n);
+    const kw = kws.slice(0, kmax).join(',');
+
+    const guessed = [...(rest.match(/[A-Za-z][A-Za-z0-9]*/g) || []).map(x => x.toLowerCase()).filter(x => !['case', 'iphone'].includes(x)),
+      ...URL_WORDS.filter(([re]) => re.test(rest)).map(x => x[1])];
+    let words = clean(o.url) ? seoSlug(o.url).split('-').filter(Boolean) : [...new Set(guessed)];
+    if (words.includes('magsafe')) words = words.filter(x => x !== 'magnetic');
+    const iphone = !!(mp.latest.length || mp.closed.length);
+    const catUrl = cat ? (iphone && cat.url === 'phone-case' ? 'case' : cat.url) : '';
+    const url = seoSlug([seoSlug(brand), iphone ? 'iphone' : '', ...words.slice(0, 4), catUrl].filter(Boolean).join('-')).replace(/\b(\w+)-\1\b/g, '$1');
+    return { title, desc, kw, url, meta: { brand, rest, cat, guessedCat: !o.cat, noun, mag, both, latest: mp.latest, closed: mp.closed, model: mp.text, saysBoth, words, wordsFromUser: !!clean(o.url), feats: f.feats.length, name: f.name } };
+  }
+
+  const SEO_CHECKS = [
+    { key: 'title', re: /^標題約/ }, { key: 'titleModel', re: /^標題的機型只寫最新一代/ }, { key: 'magsafe', re: /一般版和 MagSafe 版/ },
+    { key: 'desc', re: /^簡介約/ }, { key: 'descModel', re: /^簡介的適用機型/ }, { key: 'models', re: /三處的機型不互相矛盾/ },
+    { key: 'kw', re: /^關鍵字用半形逗號/ }, { key: 'url', re: /^描述性網址/ }, { key: 'words', re: /^四欄都沒有 emoji/ },
+    { key: 'agent', re: /代理品牌合規/, manual: '代理品牌的身分和宣稱（要人看，工具不會檢查）' }, { key: 'cert', re: /測試、認證字眼/ },
+  ];
+
+  const seoUnmapped = R => R.checklist.filter(l => SEO_CHECKS.filter(c => c.re.test(l)).length !== 1);
+  const WORD_MSG = {
+    絕對化詞: w => `建議：「${w}」是誇大用語，可以改成具體的說法（例如寫出做了什麼）。不改也能複製。`,
+    促銷字: w => `建議：「${w}」是促銷用語，活動結束後 Google 還會顯示很久，建議拿掉。不改也能複製。`,
+    口語: w => `建議：「${w}」是口語，這幾格是給 Google 看的，建議拿掉。不改也能複製。`,
+    要附出處: w => `建議：「${w}」這類說法要有官方報告或出處，沒有的話先拿掉。不改也能複製。`,
+    要確認: w => `看一眼：「${w}」有點誇大，確定要用就留著。`,
+  };
+  function seoWordHits(t, R) {
+    const taken = [], hits = [];
+    const free = R.skip.flatMap(w => { const out = [], re = seoWordRe(w); let m; while ((m = re.exec(t))) { out.push([m.index, m.index + m[0].length]); if (!m[0]) re.lastIndex++; } return out; });
+    R.groups.forEach(g => g.words.forEach(({ re }) => {
+      re.lastIndex = 0; let m;
+      while ((m = re.exec(t))) {
+        const a = m.index, b = a + m[0].length;
+        if (!m[0]) { re.lastIndex++; continue; }
+        if (free.some(([x, y]) => a >= x && b <= y) || taken.some(([x, y]) => a < y && b > x)) continue;
+        taken.push([a, b]); hits.push({ label: g.label, w: m[0] });
+      }
+    }));
+    return hits;
+  }
+  const fmtW = n => (Math.round(n * 2) / 2).toString();
+  function seoCheck(v, d, R) {
+    const out = [], add = (box, check, level, msg) => out.push({ box, check, level, msg });
+    const m = d.meta, L = R.limits;
+    const t = clean(v.title), ds = clean(v.desc), kw = clean(v.kw), url = clean(v.url);
+
+    const dkw = clean(d.kw).split(',').filter(Boolean).length, dtw = seoW(clean(d.title));
+    const thin = !m.name || m.feats < 2 || dtw < L.title[0] || dkw < L.kw[0];
+    if (!m.name) add('all', 'title', 'sugg', '資料不夠：Hero 的商品名還沒填，四欄都會缺品牌和品名。建議先填商品名。');
+    else if (thin)
+      add('all', 'title', 'sugg', `資料不夠：${[m.feats < 2 ? `賣點只有 ${m.feats} 個` : '', dtw < L.title[0] ? `工具產的標題只有 ${fmtW(dtw)} 字` : '', dkw < L.kw[0] ? `關鍵字只有 ${dkw} 個` : ''].filter(Boolean).join('、')}。建議在「商品摘要」區多寫幾個賣點，或直接在下面的格子補字。不改也能複製。`);
+    if (!m.brand && m.name) add('all', 'title', 'sugg', '建議：商品名開頭看不出品牌（例如 YU、Londonimg）。品牌是顧客會搜的字，可以在標題和關鍵字自己補上。');
+    if (!m.cat) add('all', 'kw', 'sugg', '建議：工具猜不出這是什麼品類。請在上面選「品類」，關鍵字和網址才會完整。');
+    if (m.mag && !m.both && m.saysBoth) add('all', 'magsafe', 'sugg', '建議：賣點寫了有一般版和 MagSafe 版，勾上面的「這個賣場有一般版和 MagSafe 版」，標題和簡介會改寫成「可選 MagSafe 版」。不勾的話，標題會寫成每一款都支援 MagSafe。');
+    else if (m.mag && !m.both) add('all', 'magsafe', 'look', '看一眼：賣點裡有 MagSafe。這個賣場是不是也有一般版（沒有磁吸）？有的話勾上面的「這個賣場有一般版和 MagSafe 版」，標題和簡介會改寫成「可選 MagSafe 版」。只有 MagSafe 版就不用勾。');
+    if (m.both && !/可選\s*MagSafe|MagSafe\s*版可選/i.test(t + ds)) add('desc', 'magsafe', 'sugg', '建議：勾了「這個賣場有一般版和 MagSafe 版」，標題或簡介要寫「可選 MagSafe 版」，不要寫成每一款都支援。');
+
+    const tw = seoW(t);
+    if (t && tw > L.title[1]) add('title', 'title', 'sugg', `建議：標題 ${fmtW(tw)} 字，比建議的 ${L.title[0]}–${L.title[1]} 字長，Google 手機版大約只顯示前 30 字。不改也能複製。`);
+    else if (t && tw < L.title[0] && !thin) add('title', 'title', 'sugg', `建議：標題 ${fmtW(tw)} 字，比建議的 ${L.title[0]}–${L.title[1]} 字短，可以補一個顧客會搜的特色。不改也能複製。`);
+    if (t && m.noun && !t.includes(m.noun.replace(/^手機/, ''))) add('title', 'title', 'sugg', `建議：標題裡沒有品類詞（例如「${m.noun}」），顧客比較搜不到。`);
+    if (/【[^】]*】/.test(t)) add('title', 'title', 'sugg', '建議：標題裡有【 】括起來的內部編號，顧客不會搜它，建議拿掉。');
+    if (/[\u{1D400}-\u{1D7FF}]/u.test(t)) add('title', 'title', 'sugg', '建議：標題裡有花式字體，Google 和顧客都比較讀不到，建議改成一般的字。');
+    if (/[！!]{2,}/.test(t)) add('title', 'title', 'sugg', '建議：標題裡有連續的驚嘆號，建議拿掉。');
+    if (m.latest.length) {
+      if (/系列/.test(t)) add('title', 'titleModel', 'sugg', '建議：標題的機型只寫最新一代，逐款寫。寫「系列」會被讀成那一代每一款都能用。');
+      if (!m.latest.every(x => t.includes(x))) add('title', 'titleModel', 'sugg', `建議：標題裡沒有完整寫到最新一代的機型（iPhone ${m.latest.join('／')}）。`);
+    }
+
+    const dw = seoW(ds);
+    if (ds && dw > L.desc) add('desc', 'desc', 'sugg', `建議：簡介 ${fmtW(dw)} 字，比建議的 ${L.desc} 字長，後面會被 Google 截掉。不改也能複製。`);
+    if (ds && m.brand) { const i = ds.indexOf(m.brand); if (i < 0 || seoW(ds.slice(0, i)) > L.front) add('desc', 'desc', 'sugg', `建議：品牌「${m.brand}」要寫在簡介的前 ${L.front} 字裡，Google 只顯示前面那段。`); }
+    if (m.model && ds && !ds.includes(m.model)) add('desc', 'descModel', 'sugg', `建議：簡介的適用機型要照工具算的這一行寫：${m.model}`);
+
+    if (m.model) {
+      const ok = new Set([...m.latest.map(x => x.replace(/^iPhone\s*/i, '').replace(/\s+/g, '').toLowerCase()), ...m.closed.map(String)]);
+      const genOk = x => ok.has(x) || m.closed.includes(+x.slice(0, 2));
+      const bad = [...new Set([...(kw + ' ' + t).matchAll(/iPhone\s?(\d{2}(?:\s?(?:Pro\s?Max|Pro|Plus|mini|e))?)/gi)].map(x => x[1].replace(/\s+/g, '').toLowerCase()).filter(x => !genOk(x)))];
+      if (bad.length) add('kw', 'models', 'sugg', `建議：關鍵字或標題裡有適用機型那一行沒有的機型（iPhone ${bad.join('、')}），三處要一致。`);
+    }
+
+    const list = kw.split(',').map(x => x.trim()).filter(Boolean);
+    if (/，/.test(kw)) add('kw', 'kw', 'sugg', '建議：關鍵字要用半形逗號「,」隔開，這格有全形逗號「，」。');
+    if (kw && list.length > L.kw[1]) add('kw', 'kw', 'sugg', `建議：關鍵字 ${list.length} 個，比建議的 ${L.kw[0]}–${L.kw[1]} 個多，挑最重要的留下。不改也能複製。`);
+    else if (kw && list.length < L.kw[0] && !thin) add('kw', 'kw', 'sugg', `建議：關鍵字 ${list.length} 個，比建議的 ${L.kw[0]}–${L.kw[1]} 個少，可以補顧客會搜的詞。不改也能複製。`);
+    if (m.latest.length) {
+      const firstModel = list.find(x => /^iPhone\s?\d{2}/i.test(x));
+      if (firstModel && !m.latest.some(l => firstModel.replace(/\s+/g, '').toLowerCase().includes(l.replace(/\s+/g, '').toLowerCase()))) add('kw', 'kw', 'sugg', '建議：機型關鍵字要把最新一代放在最前面。');
+    }
+
+    if (url && !/^[a-z0-9]+(-[a-z0-9]+)*$/.test(url)) add('url', 'url', 'sugg', '建議：描述性URL 只用小寫英文、數字和「-」。離開這格時工具會自動整理。');
+    else if (url && m.cat && !m.words.length) add('url', 'url', 'sugg', `建議：網址只有品牌和品類（${url}），跟別的商品很容易重複。在上面的「網址英文」填這個商品的特色（英文），例如極地冰岩殼可以填 ice-rock。`);
+
+    [['title', t], ['desc', ds], ['kw', kw]].forEach(([box, txt]) => seoWordHits(txt, R).forEach(hh => {
+      const check = hh.label === '要附出處' ? 'cert' : 'words';
+      add(box, check, hh.label === '要確認' ? 'look' : 'sugg', (WORD_MSG[hh.label] || (w => `建議：「${w}」在提醒字清單的「${hh.label}」裡，看一下要不要改。不改也能複製。`))(hh.w));
+    }));
+    [['title', t], ['desc', ds], ['kw', kw]].forEach(([box, txt]) => { if (/\p{Extended_Pictographic}/u.test(txt)) add(box, 'words', 'sugg', '建議：這格有 emoji，這幾格是給 Google 看的，建議拿掉。'); });
+    return out;
+  }
+
+  const OUTER =`<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip;background:#fff;color:#1d1f23;line-height:1.75;${FF}">`;
+
+  function generate(s) {
+    const on = s.on || {};
+    const parts = [OUTER];
+    const addon = addonHtml(s);
+    if (addon) parts.push(addon);
+    parts.push(hero(s.hero));
+
+    const segs = s.grid.filter(g => g.on);
+    const wall = on.intro !== false || segs.length > 0;
+    if (wall) {
+      parts.push(`<div style="background:${WALL}"><div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px ${SEC_TOP}">`);
+      if (on.intro !== false) parts.push(intro(s.intro));
+      segs.forEach((g, i) => parts.push(gridSeg(g, i % 2 === 1)));
+      parts.push('</div></div>');
+    }
+    parts.push(`<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px ${R(56, 88)}">`);
+    if (on.features) parts.push(features(s.features, wall));
+    if (on.videos) parts.push(videos(s.videos, on.features || wall));
+    if (s.compare === 'yes') parts.push(compare(s.cmp));
+    if (on.compat) parts.push(compat(s.compat));
+    if (on.specs) parts.push(specs(s.specs));
+    if (on.faq) parts.push(faq(s.faq));
+    parts.push('</div></div>');
+    return parts.join('');
+  }
+
+  const VOID_TAGS = new Set(['img', 'br', 'hr', 'input', 'meta', 'link', 'source', 'wbr', 'col', 'area', 'embed', 'track']);
+  const BLOCK_TAGS = new Set(['div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'td', 'th',
+    'figure', 'figcaption', 'ul', 'ol', 'li', 'section', 'article', 'header', 'footer', 'nav', 'blockquote']);
+  function pretty(html) {
+    const root = { kids: [] }, stack = [root];
+    const re = /<(\/?)([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^'">])*)>|[^<]+/g;
+    let m, pos = 0;
+    while ((m = re.exec(html))) {
+      if (m.index !== pos) return null;
+      pos = re.lastIndex;
+      const top = stack[stack.length - 1];
+      if (!m[2]) { top.kids.push({ text: m[0] }); continue; }
+      const tag = m[2].toLowerCase();
+      if (m[1]) {
+        if (stack.length < 2 || top.tag !== tag) return null;
+        top.close = m[0]; stack.pop(); continue;
+      }
+      const el = { tag, open: m[0], kids: [], close: '' };
+      top.kids.push(el);
+      if (!VOID_TAGS.has(tag) && !/\/\s*$/.test(m[3])) stack.push(el);
+    }
+    if (pos !== html.length || stack.length !== 1) return null;
+    const styleOf = el => { const s = el.open.match(/\sstyle\s*=\s*"([^"]*)"/i); return s ? s[1].replace(/\s+/g, '').toLowerCase() : ''; };
+
+    const isBlock = el => {
+      if (el.text != null) return false;
+      const st = styleOf(el);
+      if (/position:(absolute|fixed)/.test(st)) return true;
+      const d = st.match(/(?:^|;)display:([a-z-]+)/);
+      if (d) return /^(block|flex|grid|table|table-row|table-cell|list-item|table-row-group|table-header-group)$/.test(d[1]);
+      return BLOCK_TAGS.has(el.tag);
+    };
+    const flat = el => el.text != null ? el.text : el.open + el.kids.map(flat).join('') + el.close;
+    const out = [];
+    const print = (el, depth) => {
+      const pad = '  '.repeat(depth);
+      if (el.kids.length && el.kids.every(isBlock)) {
+        out.push(pad + el.open);
+        el.kids.forEach(k => print(k, depth + 1));
+        out.push(pad + el.close);
+      } else out.push(pad + flat(el));
+    };
+    if (!root.kids.length || !root.kids.every(k => k.text == null)) return null;
+    root.kids.forEach(k => print(k, 0));
+    return out.join('\n');
+  }
+
+  function blockOrder(s) {
+    const on = s.on || {};
+    const out = [];
+    if (on.intro !== false) out.push('B');
+    s.grid.forEach((g, i) => { if (g.on) out.push(['D', 'E', 'F', 'G'][i]); });
+    if (on.features) out.push('H');
+    if (on.videos) out.push('C');
+    if (s.compare === 'yes') out.push('Compare');
+    if (on.compat) out.push('Compat');
+    if (on.specs) out.push('Specs');
+    if (on.faq) out.push('FAQ');
+    return out;
+  }
+
+  const IMG_SPEC = {
+    hero:    { label: 'Hero 大圖',      minW: 1920, minH: 720,  ratioText: '橫圖，商品放中間、上下左右都多留空間', ratio: null },
+    grid:    { label: '棋盤格（D～G）', minW: 1320, minH: 880,  ratioText: '3:2 橫框',            ratio: 3 / 2 },
+    feature: { label: '其他特色卡片',   minW: 900,  minH: 900,  ratioText: '1:1 方框',            ratio: 1 },
+    cmp:     { label: '比較區卡片',     minW: 1350, minH: 1012, ratioText: '4:3 橫框',            ratio: 4 / 3 },
+  };
+
+  const LIMIT = {
+    heroName: 12, heroSub: 20,
+    intro: 50,
+    gridLine: 16, gridBody: 60, gridNote: 50,
+    featTitle: 11, featBody: 36, featLabel: 8,
+    videoCaption: 10,
+    cmpTitle: 24, cmpBody: 40, cmpCell: 12,
+    faqQ: 30, faqA: 90,
+    sumFeat: 24,
+  };
+
+  const SHOPLINE_IMG = /^https:\/\/img\.shoplineapp\.com\/media\/image_clips\/[0-9a-f]{20,}\/original\.[a-z]{3,4}(\?.*)?$/i;
+
+  const INTERNAL_WORDS = ["Claude","定版","{{","}}"];
+  const BAD_MARKUP = ['<style', '<script', '<details', '<svg', 'src="data:'];
+
+  const WRAP_BLOCKS = new Set(['div', 'p', 'table', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'figure', 'ul', 'ol', 'li', 'section', 'article', 'blockquote', 'tr', 'td', 'th']);
+  function headingWraps(html) {
+    const stack = [], found = new Set();
+    for (const m of String(html).matchAll(/<(\/?)([a-zA-Z][a-zA-Z0-9]*)\b(?:[^>"']|"[^"]*"|'[^']*')*?(\/?)>/g)) {
+      const tag = m[2].toLowerCase();
+      if (VOID_TAGS.has(tag) || m[3]) continue;
+      if (m[1]) { const k = stack.lastIndexOf(tag); if (k >= 0) stack.length = k; continue; }
+      if (WRAP_BLOCKS.has(tag)) stack.filter(t => /^h[1-6]$/.test(t)).forEach(t => found.add(t));
+      stack.push(tag);
+    }
+    return [...found];
+  }
+
+  function bareAir(raw) {
+    const hits = [], text = String(raw).replace(/&nbsp;|&#160;|&#xa0;/gi, ' ');
+    for (const m of text.matchAll(/\b(?:Air|AIR)\b/g)) {
+      const before = text.slice(Math.max(0, m.index - 8), m.index), after = text.slice(m.index + 3, m.index + 9);
+      if (/(iPhone|iPad|MacBook)\s*$/i.test(before) || /^\s*Lite/i.test(after)) continue;
+      hits.push(text.slice(Math.max(0, m.index - 6), m.index + 3).trim());
+    }
+    return hits;
+  }
+
+  const get = (o, path) => path.split('.').reduce((v, k) => (v == null ? v : v[k]), o);
+
+  function validate(s, imgs, sample) {
+    const out = [];
+    const add = (key, level, msg, sec, kind) => out.push({ key, level, msg, sec, kind: kind || (level === 'red' ? 'rule' : 'hint') });
+    const empty = v => clean(v) === '';
+    const need = (key, v, what, sec) => { if (empty(v)) add(key, 'red', `${what}還沒填`, sec, 'todo'); };
+    const over = (key, v, max, what, sec) => {
+      const n = width(v);
+      if (n > max) add(key, 'orange', `${what} ${n} 字，建議 ${max} 字內`, sec);
+    };
+    imgs = imgs || {};
+
+    const img = (key, im, specKey, sec) => {
+      need(key + '.url', im.url, '圖片網址', sec);
+      need(key + '.alt', im.alt, '圖片說明（alt）', sec);
+      const url = clean(im.url);
+      if (!url) return;
+      if (!SHOPLINE_IMG.test(url)) {
+        add(key + '.url', 'red', '網址要長這樣：https://img.shoplineapp.com/media/image_clips/…/original.png（結尾一定是 original.副檔名；800x、1080x 這種縮圖網址對新圖會讀到空檔）', sec);
+        return;
+      }
+      const info = imgs[url];
+
+      if (!info || info.state === 'loading') { add(key + '.url', 'orange', '正在讀取圖片尺寸…（還沒讀到之前尺寸沒有被檢查；20 秒還讀不到會變成紅字）', sec, 'pending'); return; }
+      if (info.state === 'error') { add(key + '.url', 'red', '這個網址讀不到圖（打錯、還沒上傳，或沒有網路）', sec); return; }
+      const sp = IMG_SPEC[specKey];
+      if (info.w < sp.minW || info.h < sp.minH) {
+        add(key + '.url', 'red', `圖片 ${info.w}×${info.h}，要至少 ${sp.minW}×${sp.minH}（${sp.label}）。不夠大放在高解析螢幕上會糊`, sec);
+      } else if (sp.ratio) {
+        const r = info.w / info.h;
+        if (Math.abs(r / sp.ratio - 1) > 0.2) add(key + '.url', 'orange', `圖片比例 ${r.toFixed(2)}:1，框是 ${sp.ratioText}，會被裁掉一大塊`, sec);
+      } else if (specKey === 'hero' && info.w / info.h < 1.6) {
+        add(key + '.url', 'orange', `圖片比例 ${(info.w / info.h).toFixed(2)}:1 偏方，桌機版上下會被裁掉很多`, sec);
+      }
+    };
+
+    if (s.compare !== 'yes' && s.compare !== 'no') add('compare', 'red', '先回答最上面那題：這個商品有沒有比較區？', 'top', 'todo');
+
+    const ask = s.on ? s.on.addon : undefined;
+
+    if (ask === null || (ask !== true && ask !== false && addonMode(s.addon) === 'none')) add('addon.ask', 'red', '先回答：這個商品頁要放加價購區嗎？', 'A', 'todo');
+    const addon = String(s.addon || ''), addonM = addonOn(s) ? addonMode(addon) : 'off';
+    if (addonM === 'none') add('addon', 'red', '加價購商品網址還沒貼（這個商品沒有加價購，就在上面那題選「不要」）', 'A', 'todo');
+    else if (addonM === 'html') {
+      const norm = normalize(addonText(addon)), stray = strayText(norm);
+      if (stray) add('addon', 'red', `整段語法外面還有別的字：「${stray.length > 40 ? stray.slice(0, 40) + '…' : stray}」。一格只能放一種：要用網址，就把整段語法刪掉；要用整段語法，就把多的字刪掉`, 'A');
+      if (!/Add-on Deals/.test(addon)) add('addon', 'red', '這段看起來不是加價購區語法（裡面沒有 Add-on Deals）', 'A');
+      else if (!addon.includes(FFH_ADDON)) add('addon', 'orange', '這是舊版的加價購區語法（字型是舊的），到加價購語法頁重新複製一次', 'A');
+
+      else if (ADDON_HEAD_CHECK && !/>加價購，省更多<\/h2>\s*<div[^>]*color:#fe5226">Add-on Deals<\/div>/.test(addon)) add('addon', 'orange', '這是舊版的加價購區語法（標題還是英文在上），到加價購語法頁重新複製一次', 'A');
+
+      [...new Set([...norm.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => slugOf(m[1])))].forEach(slug => {
+        if (slug && ADDON_HOLD[slug]) add('addon', 'red', ADDON_HOLD[slug].replace('這張不會出現，把這一行刪掉', '這段語法裡有這張卡：改用網址貼（工具會自動拿掉），或把這張卡從語法裡刪掉'), 'A');
+      });
+    } else if (addonM === 'urls') {
+      if (!KIT) add('addon', 'red', '這一版工具沒有帶加價購卡片的資料，請找工具負責人重新做一版工具', 'A');
+      else {
+        const seen = new Set();
+        addonItems(addon).forEach(x => {
+          const shown = x.raw.length > 40 ? x.raw.slice(0, 40) + '…' : x.raw, at = `第 ${x.line} 行：`;
+          if (!x.slug) add('addon', 'red', `${at}「${shown}」不是倫敦印象的商品網址。短網址要先打開，再複製網址列裡的完整網址`, 'A');
+          else if (seen.has(x.slug)) add('addon', 'orange', `${at}「${x.card ? x.card.name : x.slug}」前面已經貼過，只會放一張`, 'A');
+          else if (!x.card) {
+            const near = KIT.cards.find(c => codeOf(c) === x.slug.replace(/^【加價購】/, '').replace(/-\d+$/, ''));
+            add('addon', 'red', at + (near
+              ? `「${x.slug}」是一般賣場的網址。加價購要用加價購頁「${near.slug}」（${near.name}），換成那個網址，或按下面清單的「加入」`
+              : `工具還不認得「${x.slug}」，這張卡不會出現。要放新的加價購商品：到工具網站的「加價購區」頁產生語法，整段貼進這一格`), 'A');
+          }
+          else if (ADDON_HOLD[x.slug]) add('addon', 'red', at + ADDON_HOLD[x.slug], 'A');
+          if (x.slug) seen.add(x.slug);
+        });
+      }
+    }
+
+    img('hero.img', s.hero.img, 'hero', 'Hero');
+
+    if (!empty(s.hero.focus)) { const n = parseFloat(s.hero.focus); if (!Number.isFinite(n) || n < 0 || n > 100) add('hero.focus', 'red', '桌機版裁切位置只能填 0 到 100 的數字（空白＝置中）', 'Hero'); }
+    need('hero.name', s.hero.name, '商品名', 'Hero'); over('hero.name', s.hero.name, LIMIT.heroName, '商品名', 'Hero');
+    need('hero.sub', s.hero.sub, '主標', 'Hero'); over('hero.sub', s.hero.sub, LIMIT.heroSub, '主標', 'Hero');
+
+    if ((s.on || {}).intro !== false) {
+      const filled = s.intro.filter(x => !empty(x)).length;
+      if (filled < 2) add('intro.0', 'red', '介紹段至少要 2 句', 'B', 'todo');
+      s.intro.forEach((t, i) => { if (!empty(t)) over('intro.' + i, t, LIMIT.intro, '這句', 'B'); });
+    }
+
+    const letters = ['D', 'E', 'F', 'G'];
+    if (!s.grid.some(g => g.on)) add('grid.0.on', 'red', '棋盤格至少要用一段：在 D～G 其中一段勾「這個商品要放這一區」', 'D', 'todo');
+    s.grid.forEach((g, i) => {
+      if (!g.on) return;
+      const k = 'grid.' + i, sec = letters[i];
+      img(k + '.img', g.img, 'grid', sec);
+      need(k + '.t1', g.t1, '標題', sec);
+      need(k + '.body', g.body, '內文', sec);
+      [['t1', g.t1], ['t2', g.t2]].forEach(([f, v]) => {
+        if (/[，,]/.test(v || '')) add(k + '.' + f, 'red', '標題不能有逗號。要斷句就把後半放到「標題第 2 行」', sec);
+        if (!empty(v)) over(k + '.' + f, v, LIMIT.gridLine, '這一行', sec);
+      });
+      if (!empty(g.t2) && empty(g.t1)) add(k + '.t1', 'red', '有第 2 行就要有第 1 行', sec);
+      over(k + '.body', g.body, LIMIT.gridBody, '內文', sec);
+      if (!empty(g.note)) over(k + '.note', g.note, LIMIT.gridNote, '備註', sec);
+      if (!empty(g.pos) && !Number.isFinite(parseFloat(g.pos))) add(k + '.pos', 'red', '焦點位置只能填數字（0～100）', sec);
+    });
+
+    if (s.on.features) {
+      if (s.features.length < 3) add('features.add', 'red', '其他特色至少 3 張卡', 'H', 'todo');
+      s.features.forEach((c, i) => {
+        const k = 'features.' + i;
+        img(k + '.img', c.img, 'feature', 'H');
+        need(k + '.title', c.title, '小標', 'H'); over(k + '.title', c.title, LIMIT.featTitle, '小標', 'H');
+        need(k + '.body', c.body, '內文', 'H'); over(k + '.body', c.body, LIMIT.featBody, '內文', 'H');
+        if (!empty(c.label)) over(k + '.label', c.label, LIMIT.featLabel, '標籤', 'H');
+        if (!empty(c.pos) && !Number.isFinite(parseFloat(c.pos))) add(k + '.pos', 'red', '焦點位置只能填數字（0～100）', 'H');
+      });
+    }
+
+    if (s.on.videos) {
+      if (s.videos.length < 1) add('videos.add', 'red', '影片至少 1 支', 'C', 'todo');
+      s.videos.forEach((v, i) => {
+        const k = 'videos.' + i;
+        if (empty(v.url)) add(k + '.url', 'red', 'YouTube 網址還沒填', 'C', 'todo');
+        else if (!youtubeId(v.url)) add(k + '.url', 'red', '看不出是哪支 YouTube 影片。貼瀏覽器網址列的整串，或 youtu.be 分享連結', 'C');
+        if (!empty(v.caption)) over(k + '.caption', v.caption, LIMIT.videoCaption, '小標', 'C');
+      });
+    }
+
+    if (s.compare === 'yes') {
+      const c = s.cmp;
+      need('cmp.question', c.question, '問句', 'Compare');
+      need('cmp.va', c.va, '版本 1 名稱', 'Compare'); need('cmp.vb', c.vb, '版本 2 名稱', 'Compare');
+      if (c.rows.length < 1) add('cmp.add', 'red', '比較表至少 1 列', 'Compare', 'todo');
+      c.rows.forEach((r, i) => {
+        const k = 'cmp.rows.' + i;
+        need(k + '.label', r.label, '項目', 'Compare');
+        need(k + '.a.text', r.a.text, '版本 1 的內容', 'Compare');
+        need(k + '.b.text', r.b.text, '版本 2 的內容', 'Compare');
+        [r.a.text, r.b.text].forEach((t, j) => { if (!empty(t)) over(k + (j ? '.b.text' : '.a.text'), t, LIMIT.cmpCell, '這格', 'Compare'); });
+      });
+      [['cardA', c.cardA], ['cardB', c.cardB]].forEach(([n, k]) => {
+        img('cmp.' + n + '.img', k.img, 'cmp', 'Compare');
+        need('cmp.' + n + '.title', k.title, '卡片小標', 'Compare'); over('cmp.' + n + '.title', k.title, LIMIT.cmpTitle, '卡片小標', 'Compare');
+        need('cmp.' + n + '.body', k.body, '卡片內文', 'Compare'); over('cmp.' + n + '.body', k.body, LIMIT.cmpBody, '卡片內文', 'Compare');
+      });
+    }
+
+    if (s.on.compat) {
+      if (s.compat.rows.length < 1) add('compat.add', 'red', '適用機型至少 1 列', 'Compat', 'todo');
+      const menu = new Set(String(s.compat.menu || '').split(/[\n,，、／/]+/).map(normModel).filter(Boolean));
+      s.compat.rows.forEach((r, i) => {
+        need('compat.rows.' + i + '.names', r.names, '機型', 'Compat');
+        if (menu.size && r.ok) {
+          const miss = splitNames(r.names).filter(n => !menu.has(normModel(n)));
+          if (miss.length) add('compat.rows.' + i + '.names', 'orange', `規格選單清單裡找不到：${miss.join('、')}（只寫買得到的）`, 'Compat');
+        }
+      });
+
+      if (menu.size) {
+        const listed = new Set(s.compat.rows.filter(r => r.ok).flatMap(r => splitNames(r.names).map(normModel)));
+        const notListed = String(s.compat.menu || '').split(/[\n,，、／/]+/).map(clean).filter(n => n && genOf(normModel(n)) != null && !listed.has(normModel(n)));
+        if (notListed.length) add('compat.menu', 'orange', `選單有、上面的表沒寫：${[...new Set(notListed)].join('、')}。表漏寫的話，商品摘要會寫成「除外」`, 'Compat');
+      }
+      modelPhrase(s.compat).unknown.forEach(u => add('compat.rows.' + u.row + '.names', 'orange', `工具不認得「${u.name}」這個機型，商品摘要的適用機型那句沒有算到它`, 'Compat'));
+    }
+
+    if (s.on.specs) {
+      if (s.specs.length < 1) add('specs.add', 'red', '規格至少 1 列', 'Specs', 'todo');
+      s.specs.forEach((r, i) => { need('specs.' + i + '.label', r.label, '項目', 'Specs'); need('specs.' + i + '.value', r.value, '內容', 'Specs'); });
+    }
+    if (s.on.faq) {
+      if (s.faq.length < 1) add('faq.add', 'red', 'FAQ 至少 1 題', 'FAQ', 'todo');
+      s.faq.forEach((x, i) => {
+        need('faq.' + i + '.q', x.q, '問題', 'FAQ'); over('faq.' + i + '.q', x.q, LIMIT.faqQ, '問題', 'FAQ');
+        need('faq.' + i + '.a', x.a, '回答', 'FAQ'); over('faq.' + i + '.a', x.a, LIMIT.faqA, '回答', 'FAQ');
+      });
+    }
+
+    {
+      const sm = s.summary || {};
+      const feats = sm.feats || [];
+      if (feats.filter(t => stripBullet(t) !== '').length < 2) add('summary.add', 'red', '產品特色至少要 2 行', 'Summary', 'todo');
+      feats.forEach((t, i) => { if (stripBullet(t) !== '') over('summary.feats.' + i, stripBullet(t), LIMIT.sumFeat, '這一行', 'Summary'); });
+      const mp = s.on.compat ? modelPhrase(s.compat) : { text: '', excl: [] };
+      if (!mp.text) add('summary.model', 'orange', '摘要沒有「適用機型」那一行：上面的適用機型表沒開、還沒填，或沒有「相容」的列。手機殼一定要有', 'Summary');
+      if (s.on.specs) s.specs.forEach((r, i) => {
+        if (r.sum && isModelLabel(r.label)) add('specs.' + i + '.label', 'orange', '摘要的適用機型由工具從適用機型表算，這一列不用勾「摘要」（勾了也不會放）', 'Specs');
+
+        if (isModelLabel(r.label) && mp.excl.length && clean(r.value)) {
+          const v = normModel(r.value);
+          const lack = mp.excl.filter(x => !v.includes(normModel(x.replace(' 系列', '').replace('iPhone ', ''))));
+          if (lack.length) add('specs.' + i + '.value', 'orange', `適用機型表算出來是「${lack.join('、')} 除外」，這一列沒寫到。同一頁的機型寫法要一致`, 'Specs');
+        }
+      });
+    }
+
+    const html = safeGenerate(s);
+    if (html) {
+      BAD_MARKUP.forEach(b => { if (html.includes(b)) add('output', 'red', `輸出裡有 ${b}，SHOPLINE 商品描述會把它濾掉（多半是加價購那格貼進來的）`, 'A'); });
+      const wraps = headingWraps(html);
+      if (wraps.length) add('output', 'red', `輸出裡有標題（${wraps.map(t => '<' + t + '>').join('、')}）包著別的區塊：AI 照標題分段時，下面整段會掛在這個標題底下。多半是加價購那格從 Google 文件貼進來的，那一層要換成 <div>`, 'A');
+      const visible = html.replace(/<[^>]*>/g, ' ');
+      INTERNAL_WORDS.forEach(w => { if (visible.includes(w)) add('output', 'red', `顧客看得到的內容裡有內部用語「${w}」`, 'top'); });
+      const air = bareAir(visible);
+      if (air.length) add('output', 'orange', `機型要寫全名：「${air[0]}」的 Air 前面加 iPhone，寫成「iPhone Air」（只寫 Air，AI 和搜尋分不出是 iPhone、iPad 還是 MacBook）`, 'top');
+    }
+    {
+      let sumText = '';
+      try { sumText = summary(s); } catch (e) {   }
+      const visible = sumText.replace(/<[^>]*>/g, ' ');
+      INTERNAL_WORDS.forEach(w => { if (visible.includes(w)) add('summary.out', 'red', `商品摘要裡有內部用語「${w}」`, 'Summary'); });
+      const air = bareAir(visible);
+      if (air.length) add('summary.out', 'orange', `機型要寫全名：「${air[0]}」的 Air 前面加 iPhone，寫成「iPhone Air」`, 'Summary');
+    }
+
+    INTERNAL_WORDS.forEach(w => { if (clean(s.hero && s.hero.name).includes(w)) add('hero.name', 'red', `商品名裡有內部用語「${w}」（也會被帶進網路搜尋最佳化的指令）`, 'Hero'); });
+
+    if (sample) {
+      const on = s.on || {};
+      const skip = p =>
+        /^(compat\.menu|addon)$/.test(p) || /\.(url|id)$/.test(p) ||
+        /^compat\.rows\.\d+\.names$/.test(p) || /^specs\.\d+\.label$/.test(p) ||
+        (/^grid\.(\d+)\./.test(p) && !(s.grid[+p.split('.')[1]] || {}).on) ||
+        (/^intro\./.test(p) && on.intro === false) ||
+        (/^features\./.test(p) && !on.features) || (/^videos\./.test(p) && !on.videos) ||
+        (/^cmp\./.test(p) && s.compare !== 'yes') || (/^compat\./.test(p) && !on.compat) ||
+        (/^specs\./.test(p) && !on.specs) || (/^faq\./.test(p) && !on.faq);
+      const soft = p => /^specs\.\d+\.value$/.test(p) || /^faq\.\d+\.q$/.test(p);
+      const seen = new Set();
+      (function walk(a, b, path) {
+        if (typeof a === 'string' && typeof b === 'string') {
+          if (clean(a).length >= 6 && clean(a) === clean(b) && !skip(path)) seen.add(path);
+        } else if (a && b && typeof a === 'object') {
+          Object.keys(a).forEach(k => walk(a[k], b[k], path ? path + '.' + k : k));
+        }
+      })(s, sample, '');
+      seen.forEach(p => soft(p)
+        ? add(p, 'orange', '跟 B67 範例一模一樣。這個商品也是這樣就不用改', secOf(p), 'sampleSoft')
+        : add(p, 'orange', '這是 B67 的範例文字，不是這個商品的', secOf(p), 'sample'));
+    }
+    return out;
+  }
+
+  const normModel = s => clean(s).toLowerCase().replace(/iphone/g, '').replace(/\s+/g, '');
+  const secOf = p => {
+    if (p.startsWith('hero')) return 'Hero';
+    if (p.startsWith('intro')) return 'B';
+    if (p.startsWith('grid.')) return ['D', 'E', 'F', 'G'][+p.split('.')[1]];
+    if (p.startsWith('features')) return 'H';
+    if (p.startsWith('videos')) return 'C';
+    if (p.startsWith('cmp')) return 'Compare';
+    if (p.startsWith('compat')) return 'Compat';
+    if (p.startsWith('specs')) return 'Specs';
+    if (p.startsWith('faq')) return 'FAQ';
+    if (p.startsWith('summary')) return 'Summary';
+    return 'top';
+  };
+
+  function safeGenerate(s) { try { return generate(s); } catch (e) { return ''; } }
+
+  const api = { generate, pretty, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+    slugOf, addonKitFrom, useAddonKit, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+
+
+(function () {
+  'use strict';
+  var G = window.LNGen, KIT = window.LN_ADDON_KIT, WATCH = window.LN_ADDON_WATCH, HIDDEN = window.LN_ADDON_HIDDEN || {};
+  if (!G || !KIT) { document.getElementById('au-todo').textContent = '這一版工具沒有帶加價購卡片的資料，請找工具負責人重新做一版。'; return; }
+
+  var MORE = {};
+  ((WATCH && WATCH.cards) || []).forEach(function (c) { MORE[c.slug] = c; });
+
+  var PHONE = KIT.cards.filter(function (c) { return !G.ADDON_HOLD[c.slug]; });
+  G.useAddonKit(KIT);
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = 'ln-addon-update-v1';
+  function today() { var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {   } }
+  var st = Object.assign({ urls: '', extra: {}, who: '' }, load());
+  if (!st.extra || typeof st.extra !== 'object') st.extra = {};
+  var pg = { url: '', had: '', way: 'whole', whole: '', old: '', date: '', time: '' };
+  var imgs = {};
+  var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
+  var codeOfName = function (n) { var m = String(n || '').match(/【([A-Za-z0-9]+)】/); return m ? m[1].toLowerCase() : ''; };
+  var money = function (n) { return Number(n).toLocaleString('en-US'); };
+  var num = function (x) { var t = String(x == null ? '' : x).replace(/[,\s]/g, ''); return /^\d+$/.test(t) && +t > 0 ? +t : null; };
+
+  function checkImg(u) {
+    if (!u || imgs[u]) return;
+    imgs[u] = 'loading';
+    var im = new Image();
+    im.onload = function () { imgs[u] = im.naturalWidth >= 200 && im.naturalHeight >= 200 ? 'ok' : 'bad'; render(); };
+    im.onerror = function () { imgs[u] = 'bad'; render(); };
+    im.src = u;
+  }
+
+  function cardsNow() {
+    var seen = {}, out = [];
+    G.addonItems(st.urls).forEach(function (x) {
+      if (!x.card && x.slug && MORE[x.slug]) x.card = MORE[x.slug];
+      var shown = x.raw.length > 40 ? x.raw.slice(0, 40) + '…' : x.raw, it = { x: x, msgs: [], data: null, html: '' };
+      out.push(it);
+      if (!x.slug) { it.msgs.push(['red', '「' + shown + '」不是倫敦印象的商品網址。短網址要先打開，再複製網址列裡的完整網址']); return; }
+      if (seen[x.slug]) { it.dup = true; it.msgs.push(['orange', '前面已經貼過，只會放一張']); return; }
+      seen[x.slug] = true;
+      if (x.card) {
+        it.data = { href: x.card.href, slug: x.card.slug, name: x.card.name, sale: x.card.sale, orig: x.card.orig, hidden: Object.prototype.hasOwnProperty.call(HIDDEN, x.card.slug) ? HIDDEN[x.card.slug] : null };
+        it.html = x.card.html;
+
+        if (G.ADDON_HOLD[x.slug]) it.msgs.push(['red', G.ADDON_HOLD[x.slug].replace('這張不會出現，把這一行刪掉', '把這一行刪掉')]);
+        return;
+      }
+
+      var e = st.extra[x.slug] || (st.extra[x.slug] = { name: '', img: '', sale: '', orig: '', ok: '' });
+      it.form = e;
+      var near = KIT.cards.filter(function (c) { return codeOfName(c.name) && codeOfName(c.name) === x.slug.replace(/^【加價購】/, '').replace(/-\d+$/, ''); })[0];
+      if (near) it.msgs.push(['orange', '這像是一般賣場的網址。加價購要用加價購頁（' + near.name + '）的網址，確定要放一般賣場就照填']);
+      var sale = num(e.sale), orig = String(e.orig).trim() ? num(e.orig) : null;
+      if (!String(e.name).trim()) it.msgs.push(['todo', '填商品名']);
+      else if (!codeOfName(e.name)) it.msgs.push(['orange', '商品名後面加【編號】，像「…【B51】」']);
+      if (!String(e.img).trim()) it.msgs.push(['todo', '填圖片網址']);
+      else if (!/^https:\/\//.test(e.img.trim())) it.msgs.push(['red', '圖片網址要是 https:// 開頭的完整網址']);
+      else { checkImg(e.img.trim()); var s = imgs[e.img.trim()];
+        if (s === 'loading') it.msgs.push(['todo', '圖片載入中…']);
+        else if (s === 'bad') it.msgs.push(['red', '圖片載不出來，或小於 200×200。到商品頁右鍵複製圖片網址，網址結尾要是 original.jpg 這種']); }
+      if (!String(e.sale).trim()) it.msgs.push(['todo', '填加購價']);
+      else if (!sale) it.msgs.push(['red', '加購價只能填數字']);
+      if (String(e.orig).trim() && !orig) it.msgs.push(['red', '原價只能填數字（沒有原價就空著）']);
+      else if (sale && orig && orig <= sale) it.msgs.push(['orange', '原價沒有比加購價高，卡片上會看起來沒有折扣']);
+      if (e.ok !== today()) it.msgs.push(['todo', '打開連結確認價格，勾「價格我打開連結對過了」']);
+      var href = 'https://www.londonimg.tw/products/' + encodeURIComponent(x.slug);
+      if (String(e.name).trim() && sale && /^https:\/\//.test(String(e.img).trim())) {
+        it.data = { href: href, slug: x.slug, name: e.name.trim(), sale: sale, orig: orig };
+        try { it.html = G.addonCardFrom(KIT.cards[0].html, { href: href, img: e.img.trim(), name: e.name.trim(), sale: sale, orig: orig }); }
+        catch (err) { it.msgs.push(['red', '做不出這張卡（' + err.message + '），請找工具負責人']); it.html = ''; }
+      }
+    });
+    return out;
+  }
+  var blocking = function (it) { return it.msgs.some(function (m) { return m[0] === 'red' || m[0] === 'todo'; }); };
+
+  var WRAP = '<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">';
+  var STUCK = '重選兩次還是這句，請找工具負責人。';
+  var OLD_MSG = {
+    empty: ['todo', '把後台選好的舊區塊貼在上面這一格'],
+    plain: ['red', '貼進來的是畫面上的字，不是原始碼。回後台，商品描述按「HTML 原始碼」，在那個畫面裡選、複製'],
+    start: ['red', '開頭沒對準。加價購區從這一串開始：' + WRAP + '　從這一串最前面的 < 開始選'],
+    cut: ['red', '開頭少選了最前面的「<」。從 ' + WRAP + ' 這一串的 < 開始選'],
+    late: ['red', '開頭選得太後面了：從卡片開始選，會漏掉外框和標題。往上找到 ' + WRAP + ' 這一串，從它的 < 開始選'],
+    before: ['red', '前面多選到別的內容（「{at}」）。從 ' + WRAP + ' 這一串的 < 開始選'],
+    notaddon: ['red', '這一段不是加價購區（裡面沒有 Add-on Deals）。確認是在「HTML 原始碼」裡選的，選的是描述最上面那一排加價購卡片'],
+    two: ['red', '這一段裡有兩個加價購區，請找工具負責人'],
+    broken: ['red', '這一段的標籤對不起來（在「{at}」附近），重新選一次：從外框那一串選到加價購區的結尾。' + STUCK],
+    extra: ['red', '多選到下面的內容了（「{at}」）：選取的結尾往回縮，停在加價購區最後一個 </div> 後面'],
+    outer: ['red', '開頭選到的框不是加價購區的外框（多半是整頁描述的外框，後面還有別的設定）。加價購區的外框是 ' + WRAP + ' 這一串，overflow-x:clip 後面直接是 ">"，從這一串的 < 開始選'],
+    toomuch: ['red', '選太多了：這一段除了加價購的卡片，還有別的內容（「{at}」）。只選加價購區那一段，不要整段全選'],
+  };
+  function oldNow() {
+    if (pg.had !== 'yes' || pg.way !== 'block') return null;
+    var r = G.addonOldCheck(pg.old), m;
+    if (r.kind === 'ok') {
+      m = ['ok', '選得剛好。舊區塊有 ' + r.cards.length + ' 張卡：' + r.cards.map(function (c) { return c.name || c.slug; }).join('、') +
+        (r.spacer ? '。這段裡有一張空白圖（empty.jpg），是以前貼的時候包進來的，會跟著舊區塊一起換掉' : '')];
+    } else if (r.kind === 'short') {
+      m = ['red', '少選了 ' + r.divs + ' 個 </div>' + (r.others ? '（還有 ' + r.others + ' 個別的標籤沒收尾）' : '') + '：回後台，選取範圍再往下多選 ' + r.divs + ' 個 </div>，重新複製貼過來。' + STUCK];
+    } else m = OLD_MSG[r.kind].slice(), m[1] = m[1].replace('{at}', r.at || '');
+    return { r: r, msg: m };
+  }
+
+  var WHOLE_MSG = {
+    empty: ['todo', '把後台 HTML 原始碼整段（⌘A 全選）貼在上面這一格'],
+    plain: OLD_MSG.plain,
+    none: ['red', '這段描述裡沒有加價購區。這一頁原本沒有的話，上面選「沒有，第一次放」'],
+    nowrap: ['red', '描述裡有 Add-on Deals，但找不到加價購區的外框（格式跟工具認得的不一樣）。請找工具負責人'],
+    two: ['red', '這段描述裡有兩個加價購區（或加價購區外面還有 Add-on Deals）。請找工具負責人'],
+    broken: ['red', '加價購區的標籤對不起來，可能沒有全選到。回後台重新 ⌘A 全選再貼一次；' + STUCK],
+    bad: ['red', '找到的加價購區長得不對，請找工具負責人'],
+    verify: ['red', '換完工具自己重新找一次，前後對不上，所以不給複製。請找工具負責人'],
+  };
+  var n0 = function (n) { return Number(n).toLocaleString('en-US'); };
+  function wholeNow(block) {
+    if (pg.had !== 'yes' || pg.way !== 'whole') return null;
+    var f = block ? G.addonSwap(pg.whole, block) : G.addonFindIn(pg.whole), list;
+    if (f.kind !== 'ok') return { r: f, msgs: [WHOLE_MSG[f.kind]] };
+    var old = f.old || f.cards;
+    list = [['ok', '找到了：舊的加價購區有 ' + old.length + ' 張卡（' + old.map(function (c) { return c.name || c.slug || '讀不到商品名'; }).join('、') + '）' +
+      (f.spacer ? '，裡面有一張空白圖（empty.jpg），會跟著換掉' : '')]];
+    if (!block) list.push(['todo', '先在第 1 步放這次的卡']);
+    else {
+      list.push(['ok', '加價購區以外 0 字不同：前面 ' + n0(f.before) + ' 字、後面 ' + n0(f.after) + ' 字都跟你貼進來的一樣（工具換完自己重新找一次對過）']);
+      if (f.unchanged) list.push(['orange', '這次的卡跟原本的一模一樣，這一頁可以不用換']);
+    }
+    return { r: f, msgs: list, out: block ? f.out : '' };
+  }
+
+  function paintMsg(el, list) {
+    el.innerHTML = list.map(function (m) { return '<div class="au-m au-' + m[0] + '">' + esc(m[1]) + '</div>'; }).join('');
+  }
+
+  function render() {
+    var items = cardsNow(), good = items.filter(function (it) { return !it.dup && it.html && !blocking(it); });
+
+    var box = $('au-items');
+
+    var keep = {};
+    [].slice.call(box.querySelectorAll('[data-slug]')).forEach(function (n) { keep[n.getAttribute('data-slug')] = n; });
+    var frag = document.createDocumentFragment();
+    items.forEach(function (it, i) {
+      var key = (it.x.slug || 'bad') + '#' + i, n = keep[key];
+      if (!n) { n = document.createElement('div'); n.setAttribute('data-slug', key); n.className = 'au-item'; if (it.form) buildForm(n, it); }
+      delete keep[key];
+      var head = n.querySelector('.au-item-h') || n.insertBefore(document.createElement('div'), n.firstChild);
+      head.className = 'au-item-h';
+      var d = it.data;
+      head.innerHTML = '<span class="au-pos">' + (i + 1) + '</span>' + (it.x.card ? '<span class="au-tag">工具認得</span>' : it.form ? '<span class="au-tag au-new">新商品</span>' : '') +
+        '<span class="au-name">' + esc(d ? d.name : (it.x.slug || it.x.raw)) + '</span>' +
+        (d ? '<span class="au-price">NT$' + money(d.sale) + (d.orig ? ' <s>NT$' + money(d.orig) + '</s>' : '') + '</span>' : '');
+      var msg = n.querySelector('.au-item-msg') || n.appendChild(document.createElement('div'));
+      msg.className = 'au-item-msg';
+      paintMsg(msg, it.msgs);
+      var cb = it.form && n.querySelector('[data-k="ok"]');
+      if (cb) cb.checked = it.form.ok === today();
+      frag.appendChild(n);
+    });
+    box.innerHTML = '';
+    box.appendChild(frag);
+
+    var block = good.length ? G.addonAssemble(good.map(function (it) { return it.html; })) : '';
+    var pv = $('au-preview');
+    if (pv._last !== block) {
+      pv._last = block;
+      pv.srcdoc = '<!doctype html><meta charset="utf-8"><body style="margin:0;font-family:Montserrat,-apple-system,\'PingFang TC\',\'Noto Sans TC\',sans-serif">' + (block || '<p style="padding:16px;color:#8a93a1">貼上網址後，這裡會出現卡片</p>') + '</body>';
+    }
+
+    var pageMsgs = [];
+    if (!pg.url.trim()) pageMsgs.push(['todo', '填這一頁的前台網址（記在換品紀錄裡）']);
+    else if (!G.slugOf(pg.url)) pageMsgs.push(['red', '這不是倫敦印象的商品網址']);
+    paintMsg($('au-page-msg'), pageMsgs.filter(function (m) { return m[0] !== 'todo'; }));
+    $('au-old-wrap').hidden = pg.had !== 'yes';
+    $('au-whole-wrap').hidden = pg.way !== 'whole';
+    $('au-block-wrap').hidden = pg.way !== 'block';
+    var old = oldNow(), whole = wholeNow(block);
+    paintMsg($('au-old-msg'), old ? [old.msg] : []);
+    paintMsg($('au-whole-msg'), whole ? whole.msgs : []);
+    $('au-steps-whole').hidden = pg.had === 'no' || pg.way !== 'whole';
+    $('au-steps-yes').hidden = pg.had === 'no' || pg.way !== 'block';
+    $('au-steps-no').hidden = pg.had !== 'no';
+    $('au-copy').textContent = pg.had === 'yes' && pg.way === 'whole' ? '複製整段描述' : '複製語法';
+
+    var todo = [];
+    if (!items.length) todo.push(['todo', '先在第 1 步貼加價購商品網址']);
+    items.forEach(function (it, i) { if (!it.dup && blocking(it)) todo.push([it.msgs.some(function (m) { return m[0] === 'red'; }) ? 'red' : 'todo', '第 ' + (i + 1) + ' 張還沒好：' + it.msgs.filter(function (m) { return m[0] !== 'orange'; }).map(function (m) { return m[1]; }).join('；')]); });
+    pageMsgs.forEach(function (m) { todo.push(m); });
+    if (!st.who.trim()) todo.push(['todo', '填你的名字']);
+    if (!pg.had) todo.push(['todo', '回答「原本有加價購區嗎？」']);
+    if (old && old.msg[0] !== 'ok') todo.push([old.msg[0], '舊區塊：' + old.msg[1]]);
+    if (whole && whole.r.kind !== 'ok') todo.push([whole.msgs[0][0], '整段描述：' + whole.msgs[0][1]]);
+    paintMsg($('au-todo'), todo.length ? todo : [['ok', '都好了，可以複製']]);
+    $('au-copy').disabled = !!todo.length;
+    $('au-copy')._block = whole ? whole.out : block;
+
+    var cards = good.map(function (it) { return it.data; });
+
+    var logTodo = todo.slice();
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(pg.date)) logTodo.push(['todo', '填後台存檔的日期']);
+    if (!/^\d{2}:\d{2}$/.test(pg.time)) logTodo.push(['todo', '填後台存檔的時間（到分）']);
+    paintMsg($('au-log-todo'), logTodo.length ? logTodo.slice(-2).filter(function (m) { return /存檔/.test(m[1]); }).concat(logTodo.length > 2 || !logTodo.every(function (m) { return /存檔/.test(m[1]); }) ? [['todo', '上面的步驟還沒好']] : []) : []);
+    $('au-log').value = logTodo.length ? '' : G.addonLogRow({ page: pg.url, who: st.who.trim(), old: old ? old.r.cards : whole && whole.r.kind === 'ok' ? whole.r.old : null, cards: cards, date: pg.date, time: pg.time });
+    $('au-log-copy').disabled = !!logTodo.length;
+    $('au-set').value = !todo.length ? G.addonSetRows(cards, '加價購區更新器 ' + today()) : '';
+    $('au-set-copy').disabled = !!todo.length;
+  }
+
+  function buildForm(n, it) {
+    var e = it.form, slug = it.x.slug;
+    var link = /^https?:\/\//i.test(it.x.raw) ? it.x.raw : 'https://www.londonimg.tw/products/' + encodeURIComponent(slug);
+    var f = document.createElement('div');
+    f.className = 'au-form';
+    f.innerHTML =
+      '<p class="fhint">工具還不認得這個商品，請自己填卡片上的字。<a href="' + esc(link) + '" target="_blank" rel="noopener">打開商品頁</a></p>' +
+      '<label class="au-label">商品名（卡片上的字，後面加【編號】）<input class="au-input" data-k="name"></label>' +
+      '<label class="au-label">圖片網址（商品頁的主圖，右鍵「複製圖片網址」）<input class="au-input au-mono" data-k="img" spellcheck="false"></label>' +
+      '<div class="au-pair"><label class="au-label">加購價<input class="au-input" data-k="sale" inputmode="numeric"></label>' +
+      '<label class="au-label">原價（選填）<input class="au-input" data-k="orig" inputmode="numeric"></label></div>' +
+      '<label class="au-opt au-check"><input type="checkbox" data-k="ok"> 價格我打開連結對過了（今天）</label>';
+    [].slice.call(f.querySelectorAll('[data-k]')).forEach(function (inp) {
+      var k = inp.getAttribute('data-k');
+      if (k === 'ok') { inp.checked = e.ok === today(); inp.onchange = function () { e.ok = inp.checked ? today() : ''; save(); render(); }; }
+      else { inp.value = e[k] || ''; inp.oninput = function () { e[k] = inp.value; if (k === 'sale' || k === 'orig') e.ok = ''; save(); render(); }; }
+    });
+    n.appendChild(f);
+  }
+
+  function copy(text, msgEl) {
+    function done(ok) { msgEl.textContent = ok ? '已複製' : '沒有複製成功：點一下框，按 ⌘A 再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）'; msgEl.className = 'au-msg ' + (ok ? 'au-ok' : 'au-red'); }
+    function fallback() { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {   } t.remove(); done(ok); }
+    if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { done(true); }, fallback); else fallback();
+  }
+
+  $('au-preview').onload = function () { try { this.style.height = (this.contentDocument.documentElement.scrollHeight + 4) + 'px'; } catch (e) {   } };
+
+  $('au-urls').value = st.urls;
+  $('au-who').value = st.who;
+  var nWatch = WATCH && WATCH.cards ? WATCH.cards.length : 0, checked = KIT.check && KIT.check.at && (!nWatch || (WATCH.check && WATCH.check.at));
+  $('au-kit-note').textContent = '工具認得的卡（手機殼這一組 ' + PHONE.length + ' 張' + (nWatch ? '、錶帶這一組 ' + nWatch + ' 張' : '') + '）：' +
+    (checked ? '價格在 ' + KIT.check.at + ' 做這一版工具時跟商城對過。' : '這一版工具沒有對過價格，複製前打開每個連結確認。') + '卡片的價格是寫在語法裡的，賣場改價，這裡不會跟著變。';
+  $('au-urls').oninput = function () { st.urls = this.value; save(); render(); };
+  $('au-who').oninput = function () { st.who = this.value; save(); render(); };
+  $('au-page').oninput = function () { pg.url = this.value; render(); };
+  $('au-old').oninput = function () { pg.old = this.value; render(); };
+  $('au-whole').oninput = function () { pg.whole = this.value; render(); };
+  [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.onchange = function () { pg.way = r.value; render(); }; });
+  $('au-date').oninput = function () { pg.date = this.value; render(); };
+  $('au-time').oninput = function () { pg.time = this.value; render(); };
+  [].slice.call(document.querySelectorAll('input[name="au-had"]')).forEach(function (r) { r.onchange = function () { pg.had = r.value; render(); }; });
+  if (WATCH && WATCH.cards && WATCH.cards.length) {
+    $('au-preset-watch').disabled = false; $('au-preset-watch').removeAttribute('title');
+    $('au-preset-watch').textContent = '帶入錶帶這一組';
+    $('au-preset-watch').onclick = function () {
+      if (st.urls.trim() && !confirm('上面已經有網址了，要換成錶帶這一組嗎？')) return;
+      st.urls = WATCH.cards.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; save(); render();
+    };
+  }
+  $('au-preset-phone').onclick = function () {
+    if (st.urls.trim() && !confirm('上面已經有網址了，要換成手機殼這一組嗎？')) return;
+    st.urls = PHONE.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; save(); render();
+  };
+  $('au-copy').onclick = function () { if (!this.disabled && this._block) copy(this._block, $('au-copy-msg')); };
+  $('au-log-copy').onclick = function () { if ($('au-log').value) copy($('au-log').value, $('au-log-msg')); };
+  $('au-set-copy').onclick = function () { if ($('au-set').value) copy($('au-set').value, $('au-set-msg')); };
+  $('au-next').onclick = function () {
+    pg = { url: '', had: '', way: 'whole', whole: '', old: '', date: '', time: '' };
+    $('au-page').value = ''; $('au-old').value = ''; $('au-whole').value = '';
+    [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = r.value === 'whole'; }); $('au-date').value = ''; $('au-time').value = '';
+    [].slice.call(document.querySelectorAll('input[name="au-had"]')).forEach(function (r) { r.checked = false; });
+    ['au-copy-msg', 'au-log-msg', 'au-set-msg'].forEach(function (id) { $(id).textContent = ''; });
+    render(); $('page').scrollIntoView(); $('au-page').focus();
+  };
+  render();
+})();
+
+</script>
+<script src="site.js"></script>
+</body>
+</html>

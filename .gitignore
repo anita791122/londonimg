@@ -52,5 +52,6 @@ product-page/listing-tool/*
 !product-page/listing-tool/skill.html
 !product-page/listing-tool/addon.html
 !product-page/listing-tool/addon-watch.html
+!product-page/listing-tool/addon-update.html
 !product-page/listing-tool/site.css
 !product-page/listing-tool/site.js
