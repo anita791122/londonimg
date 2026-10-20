@@ -54,6 +54,7 @@
 .au-alt>summary::before{content:'▸'}
 .au-alt[open]>summary::before{content:'▾'}
 .au-nowrap{white-space:nowrap}
+[hidden]{display:none!important}   /* site.css 的 .fhint 寫了 display:block，會蓋掉 hidden，要藏的提示會一直顯示 */
 @media(max-width:520px){.au-pair{grid-template-columns:1fr}.au-nowrap{white-space:normal;word-break:break-all}}
 </style>
 </head>
@@ -132,8 +133,8 @@
       <p class="fhint">整段描述貼不進來，或工具說加價購區的標籤對不起來（多半是沒全選到、貼進來少了一截），重新全選貼上還是一樣，才用下面的方法。工具說找不到外框、有兩個加價購區、或加價購區長得不對的時候，下面的方法也解決不了，請找 Anita。</p>
       <fieldset class="au-q">
         <legend>這一頁的商品描述裡，原本有加價購區嗎？</legend>
-        <label class="au-opt"><input type="radio" name="au-way" value="block"> 有：只選舊的加價購區換掉</label>
-        <label class="au-opt"><input type="radio" name="au-way" value="top"> 沒有：新的貼在描述最上面</label>
+        <label class="au-opt"><input type="radio" name="au-way" value="block"> 有：只選舊的加價購區</label>
+        <label class="au-opt"><input type="radio" name="au-way" value="top"> 沒有：游標放最前面貼上</label>
       </fieldset>
       <div id="au-block-wrap" hidden>
         <ol class="steps">
@@ -178,7 +179,7 @@
 
   <section class="card" id="log">
     <h2 class="card-h"><span class="num">4</span>換品紀錄</h2>
-    <p>每換完一頁，填後台存檔的日期和時間，複製這一列，貼到 Anita 的 Notion。要比較換卡前後賣得怎樣，得知道每一頁是哪天換上去的。</p>
+    <p>每換完一頁，填後台存檔的日期和時間，複製這一列，貼到 <a href="https://app.notion.com/p/3ff7519bf41e8063b5ccd9b5bc42b721?v=3bb7519bf41e80419805000c9db91f0d" target="_blank" rel="noopener">Anita 的 Notion</a>。要比較換卡前後賣得怎樣，得知道每一頁是哪天換上去的。</p>
     <div class="au-pair">
       <label class="au-label">後台存檔的日期<input id="au-date" class="au-input" type="date"></label>
       <label class="au-label">後台存檔的時間（到分）<input id="au-time" class="au-input" type="time"></label>
@@ -186,7 +187,7 @@
     <div id="au-log-todo" class="au-msg" aria-live="polite"></div>
     <textarea id="au-log" class="au-input au-mono" rows="2" readonly aria-label="換品紀錄這一列（用 tab 分格）"></textarea>
     <div class="au-row"><button type="button" class="au-btn" id="au-log-copy">複製這一列</button><span id="au-log-msg" class="au-msg"></span></div>
-    <div class="au-row au-next"><button type="button" class="dl-btn" id="au-next">換下一頁</button><span class="fhint">卡片和名字留著，只清掉這一頁的網址和舊區塊。要換一組卡從頭來，按第 1 步的「清空重填」。</span></div>
+    <div class="au-row au-next"><button type="button" class="dl-btn" id="au-next">換下一頁</button><span class="fhint">卡片和名字留著，只清掉要換的商品頁網址、貼進來的描述、存檔的日期和時間。要換一組卡從頭來，按第 1 步的「清空重填」。</span></div>
   </section>
   </main>
 </div>
@@ -1640,7 +1641,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   var WRAP = '<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">';
   var STUCK = '重選兩次還是這句，請找 Anita。';
   var OLD_MSG = {
-    empty: ['todo', '把後台選好的舊區塊貼在上面這一格'],
+    empty: ['todo', '把後台選好的舊區塊貼在「選好的舊區塊」那一格'],
     plain: ['red', '貼進來的是畫面上的字，不是原始碼。回後台，商品描述按「HTML 原始碼」，在那個畫面裡選、複製'],
     start: ['red', '開頭沒對準。加價購區從這一串開始：' + WRAP + '　從這一串最前面的 < 開始選'],
     cut: ['red', '開頭少選了最前面的「<」。從 ' + WRAP + ' 這一串的 < 開始選'],
@@ -1666,11 +1667,11 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   }
 
   var WHOLE_MSG = {
-    empty: ['todo', '把後台 HTML 原始碼整段（⌘A 全選）貼在上面這一格'],
+    empty: ['todo', '把後台 HTML 原始碼整段（⌘A 全選，Windows 是 Ctrl+A）貼在第 2 步「整段商品描述」那一格'],
     plain: OLD_MSG.plain,
     nowrap: ['red', '描述裡有 Add-on Deals，但找不到加價購區的外框（格式跟工具認得的不一樣）。請找 Anita'],
     two: ['red', '這段描述裡有兩個加價購區（或加價購區外面還有 Add-on Deals）。請找 Anita'],
-    broken: ['red', '加價購區的標籤對不起來，可能沒有全選到。回後台重新 ⌘A 全選再貼一次；' + STUCK],
+    broken: ['red', '加價購區的標籤對不起來，可能沒有全選到。回後台重新 ⌘A（Windows 是 Ctrl+A）全選再貼一次。重選兩次還是這句，打開下面「整段貼不進來的時候（備用方法）」，選「有」，只選舊的加價購區貼進來'],
     bad: ['red', '找到的加價購區長得不對，請找 Anita'],
     verify: ['red', '換完工具自己重新找一次，前後對不上，所以不給複製。請找 Anita'],
   };
@@ -1680,7 +1681,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     var f = block ? G.addonSwap(pg.whole, block) : G.addonFindIn(pg.whole), list;
 
     if (f.kind === 'none' || (f.kind === 'ok' && f.fresh)) {
-      list = [['ok', '這一頁原本沒有加價購區，新的會放在最上面']];
+      list = [['ok', '你貼進來的描述裡沒有加價購區，新的會放在最上面'], ['orange', '前台這一頁最上面原本有加價購卡片的話，代表沒有全選到：回後台按 ⌘A（Windows 是 Ctrl+A）全選再貼一次']];
       if (!block) list.push(['todo', '先在第 1 步放這次的卡']);
       else list.push(['ok', '原本的內容 0 字不同：' + n0(f.after) + ' 字都接在新的加價購區後面，跟你貼進來的一樣（工具換完自己重新找一次對過）']);
       return { r: block ? f : { kind: 'ok', fresh: true, old: null }, msgs: list, out: block ? f.out : '' };
@@ -1762,6 +1763,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     paintMsg($('au-todo'), todo.length ? todo : [['ok', '都好了，可以複製']]);
     $('au-copy').disabled = !!todo.length;
     $('au-copy')._block = whole ? whole.out : block;
+    if ($('au-copy')._block !== $('au-copy')._was) { $('au-copy')._was = $('au-copy')._block; $('au-copy-msg').textContent = ''; }
 
     var cards = good.map(function (it) { return it.data; });
 
@@ -1769,11 +1771,11 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     if (!/^\d{4}-\d{2}-\d{2}$/.test(pg.date)) logTodo.push(['todo', '填後台存檔的日期']);
     if (!/^\d{2}:\d{2}$/.test(pg.time)) logTodo.push(['todo', '填後台存檔的時間（到分）']);
     paintMsg($('au-log-todo'), logTodo.length ? logTodo.slice(-2).filter(function (m) { return /存檔/.test(m[1]); }).concat(logTodo.length > 2 || !logTodo.every(function (m) { return /存檔/.test(m[1]); }) ? [['todo', '第 1 到 3 步還沒好，還差什麼看第 3 步的清單']] : []) : []);
-    $('au-log').value = logTodo.length ? '' : G.addonLogRow({ page: pg.url, who: st.who.trim(), old: old ? old.r.cards : whole && whole.r.kind === 'ok' ? whole.r.old : null, cards: cards, date: pg.date, time: pg.time });
+    outTo('au-log', 'au-log-msg', logTodo.length ? '' : G.addonLogRow({ page: pg.url, who: st.who.trim(), old: old ? old.r.cards : whole && whole.r.kind === 'ok' ? whole.r.old : null, cards: cards, date: pg.date, time: pg.time }));
     $('au-log-copy').disabled = !!logTodo.length;
 
     var cardsReady = items.length && !items.some(function (it) { return !it.dup && blocking(it); });
-    $('au-set').value = cardsReady ? G.addonSetRows(cards, '加價購區更新器 ' + today()) : '';
+    outTo('au-set', 'au-set-msg', cardsReady ? G.addonSetRows(cards, '加價購區更新器 ' + today()) : '');
     $('au-set-copy').disabled = !cardsReady;
   }
 
@@ -1798,8 +1800,9 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     n.appendChild(f);
   }
 
-  function copy(text, msgEl) {
-    function done(ok) { msgEl.textContent = ok ? '已複製' : '沒有複製成功：點一下框，按 ⌘A 再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）'; msgEl.className = 'au-msg ' + (ok ? 'au-ok' : 'au-red'); }
+  function outTo(id, msgId, v) { if ($(id).value !== v) { $(id).value = v; $(msgId).textContent = ''; } }
+  function copy(text, msgEl, then) {
+    function done(ok) { msgEl.textContent = ok ? '已複製' : '沒有複製成功：點一下框，按 ⌘A 再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）'; msgEl.className = 'au-msg ' + (ok ? 'au-ok' : 'au-red'); if (then) then(ok); }
     function fallback() { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); var ok = false; try { ok = document.execCommand('copy'); } catch (e) {   } t.remove(); done(ok); }
     if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(function () { done(true); }, fallback); else fallback();
   }
@@ -1817,10 +1820,12 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   $('au-old').oninput = function () { pg.old = this.value; render(); };
   $('au-whole').oninput = function () { pg.whole = this.value; render(); };
   [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.onchange = function () { pg.way = r.value; render(); }; });
-  $('au-alt-off').onclick = function () {
+  function altOff() {
     pg.way = 'whole'; [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = false; });
-    $('au-alt').open = false; render(); $('au-whole').focus();
-  };
+    render();
+  }
+  $('au-alt-off').onclick = function () { altOff(); $('au-alt').open = false; $('au-whole').focus(); };
+  $('au-alt').ontoggle = function () { if (!this.open && pg.way !== 'whole') altOff(); };
   $('au-date').oninput = function () { pg.date = this.value; render(); };
   $('au-time').oninput = function () { pg.time = this.value; render(); };
   if (WATCH && WATCH.cards && WATCH.cards.length) {
@@ -1836,7 +1841,8 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     st.urls = PHONE.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; save(); render();
   };
   $('au-copy').onclick = function () { if (!this.disabled && this._block) copy(this._block, $('au-copy-msg')); };
-  $('au-log-copy').onclick = function () { if ($('au-log').value) { copy($('au-log').value, $('au-log-msg')); pg.logCopied = true; } };
+
+  $('au-log-copy').onclick = function () { var row = $('au-log').value; if (row) copy(row, $('au-log-msg'), function (ok) { if (ok) pg.logCopied = row; }); };
   $('au-set-copy').onclick = function () { if ($('au-set').value) copy($('au-set').value, $('au-set-msg')); };
 
   function clearPage() {
@@ -1849,13 +1855,13 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
 
   $('au-next').onclick = function () {
     var filled = pg.url.trim() || pg.whole.trim() || pg.old.trim() || pg.date || pg.time;
-    if (filled && !pg.logCopied && !confirm('這一頁的換品紀錄還沒複製，確定要換下一頁嗎？')) return;
+    if (filled && pg.logCopied !== $('au-log').value && !confirm('這一頁的換品紀錄還沒複製，確定要換下一頁嗎？')) return;
     clearPage(); render(); $('page').scrollIntoView(); $('au-page').focus();
   };
 
   $('au-clear').onclick = function () {
     var empty = !st.urls.trim() && !st.who.trim() && !Object.keys(st.extra).length && !pg.url.trim() && pg.way === 'whole' && !pg.whole.trim() && !pg.old.trim() && !pg.date && !pg.time;
-    if (!empty && !confirm('清空所有填的內容，從空白開始：加價購網址、新商品填的字、你的名字、這一頁的網址和舊區塊。確定嗎？')) return;
+    if (!empty && !confirm('清空所有填的內容，從空白開始：加價購網址、新商品填的字、你的名字、要換的商品頁網址、貼進來的描述、存檔的日期和時間。確定嗎？')) return;
     st = { urls: '', extra: {}, who: '' }; save();
     $('au-urls').value = ''; $('au-who').value = '';
     $('au-set-msg').textContent = '';
