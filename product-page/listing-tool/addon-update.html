@@ -82,7 +82,7 @@
   <div class="hero">
     <span class="hero-eyebrow">加價購區</span>
     <h1 class="hero-title">加價購區更新器</h1>
-    <p class="hero-sub">這個工具用來換商品描述最上面那排加價購卡片。第 1 步放這次的卡，一輪只做一次。第 2 到 4 步每一頁做一次：把後台的商品描述整段貼進來，工具換好加價購區，你整段貼回去存檔，再記一列換品紀錄。</p>
+    <p class="hero-sub">這個工具用來換商品描述最上面那排加價購卡片。第 1 步放這次的卡，一輪只做一次。第 2 到 4 步每一頁做一次：先選這一頁原本有沒有加價購區，再把後台的商品描述整段貼進來，工具換好加價購區，你整段貼回去存檔，再記一列換品紀錄。</p>
   </div>
 
   <section class="card" id="who">
@@ -117,7 +117,13 @@
     <label class="au-label" for="au-page">要換的商品頁網址（前台）</label>
     <input id="au-page" class="au-input" type="url" spellcheck="false" placeholder="https://www.londonimg.tw/products/...">
     <div id="au-page-msg" class="au-msg"></div>
-    <div id="au-whole-wrap">
+    <fieldset class="au-q">
+      <legend>這一頁的商品描述裡，原本有加價購區嗎？</legend>
+      <label class="au-opt"><input type="radio" name="au-had" value="yes"> 有，要換掉</label>
+      <label class="au-opt"><input type="radio" name="au-had" value="no"> 沒有，第一次放</label>
+    </fieldset>
+    <p class="fhint">【ZZ35】（/products/z35）最上面有舊的圖片版加價購區（三張圖），工具不算它，選「沒有」。新的會放在它上面，舊的三張圖留著。</p>
+    <div id="au-whole-wrap" hidden>
       <ol class="steps">
         <li>後台打開這個商品 → 商品描述 → HTML 原始碼。</li>
         <li>點一下那一格裡面，按 ⌘A 全選（只會選到格子裡的字），再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）。</li>
@@ -126,16 +132,10 @@
       <label class="au-label" for="au-whole">整段商品描述（HTML 原始碼）</label>
       <textarea id="au-whole" class="au-input au-mono" rows="5" spellcheck="false"></textarea>
       <div id="au-whole-msg" class="au-msg" aria-live="polite"></div>
-      <p class="fhint">【ZZ35】（/products/z35）最上面有舊的圖片版加價購區（三張圖），工具不算它，新的會放在它上面，舊的三張圖留著。</p>
     </div>
-    <details class="au-alt" id="au-alt">
+    <details class="au-alt" id="au-alt" hidden>
       <summary>整段貼不進來的時候（備用方法）</summary>
       <p class="fhint">整段描述貼不進來，或工具說加價購區的標籤對不起來（多半是沒全選到、貼進來少了一截），重新全選貼上還是一樣，才用下面的方法。工具說找不到外框、有兩個加價購區、或加價購區長得不對的時候，下面的方法也解決不了，請找 Anita。</p>
-      <fieldset class="au-q">
-        <legend>這一頁的商品描述裡，原本有加價購區嗎？</legend>
-        <label class="au-opt"><input type="radio" name="au-way" value="block"> 有：只選舊的加價購區</label>
-        <label class="au-opt"><input type="radio" name="au-way" value="top"> 沒有：游標放最前面貼上</label>
-      </fieldset>
       <div id="au-block-wrap" hidden>
         <ol class="steps">
           <li>後台打開這個商品 → 商品描述 → HTML 原始碼。</li>
@@ -1589,8 +1589,10 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     if (!e || typeof e !== 'object' || ['name', 'img', 'sale', 'orig', 'ok'].every(function (f) { return !String(e[f] == null ? '' : e[f]).trim(); })) delete st.extra[k];
   });
 
-  var PG0 = function () { return { url: '', way: 'whole', whole: '', old: '', date: '', time: '', logCopied: false }; };
+  var PG0 = function () { return { url: '', had: '', alt: false, whole: '', old: '', date: '', time: '', logCopied: false }; };
   var pg = PG0();
+
+  function wayOf() { return !pg.had ? '' : !pg.alt ? 'whole' : pg.had === 'yes' ? 'block' : 'top'; }
   var imgs = {};
   var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
   var money = function (n) { return Number(n).toLocaleString('en-US'); };
@@ -1655,7 +1657,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     toomuch: ['red', '選太多了：這一段除了加價購的卡片，還有別的內容（「{at}」）。只選加價購區那一段，不要整段全選'],
   };
   function oldNow() {
-    if (pg.way !== 'block') return null;
+    if (wayOf() !== 'block') return null;
     var r = G.addonOldCheck(pg.old), m;
     if (r.kind === 'ok') {
       m = ['ok', '選得剛好。舊區塊有 ' + r.cards.length + ' 張卡：' + r.cards.map(function (c) { return c.name || c.slug; }).join('、') +
@@ -1671,23 +1673,29 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     plain: OLD_MSG.plain,
     nowrap: ['red', '描述裡有 Add-on Deals，但找不到加價購區的外框（格式跟工具認得的不一樣）。請找 Anita'],
     two: ['red', '這段描述裡有兩個加價購區（或加價購區外面還有 Add-on Deals）。請找 Anita'],
-    broken: ['red', '加價購區的標籤對不起來，可能沒有全選到。回後台重新 ⌘A（Windows 是 Ctrl+A）全選再貼一次。重選兩次還是這句，打開下面「整段貼不進來的時候（備用方法）」，選「有」，只選舊的加價購區貼進來'],
+    broken: ['red', '加價購區的標籤對不起來，可能沒有全選到。回後台重新 ⌘A（Windows 是 Ctrl+A）全選再貼一次。重選兩次還是這句，打開下面「整段貼不進來的時候（備用方法）」，只選舊的加價購區貼進來'],
     bad: ['red', '找到的加價購區長得不對，請找 Anita'],
     verify: ['red', '換完工具自己重新找一次，前後對不上，所以不給複製。請找 Anita'],
   };
   var n0 = function (n) { return Number(n).toLocaleString('en-US'); };
 
-  var FRESH_WARN = '前台這一頁最上面原本有加價購卡片的話，代表沒有全選到：回後台按 ⌘A（Windows 是 Ctrl+A）全選再貼一次';
+  var HAD_MSG = {
+    yes: ['red', '你選了「有」，但貼進來的描述裡找不到加價購區。多半是沒有全選到：回後台按 ⌘A（Windows 是 Ctrl+A）全選再貼一次。前台最上面其實沒有加價購卡片（或只有 ZZ35 那種舊的圖片版），就改選「沒有」'],
+    no: ['red', '你選了「沒有」，但貼進來的描述裡有加價購區（Add-on Deals）。前台再看一次，最上面有加價購卡片就改選「有」'],
+  };
   function wholeNow(block) {
-    if (pg.way !== 'whole') return null;
+    if (wayOf() !== 'whole') return null;
+    var seen = G.addonFindIn(pg.whole).kind;
+    if (pg.had === 'yes' && seen === 'none') return { r: { kind: 'had' }, msgs: [HAD_MSG.yes] };
+    if (pg.had === 'no' && seen !== 'none' && seen !== 'empty' && seen !== 'plain') return { r: { kind: 'had' }, msgs: [HAD_MSG.no] };
     var f = block ? G.addonSwap(pg.whole, block) : G.addonFindIn(pg.whole), list;
 
     if (f.kind === 'none' || (f.kind === 'ok' && f.fresh)) {
-      list = [['ok', '你貼進來的描述裡沒有加價購區，新的會放在最上面'], ['orange', FRESH_WARN]];
+      list = [['ok', '跟你選的一樣，描述裡沒有加價購區，新的會放在最上面']];
       if (!block) list.push(['todo', '先在第 1 步放這次的卡']);
 
       else list.push(['ok', '原本的內容 0 字不同：' + n0(f.after) + ' 字都接在新的加價購區後面，跟你貼進來的一樣。']);
-      return { r: block ? f : { kind: 'ok', fresh: true, old: null }, msgs: list, out: block ? f.out : '', warn: FRESH_WARN };
+      return { r: block ? f : { kind: 'ok', fresh: true, old: null }, msgs: list, out: block ? f.out : '' };
     }
     if (f.kind !== 'ok') return { r: f, msgs: [WHOLE_MSG[f.kind]] };
     var old = f.old || f.cards;
@@ -1744,26 +1752,29 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     if (!pg.url.trim()) pageMsgs.push(['todo', '填要換的商品頁網址（記在換品紀錄裡）']);
     else if (!G.slugOf(pg.url)) pageMsgs.push(['red', '這不是倫敦印象的商品網址']);
     paintMsg($('au-page-msg'), pageMsgs.filter(function (m) { return m[0] !== 'todo'; }));
-    $('au-whole-wrap').hidden = pg.way !== 'whole';
-    $('au-block-wrap').hidden = pg.way !== 'block';
-    $('au-top-note').hidden = pg.way !== 'top';
-    $('au-alt-off').hidden = pg.way === 'whole';
+    var way = wayOf(), alt = way === 'block' || way === 'top';
+    $('au-whole-wrap').hidden = way !== 'whole';
+    $('au-alt').hidden = !pg.had;
+    $('au-block-wrap').hidden = way !== 'block';
+    $('au-top-note').hidden = way !== 'top';
+    $('au-alt-off').hidden = !alt;
     var old = oldNow(), whole = wholeNow(block);
     paintMsg($('au-old-msg'), old ? [old.msg] : []);
     paintMsg($('au-whole-msg'), whole ? whole.msgs : []);
-    $('au-steps-whole').hidden = pg.way !== 'whole';
-    $('au-steps-yes').hidden = pg.way !== 'block';
-    $('au-steps-no').hidden = pg.way !== 'top';
-    $('au-copy').textContent = pg.way === 'whole' ? '複製整段描述' : '複製語法';
+    $('au-steps-whole').hidden = alt;
+    $('au-steps-yes').hidden = way !== 'block';
+    $('au-steps-no').hidden = way !== 'top';
+    $('au-copy').textContent = alt ? '複製語法' : '複製整段描述';
 
     var todo = [];
     if (!items.length) todo.push(['todo', '先在第 1 步貼加價購商品網址']);
     items.forEach(function (it, i) { if (!it.dup && blocking(it)) todo.push([it.msgs.some(function (m) { return m[0] === 'red'; }) ? 'red' : 'todo', '第 ' + (i + 1) + ' 張還沒好：' + it.msgs.filter(function (m) { return m[0] !== 'orange'; }).map(function (m) { return m[1]; }).join('；')]); });
     pageMsgs.forEach(function (m) { todo.push(m); });
     if (!st.who.trim()) todo.push(['todo', '填你的名字']);
+    if (!pg.had) todo.push(['todo', '回答第 2 步「原本有加價購區嗎？」']);
     if (old && old.msg[0] !== 'ok') todo.push([old.msg[0], '舊區塊：' + old.msg[1]]);
     if (whole && whole.r.kind !== 'ok') todo.push([whole.msgs[0][0], '整段描述：' + whole.msgs[0][1]]);
-    paintMsg($('au-todo'), (todo.length ? todo : [['ok', '都好了，可以複製']]).concat(whole && whole.warn ? [['orange', '整段描述：' + whole.warn]] : []));
+    paintMsg($('au-todo'), todo.length ? todo : [['ok', '都好了，可以複製']]);
     $('au-copy').disabled = !!todo.length;
     $('au-copy')._block = whole ? whole.out : block;
     if ($('au-copy')._block !== $('au-copy')._was) { $('au-copy')._was = $('au-copy')._block; $('au-copy-msg').textContent = ''; }
@@ -1824,14 +1835,19 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   $('au-page').oninput = function () { pg.url = this.value; render(); };
   $('au-old').oninput = function () { pg.old = this.value; render(); };
   $('au-whole').oninput = function () { pg.whole = this.value; render(); };
-  [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.onchange = function () { pg.way = r.value; render(); }; });
+  [].slice.call(document.querySelectorAll('input[name="au-had"]')).forEach(function (r) { r.onchange = function () { pg.had = r.value; render(); }; });
+
   function altOff() {
-    pg.way = 'whole'; pg.old = ''; $('au-old').value = '';
-    [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = false; });
+    pg.alt = false; pg.old = ''; $('au-old').value = '';
     render();
   }
-  $('au-alt-off').onclick = function () { altOff(); $('au-alt').open = false; $('au-whole').focus(); };
-  $('au-alt').ontoggle = function () { if (!this.open && (pg.way !== 'whole' || pg.old)) altOff(); };
+  $('au-alt-off').onclick = function () { $('au-alt').open = false; altOff(); $('au-whole').focus(); };
+  $('au-alt').ontoggle = function () {
+    if (this.open === pg.alt) return;
+    if (!this.open) { altOff(); return; }
+    pg.alt = true; render();
+    this.scrollIntoView({ block: 'nearest' });
+  };
   $('au-date').oninput = function () { pg.date = this.value; render(); };
   $('au-time').oninput = function () { pg.time = this.value; render(); };
   if (WATCH && WATCH.cards && WATCH.cards.length) {
@@ -1854,7 +1870,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   function clearPage() {
     pg = PG0();
     $('au-page').value = ''; $('au-old').value = ''; $('au-whole').value = '';
-    [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = false; }); $('au-alt').open = false;
+    [].slice.call(document.querySelectorAll('input[name="au-had"]')).forEach(function (r) { r.checked = false; }); $('au-alt').open = false;
     $('au-date').value = ''; $('au-time').value = '';
     ['au-copy-msg', 'au-log-msg'].forEach(function (id) { $(id).textContent = ''; });
   }
@@ -1866,7 +1882,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   };
 
   $('au-clear').onclick = function () {
-    var empty = !st.urls.trim() && !st.who.trim() && !Object.keys(st.extra).length && !pg.url.trim() && pg.way === 'whole' && !pg.whole.trim() && !pg.old.trim() && !pg.date && !pg.time;
+    var empty = !st.urls.trim() && !st.who.trim() && !Object.keys(st.extra).length && !pg.url.trim() && !pg.had && !pg.alt && !pg.whole.trim() && !pg.old.trim() && !pg.date && !pg.time;
     if (!empty && !confirm('清空所有填的內容，從空白開始：加價購網址、新商品填的字、你的名字、要換的商品頁網址、貼進來的描述、存檔的日期和時間。確定嗎？')) return;
     st = { urls: '', extra: {}, who: '' }; save();
     $('au-urls').value = ''; $('au-who').value = '';
