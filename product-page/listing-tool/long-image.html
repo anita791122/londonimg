@@ -513,9 +513,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   let ADDON_HEAD_CHECK = true;
   function useAddonHeadCheck(v) { ADDON_HEAD_CHECK = !!v; }
 
-  const ADDON_HOLD = {
-    s75: '安心扣【S75】先不要放：加價購頁和加購價還沒好，到齊才放。這張不會出現，把這一行刪掉',
-  };
+  const ADDON_HOLD = {};
   const unesc = x => String(x).replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&');
 
   function slugOf(u) {
@@ -1606,7 +1604,9 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       else if (ADDON_HEAD_CHECK && !/>加價購，省更多<\/h2>\s*<div[^>]*color:#fe5226">Add-on Deals<\/div>/.test(addon)) add('addon', 'orange', '這是舊版的加價購區語法（標題還是英文在上），到加價購語法頁重新複製一次', 'A');
 
       [...new Set([...norm.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => slugOf(m[1])))].forEach(slug => {
+        const near = slug && KIT && !KIT.cards.some(c => c.slug === slug) ? addonNear(slug) : null;
         if (slug && ADDON_HOLD[slug]) add('addon', 'red', ADDON_HOLD[slug].replace('這張不會出現，把這一行刪掉', '這段語法裡有這張卡：改用網址貼（工具會自動拿掉），或把這張卡從語法裡刪掉'), 'A');
+        else if (near) add('addon', 'red', `這段語法裡的「${near.name}」連到一般賣場（/products/${slug}），客人點進去付的是一般價。這是舊的語法：到加價購語法頁重新複製一次，或改用網址貼`, 'A');
       });
     } else if (addonM === 'urls') {
       if (!KIT) add('addon', 'red', '這一版工具沒有帶加價購卡片的資料，請找工具負責人重新做一版工具', 'A');
