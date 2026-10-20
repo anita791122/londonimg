@@ -82,7 +82,7 @@
   <div class="hero">
     <span class="hero-eyebrow">加價購區</span>
     <h1 class="hero-title">加價購區更新器</h1>
-    <p class="hero-sub">這一頁用來換商品描述最上面那排加價購卡片。第 1 步放這次的卡，一輪只做一次。第 2 到 4 步每一頁做一次：把後台的商品描述整段貼進來，工具換好加價購區，你整段貼回去存檔，再記一列換品紀錄。</p>
+    <p class="hero-sub">這個工具用來換商品描述最上面那排加價購卡片。第 1 步放這次的卡，一輪只做一次。第 2 到 4 步每一頁做一次：把後台的商品描述整段貼進來，工具換好加價購區，你整段貼回去存檔，再記一列換品紀錄。</p>
   </div>
 
   <section class="card" id="who">
@@ -106,7 +106,7 @@
     <h3 class="au-h3">預覽</h3>
     <p class="fhint">只是大概的樣子，實際以前台為準（前台的英文和數字是網站字體）。</p>
     <iframe id="au-preview" class="au-preview" title="加價購區預覽"></iframe>
-    <p class="au-set-h">這次的卡片清單：同一組卡只要貼一次，貼到 Anita 的 Notion。</p>
+    <p class="au-set-h">這次的卡片清單：同一組卡只要貼一次，貼到 <a href="https://app.notion.com/p/3ff7519bf41e8063b5ccd9b5bc42b721?v=3bb7519bf41e80419805000c9db91f0d" target="_blank" rel="noopener">Anita 的 Notion</a>，放在「卡片清單」標題下面。</p>
     <textarea id="au-set" class="au-input au-mono" rows="4" readonly aria-label="這次的卡片清單（用 tab 分格）"></textarea>
     <div class="au-row"><button type="button" class="au-btn" id="au-set-copy">複製卡片清單</button><span id="au-set-msg" class="au-msg"></span></div>
   </section>
@@ -179,7 +179,7 @@
 
   <section class="card" id="log">
     <h2 class="card-h"><span class="num">4</span>換品紀錄</h2>
-    <p>每換完一頁，填後台存檔的日期和時間，複製這一列，貼到 <a href="https://app.notion.com/p/3ff7519bf41e8063b5ccd9b5bc42b721?v=3bb7519bf41e80419805000c9db91f0d" target="_blank" rel="noopener">Anita 的 Notion</a>。要比較換卡前後賣得怎樣，得知道每一頁是哪天換上去的。</p>
+    <p>每換完一頁，填後台存檔的日期和時間，複製這一列，貼到 <a href="https://app.notion.com/p/3ff7519bf41e8063b5ccd9b5bc42b721?v=3bb7519bf41e80419805000c9db91f0d" target="_blank" rel="noopener">Anita 的 Notion</a>，放在「換品紀錄」標題下面。要比較換卡前後賣得怎樣，得知道每一頁是哪天換上去的。</p>
     <div class="au-pair">
       <label class="au-label">後台存檔的日期<input id="au-date" class="au-input" type="date"></label>
       <label class="au-label">後台存檔的時間（到分）<input id="au-time" class="au-input" type="time"></label>
@@ -1628,7 +1628,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       var img = String(e.img == null ? '' : e.img).trim();
       if (/^https:\/\//.test(img)) checkImg(img);
       var r = G.addonNewCheck(x.slug, e, { today: today(), img: imgs[img] });
-      r.msgs.forEach(function (m) { it.msgs.push([m[0] === 'wait' ? 'todo' : m[0], m[1]]); });
+      r.msgs.forEach(function (m) { it.msgs.push([m[0] === 'wait' ? 'todo' : m[0], String(m[1]).replace('請找工具負責人', '請找 Anita')]); });
       if (r.card) {
         it.data = { href: r.card.href, slug: x.slug, name: r.card.name, sale: r.card.sale, orig: r.card.orig };
         it.html = r.html;
@@ -1676,15 +1676,18 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     verify: ['red', '換完工具自己重新找一次，前後對不上，所以不給複製。請找 Anita'],
   };
   var n0 = function (n) { return Number(n).toLocaleString('en-US'); };
+
+  var FRESH_WARN = '前台這一頁最上面原本有加價購卡片的話，代表沒有全選到：回後台按 ⌘A（Windows 是 Ctrl+A）全選再貼一次';
   function wholeNow(block) {
     if (pg.way !== 'whole') return null;
     var f = block ? G.addonSwap(pg.whole, block) : G.addonFindIn(pg.whole), list;
 
     if (f.kind === 'none' || (f.kind === 'ok' && f.fresh)) {
-      list = [['ok', '你貼進來的描述裡沒有加價購區，新的會放在最上面'], ['orange', '前台這一頁最上面原本有加價購卡片的話，代表沒有全選到：回後台按 ⌘A（Windows 是 Ctrl+A）全選再貼一次']];
+      list = [['ok', '你貼進來的描述裡沒有加價購區，新的會放在最上面'], ['orange', FRESH_WARN]];
       if (!block) list.push(['todo', '先在第 1 步放這次的卡']);
-      else list.push(['ok', '原本的內容 0 字不同：' + n0(f.after) + ' 字都接在新的加價購區後面，跟你貼進來的一樣（工具換完自己重新找一次對過）']);
-      return { r: block ? f : { kind: 'ok', fresh: true, old: null }, msgs: list, out: block ? f.out : '' };
+
+      else list.push(['ok', '原本的內容 0 字不同：' + n0(f.after) + ' 字都接在新的加價購區後面，跟你貼進來的一樣。']);
+      return { r: block ? f : { kind: 'ok', fresh: true, old: null }, msgs: list, out: block ? f.out : '', warn: FRESH_WARN };
     }
     if (f.kind !== 'ok') return { r: f, msgs: [WHOLE_MSG[f.kind]] };
     var old = f.old || f.cards;
@@ -1760,17 +1763,19 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     if (!st.who.trim()) todo.push(['todo', '填你的名字']);
     if (old && old.msg[0] !== 'ok') todo.push([old.msg[0], '舊區塊：' + old.msg[1]]);
     if (whole && whole.r.kind !== 'ok') todo.push([whole.msgs[0][0], '整段描述：' + whole.msgs[0][1]]);
-    paintMsg($('au-todo'), todo.length ? todo : [['ok', '都好了，可以複製']]);
+    paintMsg($('au-todo'), (todo.length ? todo : [['ok', '都好了，可以複製']]).concat(whole && whole.warn ? [['orange', '整段描述：' + whole.warn]] : []));
     $('au-copy').disabled = !!todo.length;
     $('au-copy')._block = whole ? whole.out : block;
     if ($('au-copy')._block !== $('au-copy')._was) { $('au-copy')._was = $('au-copy')._block; $('au-copy-msg').textContent = ''; }
 
     var cards = good.map(function (it) { return it.data; });
 
-    var logTodo = todo.slice();
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(pg.date)) logTodo.push(['todo', '填後台存檔的日期']);
-    if (!/^\d{2}:\d{2}$/.test(pg.time)) logTodo.push(['todo', '填後台存檔的時間（到分）']);
-    paintMsg($('au-log-todo'), logTodo.length ? logTodo.slice(-2).filter(function (m) { return /存檔/.test(m[1]); }).concat(logTodo.length > 2 || !logTodo.every(function (m) { return /存檔/.test(m[1]); }) ? [['todo', '第 1 到 3 步還沒好，還差什麼看第 3 步的清單']] : []) : []);
+    var saveTodo = [];
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(pg.date)) saveTodo.push(['todo', '填後台存檔的日期']);
+    if (!/^\d{2}:\d{2}$/.test(pg.time)) saveTodo.push(['todo', '填後台存檔的時間（到分）']);
+    var logTodo = todo.concat(saveTodo);
+    var onlyWho = todo.length === 1 && todo[0][1] === '填你的名字';
+    paintMsg($('au-log-todo'), saveTodo.concat(!todo.length ? [] : [['todo', onlyWho ? '最上面的名字還沒填' : '第 1 到 3 步還沒好，還差什麼看第 3 步的清單']]));
     outTo('au-log', 'au-log-msg', logTodo.length ? '' : G.addonLogRow({ page: pg.url, who: st.who.trim(), old: old ? old.r.cards : whole && whole.r.kind === 'ok' ? whole.r.old : null, cards: cards, date: pg.date, time: pg.time }));
     $('au-log-copy').disabled = !!logTodo.length;
 
@@ -1821,11 +1826,12 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   $('au-whole').oninput = function () { pg.whole = this.value; render(); };
   [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.onchange = function () { pg.way = r.value; render(); }; });
   function altOff() {
-    pg.way = 'whole'; [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = false; });
+    pg.way = 'whole'; pg.old = ''; $('au-old').value = '';
+    [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = false; });
     render();
   }
   $('au-alt-off').onclick = function () { altOff(); $('au-alt').open = false; $('au-whole').focus(); };
-  $('au-alt').ontoggle = function () { if (!this.open && pg.way !== 'whole') altOff(); };
+  $('au-alt').ontoggle = function () { if (!this.open && (pg.way !== 'whole' || pg.old)) altOff(); };
   $('au-date').oninput = function () { pg.date = this.value; render(); };
   $('au-time').oninput = function () { pg.time = this.value; render(); };
   if (WATCH && WATCH.cards && WATCH.cards.length) {
