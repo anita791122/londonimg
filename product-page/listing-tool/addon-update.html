@@ -187,7 +187,7 @@
     <div id="au-log-todo" class="au-msg" aria-live="polite"></div>
     <textarea id="au-log" class="au-input au-mono" rows="2" readonly aria-label="換品紀錄這一列（用 tab 分格）"></textarea>
     <div class="au-row"><button type="button" class="au-btn" id="au-log-copy">複製這一列</button><span id="au-log-msg" class="au-msg"></span></div>
-    <div class="au-row au-next"><button type="button" class="dl-btn" id="au-next">換下一頁</button><span class="fhint">卡片和名字留著，只清掉要換的商品頁網址、貼進來的描述、存檔的日期和時間。要換一組卡從頭來，按第 1 步的「清空重填」。</span></div>
+    <div class="au-row au-next"><button type="button" class="dl-btn" id="au-next">換下一頁</button><span class="fhint">卡片和名字留著，只清掉要換的商品頁網址、貼進來的描述、存檔的日期和時間。要換一組卡從頭來，按第 1 步的「清空重填」。重新整理頁面會全部清空。</span></div>
   </section>
   </main>
 </div>
@@ -1577,17 +1577,10 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   var PHONE = KIT.cards.filter(function (c) { return !G.ADDON_HOLD[c.slug]; });
   G.useAddonKit(KIT);
   var $ = function (id) { return document.getElementById(id); };
-  var KEY = 'ln-addon-update-v1';
   var today = G.today;
-  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
-  function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {   } }
-  var st = Object.assign({ urls: '', extra: {}, who: '' }, load());
-  if (!st.extra || typeof st.extra !== 'object') st.extra = {};
 
-  Object.keys(st.extra).forEach(function (k) {
-    var e = st.extra[k];
-    if (!e || typeof e !== 'object' || ['name', 'img', 'sale', 'orig', 'ok'].every(function (f) { return !String(e[f] == null ? '' : e[f]).trim(); })) delete st.extra[k];
-  });
+  try { localStorage.removeItem('ln-addon-update-v1'); } catch (e) {   }
+  var st = { urls: '', extra: {}, who: '' };
 
   var PG0 = function () { return { url: '', had: '', alt: false, whole: '', old: '', date: '', time: '', logCopied: false }; };
   var pg = PG0();
@@ -1810,8 +1803,8 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       '<label class="au-opt au-check"><input type="checkbox" data-k="ok"> 價格我打開連結對過了（今天）</label>';
     [].slice.call(f.querySelectorAll('[data-k]')).forEach(function (inp) {
       var k = inp.getAttribute('data-k');
-      if (k === 'ok') { inp.checked = e.ok === today(); inp.onchange = function () { cur().ok = inp.checked ? today() : ''; save(); render(); }; }
-      else { inp.value = e[k] || ''; inp.oninput = function () { var c = cur(); c[k] = inp.value; if (k === 'sale' || k === 'orig') c.ok = ''; save(); render(); }; }
+      if (k === 'ok') { inp.checked = e.ok === today(); inp.onchange = function () { cur().ok = inp.checked ? today() : ''; render(); }; }
+      else { inp.value = e[k] || ''; inp.oninput = function () { var c = cur(); c[k] = inp.value; if (k === 'sale' || k === 'orig') c.ok = ''; render(); }; }
     });
     n.appendChild(f);
   }
@@ -1830,8 +1823,8 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   var nWatch = WATCH && WATCH.cards ? WATCH.cards.length : 0, checked = KIT.check && KIT.check.at && (!nWatch || (WATCH.check && WATCH.check.at));
   $('au-kit-note').textContent = '工具認得的卡（手機殼這一組 ' + PHONE.length + ' 張' + (nWatch ? '、錶帶這一組 ' + nWatch + ' 張' : '') + '）：' +
     (checked ? '價格在 ' + KIT.check.at + ' 做這一版工具時跟商城對過。' : '這一版工具沒有對過價格，複製前打開每個連結確認。') + '卡片的價格是寫在語法裡的，賣場改價，這裡不會跟著變。';
-  $('au-urls').oninput = function () { st.urls = this.value; save(); render(); };
-  $('au-who').oninput = function () { st.who = this.value; save(); render(); };
+  $('au-urls').oninput = function () { st.urls = this.value; render(); };
+  $('au-who').oninput = function () { st.who = this.value; render(); };
   $('au-page').oninput = function () { pg.url = this.value; render(); };
   $('au-old').oninput = function () { pg.old = this.value; render(); };
   $('au-whole').oninput = function () { pg.whole = this.value; render(); };
@@ -1855,12 +1848,12 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     $('au-preset-watch').textContent = '帶入錶帶這一組';
     $('au-preset-watch').onclick = function () {
       if (st.urls.trim() && !confirm('上面已經有網址了，要換成錶帶這一組嗎？')) return;
-      st.urls = WATCH.cards.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; save(); render();
+      st.urls = WATCH.cards.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; render();
     };
   }
   $('au-preset-phone').onclick = function () {
     if (st.urls.trim() && !confirm('上面已經有網址了，要換成手機殼這一組嗎？')) return;
-    st.urls = PHONE.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; save(); render();
+    st.urls = PHONE.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; render();
   };
   $('au-copy').onclick = function () { if (!this.disabled && this._block) copy(this._block, $('au-copy-msg')); };
 
@@ -1881,10 +1874,13 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     clearPage(); render(); $('page').scrollIntoView(); $('au-page').focus();
   };
 
+  function hasInput() { return !!(st.urls.trim() || st.who.trim() || Object.keys(st.extra).length || pg.url.trim() || pg.had || pg.whole.trim() || pg.old.trim() || pg.date || pg.time); }
+
+  window.addEventListener('beforeunload', function (e) { if (hasInput()) { e.preventDefault(); e.returnValue = ''; } });
+
   $('au-clear').onclick = function () {
-    var empty = !st.urls.trim() && !st.who.trim() && !Object.keys(st.extra).length && !pg.url.trim() && !pg.had && !pg.alt && !pg.whole.trim() && !pg.old.trim() && !pg.date && !pg.time;
-    if (!empty && !confirm('清空所有填的內容，從空白開始：加價購網址、新商品填的字、你的名字、要換的商品頁網址、貼進來的描述、存檔的日期和時間。確定嗎？')) return;
-    st = { urls: '', extra: {}, who: '' }; save();
+    if (hasInput() && !confirm('清空所有填的內容，從空白開始：加價購網址、新商品填的字、你的名字、要換的商品頁網址、貼進來的描述、存檔的日期和時間。確定嗎？')) return;
+    st = { urls: '', extra: {}, who: '' };
     $('au-urls').value = ''; $('au-who').value = '';
     $('au-set-msg').textContent = '';
     clearPage(); render(); $('cards').scrollIntoView(); $('au-urls').focus();

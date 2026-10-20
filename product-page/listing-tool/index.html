@@ -2053,10 +2053,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     return s;
   }
   let state = blank();
-  try {
-    const raw = localStorage.getItem(DRAFT_KEY);
-    if (raw) state = normalizeState(JSON.parse(raw));
-  } catch (e) {   }
+
+  try { localStorage.removeItem(DRAFT_KEY); } catch (e) {   }
 
   function h(tag, attrs) {
     const e = document.createElement(tag);
@@ -2106,7 +2104,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   let addonNewBox = null, addonNewNodes = {}, addonNewSerial = 0;
   const secEls = {};
   let navRO = null;
-  const changed = () => { saveDraftSoon(); probeSoon(); refreshSoon(); };
+  const changed = () => { noteEdited(); probeSoon(); refreshSoon(); };
 
   const fid = path => 'f-' + path.replace(/[^A-Za-z0-9_-]/g, '-');
 
@@ -2936,16 +2934,10 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   function refresh() { paintIssues(); paintOutputSoon(); }
   const refreshSoon = debounce(refresh, 120);
   const probeSoon = debounce(probeAll, 400);
-  let draftDirty = false;
-  const saveDraftNow = () => {
-    draftDirty = false;
-    try { localStorage.setItem(DRAFT_KEY, JSON.stringify(state)); $('#draftnote').textContent = '草稿已自動存在這個瀏覽器裡'; }
-    catch (e) { $('#draftnote').textContent = '這個瀏覽器不讓我存草稿，離開前請按「存成檔案」'; }
-  };
-  const saveDraftLater = debounce(saveDraftNow, 500);
-  const saveDraftSoon = () => { draftDirty = true; saveDraftLater(); };
 
-  window.addEventListener('pagehide', () => { if (draftDirty) saveDraftNow(); });
+  const noteEdited = () => { $('#draftnote').textContent = isEmpty() ? '' : '重新整理就會清空，要留著請按「存成檔案」'; };
+
+  window.addEventListener('beforeunload', e => { if (!isEmpty()) { e.preventDefault(); e.returnValue = ''; } });
 
   window.addEventListener('pageshow', e => { if (e.persisted) location.reload(); });
 
@@ -3031,7 +3023,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const wrap = $('#seo-boxes'); if (!wrap) return;
     SEO_KEYS.forEach(k => {
       const ta = h('textarea', { id: 'seo-' + k, rows: { title: 2, desc: 5, kw: 3, url: 1 }[k], spellcheck: 'false', 'aria-label': SEO_NAMES[k], 'aria-describedby': 'seo-n-' + k + ' seo-m-' + k });
-      const reset = h('button', { type: 'button', class: 'btn small ghost', onclick: () => { state.seo.edit[k] = null; paintSeoDirect(); saveDraftSoon(); markStale(); } }, '改回工具產的');
+      const reset = h('button', { type: 'button', class: 'btn small ghost', onclick: () => { state.seo.edit[k] = null; paintSeoDirect(); noteEdited(); markStale(); } }, '改回工具產的');
       wrap.append(h('div', { class: 'seo-box' },
         h('div', { class: 'seo-bh' }, h('b', null, SEO_NAMES[k]), h('span', { class: 'seo-n', id: 'seo-n-' + k }),
           h('button', { type: 'button', class: 'btn primary small', id: 'seo-copy-' + k, 'data-label': '複製', 'aria-label': '複製' + SEO_NAMES[k], onclick: () => copySeoBox(k) }, '複製')),
@@ -3045,7 +3037,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
         state.seo.edit[k] = seoD && v === seoD[k] ? null : v;
         seoVals[k] = v;
         $('#seo-ed-' + k).hidden = state.seo.edit[k] == null;
-        fitSeo(ta); paintSeoChecks(); saveDraftSoon(); markStale();
+        fitSeo(ta); paintSeoChecks(); noteEdited(); markStale();
       });
     });
 
