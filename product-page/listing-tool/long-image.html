@@ -399,7 +399,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 <a class="skip" id="skip" href="#copy">跳到預覽與複製</a>
 <header class="top">
   <h1><a class="home" href="guide.html">倫敦印象｜長條圖版用上架工具</a></h1>
-  <span class="ver">2026-10-19</span>
+  <span class="ver">2026-10-20</span>
   <a class="btn guide-link" href="guide.html"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>使用說明</a>
   <span class="sp"></span>
   <span class="draftnote" id="draftnote"></span>
@@ -768,6 +768,12 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   function addonSwap(text, newBlock) {
     const f = addonFindIn(text);
+
+    if (f.kind === 'none') {
+      const t = String(text), out = newBlock + t, g = addonFindIn(out);
+      if (!(g.kind === 'ok' && g.before === '' && g.after === t && g.block === newBlock)) return { kind: 'verify' };
+      return { kind: 'ok', fresh: true, out, old: null, spacer: false, before: 0, after: t.length, unchanged: false };
+    }
     if (f.kind !== 'ok') return f;
     const out = f.before + newBlock + f.after, g = addonFindIn(out);
     const same = g.kind === 'ok' && g.before === f.before && g.after === f.after && g.block === newBlock;

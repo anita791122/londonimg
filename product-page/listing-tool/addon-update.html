@@ -45,6 +45,14 @@
 .au-preview{display:block;width:100%;height:330px;border:1px solid var(--border);border-radius:12px;background:#fff}
 .au-next{margin-top:18px}
 .au-clear{margin-left:auto}
+.au-label-top{margin-top:0}
+.au-each{margin:0 0 4px;color:var(--muted)}
+.au-set-h{margin:20px 0 6px;font-weight:600}
+.au-alt{margin:18px 0 0;padding:12px 0 0;border-top:1px dashed var(--border)}
+.au-alt>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-weight:600;color:var(--muted);list-style:none}
+.au-alt>summary::-webkit-details-marker{display:none}
+.au-alt>summary::before{content:'▸'}
+.au-alt[open]>summary::before{content:'▾'}
 .au-nowrap{white-space:nowrap}
 @media(max-width:520px){.au-pair{grid-template-columns:1fr}.au-nowrap{white-space:normal;word-break:break-all}}
 </style>
@@ -73,19 +81,23 @@
   <div class="hero">
     <span class="hero-eyebrow">加價購區</span>
     <h1 class="hero-title">加價購區更新器</h1>
-    <p class="hero-sub">商品描述最上面那一排橫滑的加價購卡片。貼上這次要放的商品網址，工具產出整段語法，你再到後台把舊的那段換掉。一次換很多頁時，卡片填一次就好，然後一頁一頁換。</p>
+    <p class="hero-sub">這一頁用來換商品描述最上面那排加價購卡片。第 1 步放這次的卡，一輪只做一次。第 2 到 4 步每一頁做一次：把後台的商品描述整段貼進來，工具換好加價購區，你整段貼回去存檔，再記一列換品紀錄。</p>
   </div>
 
-  <div class="callout warn"><span class="key">iPhone 18 專頁的 35 個賣場不要貼這個區塊。</span></div>
+  <section class="card" id="who">
+    <label class="au-label au-label-top" for="au-who">你的名字（記在換品紀錄裡，填一次就好）</label>
+    <input id="au-who" class="au-input au-short" type="text">
+  </section>
 
   <section class="card" id="cards">
-    <h2 class="card-h"><span class="num">1</span>這次要放的卡</h2>
-    <p>一行貼一個加價購商品的網址，順序就是卡片從左到右的順序。手機殼那一組、Z35 錶帶頁那一組，可以直接按下面的按鈕帶入。</p>
+    <h2 class="card-h"><span class="num">1</span>這次要放的卡（這一輪做一次）</h2>
+    <p>一行貼一個加價購商品的網址，順序就是卡片從左到右的順序。手機殼那一組、錶帶＋錶框組兩頁（【Z35】、【ZZ35】）那一組，可以直接按下面的按鈕帶入。</p>
     <div class="au-row">
       <button type="button" class="au-btn" id="au-preset-phone">帶入手機殼這一組</button>
       <button type="button" class="au-btn" id="au-preset-watch" disabled title="錶帶組的卡片還在整理，這個按鈕之後會打開">錶帶這一組（準備中）</button>
       <button type="button" class="au-btn au-clear" id="au-clear">清空重填</button>
     </div>
+    <p class="fhint">這 8 頁要比較換卡前後賣得怎樣（B67、K50s、S12、D12、D43、B53、Z19、N08），要放同一組卡、同樣的順序。鏡頭環 N08、冰盾貼 Z19 這兩頁，區塊裡有一張連回自己的卡，留著。</p>
     <label class="au-label" for="au-urls">加價購商品網址（一行一個）</label>
     <textarea id="au-urls" class="au-input au-mono" rows="7" spellcheck="false" placeholder="https://www.londonimg.tw/products/..."></textarea>
     <div id="au-items" class="au-items" aria-live="polite"></div>
@@ -93,50 +105,50 @@
     <h3 class="au-h3">預覽</h3>
     <p class="fhint">只是大概的樣子，實際以前台為準（前台的英文和數字是網站字體）。</p>
     <iframe id="au-preview" class="au-preview" title="加價購區預覽"></iframe>
+    <p class="au-set-h">這次的卡片清單：同一組卡只要貼一次，貼到 Anita 的 Notion。</p>
+    <textarea id="au-set" class="au-input au-mono" rows="4" readonly aria-label="這次的卡片清單（用 tab 分格）"></textarea>
+    <div class="au-row"><button type="button" class="au-btn" id="au-set-copy">複製卡片清單</button><span id="au-set-msg" class="au-msg"></span></div>
   </section>
 
   <section class="card" id="page">
-    <h2 class="card-h"><span class="num">2</span>這一頁</h2>
-    <label class="au-label" for="au-page">這一頁的前台網址</label>
+    <h2 class="card-h"><span class="num">2</span>換哪一頁（每一頁做一次）</h2>
+    <p class="au-each">第 2 到 4 步每一頁做一次，做完按最下面的「換下一頁」。</p>
+    <label class="au-label" for="au-page">要換的商品頁網址（前台）</label>
     <input id="au-page" class="au-input" type="url" spellcheck="false" placeholder="https://www.londonimg.tw/products/...">
     <div id="au-page-msg" class="au-msg"></div>
-    <label class="au-label" for="au-who">你的名字（記在換品紀錄裡）</label>
-    <input id="au-who" class="au-input au-short" type="text">
-    <fieldset class="au-q">
-      <legend>這一頁的商品描述裡，原本有加價購區嗎？</legend>
-      <label class="au-opt"><input type="radio" name="au-had" value="yes"> 有，要換掉</label>
-      <label class="au-opt"><input type="radio" name="au-had" value="no"> 沒有，第一次放</label>
-    </fieldset>
-    <p class="fhint">【ZZ35】（/products/z35）最上面有舊的圖片版加價購區（三張圖）：那個不算，第一次放選「沒有」，新的貼在它上面，舊的三張圖留著。</p>
-    <p class="fhint">算成效的 8 頁（B67、K50s、S12、D12、D43、B53、Z19、N08）要放同一組卡、同樣的順序。鏡頭環 N08、冰盾貼 Z19 這兩頁，區塊裡有一張連回自己的卡，留著。</p>
-    <div id="au-old-wrap" hidden>
+    <div id="au-whole-wrap">
+      <ol class="steps">
+        <li>後台打開這個商品 → 商品描述 → HTML 原始碼。</li>
+        <li>點一下那一格裡面，按 ⌘A 全選（只會選到格子裡的字），再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）。</li>
+        <li>貼到下面這一格。工具只換加價購區，其他字一個都不動。找到幾張舊卡、有沒有動到別的字，格子下面會寫。</li>
+      </ol>
+      <label class="au-label" for="au-whole">整段商品描述（HTML 原始碼）</label>
+      <textarea id="au-whole" class="au-input au-mono" rows="5" spellcheck="false"></textarea>
+      <div id="au-whole-msg" class="au-msg" aria-live="polite"></div>
+      <p class="fhint">【ZZ35】（/products/z35）最上面有舊的圖片版加價購區（三張圖），工具不算它，新的會放在它上面，舊的三張圖留著。</p>
+    </div>
+    <details class="au-alt" id="au-alt">
+      <summary>整段貼不進來的時候（備用方法）</summary>
+      <p class="fhint">整段描述貼不進來，或工具說加價購區的標籤對不起來（多半是沒全選到、貼進來少了一截），重新全選貼上還是一樣，才用下面的方法。工具說找不到外框、有兩個加價購區、或加價購區長得不對的時候，下面的方法也解決不了，請找 Anita。</p>
       <fieldset class="au-q">
-        <legend>用哪一種方法換？</legend>
-        <label class="au-opt"><input type="radio" name="au-way" value="whole" checked> 整段描述貼進來（建議）</label>
-        <label class="au-opt"><input type="radio" name="au-way" value="block"> 只選舊的加價購區</label>
+        <legend>這一頁的商品描述裡，原本有加價購區嗎？</legend>
+        <label class="au-opt"><input type="radio" name="au-way" value="block"> 有：只選舊的加價購區換掉</label>
+        <label class="au-opt"><input type="radio" name="au-way" value="top"> 沒有：新的貼在描述最上面</label>
       </fieldset>
-      <div id="au-whole-wrap">
-        <ol class="steps">
-          <li>後台打開這個商品 → 商品描述 → HTML 原始碼。</li>
-          <li>點一下那一格裡面，按 ⌘A 全選（只會選到格子裡的字），再按 ⌘C（Windows 是 Ctrl+A、Ctrl+C）。</li>
-          <li>貼到下面這一格。工具只換加價購區，其他的字一個都不動，會在下面告訴你。</li>
-        </ol>
-        <label class="au-label" for="au-whole">整段商品描述（HTML 原始碼）</label>
-        <textarea id="au-whole" class="au-input au-mono" rows="5" spellcheck="false"></textarea>
-        <div id="au-whole-msg" class="au-msg" aria-live="polite"></div>
-      </div>
       <div id="au-block-wrap" hidden>
-        <p class="fhint">整段貼不進來、或工具說找不到加價購區的時候，才用這個方法。</p>
         <ol class="steps">
           <li>後台打開這個商品 → 商品描述 → HTML 原始碼。</li>
-          <li>找到 <code>&lt;div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip"&gt;</code> 這一串（clip 後面直接是 <code>"&gt;</code>），從它最前面的 <code>&lt;</code> 開始，往下選到加價購區的結尾（最後一張卡後面的幾個 <code>&lt;/div&gt;</code>），按 ⌘C（Windows 是 Ctrl+C）。上架工具做的頁，最前面還有一個很像的整頁外框（後面多了 background 等設定），不是那一個。</li>
+          <li>找到這一串：<code>&lt;div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip"&gt;</code>。要 clip 後面直接接 <code>"&gt;</code> 的那一串。上架工具做的頁，最前面還有一個很像的整頁外框，後面多了 background 等設定，不是那一個。</li>
+          <li>從這一串最前面的 <code>&lt;</code> 開始選，往下選到最後一張卡後面那幾個 <code>&lt;/div&gt;</code>，按 ⌘C（Windows 是 Ctrl+C）。</li>
           <li>貼到下面這一格，工具會告訴你選得對不對。不用自己數 <code>&lt;/div&gt;</code>，每一頁的結尾不一樣，工具會算。</li>
         </ol>
         <label class="au-label" for="au-old">選好的舊區塊</label>
         <textarea id="au-old" class="au-input au-mono" rows="5" spellcheck="false"></textarea>
         <div id="au-old-msg" class="au-msg" aria-live="polite"></div>
       </div>
-    </div>
+      <p class="fhint" id="au-top-note" hidden>不用貼舊的描述進來。第 3 步複製語法後，貼在後台描述的最前面。</p>
+      <div class="au-row"><button type="button" class="au-btn" id="au-alt-off">改回整段貼進來</button></div>
+    </details>
   </section>
 
   <section class="card" id="copy">
@@ -147,26 +159,26 @@
       <span id="au-copy-msg" class="au-msg"></span>
     </div>
     <ol class="steps" id="au-steps-whole">
-      <li>回到後台的 HTML 原始碼，點一下那一格裡面，按 ⌘A 全選，再按 ⌘V，整段換成工具給的。</li>
-      <li>存檔，記下存檔的日期和時間。</li>
+      <li>回到後台的 HTML 原始碼，點一下那一格裡面，按 ⌘A 全選，再按 ⌘V（Windows 是 Ctrl+A、Ctrl+V），整段換成工具給的。</li>
+      <li>存檔。看一下存檔的時間，第 4 步要填。</li>
       <li>用手機打開前台看：卡片都在、可以滑到最後一張；「Add-on Deals」只出現一次；下面原本的內容都還在。</li>
     </ol>
     <ol class="steps" id="au-steps-yes" hidden>
-      <li>回到後台的 HTML 原始碼。剛剛選的那段如果還反白，直接按 ⌘V 貼上。</li>
-      <li>反白不見了，就照剛剛的範圍重選一次（工具上面說「選得剛好」的那一段），再按 ⌘V。</li>
-      <li>存檔，記下存檔的日期和時間。</li>
+      <li>回到後台的 HTML 原始碼。剛剛選的那段如果還反白，直接按 ⌘V（Windows 是 Ctrl+V）貼上。</li>
+      <li>反白不見了，就照剛剛的範圍重選一次（工具上面說「選得剛好」的那一段），再按 ⌘V（Windows 是 Ctrl+V）。</li>
+      <li>存檔。看一下存檔的時間，第 4 步要填。</li>
       <li>用手機打開前台看：卡片都在、可以滑到最後一張；「Add-on Deals」只出現一次；下面原本的內容都還在。</li>
     </ol>
     <ol class="steps" id="au-steps-no" hidden>
-      <li>後台打開這個商品 → 商品描述 → HTML 原始碼，游標放在最前面（第一行的第一個字前面），按 ⌘V。</li>
-      <li>存檔，記下存檔的日期和時間。</li>
+      <li>後台打開這個商品 → 商品描述 → HTML 原始碼，游標放在最前面（第一行的第一個字前面），按 ⌘V（Windows 是 Ctrl+V）。</li>
+      <li>存檔。看一下存檔的時間，第 4 步要填。</li>
       <li>用手機打開前台看：卡片都在、可以滑到最後一張；「Add-on Deals」只出現一次；下面原本的內容都還在。</li>
     </ol>
   </section>
 
   <section class="card" id="log">
     <h2 class="card-h"><span class="num">4</span>換品紀錄</h2>
-    <p>每換完一頁，填後台存檔的日期和時間，複製這一列傳給工具負責人。算成效要從每一頁換上去的那天開始算。</p>
+    <p>每換完一頁，填後台存檔的日期和時間，複製這一列，貼到 Anita 的 Notion。要比較換卡前後賣得怎樣，得知道每一頁是哪天換上去的。</p>
     <div class="au-pair">
       <label class="au-label">後台存檔的日期<input id="au-date" class="au-input" type="date"></label>
       <label class="au-label">後台存檔的時間（到分）<input id="au-time" class="au-input" type="time"></label>
@@ -174,15 +186,12 @@
     <div id="au-log-todo" class="au-msg" aria-live="polite"></div>
     <textarea id="au-log" class="au-input au-mono" rows="2" readonly aria-label="換品紀錄這一列（用 tab 分格）"></textarea>
     <div class="au-row"><button type="button" class="au-btn" id="au-log-copy">複製這一列</button><span id="au-log-msg" class="au-msg"></span></div>
-    <p>這次的卡片清單（同一組卡只要傳一次）：</p>
-    <textarea id="au-set" class="au-input au-mono" rows="4" readonly aria-label="這次的卡片清單（用 tab 分格）"></textarea>
-    <div class="au-row"><button type="button" class="au-btn" id="au-set-copy">複製卡片清單</button><span id="au-set-msg" class="au-msg"></span></div>
     <div class="au-row au-next"><button type="button" class="dl-btn" id="au-next">換下一頁</button><span class="fhint">卡片和名字留著，只清掉這一頁的網址和舊區塊。要換一組卡從頭來，按第 1 步的「清空重填」。</span></div>
   </section>
   </main>
 </div>
-<script>window.LN_ADDON_KIT = {"head":"<div style=\"position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip\"><div style=\"border-top:1px solid #ededed;padding:clamp(12px,3vw,20px) 0 16px\"><div style=\"text-align:center;padding:0 24px;margin:0\"><h2 style=\"padding:0;text-transform:none;font-size:clamp(25px,calc(25px + (100vw - 767px)*999),36px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;text-align:center;color:#1d1f23\">加價購，省更多</h2><div style=\"font-size:clamp(14px,calc(14px + (100vw - 767px)*999),16px);font-weight:400;line-height:1.4;margin:0 0 clamp(20px,calc(20px + (100vw - 767px)*999),32px);font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;text-align:center;color:#fe5226\">Add-on Deals</div></div><div style=\"overflow-x:auto;text-align:center;padding:0 0 8px;white-space:nowrap\"><div style=\"display:inline-flex;flex-wrap:nowrap;padding:0 24px;text-align:left;vertical-align:top\">","tail":"</div></div></div></div>","cards":[{"slug":"【加價購】n08","href":"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08","name":"耐磨鏡頭玻璃金屬環【N08】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg\" alt=\"耐磨鏡頭玻璃金屬環【N08】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">耐磨鏡頭玻璃金屬環【N08】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""},{"slug":"b147-1","href":"https://www.londonimg.tw/products/b147-1","name":"不挑殼 Pro 隱形鏡頭組底膜【B147】","sale":99,"orig":100,"html":"<a href=\"https://www.londonimg.tw/products/b147-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/6aa251a61a78a82d5d69c7a7/original.jpg?1789022630=&amp;owner_id=57975b626170691220930c00\" alt=\"不挑殼 Pro 隱形鏡頭組底膜【B147】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">不挑殼 Pro 隱形鏡頭組底膜【B147】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$99</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$100</span></div></div></a>","variant":""},{"slug":"z19-8","href":"https://www.londonimg.tw/products/z19-8","name":"瞬貼無痕極地冰盾貼【Z19】","sale":349,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/z19-8\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg\" alt=\"瞬貼無痕極地冰盾貼【Z19】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">瞬貼無痕極地冰盾貼【Z19】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b51-2","href":"https://www.londonimg.tw/products/b51-2","name":"IceRen 手機掛繩＋送夾片【B51】","sale":200,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/b51-2\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/64bf7416b98c2700148e354b/400x.webp?source_format=jpeg\" alt=\"IceRen 手機掛繩＋送夾片【B51】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">IceRen 手機掛繩＋送夾片【B51】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$200</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b57-1","href":"https://www.londonimg.tw/products/b57-1","name":"HANG 22W 雙孔快充頭＋PD 快充線【B57】","sale":479,"orig":790,"html":"<a href=\"https://www.londonimg.tw/products/b57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg\" alt=\"HANG 22W 雙孔快充頭＋PD 快充線【B57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">HANG 22W 雙孔快充頭＋PD 快充線【B57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$790</span></div></div></a>","variant":""},{"slug":"t57-1","href":"https://www.londonimg.tw/products/t57-1","name":"iPhone 磁吸四合一快充線【T57】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/t57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/68807839047bdd000a8a9180/original.png?1753249848=&amp;owner_id=57975b626170691220930c00\" alt=\"iPhone 磁吸四合一快充線【T57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">iPhone 磁吸四合一快充線【T57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":"1M"},{"slug":"t61-1","href":"https://www.londonimg.tw/products/t61-1","name":"30W 單孔 PD 快充頭【T61】","sale":189,"orig":450,"html":"<a href=\"https://www.londonimg.tw/products/t61-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/6894695ca1787800182812ba/400x.webp?source_format=jpeg\" alt=\"30W 單孔 PD 快充頭【T61】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">30W 單孔 PD 快充頭【T61】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$189</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$450</span></div></div></a>","variant":"30W 單孔"},{"slug":"s75","href":"https://www.londonimg.tw/products/s75","name":"安心扣 全球定位器 AirTag 平替【S75】","sale":479,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/s75\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/67ecf39d5d18a9000cb42ccc/400x.webp?source_format=jpeg\" alt=\"安心扣 全球定位器 AirTag 平替【S75】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">安心扣 全球定位器 AirTag 平替【S75】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""}],"check":{"at":"2026-10-19"}};
-window.LN_ADDON_WATCH = {"cards":[{"slug":"s06","href":"https://www.londonimg.tw/products/s06","name":"Apple Watch 無線充電底座【S06】","sale":99,"orig":290,"html":"<a href=\"https://www.londonimg.tw/products/s06\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/66dff3ad7d4868000d50ba9b/original.png?1725952941\" alt=\"Apple Watch 無線充電底座【S06】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">Apple Watch 無線充電底座【S06】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$99</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$290</span></div></div></a>","variant":""},{"slug":"z33","href":"https://www.londonimg.tw/products/z33","name":"未來錶 Apple Watch 金屬錶帶【Z33】","sale":790,"orig":990,"html":"<a href=\"https://www.londonimg.tw/products/z33\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/661ce11db0c98d002383d731/original.jpg?1713168668\" alt=\"未來錶 Apple Watch 金屬錶帶【Z33】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">未來錶 Apple Watch 金屬錶帶【Z33】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$790</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$990</span></div></div></a>","variant":""},{"slug":"【加價購】z34","href":"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91z34","name":"未來錶 Apple Watch 金屬錶框【Z34】","sale":290,"orig":490,"html":"<a href=\"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91z34\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/661e3e682c6343000e8689ef/original.jpg?1713258088\" alt=\"未來錶 Apple Watch 金屬錶框【Z34】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">未來錶 Apple Watch 金屬錶框【Z34】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$290</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$490</span></div></div></a>","variant":""}],"chars":5672,"sha":"1f7cf1d5426b6d3a","check":{"at":"2026-10-19"}};
+<script>window.LN_ADDON_KIT = {"head":"<div style=\"position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip\"><div style=\"border-top:1px solid #ededed;padding:clamp(12px,3vw,20px) 0 16px\"><div style=\"text-align:center;padding:0 24px;margin:0\"><h2 style=\"padding:0;text-transform:none;font-size:clamp(25px,calc(25px + (100vw - 767px)*999),36px);font-weight:700;letter-spacing:-.5px;line-height:1.15;margin:0 0 6px;font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;text-align:center;color:#1d1f23\">加價購，省更多</h2><div style=\"font-size:clamp(14px,calc(14px + (100vw - 767px)*999),16px);font-weight:400;line-height:1.4;margin:0 0 clamp(20px,calc(20px + (100vw - 767px)*999),32px);font-family:Montserrat,-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;text-align:center;color:#fe5226\">Add-on Deals</div></div><div style=\"overflow-x:auto;text-align:center;padding:0 0 8px;white-space:nowrap\"><div style=\"display:inline-flex;flex-wrap:nowrap;padding:0 24px;text-align:left;vertical-align:top\">","tail":"</div></div></div></div>","cards":[{"slug":"【加價購】n08","href":"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08","name":"耐磨鏡頭玻璃金屬環【N08】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91n08\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/62d64c2e459f7e01ccc90778/400x.webp?source_format=jpeg\" alt=\"耐磨鏡頭玻璃金屬環【N08】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">耐磨鏡頭玻璃金屬環【N08】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""},{"slug":"b147-1","href":"https://www.londonimg.tw/products/b147-1","name":"不挑殼 Pro 隱形鏡頭組底膜【B147】","sale":99,"orig":100,"html":"<a href=\"https://www.londonimg.tw/products/b147-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/6aa251a61a78a82d5d69c7a7/original.jpg?1789022630=&amp;owner_id=57975b626170691220930c00\" alt=\"不挑殼 Pro 隱形鏡頭組底膜【B147】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">不挑殼 Pro 隱形鏡頭組底膜【B147】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$99</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$100</span></div></div></a>","variant":""},{"slug":"z19-8","href":"https://www.londonimg.tw/products/z19-8","name":"瞬貼無痕極地冰盾貼【Z19】","sale":349,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/z19-8\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/673b1106a958d5000c969291/400x.webp?source_format=jpeg\" alt=\"瞬貼無痕極地冰盾貼【Z19】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">瞬貼無痕極地冰盾貼【Z19】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b51-2","href":"https://www.londonimg.tw/products/b51-2","name":"IceRen 手機掛繩＋送夾片【B51】","sale":200,"orig":690,"html":"<a href=\"https://www.londonimg.tw/products/b51-2\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/64bf7416b98c2700148e354b/400x.webp?source_format=jpeg\" alt=\"IceRen 手機掛繩＋送夾片【B51】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">IceRen 手機掛繩＋送夾片【B51】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$200</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$690</span></div></div></a>","variant":""},{"slug":"b57-1","href":"https://www.londonimg.tw/products/b57-1","name":"HANG 22W 雙孔快充頭＋PD 快充線【B57】","sale":479,"orig":790,"html":"<a href=\"https://www.londonimg.tw/products/b57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/650938568e9e2f001045abb8/400x.webp?source_format=jpeg\" alt=\"HANG 22W 雙孔快充頭＋PD 快充線【B57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">HANG 22W 雙孔快充頭＋PD 快充線【B57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$790</span></div></div></a>","variant":""},{"slug":"t57-1","href":"https://www.londonimg.tw/products/t57-1","name":"iPhone 磁吸四合一快充線【T57】","sale":349,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/t57-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/68807839047bdd000a8a9180/original.png?1753249848=&amp;owner_id=57975b626170691220930c00\" alt=\"iPhone 磁吸四合一快充線【T57】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">iPhone 磁吸四合一快充線【T57】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$349</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":"1M"},{"slug":"t61-1","href":"https://www.londonimg.tw/products/t61-1","name":"30W 單孔 PD 快充頭【T61】","sale":189,"orig":450,"html":"<a href=\"https://www.londonimg.tw/products/t61-1\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/6894695ca1787800182812ba/400x.webp?source_format=jpeg\" alt=\"30W 單孔 PD 快充頭【T61】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">30W 單孔 PD 快充頭【T61】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$189</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$450</span></div></div></a>","variant":"30W 單孔"},{"slug":"s75","href":"https://www.londonimg.tw/products/s75","name":"安心扣 全球定位器 AirTag 平替【S75】","sale":479,"orig":590,"html":"<a href=\"https://www.londonimg.tw/products/s75\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://shoplineimg.com/57975b626170691220930c00/67ecf39d5d18a9000cb42ccc/400x.webp?source_format=jpeg\" alt=\"安心扣 全球定位器 AirTag 平替【S75】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">安心扣 全球定位器 AirTag 平替【S75】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$479</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$590</span></div></div></a>","variant":""}],"check":{"at":"2026-10-20"}};
+window.LN_ADDON_WATCH = {"cards":[{"slug":"s06","href":"https://www.londonimg.tw/products/s06","name":"Apple Watch 無線充電底座【S06】","sale":99,"orig":290,"html":"<a href=\"https://www.londonimg.tw/products/s06\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/66dff3ad7d4868000d50ba9b/original.png?1725952941\" alt=\"Apple Watch 無線充電底座【S06】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">Apple Watch 無線充電底座【S06】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$99</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$290</span></div></div></a>","variant":""},{"slug":"z33","href":"https://www.londonimg.tw/products/z33","name":"未來錶 Apple Watch 金屬錶帶【Z33】","sale":790,"orig":990,"html":"<a href=\"https://www.londonimg.tw/products/z33\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:12px;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/661ce11db0c98d002383d731/original.jpg?1713168668\" alt=\"未來錶 Apple Watch 金屬錶帶【Z33】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">未來錶 Apple Watch 金屬錶帶【Z33】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$790</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$990</span></div></div></a>","variant":""},{"slug":"【加價購】z34","href":"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91z34","name":"未來錶 Apple Watch 金屬錶框【Z34】","sale":290,"orig":490,"html":"<a href=\"https://www.londonimg.tw/products/%E3%80%90%E5%8A%A0%E5%83%B9%E8%B3%BC%E3%80%91z34\" target=\"_blank\" style=\"flex:0 0 auto;width:clamp(140px,40vw,165px);margin-right:0;text-decoration:none;color:inherit;border:1px solid #ededed;overflow:hidden;background:#fff;display:block;white-space:normal\"><div style=\"position:relative;width:100%;padding-bottom:100%;overflow:hidden;background:#f7f7f7\"><img src=\"https://img.shoplineapp.com/media/image_clips/661e3e682c6343000e8689ef/original.jpg?1713258088\" alt=\"未來錶 Apple Watch 金屬錶框【Z34】\" style=\"position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;display:block\"></div><div style=\"padding:10px 11px 12px\"><p style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:13px;line-height:1.4;margin:0 0 7px;height:36px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical\">未來錶 Apple Watch 金屬錶框【Z34】</p><div><span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI Semibold','Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei Semibold','Microsoft JhengHei',sans-serif;font-size:16px;font-weight:500;color:#fe5226\">NT$290</span> <span style=\"font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;font-size:12px;color:#9b9b9f;text-decoration:line-through\">NT$490</span></div></div></a>","variant":""}],"chars":5672,"sha":"1f7cf1d5426b6d3a","check":{"at":"2026-10-20"}};
 window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"b51-2":true,"b57-1":true,"t57-1":true,"t61-1":true,"s75":false,"s06":true,"z33":false,"【加價購】z34":true};</script>
 <script>
 
@@ -487,6 +496,12 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
 
   function addonSwap(text, newBlock) {
     const f = addonFindIn(text);
+
+    if (f.kind === 'none') {
+      const t = String(text), out = newBlock + t, g = addonFindIn(out);
+      if (!(g.kind === 'ok' && g.before === '' && g.after === t && g.block === newBlock)) return { kind: 'verify' };
+      return { kind: 'ok', fresh: true, out, old: null, spacer: false, before: 0, after: t.length, unchanged: false };
+    }
     if (f.kind !== 'ok') return f;
     const out = f.before + newBlock + f.after, g = addonFindIn(out);
     const same = g.kind === 'ok' && g.before === f.before && g.after === f.after && g.block === newBlock;
@@ -1553,7 +1568,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
 (function () {
   'use strict';
   var G = window.LNGen, KIT = window.LN_ADDON_KIT, WATCH = window.LN_ADDON_WATCH, HIDDEN = window.LN_ADDON_HIDDEN || {};
-  if (!G || !KIT) { document.getElementById('au-todo').textContent = '這一版工具沒有帶加價購卡片的資料，請找工具負責人重新做一版。'; return; }
+  if (!G || !KIT) { document.getElementById('au-todo').textContent = '這一版工具沒有帶加價購卡片的資料，請找 Anita 重新做一版。'; return; }
 
   var MORE = {};
   ((WATCH && WATCH.cards) || []).forEach(function (c) { MORE[c.slug] = c; });
@@ -1572,7 +1587,9 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     var e = st.extra[k];
     if (!e || typeof e !== 'object' || ['name', 'img', 'sale', 'orig', 'ok'].every(function (f) { return !String(e[f] == null ? '' : e[f]).trim(); })) delete st.extra[k];
   });
-  var pg = { url: '', had: '', way: 'whole', whole: '', old: '', date: '', time: '' };
+
+  var PG0 = function () { return { url: '', way: 'whole', whole: '', old: '', date: '', time: '', logCopied: false }; };
+  var pg = PG0();
   var imgs = {};
   var esc = function (s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); };
   var money = function (n) { return Number(n).toLocaleString('en-US'); };
@@ -1621,7 +1638,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   var blocking = function (it) { return it.msgs.some(function (m) { return m[0] === 'red' || m[0] === 'todo'; }); };
 
   var WRAP = '<div style="position:relative;width:100vw;left:50%;margin-left:-50vw;overflow-x:clip">';
-  var STUCK = '重選兩次還是這句，請找工具負責人。';
+  var STUCK = '重選兩次還是這句，請找 Anita。';
   var OLD_MSG = {
     empty: ['todo', '把後台選好的舊區塊貼在上面這一格'],
     plain: ['red', '貼進來的是畫面上的字，不是原始碼。回後台，商品描述按「HTML 原始碼」，在那個畫面裡選、複製'],
@@ -1630,14 +1647,14 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     late: ['red', '開頭選得太後面了：從卡片開始選，會漏掉外框和標題。往上找到 ' + WRAP + ' 這一串，從它的 < 開始選'],
     before: ['red', '前面多選到別的內容（「{at}」）。從 ' + WRAP + ' 這一串的 < 開始選'],
     notaddon: ['red', '這一段不是加價購區（裡面沒有 Add-on Deals）。確認是在「HTML 原始碼」裡選的，選的是描述最上面那一排加價購卡片'],
-    two: ['red', '這一段裡有兩個加價購區，請找工具負責人'],
+    two: ['red', '這一段裡有兩個加價購區，請找 Anita'],
     broken: ['red', '這一段的標籤對不起來（在「{at}」附近），重新選一次：從外框那一串選到加價購區的結尾。' + STUCK],
     extra: ['red', '多選到下面的內容了（「{at}」）：選取的結尾往回縮，停在加價購區最後一個 </div> 後面'],
     outer: ['red', '開頭選到的框不是加價購區的外框（多半是整頁描述的外框，後面還有別的設定）。加價購區的外框是 ' + WRAP + ' 這一串，overflow-x:clip 後面直接是 ">"，從這一串的 < 開始選'],
     toomuch: ['red', '選太多了：這一段除了加價購的卡片，還有別的內容（「{at}」）。只選加價購區那一段，不要整段全選'],
   };
   function oldNow() {
-    if (pg.had !== 'yes' || pg.way !== 'block') return null;
+    if (pg.way !== 'block') return null;
     var r = G.addonOldCheck(pg.old), m;
     if (r.kind === 'ok') {
       m = ['ok', '選得剛好。舊區塊有 ' + r.cards.length + ' 張卡：' + r.cards.map(function (c) { return c.name || c.slug; }).join('、') +
@@ -1651,17 +1668,23 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   var WHOLE_MSG = {
     empty: ['todo', '把後台 HTML 原始碼整段（⌘A 全選）貼在上面這一格'],
     plain: OLD_MSG.plain,
-    none: ['red', '這段描述裡沒有加價購區。這一頁原本沒有的話，上面選「沒有，第一次放」'],
-    nowrap: ['red', '描述裡有 Add-on Deals，但找不到加價購區的外框（格式跟工具認得的不一樣）。請找工具負責人'],
-    two: ['red', '這段描述裡有兩個加價購區（或加價購區外面還有 Add-on Deals）。請找工具負責人'],
+    nowrap: ['red', '描述裡有 Add-on Deals，但找不到加價購區的外框（格式跟工具認得的不一樣）。請找 Anita'],
+    two: ['red', '這段描述裡有兩個加價購區（或加價購區外面還有 Add-on Deals）。請找 Anita'],
     broken: ['red', '加價購區的標籤對不起來，可能沒有全選到。回後台重新 ⌘A 全選再貼一次；' + STUCK],
-    bad: ['red', '找到的加價購區長得不對，請找工具負責人'],
-    verify: ['red', '換完工具自己重新找一次，前後對不上，所以不給複製。請找工具負責人'],
+    bad: ['red', '找到的加價購區長得不對，請找 Anita'],
+    verify: ['red', '換完工具自己重新找一次，前後對不上，所以不給複製。請找 Anita'],
   };
   var n0 = function (n) { return Number(n).toLocaleString('en-US'); };
   function wholeNow(block) {
-    if (pg.had !== 'yes' || pg.way !== 'whole') return null;
+    if (pg.way !== 'whole') return null;
     var f = block ? G.addonSwap(pg.whole, block) : G.addonFindIn(pg.whole), list;
+
+    if (f.kind === 'none' || (f.kind === 'ok' && f.fresh)) {
+      list = [['ok', '這一頁原本沒有加價購區，新的會放在最上面']];
+      if (!block) list.push(['todo', '先在第 1 步放這次的卡']);
+      else list.push(['ok', '原本的內容 0 字不同：' + n0(f.after) + ' 字都接在新的加價購區後面，跟你貼進來的一樣（工具換完自己重新找一次對過）']);
+      return { r: block ? f : { kind: 'ok', fresh: true, old: null }, msgs: list, out: block ? f.out : '' };
+    }
     if (f.kind !== 'ok') return { r: f, msgs: [WHOLE_MSG[f.kind]] };
     var old = f.old || f.cards;
     list = [['ok', '找到了：舊的加價購區有 ' + old.length + ' 張卡（' + old.map(function (c) { return c.name || c.slug || '讀不到商品名'; }).join('、') + '）' +
@@ -1714,26 +1737,26 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     }
 
     var pageMsgs = [];
-    if (!pg.url.trim()) pageMsgs.push(['todo', '填這一頁的前台網址（記在換品紀錄裡）']);
+    if (!pg.url.trim()) pageMsgs.push(['todo', '填要換的商品頁網址（記在換品紀錄裡）']);
     else if (!G.slugOf(pg.url)) pageMsgs.push(['red', '這不是倫敦印象的商品網址']);
     paintMsg($('au-page-msg'), pageMsgs.filter(function (m) { return m[0] !== 'todo'; }));
-    $('au-old-wrap').hidden = pg.had !== 'yes';
     $('au-whole-wrap').hidden = pg.way !== 'whole';
     $('au-block-wrap').hidden = pg.way !== 'block';
+    $('au-top-note').hidden = pg.way !== 'top';
+    $('au-alt-off').hidden = pg.way === 'whole';
     var old = oldNow(), whole = wholeNow(block);
     paintMsg($('au-old-msg'), old ? [old.msg] : []);
     paintMsg($('au-whole-msg'), whole ? whole.msgs : []);
-    $('au-steps-whole').hidden = pg.had === 'no' || pg.way !== 'whole';
-    $('au-steps-yes').hidden = pg.had === 'no' || pg.way !== 'block';
-    $('au-steps-no').hidden = pg.had !== 'no';
-    $('au-copy').textContent = pg.had === 'yes' && pg.way === 'whole' ? '複製整段描述' : '複製語法';
+    $('au-steps-whole').hidden = pg.way !== 'whole';
+    $('au-steps-yes').hidden = pg.way !== 'block';
+    $('au-steps-no').hidden = pg.way !== 'top';
+    $('au-copy').textContent = pg.way === 'whole' ? '複製整段描述' : '複製語法';
 
     var todo = [];
     if (!items.length) todo.push(['todo', '先在第 1 步貼加價購商品網址']);
     items.forEach(function (it, i) { if (!it.dup && blocking(it)) todo.push([it.msgs.some(function (m) { return m[0] === 'red'; }) ? 'red' : 'todo', '第 ' + (i + 1) + ' 張還沒好：' + it.msgs.filter(function (m) { return m[0] !== 'orange'; }).map(function (m) { return m[1]; }).join('；')]); });
     pageMsgs.forEach(function (m) { todo.push(m); });
     if (!st.who.trim()) todo.push(['todo', '填你的名字']);
-    if (!pg.had) todo.push(['todo', '回答「原本有加價購區嗎？」']);
     if (old && old.msg[0] !== 'ok') todo.push([old.msg[0], '舊區塊：' + old.msg[1]]);
     if (whole && whole.r.kind !== 'ok') todo.push([whole.msgs[0][0], '整段描述：' + whole.msgs[0][1]]);
     paintMsg($('au-todo'), todo.length ? todo : [['ok', '都好了，可以複製']]);
@@ -1745,11 +1768,13 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     var logTodo = todo.slice();
     if (!/^\d{4}-\d{2}-\d{2}$/.test(pg.date)) logTodo.push(['todo', '填後台存檔的日期']);
     if (!/^\d{2}:\d{2}$/.test(pg.time)) logTodo.push(['todo', '填後台存檔的時間（到分）']);
-    paintMsg($('au-log-todo'), logTodo.length ? logTodo.slice(-2).filter(function (m) { return /存檔/.test(m[1]); }).concat(logTodo.length > 2 || !logTodo.every(function (m) { return /存檔/.test(m[1]); }) ? [['todo', '上面的步驟還沒好']] : []) : []);
+    paintMsg($('au-log-todo'), logTodo.length ? logTodo.slice(-2).filter(function (m) { return /存檔/.test(m[1]); }).concat(logTodo.length > 2 || !logTodo.every(function (m) { return /存檔/.test(m[1]); }) ? [['todo', '第 1 到 3 步還沒好，還差什麼看第 3 步的清單']] : []) : []);
     $('au-log').value = logTodo.length ? '' : G.addonLogRow({ page: pg.url, who: st.who.trim(), old: old ? old.r.cards : whole && whole.r.kind === 'ok' ? whole.r.old : null, cards: cards, date: pg.date, time: pg.time });
     $('au-log-copy').disabled = !!logTodo.length;
-    $('au-set').value = !todo.length ? G.addonSetRows(cards, '加價購區更新器 ' + today()) : '';
-    $('au-set-copy').disabled = !!todo.length;
+
+    var cardsReady = items.length && !items.some(function (it) { return !it.dup && blocking(it); });
+    $('au-set').value = cardsReady ? G.addonSetRows(cards, '加價購區更新器 ' + today()) : '';
+    $('au-set-copy').disabled = !cardsReady;
   }
 
   function buildForm(n, it) {
@@ -1792,9 +1817,12 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   $('au-old').oninput = function () { pg.old = this.value; render(); };
   $('au-whole').oninput = function () { pg.whole = this.value; render(); };
   [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.onchange = function () { pg.way = r.value; render(); }; });
+  $('au-alt-off').onclick = function () {
+    pg.way = 'whole'; [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = false; });
+    $('au-alt').open = false; render(); $('au-whole').focus();
+  };
   $('au-date').oninput = function () { pg.date = this.value; render(); };
   $('au-time').oninput = function () { pg.time = this.value; render(); };
-  [].slice.call(document.querySelectorAll('input[name="au-had"]')).forEach(function (r) { r.onchange = function () { pg.had = r.value; render(); }; });
   if (WATCH && WATCH.cards && WATCH.cards.length) {
     $('au-preset-watch').disabled = false; $('au-preset-watch').removeAttribute('title');
     $('au-preset-watch').textContent = '帶入錶帶這一組';
@@ -1808,23 +1836,29 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     st.urls = PHONE.map(function (c) { return c.href; }).join('\n'); $('au-urls').value = st.urls; save(); render();
   };
   $('au-copy').onclick = function () { if (!this.disabled && this._block) copy(this._block, $('au-copy-msg')); };
-  $('au-log-copy').onclick = function () { if ($('au-log').value) copy($('au-log').value, $('au-log-msg')); };
+  $('au-log-copy').onclick = function () { if ($('au-log').value) { copy($('au-log').value, $('au-log-msg')); pg.logCopied = true; } };
   $('au-set-copy').onclick = function () { if ($('au-set').value) copy($('au-set').value, $('au-set-msg')); };
 
   function clearPage() {
-    pg = { url: '', had: '', way: 'whole', whole: '', old: '', date: '', time: '' };
+    pg = PG0();
     $('au-page').value = ''; $('au-old').value = ''; $('au-whole').value = '';
-    [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = r.value === 'whole'; }); $('au-date').value = ''; $('au-time').value = '';
-    [].slice.call(document.querySelectorAll('input[name="au-had"]')).forEach(function (r) { r.checked = false; });
-    ['au-copy-msg', 'au-log-msg', 'au-set-msg'].forEach(function (id) { $(id).textContent = ''; });
+    [].slice.call(document.querySelectorAll('input[name="au-way"]')).forEach(function (r) { r.checked = false; }); $('au-alt').open = false;
+    $('au-date').value = ''; $('au-time').value = '';
+    ['au-copy-msg', 'au-log-msg'].forEach(function (id) { $(id).textContent = ''; });
   }
-  $('au-next').onclick = function () { clearPage(); render(); $('page').scrollIntoView(); $('au-page').focus(); };
+
+  $('au-next').onclick = function () {
+    var filled = pg.url.trim() || pg.whole.trim() || pg.old.trim() || pg.date || pg.time;
+    if (filled && !pg.logCopied && !confirm('這一頁的換品紀錄還沒複製，確定要換下一頁嗎？')) return;
+    clearPage(); render(); $('page').scrollIntoView(); $('au-page').focus();
+  };
 
   $('au-clear').onclick = function () {
-    var empty = !st.urls.trim() && !st.who.trim() && !Object.keys(st.extra).length && !pg.url.trim() && !pg.had && !pg.whole.trim() && !pg.old.trim() && !pg.date && !pg.time;
+    var empty = !st.urls.trim() && !st.who.trim() && !Object.keys(st.extra).length && !pg.url.trim() && pg.way === 'whole' && !pg.whole.trim() && !pg.old.trim() && !pg.date && !pg.time;
     if (!empty && !confirm('清空所有填的內容，從空白開始：加價購網址、新商品填的字、你的名字、這一頁的網址和舊區塊。確定嗎？')) return;
     st = { urls: '', extra: {}, who: '' }; save();
     $('au-urls').value = ''; $('au-who').value = '';
+    $('au-set-msg').textContent = '';
     clearPage(); render(); $('cards').scrollIntoView(); $('au-urls').focus();
   };
   render();
