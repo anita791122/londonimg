@@ -148,6 +148,12 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .pick .pr s { color: var(--ink-3); margin-left: 5px; font-size: 12px; }
 .pick .hold { font-size: 12px; color: var(--ink-3); white-space: nowrap; padding: 0 4px; }
 .pick .btn:disabled { color: var(--ink-2); background: var(--bg); cursor: default; }
+.pick-more { margin: 4px 0 0; }
+.pick-more > summary { cursor: pointer; min-height: 44px; display: flex; align-items: center; gap: 6px; font-size: 13.5px; color: var(--ink-2); list-style: none; }
+.pick-more > summary::-webkit-details-marker { display: none; }
+
+.pick-more > summary::before { content: '▸'; }
+.pick-more[open] > summary::before { content: '▾'; }
 .addon-src { font-size: 12.5px; color: var(--ink-3); margin: 6px 0 12px; }
 .addon-src.warn { color: var(--orange); }
 
@@ -510,6 +516,11 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   let KIT = root.LN_ADDON_KIT || null;
   function useAddonKit(k) { KIT = k || null; }
 
+  let MORE = root.LN_ADDON_MORE || null;
+  function useAddonMore(m) { MORE = m || null; }
+  const addonCards = () => (KIT ? KIT.cards : []).concat(MORE && MORE.cards ? MORE.cards : []);
+  const addonCardOf = slug => addonCards().find(c => c.slug === slug) || null;
+
   let ADDON_HEAD_CHECK = true;
   function useAddonHeadCheck(v) { ADDON_HEAD_CHECK = !!v; }
 
@@ -579,7 +590,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   function addonItems(t) {
     return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {
       const slug = slugOf(raw);
-      return { raw, slug, line: i + 1, card: slug && KIT ? KIT.cards.find(c => c.slug === slug) || null : null };
+      return { raw, slug, line: i + 1, card: slug && KIT ? addonCardOf(slug) : null };
     }));
   }
 
@@ -627,7 +638,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   const addonNear = slug => {
     const code = String(slug).replace(/^【加價購】/, '').replace(/-\d+$/, '');
-    return KIT ? KIT.cards.find(c => codeOf(c) && codeOf(c) === code && c.slug !== code) || null : null;
+    return KIT ? addonCards().find(c => codeOf(c) && codeOf(c) === code && c.slug !== code) || null : null;
   };
   function addonNewCheck(slug, e, o) {
     e = e || ADDON_NEW0(); o = o || {};
@@ -1604,7 +1615,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       else if (ADDON_HEAD_CHECK && !/>加價購，省更多<\/h2>\s*<div[^>]*color:#fe5226">Add-on Deals<\/div>/.test(addon)) add('addon', 'orange', '這是舊版的加價購區語法（標題還是英文在上），到加價購語法頁重新複製一次', 'A');
 
       [...new Set([...norm.matchAll(/<a [^>]*href="([^"]+)"/g)].map(m => slugOf(m[1])))].forEach(slug => {
-        const near = slug && KIT && !KIT.cards.some(c => c.slug === slug) ? addonNear(slug) : null;
+        const near = slug && KIT && !addonCardOf(slug) ? addonNear(slug) : null;
         if (slug && ADDON_HOLD[slug]) add('addon', 'red', ADDON_HOLD[slug].replace('這張不會出現，把這一行刪掉', '這段語法裡有這張卡：改用網址貼（工具會自動拿掉），或把這張卡從語法裡刪掉'), 'A');
         else if (near) add('addon', 'red', `這段語法裡的「${near.name}」連到一般賣場（/products/${slug}），客人點進去付的是一般價。這是舊的語法：到加價購語法頁重新複製一次，或改用網址貼`, 'A');
       });
@@ -1828,7 +1839,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   }
 
   const api = { generate, pretty, beforeBuy, longImageGenerate, longImageValidate, compat, specs, faq, nbModel, LONG_FRAME, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
-    slugOf, addonKitFrom, useAddonKit, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
+    slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
 })(typeof window !== 'undefined' ? window : globalThis);
