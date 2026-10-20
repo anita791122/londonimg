@@ -47,7 +47,7 @@
 .au-clear{margin-left:auto}
 .au-label-top{margin-top:0}
 .au-each{margin:0 0 4px;color:var(--muted)}
-.au-set-h{margin:20px 0 6px;font-weight:600}
+
 .au-alt{margin:18px 0 0;padding:12px 0 0;border-top:1px dashed var(--border)}
 .au-alt>summary{cursor:pointer;min-height:44px;display:flex;align-items:center;gap:6px;font-weight:600;color:var(--muted);list-style:none}
 .au-alt>summary::-webkit-details-marker{display:none}
@@ -106,9 +106,6 @@
     <h3 class="au-h3">預覽</h3>
     <p class="fhint">只是大概的樣子，實際以前台為準（前台的英文和數字是網站字體）。</p>
     <iframe id="au-preview" class="au-preview" title="加價購區預覽"></iframe>
-    <p class="au-set-h">這次的卡片清單：同一組卡只要貼一次，貼到 <a href="https://app.notion.com/p/3ff7519bf41e8063b5ccd9b5bc42b721?v=3bb7519bf41e80419805000c9db91f0d" target="_blank" rel="noopener">Anita 的 Notion</a>，放在「卡片清單」標題下面。</p>
-    <textarea id="au-set" class="au-input au-mono" rows="4" readonly aria-label="這次的卡片清單（用 tab 分格）"></textarea>
-    <div class="au-row"><button type="button" class="au-btn" id="au-set-copy">複製卡片清單</button><span id="au-set-msg" class="au-msg"></span></div>
   </section>
 
   <section class="card" id="page">
@@ -179,14 +176,14 @@
 
   <section class="card" id="log">
     <h2 class="card-h"><span class="num">4</span>換品紀錄</h2>
-    <p>每換完一頁，填後台存檔的日期和時間，複製這一列，貼到 <a href="https://app.notion.com/p/3ff7519bf41e8063b5ccd9b5bc42b721?v=3bb7519bf41e80419805000c9db91f0d" target="_blank" rel="noopener">Anita 的 Notion</a>，放在「換品紀錄」標題下面。要比較換卡前後賣得怎樣，得知道每一頁是哪天換上去的。</p>
+    <p>每換完一頁，填後台存檔的日期和時間，複製這一段，貼到 <a href="https://app.notion.com/p/3ff7519bf41e8063b5ccd9b5bc42b721?v=3bb7519bf41e80419805000c9db91f0d" target="_blank" rel="noopener">Anita 的 Notion</a>，放在「換品紀錄」標題下面。這一輪的第一頁會多帶幾列這次的卡片清單，一起貼就好，之後的頁不會再帶。要比較換卡前後賣得怎樣，得知道每一頁是哪天換上去的。</p>
     <div class="au-pair">
       <label class="au-label">後台存檔的日期<input id="au-date" class="au-input" type="date"></label>
       <label class="au-label">後台存檔的時間（到分）<input id="au-time" class="au-input" type="time"></label>
     </div>
     <div id="au-log-todo" class="au-msg" aria-live="polite"></div>
-    <textarea id="au-log" class="au-input au-mono" rows="2" readonly aria-label="換品紀錄這一列（用 tab 分格）"></textarea>
-    <div class="au-row"><button type="button" class="au-btn" id="au-log-copy">複製這一列</button><span id="au-log-msg" class="au-msg"></span></div>
+    <textarea id="au-log" class="au-input au-mono" rows="4" readonly aria-label="換品紀錄（用 tab 分格，這一輪第一頁會帶卡片清單）"></textarea>
+    <div class="au-row"><button type="button" class="au-btn" id="au-log-copy">複製這一段</button><span id="au-log-msg" class="au-msg"></span></div>
     <div class="au-row au-next"><button type="button" class="dl-btn" id="au-next">換下一頁</button><span class="fhint">卡片和名字留著，只清掉要換的商品頁網址、貼進來的描述、存檔的日期和時間。要換一組卡從頭來，按第 1 步的「清空重填」。重新整理頁面會全部清空。</span></div>
   </section>
   </main>
@@ -1580,9 +1577,10 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   var today = G.today;
 
   try { localStorage.removeItem('ln-addon-update-v1'); } catch (e) {   }
-  var st = { urls: '', extra: {}, who: '' };
 
-  var PG0 = function () { return { url: '', had: '', alt: false, whole: '', old: '', date: '', time: '', logCopied: false }; };
+  var st = { urls: '', extra: {}, who: '', setDone: '' };
+
+  var PG0 = function () { return { url: '', had: '', alt: false, whole: '', old: '', date: '', time: '', logCopied: false, setFor: '' }; };
   var pg = PG0();
 
   function wayOf() { return !pg.had ? '' : !pg.alt ? 'whole' : pg.had === 'yes' ? 'block' : 'top'; }
@@ -1780,12 +1778,11 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     var logTodo = todo.concat(saveTodo);
     var onlyWho = todo.length === 1 && todo[0][1] === '填你的名字';
     paintMsg($('au-log-todo'), saveTodo.concat(!todo.length ? [] : [['todo', onlyWho ? '最上面的名字還沒填' : '第 1 到 3 步還沒好，還差什麼看第 3 步的清單']]));
-    outTo('au-log', 'au-log-msg', logTodo.length ? '' : G.addonLogRow({ page: pg.url, who: st.who.trim(), old: old ? old.r.cards : whole && whole.r.kind === 'ok' ? whole.r.old : null, cards: cards, date: pg.date, time: pg.time }));
-    $('au-log-copy').disabled = !!logTodo.length;
 
-    var cardsReady = items.length && !items.some(function (it) { return !it.dup && blocking(it); });
-    outTo('au-set', 'au-set-msg', cardsReady ? G.addonSetRows(cards, '加價購區更新器 ' + today()) : '');
-    $('au-set-copy').disabled = !cardsReady;
+    var setRows = G.addonSetRows(cards, '加價購區更新器 ' + today()), withSet = st.setDone !== setRows || pg.setFor === setRows;
+    $('au-log')._set = withSet ? setRows : '';
+    outTo('au-log', 'au-log-msg', logTodo.length ? '' : G.addonLogRow({ page: pg.url, who: st.who.trim(), old: old ? old.r.cards : whole && whole.r.kind === 'ok' ? whole.r.old : null, cards: cards, date: pg.date, time: pg.time }) + (withSet ? '\n\n' + setRows : ''));
+    $('au-log-copy').disabled = !!logTodo.length;
   }
 
   function buildForm(n, it) {
@@ -1857,8 +1854,10 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   };
   $('au-copy').onclick = function () { if (!this.disabled && this._block) copy(this._block, $('au-copy-msg')); };
 
-  $('au-log-copy').onclick = function () { var row = $('au-log').value; if (row) copy(row, $('au-log-msg'), function (ok) { if (ok) pg.logCopied = row; }); };
-  $('au-set-copy').onclick = function () { if ($('au-set').value) copy($('au-set').value, $('au-set-msg')); };
+  $('au-log-copy').onclick = function () {
+    var row = $('au-log').value, set = $('au-log')._set;
+    if (row) copy(row, $('au-log-msg'), function (ok) { if (!ok) return; pg.logCopied = row; if (set) { st.setDone = set; pg.setFor = set; } });
+  };
 
   function clearPage() {
     pg = PG0();
@@ -1880,9 +1879,8 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
 
   $('au-clear').onclick = function () {
     if (hasInput() && !confirm('清空所有填的內容，從空白開始：加價購網址、新商品填的字、你的名字、要換的商品頁網址、貼進來的描述、存檔的日期和時間。確定嗎？')) return;
-    st = { urls: '', extra: {}, who: '' };
+    st = { urls: '', extra: {}, who: '', setDone: '' };
     $('au-urls').value = ''; $('au-who').value = '';
-    $('au-set-msg').textContent = '';
     clearPage(); render(); $('cards').scrollIntoView(); $('au-urls').focus();
   };
   render();
