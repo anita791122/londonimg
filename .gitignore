@@ -50,6 +50,17 @@ product-page/londonimg-product/reference/*
 # 註：reference/ 底下只開上面這兩個檔。內部策略文件不在其中，維持不托管。
 #    2026-10-10 起 skill 只產商品頁設定，積木模板、積木清單、平台限制三個檔已從 skill 拿掉。
 
+# ── 4b) 小火車列表 skill：本機版，還沒打包、還沒發。這裡開放只是為了能 commit；推站要另外說 ──
+!product-page/小火車列表/
+product-page/小火車列表/*
+!product-page/小火車列表/README.md
+!product-page/小火車列表/SKILL.md
+!product-page/小火車列表/check_questions.js
+!product-page/小火車列表/reference/
+product-page/小火車列表/reference/*
+!product-page/小火車列表/reference/questions.md
+!product-page/小火車列表/reference/tone-rules.md
+
 # ── 5) 例外：上架工具公開版（給同事開網址用；由 product-page/上架工具/build.js 產生，沒有註解、不列人名）──
 #    原始碼（src、測試、打包程式）在 product-page/上架工具/，不托管。
 !product-page/listing-tool/
