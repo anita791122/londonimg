@@ -45,35 +45,79 @@ for (const set of ['case', 'other']) {
     if (texts.has(r.q)) bad.push(`${set}/${id} 問句跟固定題撞了：工具會提醒講了兩次`);
   });
 }
+// 1b. 品類表：上面的 table() 只讀有 id 的列，這張沒有 id，要另外讀。每列剛好 3 題（7＋3＝最多 10 題），不跟其他商品那 7 題撞；
+//     碰到電池、發熱、行車、法規的題，最右欄要標「有公司資料才答」
+const SAFETY = /飛機|燙|邊充邊用|開車/;
+const qLines = qmd.split('\n');
+const catFrom = qLines.findIndex(l => l.startsWith('### 各品類多問的題目'));
+if (catFrom < 0) bad.push('questions.md 找不到「### 各品類多問的題目」');
+const cats = [];
+for (let i = catFrom + 1; catFrom >= 0 && i < qLines.length && !/^##/.test(qLines[i]); i++) {
+  const c = qLines[i].split('|').map(s => s.trim());
+  if (c.length >= 4 && c[1] !== '品類' && !/^-+$/.test(c[1])) cats.push({ name: c[1], qs: c[2].split('／'), safe: (c[3] || '').split('／').filter(Boolean) });
+}
+if (cats.length < 5) bad.push(`品類表只讀到 ${cats.length} 列，格式可能改了`);
+const otherQs = new Set([...Object.values(sections.other).map(r => r.q), ...G.trainQs('other').map(q => q.q)]);
+cats.forEach(({ name, qs, safe }) => {
+  if (qs.length !== 3) bad.push(`品類「${name}」有 ${qs.length} 題，要剛好 3 題`);
+  qs.forEach(q => {
+    if (!q.endsWith('？')) bad.push(`品類「${name}」的「${q}」不是問句：題目用「／」隔開`);
+    if (otherQs.has(q)) bad.push(`品類「${name}」的「${q}」跟其他商品那 7 題撞了：會問兩次，工具也會提醒講了兩次`);
+    if (SAFETY.test(q) && !safe.includes(q)) bad.push(`品類「${name}」的「${q}」碰到安全或法規，最右欄要標`);
+  });
+  safe.filter(q => !qs.includes(q)).forEach(q => bad.push(`品類「${name}」最右欄的「${q}」不在題目那一欄`));
+});
+if (!skill.includes('有公司資料才答') || !skill.includes('答不出資料')) bad.push('SKILL.md 少了「有公司資料才答」或「答不出資料記進沒回答」的規則');
+
 // 2. 題數：手機殼每一級剛好 5 題；重量厚度排在最少的 5 題裡
 const tiers = {};
 Object.values(sections.case).forEach(r => { tiers[r.tier] = (tiers[r.tier] || 0) + 1; });
 ['5', '10', '15', '20'].forEach(t => eq(`手機殼標 ${t} 的題數`, tiers[t], 5));
 eq('手機殼 size 幾題起問', (sections.case.size || {}).tier, '5');
 eq('其他商品 o-size 幾題起問', (sections.other['o-size'] || {}).tier, '5');
-// 3. 不問的題：題目裡不能出現紅線字（比「不放進題目」那一行之後的表格）
-const qText = [...Object.values(sections.case), ...Object.values(sections.other)].map(r => r.q).join('\n');
-(qText.match(/保固|軍規|9\s*H|背板材質|\bPC\b|價格|出貨|到貨/g) || []).forEach(w => bad.push(`題目裡有不該問的字「${w}」`));
-
-// 4. SKILL.md 寫死的數字和追問的字，跟工具一樣
-eq('太短的門檻', G.SENT_MIN, 12);
-eq('回答字數', G.LIMIT.faqA, 90);
-eq('問題字數', G.LIMIT.faqQ, 30);
-eq('比較字數', G.LIMIT.cmpLine, 30);
-eq('特色最少', G.FEATS_MIN, 3);
-eq('特色最多', G.FEATS_MAX, 5);
-const yes = G.YES_ONLY.source.replace(/^\^\(|\)\[.*$/g, '').split('|');
-const followUp = skill.split('### 3. 回答太短')[1].split('### 4.')[0];
-yes.forEach(w => { if (!followUp.includes(w)) bad.push(`工具會擋「${w}」，SKILL.md 的追問表沒有這個字`); });
-
-// 5. 語氣規則是複本，要跟本尊一樣；§6 提醒字清單逐行要在 SKILL.md 裡
+// 3. 語氣規則是複本，要跟本尊一樣；§6 提醒字清單逐行要在 SKILL.md 裡
 eq('tone-rules.md 跟 londonimg-product 那份', read(path.join(here, 'reference', 'tone-rules.md')) === read(up('londonimg-product', 'reference', 'tone-rules.md')), true);
 const rules = read(up('londonimg-product', 'reference', 'seo-geo-rules.md'));
 const sec6 = rules.split(/^## 6\./m)[1].split(/^## /m)[0].split('\n').filter(l => /^- [^：]+：/.test(l));
 if (sec6.length < 5) bad.push(`§6 只讀到 ${sec6.length} 行，規則檔的格式可能改了`);
 sec6.forEach(l => { if (!skill.includes(l)) bad.push(`SKILL.md 少了 §6 這一行：${l}`); });
 
-// 6. 公開字掃描：這個資料夾之後會進公開的 zip
+// 4. 不問的題：每一張表的題目都不能碰紅線字。§6 的字從規則檔讀，其他的照 questions.md 開頭那條和 SKILL.md〈紅線〉列
+const sec6Words = sec6.filter(l => /^- (絕對化詞|促銷字|口語|要附出處)：/.test(l)).flatMap(l => l.split('：')[1].split('、')).map(w => w.replace(/〇/g, '.').replace(/＃/g, '\\d'));
+const FORBID = new RegExp([...sec6Words, '通過', '保固', '背板', '聚碳酸酯', '(^|[^A-Za-z])PC([^A-Za-z]|$)', '9\\s*H', '變黃', '發黃', '泛黃', '跌落', '公尺', '價格', '多少錢', '售價', '定價', '出貨', '到貨', '工作天'].join('|'), 'i');
+const rowsAll = [...Object.values(table('## 不算在題數裡')), ...Object.values(sections.case), ...Object.values(sections.other)];
+[...rowsAll.map(r => r.q), ...cats.flatMap(c => c.qs)].forEach(q => { const m = q.match(FORBID); if (m) bad.push(`題目「${q}」有不該問的字「${m[0]}」`); });
+rowsAll.filter(r => SAFETY.test(r.q) && !(r.how || '').includes('有公司資料才答')).forEach(r => bad.push(`題目「${r.q}」碰到安全或法規，「怎麼答」要寫有公司資料才答`));
+
+// 5. SKILL.md、questions.md 寫死的數字，從檔案讀出來跟工具比。n 是這句該出現幾次：改寫到讀不到也算對不上
+function nums(file, text, re, want, n = 1) {
+  const hits = [...text.matchAll(re)];
+  if (hits.length !== n) bad.push(`${file} 的 /${re.source}/ 應該有 ${n} 處，讀到 ${hits.length} 處`);
+  hits.forEach(m => want.forEach((w, i) => eq(`${file}「${m[0]}」`, Number(m[i + 1]), w)));
+}
+nums('SKILL.md', skill, /門檻是 (\d+) 字/g, [G.SENT_MIN]);
+nums('SKILL.md', skill, /回答 (\d+) 字內/g, [G.LIMIT.faqA], 2);
+nums('SKILL.md', skill, /問題和特色名稱 (\d+) 字內/g, [G.LIMIT.faqQ], 2);
+nums('SKILL.md', skill, /比較每個版本一句，(\d+) 字內/g, [G.LIMIT.cmpLine]);
+nums('SKILL.md', skill, /比較每句 (\d+) 字內/g, [G.LIMIT.cmpLine]);
+nums('SKILL.md', skill, /特色 (\d+) 到 (\d+) 項/g, [G.FEATS_MIN, G.FEATS_MAX]);
+nums('questions.md', qmd, /問滿 (\d+) 項/g, [G.FEATS_MIN]);
+nums('questions.md', qmd, /最多 (\d+) 項/g, [G.FEATS_MAX]);
+nums('questions.md', qmd, /工具要 (\d+) 到 (\d+) 項/g, [G.FEATS_MIN, G.FEATS_MAX]);
+nums('questions.md', qmd, /不到 (\d+) 項/g, [G.FEATS_MIN]);
+const otherN = Object.keys(sections.other).length;
+nums('questions.md', qmd, /先問這 (\d+) 題/g, [otherN]);
+nums('questions.md', qmd, /只問上面那 (\d+) 題/g, [otherN]);
+nums('questions.md', qmd, /最多到 (\d+) 題/g, [otherN + 3]);
+
+// 6. 追問表第一欄跟工具會擋的字逐字比，兩邊都不能多。不用 includes：「可以」會騙過「可」
+const yes = G.YES_ONLY.source.replace(/^\^\(|\)\[.*$/g, '').split('|');
+const followUp = skill.split('### 3. 回答太短')[1].split('### 4.')[0];
+const asked = followUp.split('\n').filter(l => l.startsWith('|')).map(l => l.split('|')[1].trim()).filter(c => c !== '美編回' && !/^-+$/.test(c)).flatMap(c => c.split('、'));
+yes.filter(w => !asked.includes(w)).forEach(w => bad.push(`工具會擋「${w}」，SKILL.md 的追問表沒有這個字`));
+asked.filter(w => !yes.includes(w)).forEach(w => bad.push(`SKILL.md 的追問表有「${w}」，工具沒有擋這個字`));
+
+// 7. 公開字掃描：這個資料夾之後會進公開的 zip
 const words = read(up('上架工具', 'build.js')).match(/PRIVATE_WORDS = \[(.*?)\]/)[1].match(/'([^']+)'/g).map(s => s.slice(1, -1));
 if (words.length < 10) bad.push(`內部用語清單只讀到 ${words.length} 個，build.js 的寫法可能改了`);
 for (const f of ['SKILL.md', 'README.md', 'check_questions.js', 'reference/questions.md', 'reference/tone-rules.md']) {
@@ -83,4 +127,4 @@ for (const f of ['SKILL.md', 'README.md', 'check_questions.js', 'reference/quest
 }
 
 if (bad.length) { console.error(`對不上 ${bad.length} 處：`); bad.forEach(b => console.error('  ✗ ' + b)); process.exit(1); }
-console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆`);
+console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、品類表 ${cats.length} 列、追問字 ${asked.length} 個、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆`);
