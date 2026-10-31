@@ -40,6 +40,7 @@ description: 為倫敦印象（londonimg.tw，SHOPLINE 平台的 iPhone 配件�
    - 目標關鍵字（可選，沒給就照品類推）
 2. **讀規則檔**：
    - `reference/seo-geo-rules.md`：必讀，四欄的寫法、品類快查表、自我檢查清單都在這裡。
+   - `reference/tone-rules.md`：小火車和上架工具範例句的語氣規則。這四欄不用它，四欄的語氣照 `seo-geo-rules.md` §0。
    - `reference/brand-voice.md`：選讀。⚠️ 這個檔不在公開下載包裡（含品牌策略，屬內部文件），有才讀。沒有也能跑，但語氣的護欄會少一層，產出要人工看過。
 3. **產出**：四欄各一個程式碼框，方便一鍵複製。
 4. **交出前，逐條對 `seo-geo-rules.md` 最後的「自我檢查清單」**。有一條不符合，先改好再交。

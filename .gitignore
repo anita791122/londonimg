@@ -46,7 +46,8 @@ product-page/londonimg-product/*
 !product-page/londonimg-product/reference/
 product-page/londonimg-product/reference/*
 !product-page/londonimg-product/reference/seo-geo-rules.md
-# 註：reference/ 底下只開上面這一個檔。內部策略文件不在其中，維持不托管。
+!product-page/londonimg-product/reference/tone-rules.md
+# 註：reference/ 底下只開上面這兩個檔。內部策略文件不在其中，維持不托管。
 #    2026-10-10 起 skill 只產商品頁設定，積木模板、積木清單、平台限制三個檔已從 skill 拿掉。
 
 # ── 5) 例外：上架工具公開版（給同事開網址用；由 product-page/上架工具/build.js 產生，沒有註解、不列人名）──

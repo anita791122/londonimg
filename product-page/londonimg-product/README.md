@@ -19,4 +19,5 @@
 ## 內含
 - `SKILL.md`：主指示（觸發、流程、輸出）
 - `reference/seo-geo-rules.md`：四欄的寫法、適用機型的寫法、品類快查表、自我檢查清單
+- `reference/tone-rules.md`：小火車和上架工具範例句的語氣規則，只放語氣
 - `reference/brand-voice.md`：品牌語氣與定位（內部文件，不在公開下載包裡；有的話放進 `reference/`）
