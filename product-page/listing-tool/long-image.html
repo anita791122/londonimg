@@ -196,6 +196,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 }
 .f.radios label.opt:has(input:checked) { border-color: var(--ink); background: #f0f1f4; font-weight: 600; }
 
+.paste textarea { font-size: 13px; }
+.paste-ok { font-size: 13.5px; color: var(--ink-2); margin: 0 0 6px; }
+.paste-list { font-size: 13px; color: var(--ink-2); margin: 0 0 8px; }
+.paste-list ul { margin: 4px 0 0; padding-left: 20px; }
 .advice { border: 1px solid var(--line); border-radius: 10px; background: #fafbfc; padding: 10px 12px; margin: 0 0 14px; font-size: 13.5px; }
 .advice > summary { cursor: pointer; color: var(--ink-2); }
 .advice > summary b { color: var(--ink); margin-right: 8px; }
@@ -414,7 +418,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 <a class="skip" id="skip" href="#copy">跳到預覽與複製</a>
 <header class="top">
   <h1><a class="home" href="guide.html">倫敦印象｜長條圖版用上架工具</a></h1>
-  <span class="ver">2026-10-31</span>
+  <span class="ver">2026-11-01</span>
   <a class="btn guide-link" href="guide.html"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>使用說明</a>
   <span class="sp"></span>
   <span class="draftnote" id="draftnote"></span>
@@ -1788,6 +1792,106 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     });
   }
 
+  const COLOR_TAIL = '實際可選顏色以購買區的規格選單為準。';
+  function trainImportPairs(text) {
+    const pairs = [], bad = [];
+    let q = null;
+    const cut = l => (l.length > 24 ? l.slice(0, 24) + '…' : l);
+    String(text == null ? '' : text).split(/\r?\n/).forEach((raw, i) => {
+      const l = raw.trim();
+      if (!l || /^```/.test(l)) return;
+      const m = l.match(/^([QA])[：:]\s*(.*)$/i);
+      if (!m) { bad.push(`第 ${i + 1} 行不是 Q： 或 A： 開頭，沒有放進去：「${cut(l)}」`); return; }
+      const v = clean(m[2]);
+      if (m[1].toUpperCase() === 'Q') {
+        if (q !== null) bad.push(`「${cut(q)}」沒有回答`);
+        q = v;
+      } else if (q === null) bad.push(`第 ${i + 1} 行的回答前面沒有問題：「${cut(v)}」`);
+      else if (!q || !v) { bad.push(`第 ${i + 1} 行：問題或回答是空的`); q = null; }
+      else { pairs.push({ q, a: v }); q = null; }
+    });
+    if (q !== null) bad.push(`「${cut(q)}」沒有回答`);
+    return { pairs, bad };
+  }
+  function trainImport(s, text, long) {
+    const t = s.train || (s.train = TRAIN0()), rep = { need: '', done: [], over: [], manual: [], diff: [] };
+    if (!clean(t.name) || !own(Object.fromEntries(TRAIN_SETS), t.set)) { rep.need = '先填商品短名、選題組，再按一次'; return rep; }
+    const { pairs, bad } = trainImportPairs(text);
+    rep.manual.push(...bad);
+    if (!pairs.length && !bad.length) { rep.need = '格子是空的：把 skill 給的問答貼進來'; return rep; }
+    const name = clean(t.name), qs = trainQs(t.set), byQ = new Map();
+    qs.forEach(q => { byQ.set(sameQ(q.q), q); if (q.named) byQ.set(sameQ(mix(name, q.named)), q); });
+    const put = (o, k, v, label) => { if (clean(o[k]) && clean(o[k]) !== clean(v)) rep.over.push(label); o[k] = v; };
+    const checked = [], feats = [], faq = [];
+    pairs.forEach(({ q, a }) => {
+      const fm = q.match(/^特色[：:]\s*(.+)$/);
+      if (fm) {
+        if (!long) rep.manual.push(`「${q}」：這一頁沒有商品特色（長條圖版才有），沒有放進去`);
+        else feats.push({ name: clean(fm[1]), text: a });
+        return;
+      }
+      if (sameQ(q) === sameQ('跟另一個版本差在哪？')) {
+        const parts = a.split('；').map(x => x.match(/^([^：]+)：(.+)$/));
+        if (parts.length !== 2 || !parts[0] || !parts[1]) { rep.manual.push(`「${q}」拆不出兩個版本：要寫成「版本 1：一句；版本 2：一句。」`); return; }
+        s.cmp = s.cmp || {};
+        put(s.cmp, 'va', clean(parts[0][1]), '比較的版本 1 名稱'); put(s.cmp, 'sa', noEnd(parts[0][2]), '比較的版本 1 那一句');
+        put(s.cmp, 'vb', clean(parts[1][1]), '比較的版本 2 名稱'); put(s.cmp, 'sb', noEnd(parts[1][2]), '比較的版本 2 那一句');
+        s.compare = 'yes';
+        rep.done.push('比較');
+        checked.push({ q, a, key: 'cmp' });
+        return;
+      }
+      const f = byQ.get(sameQ(q));
+      if (!f) { faq.push({ q, a }); return; }
+      const key = 'train.' + f.id, more = trainMore(f);
+      if (f.id === 'magsafe') {
+        const m = a.match(/^(.*?)(不支援 ?MagSafe|支援 ?MagSafe|可選 ?MagSafe ?版，也有一般版)(?:[，,。．.]\s*(.*))?$/i);
+        if (!m) { rep.manual.push(`「${q}」看不出要按哪個，請自己按：「${a}」`); return; }
+        put(t, f.id, /^不/.test(m[2]) ? 'no' : /^支/.test(m[2]) ? 'yes' : 'both', q);
+        put(t, more, clean(m[3]), q + '的補一句');
+      } else if (f.id === 'stand') {
+        if (new RegExp('^(' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')?\\s*沒有支架[。．.]?$').test(a)) { put(t, f.id, 'no', q); t[more] = ''; }
+        else if (/沒有|沒附|不附|無支架/.test(a)) { rep.manual.push(`「${q}」看不出要按哪個，請自己按：「${a}」`); return; }
+        else { put(t, f.id, 'yes', q); put(t, more, a, q + '的怎麼用'); }
+      } else if (f.kind === 'list') {
+        const body = clean(a.replace(COLOR_TAIL, '')).replace(new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), '');
+        const m = body.match(/^(?:有|是)(.+?)(?:的)?[。．.](.*)$/) || (/[、，,／/]/.test(body) && !/[。．.].+/.test(body) ? [body, noEnd(body), ''] : null);
+        if (!m) { rep.manual.push(`「${q}」拆不出顏色，請自己填：「${a}」`); return; }
+        put(t, f.id, clean(m[1]), q); put(t, more, clean(m[2]), q + '的補一句');
+      } else put(t, f.id, a, q);
+      rep.done.push(q);
+      checked.push({ q, a, key });
+    });
+    if (feats.length) {
+      const list = feats.slice(0, FEATS_MAX);
+      feats.slice(FEATS_MAX).forEach(x => rep.manual.push(`「特色：${x.name}」：商品特色最多 ${FEATS_MAX} 項，這項沒有放進去`));
+      if ((s.feats || []).some(x => clean(x.name) || clean(x.text))) rep.over.push('商品特色');
+      while (list.length < FEATS_MIN) list.push({ name: '', text: '' });
+      s.feats = list;
+      rep.done.push(`商品特色 ${feats.slice(0, FEATS_MAX).length} 項`);
+    }
+    if (faq.length) {
+      const cur = (s.faq || []).filter(x => clean(x.q) || clean(x.a));
+      let n = 0;
+      faq.forEach(x => {
+        const same = cur.find(y => sameQ(y.q) === sameQ(x.q));
+        if (same) { put(same, 'a', x.a, x.q); n++; return; }
+        if (cur.length >= 10) { rep.manual.push(`「${x.q}」：常見問題最多 10 題，這題沒有放進去`); return; }
+        cur.push({ q: x.q, a: x.a }); n++;
+      });
+      if (cur.length) s.faq = cur;
+      if (n) rep.done.push(`常見問題 ${n} 題`);
+    }
+
+    const cards = trainCards(s, long);
+    checked.forEach(({ q, a, key }) => {
+      const c = cards.find(x => x.key === key);
+      const same = x => sameQ(clean(x).replace(COLOR_TAIL, ''));
+      if (!c || same(c.a) !== same(a)) rep.diff.push(`「${q}」貼上的是「${a}」，工具組出來是「${c ? c.a : '（沒有這張卡）'}」`);
+    });
+    return rep;
+  }
+
   function validate(s, imgs, sample, opts) {
     const out = [];
     const add = (key, level, msg, sec, kind) => out.push({ key, level, msg, sec, kind: kind || (level === 'red' ? 'rule' : 'hint') });
@@ -2056,7 +2160,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     return notes;
   }
 
-  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, TRAIN_Q, TRAIN_SETS, TRAIN0, trainMore, trainQs, YES_ONLY, SENT_MIN, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, TRAIN_Q, TRAIN_SETS, TRAIN0, trainMore, trainQs, YES_ONLY, SENT_MIN, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
@@ -2103,6 +2207,45 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (back) back.focus({ preventScroll: true });
   }
 
+  const paste = { st: null, text: '', rep: null, back: null };
+
+  const keepPos = e => e.preventDefault();
+  function pasteBox(c) {
+    const { G, h, rebuild, changed } = c, st = c.state();
+    if (paste.st !== st) { paste.st = st; paste.text = ''; paste.rep = null; paste.back = null; }
+    const area = h('textarea', { id: 'f-train-paste', rows: 5, placeholder: 'Q：支援 MagSafe 嗎？\nA：明岳殼支援 MagSafe，殼裡內建強化磁圈。' });
+    area.value = paste.text;
+    area.oninput = () => { paste.text = area.value; };
+    const SNAP = ['compare', 'cmp', 'feats', 'faq', 'train'].filter(k => k in st);
+    const run = () => {
+      const snap = JSON.stringify(SNAP.map(k => st[k]));
+      paste.rep = G.trainImport(st, paste.text, !!c.long);
+      paste.back = paste.rep.need ? null : { snap };
+      rebuild(); changed();
+    };
+    const undoIt = () => {
+      const b = paste.back;
+      if (!b) return;
+      JSON.parse(b.snap).forEach((v, i) => { st[SNAP[i]] = v; });
+      paste.back = null; paste.rep = null;
+      rebuild(); changed();
+    };
+    const r = paste.rep, list = (title, items) => items.length ? h('div', { class: 'paste-list' }, h('b', null, title), h('ul', null, ...items.map(x => h('li', null, x)))) : null;
+    const report = r && (r.need ? h('p', { class: 'paste-ok' }, r.need) : h('div', null,
+      h('p', { class: 'paste-ok' }, r.done.length ? '拆好了：' + r.done.join('、') + '。下面每一格的提醒照常看。' : '沒有放進任何一格。'),
+      list('原本有字，已經換成貼上的（按「復原」可以放回去）', r.over),
+      list('這幾題沒有放進去，請自己填', r.manual),
+      list('工具組出來的句子跟貼上的不一樣，看一下要不要改', r.diff)));
+    return h('div', { class: 'f paste' },
+      h('label', { for: area.id }, '貼上 skill 給的問答', h('span', { class: 'req' }, '選填')),
+      area,
+      h('div', { class: 'hint' }, '用「小火車列表」skill 問完，把最後那段 Q：A：整段貼進來。先填上面的短名、選題組。比較和商品特色會一起放好，規格和適用機型還是要自己填。'),
+      h('div', { class: 'addrow' },
+        h('button', { type: 'button', class: 'btn small', onmousedown: keepPos, onclick: run }, '拆進表單'),
+        paste.back ? h('button', { type: 'button', class: 'btn small ghost', onclick: undoIt }, '復原') : null),
+      h('div', { role: 'status' }, report));
+  }
+
   const getp = (o, p) => p.split('.').reduce((v, k) => (v == null ? v : v[k]), o);
   const setp = (o, p, val) => { const ks = p.split('.'), last = ks.pop(); ks.reduce((v, k) => v[k], o)[last] = val; };
 
@@ -2118,7 +2261,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       const hint = o.hint ? h('div', { class: 'hint', id: id + '-h' }, o.hint) : null;
       const wrap = h('div', { class: 'f radios', 'data-wrap': path },
         h('div', { class: 'lab', id: id + '-l' }, title, o.req === false ? h('span', { class: 'req' }, '選填') : null),
-        h('div', { class: 'opts', role: 'radiogroup', 'aria-labelledby': id + '-l', 'aria-describedby': [hint, msg].filter(Boolean).map(e => e.id).join(' ') },
+        h('div', { class: 'opts', role: 'radiogroup', onmousedown: keepPos, 'aria-labelledby': id + '-l', 'aria-describedby': [hint, msg].filter(Boolean).map(e => e.id).join(' ') },
           ...opts.map(([v, t]) => {
             const r = h('input', { type: 'radio', name: id, value: v });
             r.checked = cur === v;
@@ -2202,6 +2345,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         advice,
         field('train.name', '商品短名', { ph: '例：明岳殼', hint: '工具寫句子時會放在開頭，例如「明岳殼支援 MagSafe」。卡片被 AI 單獨引用時，才看得出在講哪個商品。' }),
         radios('train.set', '題組', G.TRAIN_SETS, { hint: '掛繩、充電線、車用吸塵器這類不是手機殼的商品，選「其他商品」。' }),
+        pasteBox(c),
         ...(qs.length ? [h('p', { class: 'note' }, '回答寫成完整句子：先回答，再補一句原因或用法。選項題（MagSafe、支架）先用選的；MagSafe 和顏色可以再補一句，支架選「有」要自己寫怎麼用。')] : []),
         ...items,
       ], { badge: '小火車' }));
