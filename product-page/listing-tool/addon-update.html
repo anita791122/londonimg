@@ -1562,7 +1562,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
         else if (/沒有|沒附|不附|無支架/.test(a)) { rep.manual.push(`「${q}」看不出要按哪個，請自己按：「${a}」`); return; }
         else { put(t, f.id, 'yes', q); put(t, more, a, q + '的怎麼用'); }
       } else if (f.kind === 'list') {
-        const body = clean(a.replace(COLOR_TAIL, '')).replace(new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), '');
+        const body = clean(clean(a.replace(COLOR_TAIL, '')).replace(new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), ''));
         const m = body.match(/^(?:有|是)(.+?)(?:的)?[。．.](.*)$/) || (/[、，,／/]/.test(body) && !/[。．.].+/.test(body) ? [body, noEnd(body), ''] : null);
         if (!m) { rep.manual.push(`「${q}」拆不出顏色，請自己填：「${a}」`); return; }
         put(t, f.id, clean(m[1]), q); put(t, more, clean(m[2]), q + '的補一句');
