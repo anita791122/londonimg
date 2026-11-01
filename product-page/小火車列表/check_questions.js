@@ -126,5 +126,31 @@ for (const f of ['SKILL.md', 'README.md', 'check_questions.js', 'reference/quest
   if (t.includes(String.fromCharCode(0x2014))) bad.push(`${f} 有破折號`);
 }
 
+// 8. 測出洞才加的規則：改寫到讀不到也算對不上。字句真的要改，這裡跟著改，不是拿掉
+const MUST = ['這個數字或規格不寫進句子', '兩款都這樣', '改完的句子再對一次', '還有跟原廠或別款比的效能', '「跟原廠一樣快」', '回得不清楚', '不放進卡片', '工具會亮「太短」的句子：句子還是放在第 4 段', '標「太短」的句子、拿掉數字的句子還是要輸出', '顏色和選的題是工具自己組句', '支架選「沒有」不追問', '- 多講的：', '`questions.md`〈定案商品名〉', '全名對過〈定案商品名〉', '別牌配件能不能一起用', '這是量過的，還是公司資料', '比較題和第 2 條例外', '照留只用在沒碰到'];
+MUST.filter(w => !skill.includes(w)).forEach(w => bad.push(`SKILL.md 少了這條規則：${w}`));
+const toneLines = skill.split('\n').filter(l => /^6\. \*\*確定的程度/.test(l) || /^- \[ \] 美編的「應該」/.test(l));
+if (toneLines.length !== 2) bad.push(`語氣字清單應該有 2 處，讀到 ${toneLines.length} 處`);
+['應該', '大概', '好像', '聽說', '可能', '吧', '不確定'].forEach(w => toneLines.forEach(l => { if (!l.includes(`「${w}」`)) bad.push(`語氣字「${w}」不在這一行：${l.slice(0, 16)}`); }));
+if (!toneLines.every(l => l.includes('這類'))) bad.push('語氣字清單要留「這類」兩個字：列出來的不是全部');
+// 9. 定案商品名（六個系列）：表要讀得到，SKILL.md 舉例的那個名字要在表上
+const nameFrom = qLines.indexOf('## 定案商品名'), finalNames = [];
+for (let i = nameFrom + 1; nameFrom >= 0 && i < qLines.length && !/^##\s/.test(qLines[i]); i++) {
+  const c = qLines[i].split('|').map(s => s.trim());
+  if (c.length === 4 && c[1] !== '系列' && !/^-+$/.test(c[1])) finalNames.push(c[2]);
+}
+if (finalNames.length !== 6) bad.push(`定案商品名應該有 6 款，讀到 ${finalNames.length} 款`);
+const named = skill.match(/定案名是『([^』]+)』/);
+if (!named || !finalNames.includes(named[1])) bad.push('SKILL.md 舉例的定案名不在 questions.md 的表上');
+// 10. SKILL.md 的問答範例，丟進工具的「貼上 skill 給的問答」要拆得開。格式走散了這裡會抓到
+const exBlock = (skill.split('**4. 問答')[1] || '').match(/```text\n([\s\S]*?)```/);
+if (!exBlock) bad.push('SKILL.md 找不到問答範例');
+else {
+  const st = { compare: '', cmp: {}, feats: [], faq: [], train: Object.assign(G.TRAIN0(), { name: '範例殼', set: 'case' }) };
+  const rep = G.trainImport(st, exBlock[1], true);
+  [rep.need, ...rep.manual, ...rep.diff].filter(Boolean).forEach(m => bad.push(`問答範例拆不開：${m}`));
+  if (!rep.done.includes('比較') || !rep.done.some(x => /^商品特色/.test(x)) || !rep.done.includes('有哪些顏色？') || !rep.done.includes('有支架嗎？怎麼用？')) bad.push('問答範例要有比較、特色、顏色、支架，工具組句的格式才有被檢查到');
+}
+
 if (bad.length) { console.error(`對不上 ${bad.length} 處：`); bad.forEach(b => console.error('  ✗ ' + b)); process.exit(1); }
-console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、品類表 ${cats.length} 列、追問字 ${asked.length} 個、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆`);
+console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、品類表 ${cats.length} 列、追問字 ${asked.length} 個、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆、定案商品名 ${finalNames.length} 款、問答範例工具拆得開`);
