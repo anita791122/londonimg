@@ -1562,7 +1562,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
         else if (/沒有|沒附|不附|無支架/.test(a)) { rep.manual.push(`「${q}」看不出要按哪個，請自己按：「${a}」`); return; }
         else { put(t, f.id, 'yes', q); put(t, more, a, q + '的怎麼用'); }
       } else if (f.kind === 'list') {
-        const body = clean(a.replace(COLOR_TAIL, '')).replace(new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), '');
+        const body = clean(clean(a.replace(COLOR_TAIL, '')).replace(new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), ''));
         const m = body.match(/^(?:有|是)(.+?)(?:的)?[。．.](.*)$/) || (/[、，,／/]/.test(body) && !/[。．.].+/.test(body) ? [body, noEnd(body), ''] : null);
         if (!m) { rep.manual.push(`「${q}」拆不出顏色，請自己填：「${a}」`); return; }
         put(t, f.id, clean(m[1]), q); put(t, more, clean(m[2]), q + '的補一句');
@@ -1598,6 +1598,43 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       if (!c || same(c.a) !== same(a)) rep.diff.push(`「${q}」貼上的是「${a}」，工具組出來是「${c ? c.a : '（沒有這張卡）'}」`);
     });
     return rep;
+  }
+
+  function trainLinkParse(hash) {
+    const raw = String(hash == null ? '' : hash);
+    if (!raw.startsWith('#train=')) return null;
+    const out = { page: '', set: '', name: '', text: '', problem: '' }, body = raw.slice(1), at = body.indexOf('&qa=');
+    if (at < 0 || !body.endsWith('&end') || body.length < at + 4 + 4) { out.problem = 'cut'; return out; }
+    const dec = x => { try { return decodeURIComponent(x); } catch (e) { return null; } };
+    const text = dec(body.slice(at + 4, -4));
+    const meta = {};
+    body.slice(0, at).split('&').forEach(kv => { const i = kv.indexOf('='); if (i > 0) meta[kv.slice(0, i)] = dec(kv.slice(i + 1)); });
+
+    if (text == null || !/\S\s*\n\s*\S/.test(text) || Object.values(meta).includes(null)) { out.problem = 'bad'; return out; }
+    out.page = meta.train || ''; out.set = meta.set || ''; out.name = meta.name || ''; out.text = text;
+    return out;
+  }
+  const LINK_PAGE = { html: '上架工具（HTML 版）', long: '長條圖區工具' };
+
+  function trainFromLink(s, hash, long) {
+    const p = trainLinkParse(hash);
+    if (!p) return null;
+    const stop = (need, text, other) => ({ text: text || '', other: other || '', rep: { need, done: [], over: [], manual: [], diff: [] } });
+    const ask = '沒有填任何一格，請回對話，把問答那段貼到上面的格子。';
+    if (p.problem === 'cut') return stop('這個連結的結尾不見了，可能被切斷。' + ask);
+    if (p.problem || !own(LINK_PAGE, p.page)) return stop('這個連結的字解不開。' + ask);
+    const here = long ? 'long' : 'html';
+    if (p.page !== here) return stop(`這個連結是給${LINK_PAGE[p.page]}的，這一頁是${LINK_PAGE[here]}。沒有填任何一格。`, '', p.page);
+    const name = clean(p.name);
+    if (!name) return stop('連結裡沒有短名。問答放在上面的格子了：填好短名、選好題組，再按「拆進表單」。', p.text);
+    if (!own(Object.fromEntries(TRAIN_SETS), p.set)) return stop(`連結裡的題組看不懂（${p.set || '空的'}）。問答放在上面的格子了：短名填「${name}」、選好題組，再按「拆進表單」。`, p.text);
+    const t = s.train || (s.train = TRAIN0()), over = [];
+    if (clean(t.name) && clean(t.name) !== name) over.push('商品短名');
+    if (t.set && t.set !== p.set) over.push('題組');
+    t.name = name; t.set = p.set;
+    const rep = trainImport(s, p.text, long);
+    rep.over.unshift(...over);
+    return { text: p.text, other: '', rep };
   }
 
   function validate(s, imgs, sample, opts) {
@@ -1868,7 +1905,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     return notes;
   }
 
-  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, TRAIN_Q, TRAIN_SETS, TRAIN0, trainMore, trainQs, YES_ONLY, SENT_MIN, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, TRAIN_Q, TRAIN_SETS, TRAIN0, trainMore, trainQs, YES_ONLY, SENT_MIN, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
