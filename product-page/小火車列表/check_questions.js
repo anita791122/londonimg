@@ -120,8 +120,10 @@ asked.filter(w => !yes.includes(w)).forEach(w => bad.push(`SKILL.md 的追問表
 // 7. 公開字掃描：這個資料夾之後會進公開的 zip
 const words = read(up('上架工具', 'build.js')).match(/PRIVATE_WORDS = \[(.*?)\]/)[1].match(/'([^']+)'/g).map(s => s.slice(1, -1));
 if (words.length < 10) bad.push(`內部用語清單只讀到 ${words.length} 個，build.js 的寫法可能改了`);
+// SKILL.md 的網址開頭現在指個人站，網址裡有帳號名，只放行那一行的 github.io 網址（給同事前換成公司站）
+const SITE = (skill.match(/^網址開頭：`(https:\/\/[a-z0-9-]+\.github\.io\/[^`\s]*\/)`$/m) || [])[1] || '';
 for (const f of ['SKILL.md', 'README.md', 'check_questions.js', 'reference/questions.md', 'reference/tone-rules.md']) {
-  const t = read(path.join(here, f)), low = t.toLowerCase();
+  const t = read(path.join(here, f)), low = (f === 'SKILL.md' ? t.replace(SITE, '') : t).toLowerCase();
   words.forEach(w => { if (low.includes(w.toLowerCase())) bad.push(`${f} 有內部用語「${w}」`); });
   if (t.includes(String.fromCharCode(0x2014))) bad.push(`${f} 有破折號`);
 }
@@ -153,5 +155,29 @@ else {
   if (!rep.done.includes('比較') || !rep.done.some(x => /^商品特色/.test(x)) || !rep.done.includes('有哪些顏色？') || !rep.done.includes('有支架嗎？怎麼用？')) bad.push('問答範例要有比較、特色、顏色、支架，工具組句的格式才有被檢查到');
 }
 
+// 11. 帶入連結：第 5 段要在；網址開頭只有一處（給同事前只改這裡）；換字表要齊；範例連結丟進工具解開，要等於第 4 段的範例
+const sec5 = skill.split('**5. 帶入連結**')[1];
+if (!sec5) bad.push('SKILL.md 少了第 5 段「帶入連結」');
+else {
+  if (!skill.includes('固定五段')) bad.push('SKILL.md 要寫固定五段');
+  const hosts = skill.match(/https?:\/\//g) || [];
+  if (hosts.length !== 1) bad.push(`SKILL.md 的網址應該只有網址開頭那一處，讀到 ${hosts.length} 處`);
+  const base = skill.match(/^網址開頭：`(https:\/\/[^`\s]+\/)`$/m);
+  if (!base) bad.push('SKILL.md 讀不到網址開頭那一行');
+  const swap = [[' ', '%20', '半形空白'], ['%', '%25'], ['#', '%23'], ['&', '%26'], ['+', '%2B'], ['"', '%22'], ['<', '%3C'], ['>', '%3E'], ['(', '%28'], [')', '%29']];
+  swap.forEach(([c, code, label]) => { if (!sec5.includes(`| ${label || '`' + c + '`'} | \`${code}\` |`)) bad.push(`換字表少了「${label || c}」換成 ${code}`); if (decodeURIComponent(code) !== c) bad.push(`換字表寫錯：${code} 解開不是「${c}」`); });
+  ['行和行之間放 `%0A`', '結尾一定要有 `&end`', '`index.html` 和 `html`', '`long-image.html` 和 `long`', '`case`', '`other`', '連結打不開，就到上架工具', '連結解開就是第 4 段'].forEach(w => { if (!skill.includes(w)) bad.push(`SKILL.md 少了帶入連結的規則：${w}`); });
+  const m = sec5.match(/\]\(網址開頭long-image\.html(#train=[^)\s]*)\)/);
+  if (!m) bad.push('SKILL.md 找不到範例連結');
+  else if (exBlock) {
+    const p = G.trainLinkParse(new URL('https://x.test/' + m[1]).hash);
+    if (!p || p.problem) bad.push(`範例連結解不開：${p ? p.problem : '不是小火車連結'}`);
+    else {
+      if (p.text !== exBlock[1].replace(/\n$/, '')) bad.push('範例連結解開跟第 4 段的範例不一樣');
+      if (p.page !== 'long' || p.set !== 'case' || p.name !== '範例殼') bad.push(`範例連結的頁面、題組或短名不對：${p.page}、${p.set}、${p.name}`);
+    }
+  }
+}
+
 if (bad.length) { console.error(`對不上 ${bad.length} 處：`); bad.forEach(b => console.error('  ✗ ' + b)); process.exit(1); }
-console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、品類表 ${cats.length} 列、追問字 ${asked.length} 個、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆、定案商品名 ${finalNames.length} 款、問答範例工具拆得開`);
+console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、品類表 ${cats.length} 列、追問字 ${asked.length} 個、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆、定案商品名 ${finalNames.length} 款、問答範例工具拆得開、範例連結解開相同`);
