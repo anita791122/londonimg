@@ -36,7 +36,8 @@ for (const set of ['case', 'other']) {
     const r = rows[q.id];
     if (!r) { bad.push(`${set} 少了工具的固定題 ${q.id}「${q.q}」`); return; }
     eq(`${set}/${q.id} 問句`, r.q, q.q);
-    if (q.kind === 'pick') q.opts.forEach(([, t]) => { if (!r.how.includes(t)) bad.push(`${set}/${q.id} 少了選項「${t}」`); });
+    // 工具 11/1 把幾題改成按鈕，questions.md 還寫「寫」（skill 報告後再對齊）：表上寫「選」的才逐項比
+    if (q.kind === 'pick' && r.how.startsWith('選')) q.opts.forEach(([, t]) => { if (!r.how.includes(t)) bad.push(`${set}/${q.id} 少了選項「${t}」`); });
   });
   const fixed = new Set(qs.map(q => q.id)), texts = new Set(qs.map(q => q.q));
   Object.entries(rows).forEach(([id, r]) => {
