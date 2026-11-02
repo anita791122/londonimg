@@ -1420,9 +1420,9 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       const t = clean(v);
       if (!t) return;
       const hold = BB_HOLD.filter(([re]) => re.test(t)).map(([, w]) => w);
-      if (hold.length) add(key, 'orange', `寫到「${hold.join('、')}」：公司還在確認背板材質、保固、軍規這幾類說法，先不要寫進小火車（能不能寫先問工具負責人）`, sec);
-      if (BB_PRICE.test(t)) add(key, 'orange', '價格不要寫進小火車：檔期一換就過期', sec);
-      if (BB_SHIP.test(t)) add(key, 'orange', '出貨、到貨天數不要寫進小火車：公司目前暫緩這類訊息', sec);
+      if (hold.length) add(key, 'orange', `寫到「${hold.join('、')}」：公司還在確認背板材質、保固、軍規這幾類說法，先不要寫進「選購前先看」區（能不能寫先問工具負責人）`, sec);
+      if (BB_PRICE.test(t)) add(key, 'orange', '價格不要寫進「選購前先看」區：檔期一換就過期', sec);
+      if (BB_SHIP.test(t)) add(key, 'orange', '出貨、到貨天數不要寫進「選購前先看」區：公司目前暫緩這類訊息', sec);
 
       const m3 = t.match(BB_METER);
       if (m3) add(key, 'orange', `寫到「${m3[0]}」：不寫 ${m3[0]}，寫 ${m3[1]} 公尺，並寫明條件（多高、摔到哪、摔幾次）`, sec);
@@ -1536,7 +1536,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       });
       const n = feats.filter(x => !empty(x.name) && !empty(x.text)).length;
       if (n < FEATS_MIN) add('feats.add', 'red', `商品特色還差 ${FEATS_MIN - n} 項：要有 ${FEATS_MIN} 到 ${FEATS_MAX} 項。商品頁上有寫的才寫`, 'Feats', 'todo');
-      if (n > FEATS_MAX) add('feats.add', 'orange', `商品特色最多 ${FEATS_MAX} 項：第 ${FEATS_MAX + 1} 項起不會放進小火車`, 'Feats');
+      if (n > FEATS_MAX) add('feats.add', 'orange', `商品特色最多 ${FEATS_MAX} 項：第 ${FEATS_MAX + 1} 項起不會放進「選購前先看」區`, 'Feats');
     }
 
     if (!(s.specs || []).some(r => !empty(r.label) && !empty(r.value) && !isModelLabel(r.label))) add('specs.add', 'red', '規格還沒寫：至少寫一列。商品頁上有寫的才寫，沒有的不補', 'Specs', 'todo');
@@ -1660,7 +1660,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     checked.forEach(({ q, a, key }) => {
       const c = cards.find(x => x.key === key);
       const same = x => sameQ(clean(x).replace(COLOR_TAIL, ''));
-      if (!c || same(c.a) !== same(a)) rep.diff.push(`「${q}」貼上的是「${a}」，工具組出來是「${c ? c.a : '（沒有這張卡）'}」`);
+      if (!c || same(c.a) !== same(a)) rep.diff.push(`「${q}」連結帶進來的是「${a}」，工具組出來是「${c ? c.a : '（沒有這張卡）'}」`);
     });
     return rep;
   }
@@ -1685,14 +1685,14 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     const p = trainLinkParse(hash);
     if (!p) return null;
     const stop = (need, text, other) => ({ text: text || '', other: other || '', rep: { need, done: [], over: [], manual: [], diff: [] } });
-    const ask = '沒有填任何一格，請回對話，把問答那段貼到上面的格子。';
+    const ask = '沒有填任何一格，請回對話，請它再給一次連結。';
     if (p.problem === 'cut') return stop('這個連結的結尾不見了，可能被切斷。' + ask);
     if (p.problem || !own(LINK_PAGE, p.page)) return stop('這個連結的字解不開。' + ask);
     const here = long ? 'long' : 'html';
     if (p.page !== here) return stop(`這個連結是給${LINK_PAGE[p.page]}的，這一頁是${LINK_PAGE[here]}。沒有填任何一格。`, '', p.page);
     const name = clean(p.name);
-    if (!name) return stop('連結裡沒有短名。問答放在上面的格子了：填好短名、選好題組，再按「拆進表單」。', p.text);
-    if (!own(Object.fromEntries(TRAIN_SETS), p.set)) return stop(`連結裡的題組看不懂（${p.set || '空的'}）。問答放在上面的格子了：短名填「${name}」、選好題組，再按「拆進表單」。`, p.text);
+    if (!name) return stop('連結裡沒有短名。' + ask, p.text);
+    if (!own(Object.fromEntries(TRAIN_SETS), p.set)) return stop(`連結裡的題組看不懂（${p.set || '空的'}）。` + ask, p.text);
     const t = s.train || (s.train = TRAIN0()), over = [];
     if (clean(t.name) && clean(t.name) !== name) over.push('商品短名');
     if (t.set && t.set !== p.set) over.push('題組');
@@ -1932,7 +1932,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
   const BB_CERT = /通過|認證|檢測/;
   const BB_CODE = /(^|[^A-Za-z0-9【])([A-Z]{1,2}\d{2,3})(?![A-Za-z0-9】])/;
   const BB_WORD_LIST = { 絕對化詞: ['史上最〇', '第一', '無敵', '永不'], 促銷字: ['限時', '免運', '特價', '優惠', '下殺', '買一送一', '任選', '＃折'], 口語: ['唷', '小撇步', '私訊小幫手'] };
-  const BB_WORDS = [['絕對化詞', '不用，改成具體的說法', BB_WORD_LIST.絕對化詞], ['促銷字', '不寫進小火車：活動結束就過期', BB_WORD_LIST.促銷字], ['口語', '不寫進小火車：這排是給 AI 和搜尋讀的', BB_WORD_LIST.口語]]
+  const BB_WORDS = [['絕對化詞', '不用，改成具體的說法', BB_WORD_LIST.絕對化詞], ['促銷字', '不寫進「選購前先看」區：活動結束就過期', BB_WORD_LIST.促銷字], ['口語', '不寫進「選購前先看」區：這排是給 AI 和搜尋讀的', BB_WORD_LIST.口語]]
     .map(([label, why, words]) => [label, why, words.map(seoWordRe)]);
   const sameQ = x => clean(x).replace(/[\s?？!！。，、：:．.「」（）()]/g, '').toLowerCase();
   function longImageValidate(s) {
@@ -1962,8 +1962,8 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     if (on.compat === false && hasText((d.compat || {}).rows)) shut.push('適用機型');
     if (on.specs === false && hasText(d.specs)) shut.push('規格');
     if (on.faq === false && hasText(d.faq)) shut.push('常見問題');
-    if (on.before === false && hasText(d.before)) shut.push('選購前先看');
-    if (shut.length) notes.push(`當時關著的${shut.map(x => '「' + x + '」').join('、')}：現在沒有開關，裡面的字會進小火車。請看過，不放的就刪掉。`);
+    if (on.before === false && hasText(d.before)) shut.push('舊的選購前先看');
+    if (shut.length) notes.push(`當時關著的${shut.map(x => '「' + x + '」').join('、')}：現在沒有開關，裡面的字會進「選購前先看」區。請看過，不放的就刪掉。`);
     const c = (d && d.cmp) || {}, old = [];
     (function walk(o) { if (typeof o === 'string') { if (clean(o) && !/^https?:/.test(clean(o))) old.push(clean(o)); } else if (o && typeof o === 'object') Object.values(o).forEach(walk); })([c.question, c.rows, c.cardA, c.cardB]);
     if (old.length) notes.push('舊的比較表沒有帶進來：比較改成兩個版本各一句，要照舊內容重寫。舊內容：' + old.join('｜'));
