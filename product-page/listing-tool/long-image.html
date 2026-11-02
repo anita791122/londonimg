@@ -445,17 +445,17 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
 <main class="layout">
   <div>
-    <details class="howto" id="howto" open>
+    <details class="howto" id="howto">
       <summary><b>怎麼用</b><span class="safe">這個工具只產生語法，不會寫進後台，也不會碰價格和規格。</span></summary>
       <ol>
-        <li>這一頁給<b>長條圖版</b>的賣場用（商品描述是一張張直式長圖的那種）。做的是貼在長圖下面的「小火車」：一整排左右滑的白卡（標題是「選購前先看」）。裡面有比較、商品特色、固定題、規格、常見問題、適用機型，一題一張白卡（商品特色一項一張，規格和適用機型各一張）。沒填的題不會出現。</li>
+        <li>這一頁給<b>長條圖版</b>的賣場用（商品描述是一張張直式長圖的那種）。做的是貼在長圖下面的「選購前先看」區：一整排左右滑的白卡。裡面有比較、商品特色、固定題、規格、常見問題、適用機型，一題一張白卡（商品特色一項一張，規格和適用機型各一張）。沒填的題不會出現。</li>
         <li>從上往下填，灰色字是例子。「固定題」那一區有寫法建議，寫之前先看一次。</li>
         <li>預覽上方的「複製語法」變成黑色，才是全部填好：沒有紅字、沒有待填。按下去。</li>
         <li>後台打開這個商品 → 商品描述 → HTML 原始碼。游標放在<b>最後面</b>（最後一個字的後面，就是長圖的下方），按 ⌘V（Windows 是 Ctrl+V），存檔。</li>
-        <li>用手機打開前台看：小火車在長圖下面，可以左右滑到最後一張（適用機型）。</li>
+        <li>用手機打開前台看：「選購前先看」區在長圖下面，可以左右滑到最後一張（適用機型）。</li>
       </ol>
       <p class="howto-note">這個商品已經貼過「選購前先看」或舊版的四區，現在要改內容的話：不要再貼一次（頁面上會有兩份），先找工具負責人。</p>
-      <p class="howto-note">後台「網路搜尋最佳化」的「簡介」欄如果空著，商城會拿商品描述裡的文字（圖片不算），當成給 Google 的摘要，也當成 LINE 分享時預覽的那段字；貼完小火車，車廂裡的字也會被抓進去。請順手把簡介欄填好，填了就不會被描述蓋掉。</p>
+      <p class="howto-note">後台「網路搜尋最佳化」的「簡介」欄如果空著，商城會拿商品描述裡的文字（圖片不算），當成給 Google 的摘要，也當成 LINE 分享時預覽的那段字；貼完「選購前先看」區，白卡裡的字也會被抓進去。請順手把簡介欄填好，填了就不會被描述蓋掉。</p>
     </details>
     <div class="msg lines" id="topmsg" role="status" aria-live="polite"></div>
     <form id="form" autocomplete="off" onsubmit="return false"></form>
@@ -480,7 +480,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
           <span class="pvscale" id="pvscale"></span>
           <details class="pv-note">
             <summary>預覽最上面那塊灰色是什麼？</summary>
-            <p>那是商品原本的長圖，只在預覽裡，不會被複製。小火車會接在長圖下面。商品描述欄左右的留白照前台量的（手機各 22px、平板 35px、桌機 45px）。</p>
+            <p>那是商品原本的長圖，只在預覽裡，不會被複製。「選購前先看」區會接在長圖下面。商品描述欄左右的留白照前台量的（手機各 22px、平板 35px、桌機 45px）。</p>
             <p>字型：英數用系統字。中文寫的是 Noto Sans TC，但 iPhone、Mac 沒有內建它，客人看到的是蘋方（Windows 是微軟正黑）。你的電腦如果自己裝了 Noto，這裡的中文會跟客人看到的不一樣。</p>
           </details>
         </div>
@@ -1727,9 +1727,9 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       const t = clean(v);
       if (!t) return;
       const hold = BB_HOLD.filter(([re]) => re.test(t)).map(([, w]) => w);
-      if (hold.length) add(key, 'orange', `寫到「${hold.join('、')}」：公司還在確認背板材質、保固、軍規這幾類說法，先不要寫進小火車（能不能寫先問工具負責人）`, sec);
-      if (BB_PRICE.test(t)) add(key, 'orange', '價格不要寫進小火車：檔期一換就過期', sec);
-      if (BB_SHIP.test(t)) add(key, 'orange', '出貨、到貨天數不要寫進小火車：公司目前暫緩這類訊息', sec);
+      if (hold.length) add(key, 'orange', `寫到「${hold.join('、')}」：公司還在確認背板材質、保固、軍規這幾類說法，先不要寫進「選購前先看」區（能不能寫先問工具負責人）`, sec);
+      if (BB_PRICE.test(t)) add(key, 'orange', '價格不要寫進「選購前先看」區：檔期一換就過期', sec);
+      if (BB_SHIP.test(t)) add(key, 'orange', '出貨、到貨天數不要寫進「選購前先看」區：公司目前暫緩這類訊息', sec);
 
       const m3 = t.match(BB_METER);
       if (m3) add(key, 'orange', `寫到「${m3[0]}」：不寫 ${m3[0]}，寫 ${m3[1]} 公尺，並寫明條件（多高、摔到哪、摔幾次）`, sec);
@@ -1843,7 +1843,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       });
       const n = feats.filter(x => !empty(x.name) && !empty(x.text)).length;
       if (n < FEATS_MIN) add('feats.add', 'red', `商品特色還差 ${FEATS_MIN - n} 項：要有 ${FEATS_MIN} 到 ${FEATS_MAX} 項。商品頁上有寫的才寫`, 'Feats', 'todo');
-      if (n > FEATS_MAX) add('feats.add', 'orange', `商品特色最多 ${FEATS_MAX} 項：第 ${FEATS_MAX + 1} 項起不會放進小火車`, 'Feats');
+      if (n > FEATS_MAX) add('feats.add', 'orange', `商品特色最多 ${FEATS_MAX} 項：第 ${FEATS_MAX + 1} 項起不會放進「選購前先看」區`, 'Feats');
     }
 
     if (!(s.specs || []).some(r => !empty(r.label) && !empty(r.value) && !isModelLabel(r.label))) add('specs.add', 'red', '規格還沒寫：至少寫一列。商品頁上有寫的才寫，沒有的不補', 'Specs', 'todo');
@@ -1967,7 +1967,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     checked.forEach(({ q, a, key }) => {
       const c = cards.find(x => x.key === key);
       const same = x => sameQ(clean(x).replace(COLOR_TAIL, ''));
-      if (!c || same(c.a) !== same(a)) rep.diff.push(`「${q}」貼上的是「${a}」，工具組出來是「${c ? c.a : '（沒有這張卡）'}」`);
+      if (!c || same(c.a) !== same(a)) rep.diff.push(`「${q}」連結帶進來的是「${a}」，工具組出來是「${c ? c.a : '（沒有這張卡）'}」`);
     });
     return rep;
   }
@@ -1992,14 +1992,14 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     const p = trainLinkParse(hash);
     if (!p) return null;
     const stop = (need, text, other) => ({ text: text || '', other: other || '', rep: { need, done: [], over: [], manual: [], diff: [] } });
-    const ask = '沒有填任何一格，請回對話，把問答那段貼到上面的格子。';
+    const ask = '沒有填任何一格，請回對話，請它再給一次連結。';
     if (p.problem === 'cut') return stop('這個連結的結尾不見了，可能被切斷。' + ask);
     if (p.problem || !own(LINK_PAGE, p.page)) return stop('這個連結的字解不開。' + ask);
     const here = long ? 'long' : 'html';
     if (p.page !== here) return stop(`這個連結是給${LINK_PAGE[p.page]}的，這一頁是${LINK_PAGE[here]}。沒有填任何一格。`, '', p.page);
     const name = clean(p.name);
-    if (!name) return stop('連結裡沒有短名。問答放在上面的格子了：填好短名、選好題組，再按「拆進表單」。', p.text);
-    if (!own(Object.fromEntries(TRAIN_SETS), p.set)) return stop(`連結裡的題組看不懂（${p.set || '空的'}）。問答放在上面的格子了：短名填「${name}」、選好題組，再按「拆進表單」。`, p.text);
+    if (!name) return stop('連結裡沒有短名。' + ask, p.text);
+    if (!own(Object.fromEntries(TRAIN_SETS), p.set)) return stop(`連結裡的題組看不懂（${p.set || '空的'}）。` + ask, p.text);
     const t = s.train || (s.train = TRAIN0()), over = [];
     if (clean(t.name) && clean(t.name) !== name) over.push('商品短名');
     if (t.set && t.set !== p.set) over.push('題組');
@@ -2239,7 +2239,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   const BB_CERT = /通過|認證|檢測/;
   const BB_CODE = /(^|[^A-Za-z0-9【])([A-Z]{1,2}\d{2,3})(?![A-Za-z0-9】])/;
   const BB_WORD_LIST = { 絕對化詞: ['史上最〇', '第一', '無敵', '永不'], 促銷字: ['限時', '免運', '特價', '優惠', '下殺', '買一送一', '任選', '＃折'], 口語: ['唷', '小撇步', '私訊小幫手'] };
-  const BB_WORDS = [['絕對化詞', '不用，改成具體的說法', BB_WORD_LIST.絕對化詞], ['促銷字', '不寫進小火車：活動結束就過期', BB_WORD_LIST.促銷字], ['口語', '不寫進小火車：這排是給 AI 和搜尋讀的', BB_WORD_LIST.口語]]
+  const BB_WORDS = [['絕對化詞', '不用，改成具體的說法', BB_WORD_LIST.絕對化詞], ['促銷字', '不寫進「選購前先看」區：活動結束就過期', BB_WORD_LIST.促銷字], ['口語', '不寫進「選購前先看」區：這排是給 AI 和搜尋讀的', BB_WORD_LIST.口語]]
     .map(([label, why, words]) => [label, why, words.map(seoWordRe)]);
   const sameQ = x => clean(x).replace(/[\s?？!！。，、：:．.「」（）()]/g, '').toLowerCase();
   function longImageValidate(s) {
@@ -2269,8 +2269,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (on.compat === false && hasText((d.compat || {}).rows)) shut.push('適用機型');
     if (on.specs === false && hasText(d.specs)) shut.push('規格');
     if (on.faq === false && hasText(d.faq)) shut.push('常見問題');
-    if (on.before === false && hasText(d.before)) shut.push('選購前先看');
-    if (shut.length) notes.push(`當時關著的${shut.map(x => '「' + x + '」').join('、')}：現在沒有開關，裡面的字會進小火車。請看過，不放的就刪掉。`);
+    if (on.before === false && hasText(d.before)) shut.push('舊的選購前先看');
+    if (shut.length) notes.push(`當時關著的${shut.map(x => '「' + x + '」').join('、')}：現在沒有開關，裡面的字會進「選購前先看」區。請看過，不放的就刪掉。`);
     const c = (d && d.cmp) || {}, old = [];
     (function walk(o) { if (typeof o === 'string') { if (clean(o) && !/^https?:/.test(clean(o))) old.push(clean(o)); } else if (o && typeof o === 'object') Object.values(o).forEach(walk); })([c.question, c.rows, c.cardA, c.cardB]);
     if (old.length) notes.push('舊的比較表沒有帶進來：比較改成兩個版本各一句，要照舊內容重寫。舊內容：' + old.join('｜'));
@@ -2295,13 +2295,13 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     ['這三類先不寫：背板材質（例如 PC、9H）、保固、軍規。', '意思碰到的也算，例如「容易刮花嗎」跟 9H 是同一件事。公司還在確認。'],
     ['頁面上有寫、但公司還沒給依據的說法，也先不寫。', '例如透明殼多久會變黃。不確定能不能寫，先問工具負責人。'],
     ['常見問題不要跟固定題講同一件事。', '先看上面固定題有哪幾題，再挑別的題目。'],
-    ['機型一款一款寫出來，不寫「14 到 18 全系列」這種範圍。', 'Air 要寫成「iPhone Air」。適用機型那一節，工具會照下面的機型表一款一款寫。'],
+    ['機型一款一款寫出來，不寫「14 到 18 全系列」這種範圍。', 'Air 要寫成「iPhone Air」。適用機型那一張，工具會照下面的機型表一款一款寫。'],
     ['機型以這個商品購買區的規格選單為準。', '每個商品自己對一次規格選單，不要從別頁抄。'],
     ['公司自己的說法（頁面上沒有測試依據的），照頁面原句寫，語氣不要比原句更肯定。', '例如不要在答案前面加「不容易。」這種直接下結論的字。'],
     ['講到別的商品（例如加購的玻璃貼），只講你確認過的那一款。', '那一款缺某些機型，就不要寫「點進去可以選機型」。'],
     ['不要寫成教科書：頁面上有語感的原句放回來，每題 2 到 3 句。', '先回答，再接頁面上的原句。頁面上沒有的，不要為了湊句數補。規格和適用機型照條列。'],
     ['講商品能不能用的題，第一句就回答，照人講話的順序，每張卡都寫出商品的短名。', '例如「有。明岳殼的鏡頭孔位有加高。」「明岳殼支援 MagSafe，殼裡內建強化磁圈。」：卡片被 AI 單獨引用時，才看得出在講哪個商品。例外：放了商品名會變成公司沒給依據的保證時，那一題不要放商品名。例如「明岳殼適合怕變黃的人」讀起來像保證不會變黃。'],
-    ['價格和出貨、到貨天數都不要寫進小火車。', '價格：檔期一換就過期。出貨、到貨天數：公司目前暫緩這類訊息。'],
+    ['價格和出貨、到貨天數都不要寫進「選購前先看」區。', '價格：檔期一換就過期。出貨、到貨天數：公司目前暫緩這類訊息。'],
     ['回答寫成完整句子，不要只寫「可」「有」。', '先回答，再補一句原因或用法。只寫一兩個字，AI 讀不出在回答什麼（工具會亮紅字）。'],
     ['數字要帶條件。', '例如跌落要寫多高、摔到哪、摔幾次。不寫 3M，寫 3 公尺。沒有證書不寫通過、認證。'],
     ['內部編號不寫給顧客看。', '例如不寫「B67 支架殼」，寫商品名。'],
@@ -2331,7 +2331,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (back) back.focus({ preventScroll: true });
   }
 
-  const paste = { st: null, text: '', rep: null, back: null, note: '', go: null, open: false };
+  const paste = { st: null, rep: null, back: null, note: '', go: null };
   const snapKeys = st => ['compare', 'cmp', 'feats', 'faq', 'train'].filter(k => k in st);
 
   function fromLink(c) {
@@ -2340,10 +2340,9 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { location.hash = ''; }
     const st = c.state(), had = !c.isEmpty(), snap = JSON.stringify(snapKeys(st).map(k => st[k]));
     const r = G.trainFromLink(st, hash, !!c.long);
-    paste.st = st; paste.text = r.text; paste.rep = r.rep;
+    paste.st = st; paste.rep = r.rep;
     paste.back = r.rep.need ? null : { snap };
     paste.go = r.other ? { href: (r.other === 'long' ? 'long-image.html' : 'index.html') + hash, label: `到${G.LINK_PAGE[r.other]}打開這個連結` } : null;
-    paste.open = true;
     paste.note = had && !r.rep.need ? '這一頁原本就有填東西。連結沒提到的格子還是原本的字：不是同一個商品的話，按「復原」，再按「清空重填」，重新點一次連結。' : '';
     if (c.unfold) c.unfold();
     rebuild(); changed();
@@ -2362,20 +2361,12 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   }
 
   const keepPos = e => e.preventDefault();
+
   function pasteBox(c) {
-    const { G, h, rebuild, changed } = c, st = c.state();
-    if (paste.st !== st) { paste.st = st; paste.text = ''; paste.rep = null; paste.back = null; paste.note = ''; paste.go = null; paste.open = false; }
-    const area = h('textarea', { id: 'f-train-paste', rows: 5, placeholder: 'Q：支援 MagSafe 嗎？\nA：明岳殼支援 MagSafe，殼裡內建強化磁圈。' });
-    area.value = paste.text;
-    area.oninput = () => { paste.text = area.value; };
+    const { h, rebuild, changed } = c, st = c.state();
+    if (paste.st !== st) { paste.st = st; paste.rep = null; paste.back = null; paste.note = ''; paste.go = null; }
+    if (!paste.rep) return null;
     const SNAP = snapKeys(st);
-    const run = () => {
-      const snap = JSON.stringify(SNAP.map(k => st[k]));
-      paste.rep = G.trainImport(st, paste.text, !!c.long);
-      paste.back = paste.rep.need ? null : { snap };
-      paste.note = ''; paste.go = null;
-      rebuild(); changed();
-    };
     const undoIt = () => {
       const b = paste.back;
       if (!b) return;
@@ -2384,24 +2375,15 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       rebuild(); changed();
     };
     const r = paste.rep, list = (title, items) => items.length ? h('div', { class: 'paste-list' }, h('b', null, title), h('ul', null, ...items.map(x => h('li', null, x)))) : null;
-    const report = r && (r.need ? h('div', null, h('p', { class: 'paste-ok' }, r.need), paste.go ? h('p', { class: 'paste-ok' }, h('a', { href: paste.go.href }, paste.go.label)) : null) : h('div', null,
+    const report = r.need ? h('div', null, h('p', { class: 'paste-ok' }, r.need), paste.go ? h('p', { class: 'paste-ok' }, h('a', { href: paste.go.href }, paste.go.label)) : null) : h('div', null,
       paste.note ? h('p', { class: 'paste-ok' }, paste.note) : null,
-      h('p', { class: 'paste-ok' }, r.done.length ? '拆好了：' + r.done.join('、') + '。下面每一格的提醒照常看。' : '沒有放進任何一格。'),
-      list('原本有字，已經換成貼上的（按「復原」可以放回去）', r.over),
+      h('p', { class: 'paste-ok' }, r.done.length ? '填好了：' + r.done.join('、') + '。下面每一格的提醒照常看。' : '沒有放進任何一格。'),
+      list('原本有字，已經換成連結帶進來的（按「復原」可以放回去）', r.over),
       list('這幾題沒有放進去，請自己填', r.manual),
-      list('工具組出來的句子跟貼上的不一樣，看一下要不要改', r.diff)));
-
-    const fold = h('details', { class: 'paste-fold' }, h('summary', { onmousedown: keepPos, onclick: () => { paste.open = !fold.open; } }, h('b', null, '貼上 skill 給的問答'), '選填。沒有用「小火車列表」skill 就不用開'));
-    fold.open = paste.open;
-    fold.append(h('div', { class: 'f paste' },
-      h('label', { for: area.id }, '貼上 skill 給的問答', h('span', { class: 'req' }, '選填')),
-      area,
-      h('div', { class: 'hint' }, '用「小火車列表」skill 問完，點它最後給的連結，這裡會自己填好。連結打不開，再把 Q：A： 那段整段貼進來，先填上面的短名、選題組。比較和商品特色會一起放好，規格和適用機型還是要自己填。'),
-      h('div', { class: 'addrow' },
-        h('button', { type: 'button', class: 'btn small', onmousedown: keepPos, onclick: run }, '拆進表單'),
-        paste.back ? h('button', { type: 'button', class: 'btn small ghost', onclick: undoIt }, '復原') : null),
-      h('div', { role: 'status' }, report)));
-    return fold;
+      list('工具組出來的句子跟連結帶進來的不一樣，看一下要不要改', r.diff));
+    return h('div', { class: 'f paste' },
+      h('div', { role: 'status' }, report),
+      paste.back ? h('div', { class: 'addrow' }, h('button', { type: 'button', class: 'btn small ghost', onclick: undoIt }, '復原')) : null);
   }
 
   let live = null;
@@ -2472,7 +2454,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
     if (st.compare === 'yes') {
       out.push(section('Compare', '比較', '兩個版本差在哪，一句話講完', [
-        h('p', { class: 'note' }, '放在小火車（商品描述最下面那排白卡）的第一節。兩個版本各寫一句，工具會接成「一般款：不吸金屬；雙向吸 3.0：…。」這種樣子。'),
+        h('p', { class: 'note' }, '放在「選購前先看」區（商品描述最下面那排白卡）的第一張。兩個版本各寫一句，工具會接成「一般款：不吸金屬；雙向吸 3.0：…。」這種樣子。'),
         h('div', { class: 'pair' },
           field('cmp.va', '版本 1 名稱', { ph: '例：一般款' }),
           field('cmp.vb', '版本 2 名稱', { ph: '例：雙向吸 3.0' })),
@@ -2491,7 +2473,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
           field('feats.' + i + '.name', '特色名稱', { max: L.faqQ, req, ph: ex.name ? '例：' + ex.name : '' }),
           withName(field('feats.' + i + '.text', '這一項的完整句子', { area: true, max: L.faqA, req, ph: ex.text ? '例：' + ex.text : '' }), 'feats.' + i + '.text', 'feats.' + i + '.name'));
       });
-      out.push(section('Feats', '商品特色', `${G.FEATS_MIN} 到 ${G.FEATS_MAX} 項，一項一節車廂`, [
+      out.push(section('Feats', '商品特色', `${G.FEATS_MIN} 到 ${G.FEATS_MAX} 項，一項一張白卡`, [
         h('p', { class: 'note' }, '長圖上的賣點，AI 和搜尋不一定讀得到，這裡用文字寫一次。一項只講一件事：名稱是白卡的標題，底下寫一句完整的句子。商品頁上有寫的才寫。'),
         ...items,
         qmsg('feats.add'),
@@ -2546,16 +2528,16 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         d.open = key in groupOpen ? groupOpen[key] : i < 2 || done() > 0;
         return d;
       });
-      out.push(section('Train', '固定題', '一題一節車廂', [
-        h('p', { class: 'note' }, '小火車＝商品描述最下面那一排左右滑的白卡（標題是「選購前先看」）。一張白卡是一節車廂，一題一節，給 AI 和搜尋讀。',
-          `車廂順序：比較 → ${c.long ? '商品特色 → ' : ''}固定題 → 規格 → 常見問題 → 適用機型。沒填的題不會出現。`),
+      out.push(section('Train', '固定題', '一題一張白卡', [
+        h('p', { class: 'note' }, '「選購前先看」區＝商品描述最下面那一排左右滑的白卡。一題一張白卡，給 AI 和搜尋讀。',
+          `白卡順序：比較 → ${c.long ? '商品特色 → ' : ''}固定題 → 規格 → 常見問題 → 適用機型。沒填的題不會出現。`),
         advice,
         field('train.name', '商品短名', { ph: '例：明岳殼', hint: '工具寫句子時會放在開頭，例如「明岳殼支援 MagSafe」。卡片被 AI 單獨引用時，才看得出在講哪個商品。' }),
         radios('train.set', '題組', G.TRAIN_SETS, { hint: '掛繩、充電線、車用吸塵器這類不是手機殼的商品，選「其他商品」。' }),
         pasteBox(c),
-        ...(qs.length ? [h('p', { class: 'note' }, '有按鈕的題，按一下工具就寫好句子，可以再補一句。按了就算你確認過，沒把握就不要按。沒有合適的，按「自己寫」。沒有按鈕的題，寫成完整句子：先回答，再補一句原因或用法。一組 5 題，手上有資料的先答，沒答的題不會出現在小火車。')] : []),
+        ...(qs.length ? [h('p', { class: 'note' }, '有按鈕的題，按一下工具就寫好句子，可以再補一句。按了就算你確認過，沒把握就不要按。沒有合適的，按「自己寫」。沒有按鈕的題，寫成完整句子：先回答，再補一句原因或用法。一組 5 題，手上有資料的先答，沒答的題不會出現在「選購前先看」區。')] : []),
         ...groups,
-      ], { badge: '小火車' }));
+      ], { badge: '選購前先看' }));
     }
 
     {
@@ -2572,8 +2554,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
           sum,
           st.specs.length > 1 ? removeBtn(() => removeAt(st.specs, i, `規格第 ${i + 1} 列`), `刪掉規格第 ${i + 1} 列`) : h('span'));
       });
-      out.push(section('Specs', '規格', '整段變成一節車廂', [
-        h('p', { class: 'note' }, '一列一個項目，工具接成「項目：內容；項目：內容。」放進小火車。機型那一列不用寫：適用機型有自己的一節。商品頁上沒有的不要補：一列都沒有，工具會算待填，不擋複製。'),
+      out.push(section('Specs', '規格', '整段變成一張白卡', [
+        h('p', { class: 'note' }, '一列一個項目，工具接成「項目：內容；項目：內容。」放進「選購前先看」區。機型那一列不用寫：適用機型有自己的一張。商品頁上沒有的不要補：一列都沒有，工具會算待填，不擋複製。'),
         c.long ? null : h('p', { class: 'note' }, '勾「摘要」的列也會放進商品摘要的【商品規格】，通常是材質、顏色。'),
         ...rows,
         qmsg('specs.add'),
@@ -2587,8 +2569,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
           st.faq.length > 1 ? removeBtn(() => removeAt(st.faq, i, `常見問題 Q${i + 1}`), `刪掉 Q${i + 1}`) : null),
         field('faq.' + i + '.q', '問題', { max: L.faqQ, req: false, ph: i === 0 ? '例：鏡頭的部分有保護到嗎？' : '' }),
         withName(field('faq.' + i + '.a', '回答', { area: true, max: L.faqA, req: false, ph: i === 0 ? '例：有。鏡頭孔位有加高，平放時不會直接接觸桌面。' : '' }), 'faq.' + i + '.a', 'faq.' + i + '.q')));
-      out.push(section('FAQ', '常見問題', '一題一節車廂', [
-        h('p', { class: 'note' }, '固定題沒有的題目寫在這裡，一題一節車廂。沒有就空著。'),
+      out.push(section('FAQ', '常見問題', '一題一張白卡', [
+        h('p', { class: 'note' }, '固定題沒有的題目寫在這裡，一題一張白卡。沒有就空著。'),
         ...items,
         h('div', { class: 'addrow' }, st.faq.length < 10 ? addBtn('＋ 再加一題', () => { st.faq.push({ q: '', a: '' }); rebuild(); changed(); }) : null, h('span', { class: 'small' }, '最多 10 題')),
       ], { badge: 'FAQ' }));
@@ -2609,7 +2591,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         body.push(radios('compat.kind', '這個商品是哪一類？', G.COND_KINDS, {}));
         if (cp.kind === 'strap') body.push(radios('compat.clip', '有附夾片嗎？', [['yes', '有附夾片'], ['no', '沒有附夾片']], {}));
         else (G.COND_SLOTS[cp.kind] || []).forEach(([k, label, ph]) => body.push(field('compat.' + k, label, { req: false, max: L.faqA, ph })));
-        if (cp.kind) body.push(h('p', { class: 'note' }, `${c.long ? '小火車' : '小火車和商品摘要'}會用同一句，預覽看得到。沒填的格子不會寫進去，工具不會自己補。`));
+        if (cp.kind) body.push(h('p', { class: 'note' }, `${c.long ? '「選購前先看」區' : '「選購前先看」區和商品摘要'}會用同一句，預覽看得到。沒填的格子不會寫進去，工具不會自己補。`));
         body.push(h('p', { class: 'note' }, '這個商品其實有分機型的話，把上面的勾拿掉。'));
       } else {
         const rows = cp.rows.map((r, i) => h('div', { class: 'rowline compat' },
@@ -2617,14 +2599,14 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
           pick('compat.rows.' + i + '.ok', [['true', '相容'], ['false', '不適用']], `第 ${i + 1} 列：相容或不適用`),
           cp.rows.length > 1 ? removeBtn(() => removeAt(cp.rows, i, `機型表第 ${i + 1} 列`), `刪掉機型表第 ${i + 1} 列`) : h('span')));
         body.push(
-          h('p', { class: 'note' }, '⚠️ 這是相容性的承諾。', h('b', null, '只寫賣場規格選單真的選得到的機型'), '，不寫推測的。一列放一代，機型之間用「／」隔開。工具會一款一款寫進小火車。'),
+          h('p', { class: 'note' }, '⚠️ 這是相容性的承諾。', h('b', null, '只寫賣場規格選單真的選得到的機型'), '，不寫推測的。一列放一代，機型之間用「／」隔開。工具會一款一款寫進「選購前先看」區。'),
           h('p', { class: 'note' }, '「／」只用在機型之間：括號裡要列好幾個，用「、」（例如「各系列 Plus（14、15、16 Plus）」），不然會被拆成好幾段。'),
           ...rows,
           h('div', { class: 'addrow' }, cp.rows.length < 14 ? addBtn('＋ 再加一列', () => { cp.rows.push({ names: '', ok: true }); rebuild(); changed(); }) : null),
           qmsg('compat.add'),
           field('compat.menu', '（選填）貼上賣場規格選單的機型清單', { area: true, rows: 3, req: false, ph: '一行一個，從後台規格選單複製。貼了之後，上面寫的機型不在清單裡會提醒你', hint: '工具沒辦法自己讀到規格選單，這格是讓它幫你對一次。只比對「相容」的列。' }));
       }
-      out.push(section('Compat', '適用機型', '小火車最後一節', body, { badge: '機型' }));
+      out.push(section('Compat', '適用機型', '「選購前先看」區最後一張', body, { badge: '機型' }));
     }
     return out;
   }
@@ -2783,7 +2765,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
           return h('label', { class: 'opt' }, r, t);
         })),
       h('div', { class: 'msg', 'data-qmsg': '1' }),
-      h('p', { class: 'small', style: 'margin:8px 0 0' }, '同一款商品有兩個版本（例如一般款和雙向吸 3.0），選「有」：下面會多一區「比較」，用一句話講兩個版本差在哪，放在商品描述最下面那排白卡（小火車）的第一節。只有一個版本就選「沒有」。'));
+      h('p', { class: 'small', style: 'margin:8px 0 0' }, '同一款商品有兩個版本（例如一般款和雙向吸 3.0），選「有」：下面會多一區「比較」，用一句話講兩個版本差在哪，放在商品描述最下面的「選購前先看」區，第一張白卡。只有一個版本就選「沒有」。'));
     reg.compare = { msg: q.querySelector('[data-qmsg]'), wrap: q };
     form.append(q);
 
@@ -2873,7 +2855,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   const PV_HEAD = '<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>' +
     '.ln-desc{box-sizing:border-box;padding:0 45px}@media(max-width:991px){.ln-desc{padding:0 35px}}@media(max-width:767px){.ln-desc{padding:0 22px}}' +
     '.ln-long{height:220px;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 16px;background:repeating-linear-gradient(135deg,#eceef1 0 14px,#e3e6ea 14px 28px);color:#4b505a;font:14px/1.6 -apple-system,"PingFang TC","Noto Sans TC",sans-serif}' +
-    '</style></head><body style="margin:0;background:#fff"><div class="ln-desc"><div class="ln-long">商品原本的長圖（只在預覽裡，不會被複製）<br>小火車會接在長圖下面</div>';
+    '</style></head><body style="margin:0;background:#fff"><div class="ln-desc"><div class="ln-long">商品原本的長圖（只在預覽裡，不會被複製）<br>「選購前先看」區會接在長圖下面</div>';
 
   function previewBlock(code) {
     let d; try { d = pvIframe.contentDocument; } catch (e) { return null; }
@@ -2938,7 +2920,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   }
   function copy(msg, failText) {
     paintIssues(); paintOutput();
-    if (!html) { msg.className = 'copymsg err'; msg.textContent = '小火車一節都還沒有，沒有東西可以複製。'; return; }
+    if (!html) { msg.className = 'copymsg err'; msg.textContent = '「選購前先看」區一張白卡都還沒有，沒有東西可以複製。'; return; }
     if (!confirmFirst($('#copy'), msg)) return;
     const st = $('#copy').dataset.status;
     copyText(html, $('#code'), msg, () => [
