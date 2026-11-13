@@ -129,6 +129,9 @@ for (const f of ['SKILL.md', 'README.md', 'check_questions.js', 'reference/quest
   if (t.includes(String.fromCharCode(0x2014))) bad.push(`${f} 有破折號`);
 }
 
+// 7b. 11/2 工具拿掉了貼上格子：skill 不能再叫美編去貼
+['貼上 skill 給的問答', '拆進表單'].forEach(w => { [['SKILL.md', skill], ['reference/questions.md', qmd]].forEach(([f, s]) => { if (s.includes(w)) bad.push(`${f} 還叫人用拿掉的「${w}」`); }); });
+
 // 8. 測出洞才加的規則：改寫到讀不到也算對不上。字句真的要改，這裡跟著改，不是拿掉
 const MUST = ['這個數字或規格不寫進句子', '多問一句「兩款都這樣', '改完的句子再對一次', '還有跟原廠或別款比的效能', '「跟原廠一樣快」', '回得不清楚', '不放進卡片', '工具會亮「太短」的句子：句子還是放在第 4 段', '標「太短」的句子、拿掉數字的句子還是要輸出', '顏色和選的題是工具自己組句', '支架選「沒有」不追問', '- 多講的：', '`questions.md`〈定案商品名〉', '全名對過〈定案商品名〉', '別牌配件能不能一起用', '這是量過的，還是公司資料', '比較題和第 2 條例外', '照留只用在沒碰到', '不含同一個商品的兩個版本', '沒提別牌，也沒講全部都可以，不算這條', '先對〈紅線〉', '問完範圍，回答還是太短', '配件題講到磁吸，也問「兩款都這樣', '配件題講到磁吸的句子'];
 MUST.filter(w => !skill.includes(w)).forEach(w => bad.push(`SKILL.md 少了這條規則：${w}`));
@@ -167,7 +170,7 @@ else {
   if (!base) bad.push('SKILL.md 讀不到網址開頭那一行');
   const swap = [[' ', '%20', '半形空白'], ['%', '%25'], ['#', '%23'], ['&', '%26'], ['+', '%2B'], ['"', '%22'], ['<', '%3C'], ['>', '%3E'], ['(', '%28'], [')', '%29']];
   swap.forEach(([c, code, label]) => { if (!sec5.includes(`| ${label || '`' + c + '`'} | \`${code}\` |`)) bad.push(`換字表少了「${label || c}」換成 ${code}`); if (decodeURIComponent(code) !== c) bad.push(`換字表寫錯：${code} 解開不是「${c}」`); });
-  ['行和行之間放 `%0A`', '結尾一定要有 `&end`', '`index.html` 和 `html`', '`long-image.html` 和 `long`', '`case`', '`other`', '連結打不開，就到上架工具', '連結解開就是第 4 段'].forEach(w => { if (!skill.includes(w)) bad.push(`SKILL.md 少了帶入連結的規則：${w}`); });
+  ['行和行之間放 `%0A`', '結尾一定要有 `&end`', '`index.html` 和 `html`', '`long-image.html` 和 `long`', '`case`', '`other`', '連結打不開，回來跟我說，我再給一次連結', '還是打不開，就照對照表最右邊那欄', '連結解開就是第 4 段'].forEach(w => { if (!skill.includes(w)) bad.push(`SKILL.md 少了帶入連結的規則：${w}`); });
   const m = sec5.match(/\]\(網址開頭long-image\.html(#train=[^)\s]*)\)/);
   if (!m) bad.push('SKILL.md 找不到範例連結');
   else if (exBlock) {
