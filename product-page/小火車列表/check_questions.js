@@ -183,5 +183,22 @@ else {
   }
 }
 
+// 12. 讀同款長條圖（11/15 加）：〈流程〉開頭要分流過去；這一節的規則改寫到讀不到也算對不上；寫死的項數跟工具比
+const imgSec = (skill.split('\n## 讀同款長條圖\n')[1] || '').split(/^## /m)[0];
+if (!imgSec) bad.push('SKILL.md 少了〈讀同款長條圖〉這一節');
+else {
+  const flowHead = (skill.split('\n## 流程\n')[1] || '').split('### 1. 先問這四件事')[0];
+  if (!flowHead.includes('〈讀同款長條圖〉')) bad.push('〈流程〉開頭少了分流到〈讀同款長條圖〉那句');
+  const IMG_MUST = ['我只記下來當出處，不會打開', '網址不打開、不讀', '不要傳整張長圖', '整張長圖，小字可能漏', '看不清的字寫「（看不清）」，不猜', '不從照片裡的樣子推', '不寫「沒有字」', '適用機型也不用', '顏色不從圖和規格拿', '第 4、5 條不用', '字還是只能用美編講的」，那是美編自己回答時的規則', '確定的程度照原文', '別家的品牌名、店名、型號、活動名不進卡片', '〈紅線〉照樣擋', '有數字的卡預設「不確定」', '對過包裝或公司資料才改成對', '回「對」的卡才進〈輸出〉第 4 段', '不自己當成「對」', '〈交出前逐條對〉第 1、2 條不用對'];
+  IMG_MUST.filter(w => !imgSec.includes(w)).forEach(w => bad.push(`〈讀同款長條圖〉少了這條規則：${w}`));
+  // 照抄給美編的兩段要在引用框裡，不然模型會改寫
+  ['> 2. 「商品規格」分頁的整段文字', '> 每一列回「對」「這款沒有」或「不確定」'].forEach(w => { if (!imgSec.includes(w)) bad.push(`〈讀同款長條圖〉照抄的那段少了：${w}`); });
+  if (!skill.includes('讀圖寫的卡，另外對〈讀同款長條圖〉最後那份')) bad.push('〈交出前逐條對〉少了指到〈讀同款長條圖〉那句');
+  // 草稿表的欄位：美編靠「#」回、靠「出處」對
+  if (!imgSec.includes('| # | 題目 | 原文（逐字） | 出處 | 寫成我們的講法 | 請你勾 |')) bad.push('〈讀同款長條圖〉的草稿表欄位改了');
+}
+nums('SKILL.md', skill, /草稿最多列 (\d+) 項/g, [G.FEATS_MAX]);
+nums('SKILL.md', skill, /留下來的不到 (\d+) 項/g, [G.FEATS_MIN]);
+
 if (bad.length) { console.error(`對不上 ${bad.length} 處：`); bad.forEach(b => console.error('  ✗ ' + b)); process.exit(1); }
-console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、品類表 ${cats.length} 列、追問字 ${asked.length} 個、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆、定案商品名 ${finalNames.length} 款、問答範例工具拆得開、範例連結解開相同`);
+console.log(`對齊：手機殼 ${Object.keys(sections.case).length} 題（工具固定題 ${G.trainQs('case').length}）、其他商品 ${Object.keys(sections.other).length} 題（工具固定題 ${G.trainQs('other').length}）、品類表 ${cats.length} 列、追問字 ${asked.length} 個、語氣規則相同、§6 ${sec6.length} 行都在、內部用語 ${words.length} 個掃過 0 筆、定案商品名 ${finalNames.length} 款、問答範例工具拆得開、範例連結解開相同、讀同款長條圖的規則都在`);
