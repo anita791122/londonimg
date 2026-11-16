@@ -433,7 +433,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 <a class="skip" id="skip" href="#copy">跳到預覽與複製</a>
 <header class="top">
   <h1><a class="home" href="guide.html">倫敦印象｜長條圖版用上架工具</a></h1>
-  <span class="ver">2026-11-03</span>
+  <span class="ver">2026-11-16</span>
   <a class="btn guide-link" href="guide.html"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>使用說明</a>
   <span class="sp"></span>
   <span class="draftnote" id="draftnote"></span>
@@ -1544,7 +1544,39 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   const cmpQ = c => mix(c.va, '和', c.vb, '差在哪？');
 
-  function trainCards(s, long) {
+  const WEB_STATES = ['', 'ok', 'no', 'unsure'];
+  const webMetaOf = (s, key) => {
+    const m = /^(feats|faq)\.(\d+)$/.exec(key);
+    if (m) { const x = (s[m[1]] || [])[+m[2]]; return x && x.web && typeof x.web === 'object' ? x.web : null; }
+    const q = /^train\.(.+)$/.exec(key);
+    return q && s.web && s.web.q && own(s.web.q, q[1]) ? s.web.q[q[1]] : null;
+  };
+  const webIn = m => !m || m.state === 'ok';
+
+  const webFieldKey = (s, key) => {
+    const m = /^(feats|faq)\.(\d+)$/.exec(key);
+    if (m) return key + (m[1] === 'feats' ? '.text' : '.a');
+    const id = key.slice(6), q = TRAIN_Q.find(x => x.id === id);
+    return q && q.kind === 'pick' && (s.train || {})[id] === 'own' ? 'train.' + trainMore(q) : key;
+  };
+
+  function httpsOnly(x) {
+    try { const u = new URL(String(x == null ? '' : x).trim()); return u.protocol === 'https:' && u.hostname && !u.username && !u.password ? u.href : ''; } catch (e) { return ''; }
+  }
+
+  const NUM_UNIT = /\d+(?:\.\d+)?\s*(?:kg|KG|Kg|mm|MM|cm|CM|g|公克|克|公斤|公釐|毫米|公分|公尺)(?![A-Za-z])/;
+
+  const COMPAT_WORDS = [['Pencil', /pencil/i], ['觸控筆', /觸控筆/], ['鍵盤', /鍵盤/], ['巧控', /巧控/], ['Magic Keyboard', /magic\s*keyboard/i],
+    ['AirPods', /airpods?/i], ['Apple Watch', /apple\s*watch/i], ['MagSafe', /mag\s*safe/i], ['Qi', /(^|[^a-z])qi([^a-z]|$)/i], ['相容', /相容/], ['充電', /充電/]];
+  const COMPAT_OWN_CHARGE = new Set(['bank', 'cable', 'charger', 'car']);
+  function compatHits(s, ...texts) {
+    const t = (s && s.train) || {}, txt = texts.map(clean).join(' ');
+    const cat = t.set === 'other' ? ((TRAIN_CATS.find(c => c.id === t.cat) || {}).name || '') : '';
+    const mine = clean(t.name) + ' ' + cat;
+    return COMPAT_WORDS.filter(([w, re]) => re.test(txt) && !re.test(mine) && !(w === '充電' && t.set === 'other' && COMPAT_OWN_CHARGE.has(t.cat))).map(([w]) => w);
+  }
+
+  function trainCards(s, long, all) {
     const t = s.train || {}, name = clean(t.name), out = [];
 
     const c = s.cmp || {};
@@ -1569,7 +1601,33 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     (s.faq || []).forEach((x, i) => { if (clean(x.q) && clean(x.a)) out.push({ q: clean(x.q), a: clean(x.a), key: 'faq.' + i }); });
     const cc = compatCar(s, name);
     if (cc) out.push(cc);
-    return out;
+    return all ? out : out.filter(c => webIn(webMetaOf(s, c.key)));
+  }
+
+  function trainWebList(s, long) {
+    return trainCards(s, long, true).map(c => Object.assign({}, c, { web: webMetaOf(s, c.key), field: webFieldKey(s, c.key) })).filter(c => c.web);
+  }
+
+  function trainWebSet(s, key, state) {
+    const m = webMetaOf(s, key);
+    if (!m || !WEB_STATES.includes(state)) return false;
+    if (state === 'ok' && !clean(m.src)) return false;
+    m.state = state;
+    return true;
+  }
+
+  function trainWebLoad(s, d) {
+    if (!d || typeof d !== 'object') return s;
+    const strs = a => (Array.isArray(a) ? a : []).map(clean).filter(Boolean);
+    const meta = m => m && typeof m === 'object' ? { src: clean(m.src), at: clean(m.at), urls: (Array.isArray(m.urls) ? m.urls : []).map(httpsOnly).filter(Boolean), state: WEB_STATES.includes(m.state) ? m.state : '' } : null;
+    const w = d.web;
+    if (w && typeof w === 'object') {
+      const t0 = TRAIN0(), q = {};
+      Object.keys(w.q || {}).forEach(k => { const m = meta(w.q[k]); if (m && own(t0, k) && !['name', 'set', 'cat'].includes(k)) q[k] = m; });
+      s.web = { v: 2, from: httpsOnly(w.from), seen: clean(w.seen), hold: strs(w.hold), more: strs(w.more), noimg: clean(w.noimg), q };
+    }
+    ['feats', 'faq'].forEach(k => (Array.isArray(d[k]) ? d[k] : []).forEach((x, i) => { const m = x && meta(x.web); if (m && s[k] && s[k][i]) s[k][i].web = m; }));
+    return s;
   }
 
   function longImageGenerate(s) {
@@ -1743,6 +1801,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       if (code) add(key, 'orange', `寫到「${code[2]}」：內部編號不寫給顧客看，要寫商品名（例如不寫「B67 支架殼」）`, sec);
     };
 
+    const webs = trainWebList(s, long), noKey = new Set(webs.filter(c => c.web.state === 'no').map(c => c.key));
+
     if (s.compare === 'yes') {
       const c = s.cmp || {};
       need('cmp.va', c.va, '版本 1 名稱', 'Compare'); need('cmp.vb', c.vb, '版本 2 名稱', 'Compare');
@@ -1766,6 +1826,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (!own(Object.fromEntries(TRAIN_SETS), t.set)) add('train.set', 'red', '先選題組：手機殼，還是其他商品', 'Train', 'todo');
     trainQs(t.set, t.cat).forEach(q => {
       const key = 'train.' + q.id, v = t[q.id], req = q.sets[t.set] === 1;
+      if (noKey.has(key)) return;
       if (q.kind === 'pick') {
         if (req && empty(v)) add(key, 'red', '還沒選', 'Train', 'todo');
         const mk = 'train.' + trainMore(q), mv = t[trainMore(q)];
@@ -1836,13 +1897,16 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       feats.forEach((x, i) => {
         if (empty(x.name) && empty(x.text)) return;
         const k = 'feats.' + i;
+        if (noKey.has(k)) return;
         need(k + '.name', x.name, '特色名稱', 'Feats'); over(k + '.name', x.name, LIMIT.faqQ, '特色名稱', 'Feats');
         need(k + '.text', x.text, '這一句', 'Feats'); over(k + '.text', x.text, LIMIT.faqA, '這一句', 'Feats');
         sentence(k + '.text', x.text, 'Feats'); named(k + '.text', x.text, 'Feats', x.name);
         redline(k + '.text', clean(x.name) + ' ' + clean(x.text), 'Feats');
       });
-      const n = feats.filter(x => !empty(x.name) && !empty(x.text)).length;
-      if (n < FEATS_MIN) add('feats.add', 'red', `商品特色還差 ${FEATS_MIN - n} 項：要有 ${FEATS_MIN} 到 ${FEATS_MAX} 項。商品頁上有寫的才寫`, 'Feats', 'todo');
+
+      const n = feats.filter((x, i) => !empty(x.name) && !empty(x.text) && webIn(webMetaOf(s, 'feats.' + i))).length;
+      const wait = feats.some((x, i) => !empty(x.name) && !empty(x.text) && !webIn(webMetaOf(s, 'feats.' + i)));
+      if (n < FEATS_MIN) add('feats.add', 'red', `商品特色還差 ${FEATS_MIN - n} 項：要有 ${FEATS_MIN} 到 ${FEATS_MAX} 項。商品頁上有寫的才寫` + (wait ? '（網頁讀來、還沒按「對」的不算）' : ''), 'Feats', 'todo');
       if (n > FEATS_MAX) add('feats.add', 'orange', `商品特色最多 ${FEATS_MAX} 項：第 ${FEATS_MAX + 1} 項起不會放進「選購前先看」區`, 'Feats');
     }
 
@@ -1859,6 +1923,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     (s.faq || []).forEach((x, i) => {
       if (empty(x.q) && empty(x.a)) return;
       const k = 'faq.' + i;
+      if (noKey.has(k)) return;
       need(k + '.q', x.q, '問題', 'FAQ'); over(k + '.q', x.q, LIMIT.faqQ, '問題', 'FAQ');
       need(k + '.a', x.a, '回答', 'FAQ'); over(k + '.a', x.a, LIMIT.faqA, '回答', 'FAQ');
       sentence(k + '.a', x.a, 'FAQ'); named(k + '.a', x.a, 'FAQ', x.q);
@@ -1866,46 +1931,82 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       if (sameQ(x.q) && fixedQs.has(sameQ(x.q))) add(k + '.q', 'orange', '上面的固定題已經有這一題：挑別的題目，不要講兩次', 'FAQ');
       else if (sameQ(x.q) && autoQs.has(sameQ(x.q))) add(k + '.q', 'orange', '工具會自己寫這一題（比較或適用機型）：挑別的題目，不要講兩次', 'FAQ');
     });
+
+    const secOf = key => /^feats/.test(key) ? 'Feats' : /^faq/.test(key) ? 'FAQ' : 'Train';
+    trainCards(s, long, true).filter(c => /^(train|feats|faq)\./.test(c.key) && !noKey.has(c.key)).forEach(c => {
+      const m = webMetaOf(s, c.key), hit = compatHits(s, c.q, c.a, m ? m.src : '');
+      if (hit.length) add(webFieldKey(s, c.key), 'orange', `寫到「${hit.join('、')}」：講到別的牌子的東西能不能用。對過包裝、實物或公司資料才` + (m ? '按「對」' : '寫'), secOf(c.key));
+    });
+
+    webs.filter(c => c.web.state !== 'no').forEach(c => {
+      if (!clean(c.web.src)) add(c.field, 'red', '這張卡沒有原文，不能按「對」：回對話請它補上原文，或按「這款沒有」', secOf(c.key));
+      const num = clean(c.a).match(NUM_UNIT);
+      if (num) add(c.field, 'orange', `有數字（${num[0]}）：對過包裝或公司資料才按「對」`, secOf(c.key));
+    });
+    const todo = webs.filter(c => !c.web.state).length, unsure = webs.filter(c => c.web.state === 'unsure').length;
+    if (todo) add('web.todo', 'red', `還有 ${todo} 張從網頁讀來的卡沒核對，不會放進去：對著原文看過，按「對」才會放進去`, 'Train');
+    if (unsure) add('web.unsure', 'orange', `${unsure} 張從網頁讀來的卡選了「不確定」，不會放進去`, 'Train');
   }
 
   const COLOR_TAIL = '實際可選顏色以購買區的規格選單為準。';
-  function trainImportPairs(text) {
-    const pairs = [], bad = [];
-    let q = null;
+
+  const WEB_GLOB = { T: 'seen', X: 'hold', R: 'more', I: 'noimg' };
+  function trainImportPairs(text, v2) {
+    const pairs = [], bad = [], glob = { seen: [], hold: [], more: [], noimg: [] };
+    let q = null, card = null;
     const cut = l => (l.length > 24 ? l.slice(0, 24) + '…' : l);
     String(text == null ? '' : text).split(/\r?\n/).forEach((raw, i) => {
       const l = raw.trim();
       if (!l || /^```/.test(l)) return;
+      const w = v2 && l.match(/^([OSUTXRI])[：:]\s*(.*)$/i);
+      if (w) {
+        const tag = w[1].toUpperCase(), v = clean(w[2]);
+        if (own(WEB_GLOB, tag)) { if (v) glob[WEB_GLOB[tag]].push(v); return; }
+        if (!card) { bad.push(`第 ${i + 1} 行前面沒有問題，不知道是哪一張卡的：「${cut(l)}」`); return; }
+        if (tag === 'O') { if (v) card.src = card.src ? card.src + '／' + v : v; }
+        else if (tag === 'S') { if (v) card.at = card.at ? card.at + '；' + v : v; }
+        else v.split(/\s+/).filter(Boolean).forEach(u => { const ok = httpsOnly(u); if (ok) card.urls.push(ok); else bad.push(`第 ${i + 1} 行的圖網址不是 https 開頭，沒有收：「${cut(u)}」`); });
+        return;
+      }
       const m = l.match(/^([QA])[：:]\s*(.*)$/i);
       if (!m) { bad.push(`第 ${i + 1} 行不是 Q： 或 A： 開頭，沒有放進去：「${cut(l)}」`); return; }
       const v = clean(m[2]);
       if (m[1].toUpperCase() === 'Q') {
         if (q !== null) bad.push(`「${cut(q)}」沒有回答`);
         q = v;
+        card = v2 ? { q: v, src: '', at: '', urls: [] } : null;
       } else if (q === null) bad.push(`第 ${i + 1} 行的回答前面沒有問題：「${cut(v)}」`);
       else if (!q || !v) { bad.push(`第 ${i + 1} 行：問題或回答是空的`); q = null; }
-      else { pairs.push({ q, a: v }); q = null; }
+      else { pairs.push(v2 ? Object.assign(card, { a: v }) : { q, a: v }); q = null; }
     });
     if (q !== null) bad.push(`「${cut(q)}」沒有回答`);
-    return { pairs, bad };
+    return { pairs, bad, glob };
   }
-  function trainImport(s, text, long) {
+
+  function trainImport(s, text, long, v2) {
     const t = s.train || (s.train = TRAIN0()), rep = { need: '', done: [], over: [], manual: [], diff: [] };
     if (!clean(t.name) || !own(Object.fromEntries(TRAIN_SETS), t.set)) { rep.need = '先填商品短名、選題組，再按一次'; return rep; }
-    const { pairs, bad } = trainImportPairs(text);
+    const { pairs, bad, glob } = trainImportPairs(text, !!v2);
     rep.manual.push(...bad);
     if (!pairs.length && !bad.length) { rep.need = '格子是空的：把 skill 給的問答貼進來'; return rep; }
+    if (v2) s.web = { v: 2, from: v2.from || '', seen: glob.seen.join(' '), hold: glob.hold, more: glob.more, noimg: glob.noimg.join(' '), q: {} };
+
+    const meta = p => v2 ? { src: p.src || '', at: p.at || '', urls: p.urls || [], state: NUM_UNIT.test(p.a) || compatHits(s, p.q, p.a, p.src).length ? 'unsure' : '' } : null;
+    const tag = (o, p) => { const m = meta(p); if (m) o.web = m; else delete o.web; return o; };
+    const tagQ = (id, p) => { const m = meta(p); if (m) s.web.q[id] = m; else if (s.web && s.web.q) delete s.web.q[id]; };
     const name = clean(t.name), qs = trainQs(t.set, t.cat), byQ = new Map();
     qs.forEach(q => { byQ.set(sameQ(q.q), q); if (q.named) byQ.set(sameQ(mix(name, q.named)), q); });
     const put = (o, k, v, label) => { if (clean(o[k]) && clean(o[k]) !== clean(v)) rep.over.push(label); o[k] = v; };
     const checked = [], feats = [], faq = [];
-    pairs.forEach(({ q, a }) => {
+    pairs.forEach(pr => {
+      const { q, a } = pr;
       const fm = q.match(/^特色[：:]\s*(.+)$/);
       if (fm) {
         if (!long) rep.manual.push(`「${q}」：這一頁沒有商品特色（長條圖版才有），沒有放進去`);
-        else feats.push({ name: clean(fm[1]), text: a });
+        else feats.push(tag({ name: clean(fm[1]), text: a }, pr));
         return;
       }
+      if (v2 && sameQ(q) === sameQ('跟另一個版本差在哪？')) { rep.manual.push(`「${q}」：網址模式不從網頁寫比較。我們有兩個版本的話，自己在最上面那題選、自己寫`); return; }
       if (sameQ(q) === sameQ('跟另一個版本差在哪？')) {
         const parts = a.split('；').map(x => x.match(/^([^：]+)：(.+)$/));
         if (parts.length !== 2 || !parts[0] || !parts[1]) { rep.manual.push(`「${q}」拆不出兩個版本：要寫成「版本 1：一句；版本 2：一句。」`); return; }
@@ -1918,7 +2019,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         return;
       }
       const f = byQ.get(sameQ(q));
-      if (!f) { faq.push({ q, a }); return; }
+      if (!f) { faq.push(pr); return; }
       const key = 'train.' + f.id, more = trainMore(f);
       if (f.id === 'magsafe') {
         const m = a.match(/^(.*?)(不支援 ?MagSafe|支援 ?MagSafe|可選 ?MagSafe ?版，也有一般版)(?:[，,。．.]\s*(.*))?$/i);
@@ -1929,6 +2030,9 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         if (new RegExp('^(' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')?\\s*沒有支架[。．.]?$').test(a)) { put(t, f.id, 'no', q); t[more] = ''; }
         else if (/沒有|沒附|不附|無支架/.test(a)) { rep.manual.push(`「${q}」看不出要按哪個，請自己按：「${a}」`); return; }
         else { put(t, f.id, 'yes', q); put(t, more, a, q + '的怎麼用'); }
+      } else if (f.kind === 'list' && v2) {
+        rep.manual.push(`「${q}」：顏色不從網頁拿，照我們購買區的規格選單填`);
+        return;
       } else if (f.kind === 'list') {
         const body = clean(clean(a.replace(COLOR_TAIL, '')).replace(new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), ''));
         const m = body.match(/^(?:有|是)(.+?)(?:的)?[。．.](.*)$/) || (/[、，,／/]/.test(body) && !/[。．.].+/.test(body) ? [body, noEnd(body), ''] : null);
@@ -1939,6 +2043,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         const hit = Object.keys(f.say).find(k => sameQ(trainPickAnswer(f, k, '', name)) === sameQ(a));
         put(t, f.id, hit || 'own', q); put(t, more, hit ? '' : a, q + '的回答');
       } else put(t, f.id, a, q);
+      tagQ(f.id, pr);
       rep.done.push(q);
       checked.push({ q, a, key });
     });
@@ -1955,27 +2060,28 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       let n = 0;
       faq.forEach(x => {
         const same = cur.find(y => sameQ(y.q) === sameQ(x.q));
-        if (same) { put(same, 'a', x.a, x.q); n++; return; }
+        if (same) { put(same, 'a', x.a, x.q); tag(same, x); n++; return; }
         if (cur.length >= 10) { rep.manual.push(`「${x.q}」：常見問題最多 10 題，這題沒有放進去`); return; }
-        cur.push({ q: x.q, a: x.a }); n++;
+        cur.push(tag({ q: x.q, a: x.a }, x)); n++;
       });
       if (cur.length) s.faq = cur;
       if (n) rep.done.push(`常見問題 ${n} 題`);
     }
 
-    const cards = trainCards(s, long);
+    const cards = trainCards(s, long, true);
     checked.forEach(({ q, a, key }) => {
       const c = cards.find(x => x.key === key);
       const same = x => sameQ(clean(x).replace(COLOR_TAIL, ''));
       if (!c || same(c.a) !== same(a)) rep.diff.push(`「${q}」連結帶進來的是「${a}」，工具組出來是「${c ? c.a : '（沒有這張卡）'}」`);
     });
+    if (v2) { const w = trainWebList(s, long); rep.web = { cards: w.length, unsure: w.filter(c => c.web.state === 'unsure').length }; }
     return rep;
   }
 
   function trainLinkParse(hash) {
     const raw = String(hash == null ? '' : hash);
     if (!raw.startsWith('#train=')) return null;
-    const out = { page: '', set: '', name: '', text: '', problem: '' }, body = raw.slice(1), at = body.indexOf('&qa=');
+    const out = { page: '', set: '', name: '', text: '', problem: '', v: '', cat: '', from: '' }, body = raw.slice(1), at = body.indexOf('&qa=');
     if (at < 0 || !body.endsWith('&end') || body.length < at + 4 + 4) { out.problem = 'cut'; return out; }
     const dec = x => { try { return decodeURIComponent(x); } catch (e) { return null; } };
     const text = dec(body.slice(at + 4, -4));
@@ -1984,6 +2090,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
     if (text == null || !/\S\s*\n\s*\S/.test(text) || Object.values(meta).includes(null)) { out.problem = 'bad'; return out; }
     out.page = meta.train || ''; out.set = meta.set || ''; out.name = meta.name || ''; out.text = text;
+
+    out.v = meta.v || ''; out.cat = meta.cat || ''; out.from = meta.from || '';
     return out;
   }
   const LINK_PAGE = { html: '上架工具（HTML 版）', long: '長條圖區工具' };
@@ -2000,12 +2108,21 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     const name = clean(p.name);
     if (!name) return stop('連結裡沒有短名。' + ask, p.text);
     if (!own(Object.fromEntries(TRAIN_SETS), p.set)) return stop(`連結裡的題組看不懂（${p.set || '空的'}）。` + ask, p.text);
-    const t = s.train || (s.train = TRAIN0()), over = [];
+    if (p.v && p.v !== '2') return stop(`這個連結是第 ${p.v} 版，這一頁看不懂。沒有填任何一格。`, p.text);
+    const t = s.train || (s.train = TRAIN0()), over = [], notes = [];
     if (clean(t.name) && clean(t.name) !== name) over.push('商品短名');
     if (t.set && t.set !== p.set) over.push('題組');
     t.name = name; t.set = p.set;
-    const rep = trainImport(s, p.text, long);
+
+    if (p.cat && p.set === 'other') {
+      if (TRAIN_CATS.some(c => c.id === p.cat)) { if (t.cat && t.cat !== p.cat) over.push('品類'); t.cat = p.cat; }
+      else notes.push(`連結裡的品類看不懂（${p.cat}），請自己在上面選`);
+    }
+    const from = httpsOnly(p.from);
+    if (p.from && !from) notes.push(`連結裡的原頁網址不是 https 開頭，沒有收：「${p.from.slice(0, 40)}」`);
+    const rep = trainImport(s, p.text, long, p.v === '2' ? { from } : null);
     rep.over.unshift(...over);
+    rep.manual.unshift(...notes);
     return { text: p.text, other: '', rep };
   }
 
@@ -2277,7 +2394,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     return notes;
   }
 
-  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, WEB_STATES, trainWebList, trainWebSet, trainWebLoad, compatHits, httpsOnly, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
