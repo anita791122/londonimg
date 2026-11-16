@@ -420,6 +420,27 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   html { scroll-padding-top: 12px; }
 }
 
+.wk-box { border: 1px solid var(--line); border-left: 4px solid var(--todo); border-radius: 8px; padding: 10px 12px 2px; margin: 0 0 12px; background: #fafbfc; font-size: 13.5px; line-height: 1.6; }
+.wk-box.wk-ok { border-left-color: var(--green); background: var(--green-bg); }
+.wk-box.wk-unsure { border-left-color: var(--orange); background: var(--orange-bg); }
+.wk-box.wk-no { border-left-color: var(--line-2); background: #f4f5f7; color: var(--ink-2); }
+.wk-head { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; margin: 0 0 6px; }
+.wk-state { font-size: 13px; color: var(--ink-2); }
+.wk-box.wk-ok .wk-state { color: var(--green); font-weight: 600; }
+.wk-src, .wk-at, .wk-links { margin: 0 0 6px; overflow-wrap: anywhere; }
+.wk-none { color: var(--red); }
+.wk-links { display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.wk-link { color: var(--focus); text-decoration: underline; min-height: 32px; display: inline-flex; align-items: center; }
+.wk-opts { margin: 4px 0 8px; }
+.f.radios label.opt.is-off { opacity: .45; cursor: not-allowed; }
+.wk-report { border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px 4px; margin: 0 0 14px; background: #fff; }
+.wk-report h3 { font-size: 15px; margin: 0 0 6px; }
+.wk-prog { font-size: 14px; font-weight: 600; margin: 0 0 6px; }
+.wk-list { font-size: 13px; color: var(--ink-2); margin: 0 0 8px; }
+.wk-list ul { margin: 4px 0 0; padding-left: 20px; }
+.wk-list p { margin: 2px 0 0; }
+.wk-report .wk-links { font-size: 13.5px; }
+
 .howto .howto-note{margin:8px 0 0;font-size:13px;color:var(--ink-2);line-height:1.6}
 .howto li b{margin-right:0}
 #topmsg{margin:0 0 12px}
@@ -2449,13 +2470,14 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   }
 
   const paste = { st: null, rep: null, back: null, note: '', go: null };
-  const snapKeys = st => ['compare', 'cmp', 'feats', 'faq', 'train'].filter(k => k in st);
+
+  const snapKeys = () => ['compare', 'cmp', 'feats', 'faq', 'train', 'web'];
 
   function fromLink(c) {
     const hash = location.hash, { G, rebuild, changed } = c;
     if (!G.trainLinkParse(hash)) return false;
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { location.hash = ''; }
-    const st = c.state(), had = !c.isEmpty(), snap = JSON.stringify(snapKeys(st).map(k => st[k]));
+    const st = c.state(), had = !c.isEmpty(), snap = JSON.stringify(snapKeys().map(k => k in st ? st[k] : null));
     const r = G.trainFromLink(st, hash, !!c.long);
     paste.st = st; paste.rep = r.rep;
     paste.back = r.rep.need ? null : { snap };
@@ -2483,11 +2505,11 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     const { h, rebuild, changed } = c, st = c.state();
     if (paste.st !== st) { paste.st = st; paste.rep = null; paste.back = null; paste.note = ''; paste.go = null; }
     if (!paste.rep) return null;
-    const SNAP = snapKeys(st);
+    const SNAP = snapKeys();
     const undoIt = () => {
       const b = paste.back;
       if (!b) return;
-      JSON.parse(b.snap).forEach((v, i) => { st[SNAP[i]] = v; });
+      JSON.parse(b.snap).forEach((v, i) => { if (v === null) delete st[SNAP[i]]; else st[SNAP[i]] = v; });
       paste.back = null; paste.rep = null; paste.note = ''; paste.go = null;
       rebuild(); changed();
     };
@@ -2536,6 +2558,54 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       return wrap;
     };
     const fid = p => 'f-' + p.replace(/[^A-Za-z0-9_-]/g, '-');
+    const qmsg = key => { const m = h('div', { class: 'msg', 'data-qmsg': '1' }); reg[key] = { msg: m }; return m; };
+
+    const webs = new Map(G.trainWebList(st, !!c.long).map(x => [x.key, x]));
+    const WEB_STATE = { '': '還沒核對，不會放進去', ok: '對，會放進去', unsure: '不確定，不會放進去', no: '這款沒有，不會放進去' };
+    const webNo = key => webs.has(key) && webs.get(key).web.state === 'no';
+
+    const outLink = (href, text) => G.httpsOnly(href) === href ? h('a', { href, target: '_blank', rel: 'noopener noreferrer', class: 'wk-link' }, text) : null;
+    const webBox = key => {
+      const w = webs.get(key);
+      if (!w) return null;
+      const m = w.web, id = fid('web.' + key), noSrc = !G.clean(m.src), urls = m.urls.filter(u => G.httpsOnly(u) === u);
+      const from = st.web && st.web.from;
+      const links = [...urls.map((u, i) => outLink(u, urls.length > 1 ? `打開第 ${i + 1} 張圖` : '打開這張圖')), from ? outLink(from, '打開原頁') : null].filter(Boolean);
+      return h('div', { class: 'wk-box wk-' + (m.state || 'todo'), 'data-web': key },
+        h('div', { class: 'wk-head' }, h('b', null, '從網頁讀來的'), h('span', { class: 'wk-state' }, WEB_STATE[m.state] || WEB_STATE[''])),
+        h('p', { class: 'wk-src' }, h('b', null, '原文：'), noSrc ? h('span', { class: 'wk-none' }, '沒有原文，不能按「對」') : m.src),
+        h('p', { class: 'wk-at' }, h('b', null, '出處：'), m.at || '沒寫'),
+        links.length ? h('p', { class: 'wk-links' }, ...links) : null,
+        h('div', { class: 'f radios wk-opts' },
+          h('div', { class: 'opts', role: 'radiogroup', 'aria-label': '核對：' + w.q, onmousedown: keepPos },
+            ...[['ok', '對'], ['no', '這款沒有'], ['unsure', '不確定']].map(([v, label]) => {
+              const r = h('input', { type: 'radio', name: id, value: v });
+              r.checked = m.state === v;
+              if (v === 'ok' && noSrc) r.disabled = true;
+              r.onchange = () => { if (G.trainWebSet(st, key, v)) { rebuild(); changed(); } };
+              return h('label', { class: 'opt' + (r.disabled ? ' is-off' : '') }, r, label);
+            }))));
+    };
+
+    const webReport = () => {
+      const W = st.web;
+      if (!W) return null;
+      const all = [...webs.values()], n = s => all.filter(x => (x.web.state || '') === s).length;
+      const list = (title, items, note) => items.length ? h('div', { class: 'wk-list' }, h('b', null, title), note ? h('p', { class: 'small' }, note) : null, h('ul', null, ...items.map(x => h('li', null, x)))) : null;
+      const from = W.from ? outLink(W.from, '打開原頁') : null;
+      return h('div', { class: 'wk-report' },
+        h('h3', null, '從網頁讀來的卡：對著原文核對'),
+        h('p', { class: 'note' }, '這些卡是 skill 讀商品頁寫的。每張卡下面有原文和出處：對著原文看過，按「對」才會放進「選購前先看」區。沒按的、「不確定」、「這款沒有」都不會放進去。有數字、講到別的牌子的卡，帶進來就是「不確定」：對過包裝或公司資料才按「對」。'),
+        h('p', { class: 'wk-prog' }, `共 ${all.length} 張：對 ${n('ok')}、還沒核對 ${n('')}、不確定 ${n('unsure')}、這款沒有 ${n('no')}`),
+        qmsg('web.todo'), qmsg('web.unsure'),
+        from ? h('p', { class: 'wk-links' }, from) : null,
+        W.seen ? h('p', { class: 'small' }, h('b', null, '這次讀到：'), W.seen) : null,
+        W.noimg ? h('p', { class: 'small' }, h('b', null, '讀不到字、看不到畫面的圖：'), W.noimg, '。這幾張自己去頁面看。') : null,
+        list('先不放（只能看）', W.hold, '這些要公司資料才能寫，按鈕解不開。真的拿到資料，自己寫進格子，工具照樣會檢查。'),
+        list('還讀到的', W.more, '想放就自己寫進常見問題' + (c.long ? '或商品特色' : '') + '。'),
+        h('p', { class: 'small' }, '顏色不從網頁拿：照我們購買區的規格選單填。比較也不從網頁寫：我們有兩個版本的話，最上面那題選「有」，自己寫。'),
+        h('p', { class: 'small' }, '空著的題目：網頁上沒讀到，或在「先不放」裡。知道就自己填，不知道就空著。'));
+    };
 
     const radios = (path, title, opts, o) => {
       o = o || {};
@@ -2567,7 +2637,6 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       reg[path] = { wrap, msg, input: sel };
       return wrap;
     };
-    const qmsg = key => { const m = h('div', { class: 'msg', 'data-qmsg': '1' }); reg[key] = { msg: m }; return m; };
 
     if (st.compare === 'yes') {
       out.push(section('Compare', '比較', '兩個版本差在哪，一句話講完', [
@@ -2584,11 +2653,14 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (c.long) {
       const items = st.feats.map((x, i) => {
         const ex = G.FEAT_EX[i] || {}, req = i < G.FEATS_MIN ? undefined : false;
+        const head = h('div', { class: 'ih' }, h('b', null, '特色 ' + (i + 1)), h('span', { class: 'sp' }),
+          st.feats.length > G.FEATS_MIN ? removeBtn(() => removeAt(st.feats, i, `商品特色第 ${i + 1} 項`), `刪掉特色 ${i + 1}`) : null);
+        if (webNo('feats.' + i)) return h('div', { class: 'item' }, head, h('div', { class: 'lab' }, x.name), webBox('feats.' + i));
         return h('div', { class: 'item' },
-          h('div', { class: 'ih' }, h('b', null, '特色 ' + (i + 1)), h('span', { class: 'sp' }),
-            st.feats.length > G.FEATS_MIN ? removeBtn(() => removeAt(st.feats, i, `商品特色第 ${i + 1} 項`), `刪掉特色 ${i + 1}`) : null),
+          head,
           field('feats.' + i + '.name', '特色名稱', { max: L.faqQ, req, ph: ex.name ? '例：' + ex.name : '' }),
-          withName(field('feats.' + i + '.text', '這一項的完整句子', { area: true, max: L.faqA, req, ph: ex.text ? '例：' + ex.text : '' }), 'feats.' + i + '.text', 'feats.' + i + '.name'));
+          withName(field('feats.' + i + '.text', '這一項的完整句子', { area: true, max: L.faqA, req, ph: ex.text ? '例：' + ex.text : '' }), 'feats.' + i + '.text', 'feats.' + i + '.name'),
+          webBox('feats.' + i));
       });
       out.push(section('Feats', '商品特色', `${G.FEATS_MIN} 到 ${G.FEATS_MAX} 項，一項一張白卡`, [
         h('p', { class: 'note' }, '長圖上的賣點，AI 和搜尋不一定讀得到，這裡用文字寫一次。一項只講一件事：名稱是白卡的標題，底下寫一句完整的句子。商品頁上有寫的才寫。'),
@@ -2607,6 +2679,14 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       advice.open = adviceOpen;
       advice.addEventListener('toggle', () => { adviceOpen = advice.open; });
       const item = q => {
+        const key = 'train.' + q.id;
+        if (webNo(key)) return h('div', { class: 'item' }, h('div', { class: 'lab' }, webs.get(key).q), webBox(key));
+
+        const el = item0(q), wb = webBox(key);
+        if (wb) el.append(wb);
+        return el;
+      };
+      const item0 = q => {
         const key = 'train.' + q.id, req = q.sets[t.set] === 1 ? undefined : false, ex = q.ex ? '例：' + q.ex : '';
         if (q.kind === 'pick') {
           const v = t[q.id], mk = 'train.' + G.trainMore(q);
@@ -2651,6 +2731,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         field('train.name', '商品短名', { ph: '例：明岳殼', hint: '工具寫句子時會放在開頭，例如「明岳殼支援 MagSafe」。卡片被 AI 單獨引用時，才看得出在講哪個商品。' }),
         radios('train.set', '題組', G.TRAIN_SETS, { hint: '掛繩、充電線、車用吸塵器這類不是手機殼的商品，選「其他商品」。' }),
         pasteBox(c),
+        webReport(),
         ...(qs.length ? [h('p', { class: 'note' }, '有按鈕的題，按一下工具就寫好句子，可以再補一句。按了就算你確認過，沒把握就不要按。沒有合適的，按「自己寫」。沒有按鈕的題，寫成完整句子：先回答，再補一句原因或用法。手上有資料的先答，沒答的題不會出現在「選購前先看」區。')] : []),
         ...groups,
       ], { badge: '選購前先看' }));
@@ -2680,11 +2761,15 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     }
 
     {
-      const items = st.faq.map((x, i) => h('div', { class: 'item' },
+      const items = st.faq.map((x, i) => webNo('faq.' + i) ? h('div', { class: 'item' },
+        h('div', { class: 'ih' }, h('b', null, 'Q' + (i + 1)), h('span', { class: 'sp' }),
+          st.faq.length > 1 ? removeBtn(() => removeAt(st.faq, i, `常見問題 Q${i + 1}`), `刪掉 Q${i + 1}`) : null),
+        h('div', { class: 'lab' }, x.q), webBox('faq.' + i)) : h('div', { class: 'item' },
         h('div', { class: 'ih' }, h('b', null, 'Q' + (i + 1)), h('span', { class: 'sp' }),
           st.faq.length > 1 ? removeBtn(() => removeAt(st.faq, i, `常見問題 Q${i + 1}`), `刪掉 Q${i + 1}`) : null),
         field('faq.' + i + '.q', '問題', { max: L.faqQ, req: false, ph: i === 0 ? '例：鏡頭的部分有保護到嗎？' : '' }),
-        withName(field('faq.' + i + '.a', '回答', { area: true, max: L.faqA, req: false, ph: i === 0 ? '例：有。鏡頭孔位有加高，平放時不會直接接觸桌面。' : '' }), 'faq.' + i + '.a', 'faq.' + i + '.q')));
+        withName(field('faq.' + i + '.a', '回答', { area: true, max: L.faqA, req: false, ph: i === 0 ? '例：有。鏡頭孔位有加高，平放時不會直接接觸桌面。' : '' }), 'faq.' + i + '.a', 'faq.' + i + '.q'),
+        webBox('faq.' + i)));
       out.push(section('FAQ', '常見問題', '一題一張白卡', [
         h('p', { class: 'note' }, '固定題沒有的題目寫在這裡，一題一張白卡。沒有就空著。'),
         ...items,
@@ -2776,7 +2861,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     const old = d && Array.isArray(d.before) ? d.before.map(x => fill(x, qa0())).filter(x => G.clean(x.q) || G.clean(x.a)) : [];
     if (old.length) s.faq = old.concat(s.faq.filter(x => G.clean(x.q) || G.clean(x.a)));
     if (!s.faq.length) s.faq = [qa0()];
-    return s;
+
+    return G.trainWebLoad(s, d);
   }
   let state = blank();
 
@@ -2900,7 +2986,9 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   function paintCopyBtn(btn, issues) {
     const red = issues.filter(i => uiOf(i) === 'red').length, todo = issues.filter(i => uiOf(i) === 'todo').length;
     let status = '', cls = 'primary';
-    if (red) { status = `有 ${red} 項紅字`; cls = 'warn'; }
+
+    const web = issues.some(i => i.key === 'web.todo') ? G.trainWebList(state, true).filter(x => !x.web.state).length : 0;
+    if (red) { status = web ? `還有 ${web} 張網頁讀來的卡沒核對` + (red > 1 ? `、${red - 1} 項紅字` : '') : `有 ${red} 項紅字`; cls = 'warn'; }
     else if (todo) { status = `還有 ${todo} 處待填`; cls = ''; }
     btn.textContent = btn.dataset.label + (status ? '｜' + status : '');
     btn.dataset.status = status;
@@ -3036,7 +3124,9 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   }
   function copy(msg, failText) {
     paintIssues(); paintOutput();
-    if (!html) { msg.className = 'copymsg err'; msg.textContent = '「選購前先看」區一張白卡都還沒有，沒有東西可以複製。'; return; }
+
+    const waiting = G.trainWebList(state, true).length;
+    if (!html) { msg.className = 'copymsg err'; msg.textContent = waiting ? `網頁讀來的 ${waiting} 張卡都還沒按「對」，「選購前先看」區還沒有白卡可以複製。對著原文看過，按「對」才會放進去。` : '「選購前先看」區一張白卡都還沒有，沒有東西可以複製。'; return; }
     if (!confirmFirst($('#copy'), msg)) return;
     const st = $('#copy').dataset.status;
     copyText(html, $('#code'), msg, () => [
