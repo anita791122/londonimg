@@ -322,7 +322,7 @@ A：範例殼的背面有掛繩孔，可以裝掛繩。
 
 把第 4 段放進連結，美編點一下，上架工具打開，短名、題組、問答都填好。第 4 段是「沒有」，這段也寫「沒有」。
 
-網址開頭：`https://anita791122.github.io/londonimg/product-page/listing-tool/`
+網址開頭：`https://re4790150.github.io/londonimg-listing-tool/`
 
 全部接成一行，寫成 Markdown 連結：
 

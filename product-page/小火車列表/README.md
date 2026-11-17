@@ -67,5 +67,5 @@
 ## 打包前要做
 - `name` 是 `londonimg-train-list`（skill 名稱只能用小寫英數和連字號）。zip 裡的資料夾要改成同名，資料夾名跟 skill 名稱不一致會上傳失敗
 - zip 不帶 `check_questions.js`
-- `SKILL.md` 的網址開頭現在是個人站，給同事前換成公司站 `https://re4790150.github.io/londonimg-listing-tool/`，全檔只有這一處
+- `SKILL.md` 的網址開頭已換成公司站 `https://re4790150.github.io/londonimg-listing-tool/`（11/17 換），全檔只有這一處。公司站的工具要先更新到同一版，不然連結帶不進卡
 - 給同事看的句子（追問、紅線提示、自己加的題目）還沒跑去 AI 味，發之前跑

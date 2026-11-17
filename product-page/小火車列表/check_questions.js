@@ -121,7 +121,7 @@ asked.filter(w => !yes.includes(w)).forEach(w => bad.push(`SKILL.md 的追問表
 // 7. 公開字掃描：這個資料夾之後會進公開的 zip
 const words = read(up('上架工具', 'build.js')).match(/PRIVATE_WORDS = \[(.*?)\]/)[1].match(/'([^']+)'/g).map(s => s.slice(1, -1));
 if (words.length < 10) bad.push(`內部用語清單只讀到 ${words.length} 個，build.js 的寫法可能改了`);
-// SKILL.md 的網址開頭現在指個人站，網址裡有帳號名，只放行那一行的 github.io 網址（給同事前換成公司站）
+// SKILL.md 的網址開頭指公司站（11/17 換），網址裡有帳號名，只放行那一行的 github.io 網址
 const SITE = (skill.match(/^網址開頭：`(https:\/\/[a-z0-9-]+\.github\.io\/[^`\s]*\/)`$/m) || [])[1] || '';
 for (const f of ['SKILL.md', 'README.md', 'check_questions.js', 'reference/questions.md', 'reference/tone-rules.md']) {
   const t = read(path.join(here, f)), low = (f === 'SKILL.md' ? t.replace(SITE, '') : t).toLowerCase();
