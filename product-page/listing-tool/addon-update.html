@@ -1458,9 +1458,9 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     const empty = v => clean(v) === '';
     const rows = s.faq || [];
     const filled = rows.filter(x => !empty(x.q) || !empty(x.a)).length;
-    if (filled > FAQ_MAX) add('faq.add', 'red', `常見問題最多 ${FAQ_MAX} 題，現在有 ${filled} 題：刪掉幾題`, 'FAQ');
+    if (filled > FAQ_MAX) add('faq.add', 'red', `選購前先看最多 ${FAQ_MAX} 題，現在有 ${filled} 題：刪掉幾題`, 'FAQ');
 
-    if (!filled) add('faq.add', 'red', '常見問題一題都還沒填：把 skill 產的問答一題一題貼進來', 'FAQ', 'todo');
+    if (!filled) add('faq.add', 'red', '選購前先看一題都還沒填：把 skill 產的問答一題一題貼進來', 'FAQ', 'todo');
     rows.forEach((x, i) => {
       if (empty(x.q) && empty(x.a)) return;
       const k = 'faq.' + i;
@@ -1596,11 +1596,11 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
       faq.forEach(x => {
         const same = cur.find(y => sameQ(y.q) === sameQ(x.q));
         if (same) { put(same, 'a', x.a, x.q); tag(same, x); n++; return; }
-        if (cur.length >= 10) { rep.manual.push(`「${x.q}」：常見問題最多 10 題，這題沒有放進去`); return; }
+        if (cur.length >= FAQ_MAX) { rep.manual.push(`「${x.q}」：選購前先看最多 ${FAQ_MAX} 題，這題沒有放進去`); return; }
         cur.push(tag({ q: x.q, a: x.a }, x)); n++;
       });
       if (cur.length) s.faq = cur;
-      if (n) rep.done.push(`常見問題 ${n} 題`);
+      if (n) rep.done.push(`選購前先看 ${n} 題`);
     }
 
     const cards = trainCards(s, long, true);
@@ -1899,9 +1899,9 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
     if (hasText((d.summary || {}).feats)) gone.push('商品摘要');
     const dropped = (Array.isArray(d.faq) ? d.faq : []).filter(oldFaqOut).map(x => clean(x.q)).filter(Boolean);
     if (dropped.length) notes.push(`這幾題當時沒有按「對」（這款沒有、不確定或還沒核對），沒有帶進來：${dropped.join('、')}。確定我們這款也是這樣，再自己加回去。`);
-    if (gone.length) notes.push(`這份草稿是舊版工具存的。${gone.map(x => '「' + x + '」').join('、')}已經拿掉，裡面的字沒有帶進來。要留的內容，請改寫成常見問題（題目 20 字內、回答 50 字內）。有型號的商品，適用機型自己加一題。`);
+    if (gone.length) notes.push(`這份草稿是舊版工具存的。${gone.map(x => '「' + x + '」').join('、')}已經拿掉，裡面的字沒有帶進來。要留的內容，請改寫成「選購前先看」的問答（題目 20 字內、回答 50 字內）。有型號的商品，適用機型自己加一題。`);
     const shut = [];
-    if (on.faq === false && hasText(d.faq)) shut.push('常見問題');
+    if (on.faq === false && hasText(d.faq)) shut.push('選購前先看');
     if (on.before === false && hasText(d.before)) shut.push('舊的選購前先看');
     if (shut.length) notes.push(`當時關著的${shut.map(x => '「' + x + '」').join('、')}：現在沒有開關，裡面的字會進「選購前先看」區。請看過，不放的就刪掉。`);
     return notes;

@@ -467,7 +467,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     <details class="howto" id="howto" open>
       <summary><b>怎麼用</b><span class="safe">這個工具只產生語法，不會寫進後台，也不會碰價格和規格。</span></summary>
       <ol>
-        <li>從上往下把每一區填完。灰色字是 B67 的例子，照著格式寫。最下面的「常見問題」，把 skill 產的問答一題一題貼進來。</li>
+        <li>從上往下把每一區填完。灰色字是 B67 的例子，照著格式寫。最下面的「選購前先看」，把 skill 產的問答一題一題貼進來。</li>
         <li>圖要先上傳到 SHOPLINE 後台，再把圖片網址貼進來（結尾是 <code>original.副檔名</code>，例如 <code>original.png</code>、<code>original.jpg</code>）。工具會讀圖，告訴你夠不夠大。</li>
         <li>預覽上方的「複製語法」變成黑色，才是全部處理好：沒有紅字、沒有待填、沒有 B67 範例字。後台原本的描述要留的話，先存好舊的再按（剪貼簿只有一格，後複製的會蓋掉先複製的）。按下去，貼進商品描述的「HTML 原始碼」。</li>
         <li>最後到「搜尋最佳化」分頁，四格各自按「複製」，貼進後台「網路搜尋最佳化」的「繁體中文」分頁。</li>
@@ -1821,9 +1821,9 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const empty = v => clean(v) === '';
     const rows = s.faq || [];
     const filled = rows.filter(x => !empty(x.q) || !empty(x.a)).length;
-    if (filled > FAQ_MAX) add('faq.add', 'red', `常見問題最多 ${FAQ_MAX} 題，現在有 ${filled} 題：刪掉幾題`, 'FAQ');
+    if (filled > FAQ_MAX) add('faq.add', 'red', `選購前先看最多 ${FAQ_MAX} 題，現在有 ${filled} 題：刪掉幾題`, 'FAQ');
 
-    if (!filled) add('faq.add', 'red', '常見問題一題都還沒填：把 skill 產的問答一題一題貼進來', 'FAQ', 'todo');
+    if (!filled) add('faq.add', 'red', '選購前先看一題都還沒填：把 skill 產的問答一題一題貼進來', 'FAQ', 'todo');
     rows.forEach((x, i) => {
       if (empty(x.q) && empty(x.a)) return;
       const k = 'faq.' + i;
@@ -1959,11 +1959,11 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       faq.forEach(x => {
         const same = cur.find(y => sameQ(y.q) === sameQ(x.q));
         if (same) { put(same, 'a', x.a, x.q); tag(same, x); n++; return; }
-        if (cur.length >= 10) { rep.manual.push(`「${x.q}」：常見問題最多 10 題，這題沒有放進去`); return; }
+        if (cur.length >= FAQ_MAX) { rep.manual.push(`「${x.q}」：選購前先看最多 ${FAQ_MAX} 題，這題沒有放進去`); return; }
         cur.push(tag({ q: x.q, a: x.a }, x)); n++;
       });
       if (cur.length) s.faq = cur;
-      if (n) rep.done.push(`常見問題 ${n} 題`);
+      if (n) rep.done.push(`選購前先看 ${n} 題`);
     }
 
     const cards = trainCards(s, long, true);
@@ -2262,9 +2262,9 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     if (hasText((d.summary || {}).feats)) gone.push('商品摘要');
     const dropped = (Array.isArray(d.faq) ? d.faq : []).filter(oldFaqOut).map(x => clean(x.q)).filter(Boolean);
     if (dropped.length) notes.push(`這幾題當時沒有按「對」（這款沒有、不確定或還沒核對），沒有帶進來：${dropped.join('、')}。確定我們這款也是這樣，再自己加回去。`);
-    if (gone.length) notes.push(`這份草稿是舊版工具存的。${gone.map(x => '「' + x + '」').join('、')}已經拿掉，裡面的字沒有帶進來。要留的內容，請改寫成常見問題（題目 20 字內、回答 50 字內）。有型號的商品，適用機型自己加一題。`);
+    if (gone.length) notes.push(`這份草稿是舊版工具存的。${gone.map(x => '「' + x + '」').join('、')}已經拿掉，裡面的字沒有帶進來。要留的內容，請改寫成「選購前先看」的問答（題目 20 字內、回答 50 字內）。有型號的商品，適用機型自己加一題。`);
     const shut = [];
-    if (on.faq === false && hasText(d.faq)) shut.push('常見問題');
+    if (on.faq === false && hasText(d.faq)) shut.push('選購前先看');
     if (on.before === false && hasText(d.before)) shut.push('舊的選購前先看');
     if (shut.length) notes.push(`當時關著的${shut.map(x => '「' + x + '」').join('、')}：現在沒有開關，裡面的字會進「選購前先看」區。請看過，不放的就刪掉。`);
     return notes;
@@ -2395,18 +2395,18 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     advice.addEventListener('toggle', () => { adviceOpen = advice.open; });
     const items = st.faq.map((x, i) => h('div', { class: 'item' },
       h('div', { class: 'ih' }, h('b', null, 'Q' + (i + 1)), h('span', { class: 'sp' }),
-        st.faq.length > 1 ? steady(removeBtn(() => removeAt(st.faq, i, `常見問題 Q${i + 1}`), `刪掉 Q${i + 1}`)) : null),
+        st.faq.length > 1 ? steady(removeBtn(() => removeAt(st.faq, i, `選購前先看 Q${i + 1}`), `刪掉 Q${i + 1}`)) : null),
       field('faq.' + i + '.q', '問題', { max: L.faqQ, req: false, ph: i === 0 ? '例：鏡頭的部分有保護到嗎？' : '' }),
       field('faq.' + i + '.a', '回答', { area: true, max: L.faqA, req: false, ph: i === 0 ? '例：有。鏡頭孔位有加高，平放時不會直接接觸桌面。' : '' })));
     const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
     reg['faq.add'] = { msg: addMsg };
-    return [section('FAQ', '常見問題', `一題一張白卡，最多 ${MAX} 題`, [
+    return [section('FAQ', '選購前先看', `一題一張白卡，最多 ${MAX} 題`, [
       advice,
-      h('p', { class: 'note' }, '這一區就是商品描述最下面「選購前先看」那排白卡。沒填的題不會出現。'),
+      h('p', { class: 'note' }, '這一區就是商品描述最下面那排左右滑的白卡。沒填的題不會出現。'),
       ...items,
       h('div', { class: 'addrow' }, st.faq.length < MAX ? steady(addBtn('＋ 再加一題', () => { st.faq.push({ q: '', a: '' }); rebuild(); changed(); })) : null, h('span', { class: 'small' }, `${st.faq.length}／${MAX} 題`)),
       addMsg,
-    ], { badge: 'FAQ' })];
+    ], { badge: '選購前先看' })];
   }
 
   root.LNTrainForm = { build, ADVICE, keepFocus };
@@ -2869,9 +2869,9 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   }
 
   let lastIssues = [];
-  const SEC_NAMES = { top: '最上面', A: 'A 加價購', Hero: 'Hero', B: 'B 介紹段', D: 'D 棋盤格', E: 'E 棋盤格', F: 'F 棋盤格', G: 'G 棋盤格', H: 'H 其他特色', C: 'C 影片', FAQ: '常見問題' };
+  const SEC_NAMES = { top: '最上面', A: 'A 加價購', Hero: 'Hero', B: 'B 介紹段', D: 'D 棋盤格', E: 'E 棋盤格', F: 'F 棋盤格', G: 'G 棋盤格', H: 'H 其他特色', C: 'C 影片', FAQ: '選購前先看' };
 
-  const NAV_NAMES = { A: 'A 加購', Hero: 'Hero 大圖', B: 'B 介紹', D: 'D 棋盤', E: 'E 棋盤', F: 'F 棋盤', G: 'G 棋盤', H: 'H 特色', C: 'C 影片', FAQ: 'FAQ' };
+  const NAV_NAMES = { A: 'A 加購', Hero: 'Hero 大圖', B: 'B 介紹', D: 'D 棋盤', E: 'E 棋盤', F: 'F 棋盤', G: 'G 棋盤', H: 'H 特色', C: 'C 影片', FAQ: '選購前先看' };
   const ORDER = ['top', 'A', 'Hero', 'B', 'D', 'E', 'F', 'G', 'H', 'C', 'FAQ'];
   const sevOf = i => i.level === 'red' ? (i.kind === 'todo' ? 'todo' : 'red') : 'orange';
   const isSample = i => i.kind === 'sample';
