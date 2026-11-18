@@ -304,6 +304,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .seo-opt.seo-cb input { margin: 0; flex: none; }
 .seo-opts #seo-cat-note { grid-column: 1 / -1; margin: 0; }
 .seo-opts .seo-opt:nth-child(3) { grid-column: 1 / -1; }
+.seo-opts .seo-wide { grid-column: 1 / -1; margin: 0; }
+
+.codebox .seo-opt textarea { flex: none; height: auto; border: 1px solid var(--field-line); border-radius: 7px; padding: 6px 8px; background: #fff; width: 100%; box-sizing: border-box; font: 14px/1.55 -apple-system, "PingFang TC", "Noto Sans TC", sans-serif; color: var(--ink); white-space: pre-wrap; word-break: normal; overflow-wrap: anywhere; resize: vertical; }
+#seo-models-note:empty { display: none; }
 .seo-all:empty { display: none; }
 .seo-all { border-radius: 8px; padding: 8px 10px; font-size: 13.5px; line-height: 1.6; background: var(--hint-bg); color: var(--hint); }
 .seo-all p { margin: 0 0 4px; } .seo-all p:last-child { margin: 0; }
@@ -514,6 +518,10 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
             <label class="seo-opt seo-cb"><input type="checkbox" id="seo-both"><span>這個賣場有一般版和 MagSafe 版</span></label>
             <label class="seo-opt"><span>網址英文</span><input type="text" id="seo-words" spellcheck="false" placeholder="沒填就照商品名猜，例如 ice-rock"></label>
             <p class="small" id="seo-cat-note"></p>
+            <label class="seo-opt seo-wide"><span>適用機型（照購買區規格選單選得到的機型，一行一款）</span><textarea id="seo-models" rows="3" spellcheck="false" aria-describedby="seo-models-note" placeholder="例：&#10;iPhone 18 Pro&#10;iPhone 18 Pro Max&#10;iPhone 17 Pro"></textarea></label>
+            <p class="small seo-wide" id="seo-models-note"></p>
+            <label class="seo-opt seo-wide"><span>賣點（一行一個）</span><textarea id="seo-feats" rows="4" spellcheck="false" placeholder="例：&#10;全機邊框墊高，防摔也保護鏡頭。&#10;支援 MagSafe 磁吸充電。"></textarea></label>
+            <p class="small seo-wide">這兩格只用來產下面四欄，不會放進商品描述。</p>
           </div>
           <p class="small seo-st" id="seo-st" hidden></p>
           <div class="seo-all" id="seo-all" role="status" aria-live="polite"></div>
@@ -1152,15 +1160,25 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     return lines.join('\n');
   }
 
+  const seoModelList = t => String(t || '').split(/[\n、,，;；／/]+/).map(clean).filter(Boolean);
+  function seoIn(s) {
+    const o = s.seo || {};
+    const feats = String(o.feats || '').split('\n').map(stripBullet).filter(Boolean);
+    const models = seoModelList(o.models);
+    return {
+      feats: feats.length ? feats : ((s.summary || {}).feats || []).map(stripBullet).filter(Boolean),
+      mp: models.length ? modelPhrase({ rows: [{ names: models.join('／'), ok: true }] }) : compatPhrase(s),
+      fromSeo: models.length > 0,
+    };
+  }
   function seoFacts(s) {
     const name = clean((s.hero || {}).name);
-    const feats = ((s.summary || {}).feats || []).map(stripBullet).filter(Boolean);
-    const mp = compatPhrase(s);
+    const src = seoIn(s), feats = src.feats, mp = src.mp;
     const model = mp.text, unknown = [...new Set(mp.unknown.map(u => u.name))];
-    const menu = !mp.any && clean((s.compat || {}).menu) !== '';
+    const menu = src.fromSeo || (!mp.any && clean((s.compat || {}).menu) !== '');
     const specs = (s.specs || []).filter(r => r.sum && !isModelLabel(r.label) && clean(r.label) && clean(r.value)).map(r => clean(r.label) + '：' + clean(r.value));
     const cond = mp.any ? (condLine(s) || {}).a || '' : '';
-    return { name, feats, model, unknown, menu, specs, any: !!mp.any, cond };
+    return { name, feats, model, unknown, menu, specs, any: !!mp.any, cond, fromSeo: src.fromSeo };
   }
   const SEO_RULES_BEGIN = '===== 寫作規則（開始）=====', SEO_RULES_END = '===== 寫作規則（結束）=====';
   function seoPrompt(s, rules) {
@@ -1186,7 +1204,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
           ? '2. 適用範圍：這個商品不看手機機型。上面那句使用條件是工具照品類組的，寫簡介的適用範圍就照這句，不要自己補機型，也不用貼規格選單。'
           : '2. 適用範圍：這個商品不看手機機型，但工具裡還沒有使用條件。照規則的品類快查表，缺什麼就先問我，不要自己補機型或規格。')
         : f.model
-        ? '2. 適用機型：上面那一行是工具從適用機型表算的' + (f.menu ? '，表已經跟規格選單對過' : '') + '，就是規則裡說的「適用機型那一行」。照抄，不要自己補或改，也不要從商品名或賣點另外推機型。'
+        ? '2. 適用機型：上面那一行是工具從' + (f.fromSeo ? '規格選單上的機型算的' : '適用機型表算的' + (f.menu ? '，表已經跟規格選單對過' : '')) + '，就是規則裡說的「適用機型那一行」。照抄，不要自己補或改，也不要從商品名或賣點另外推機型。'
         : '2. 適用機型：工具裡沒有這一行。不要從商品名或賣點推算機型，也不要自己補「iPhone 12–18 系列」這種範圍。這個商品要挑機型的話（例如手機殼、玻璃貼、鏡頭貼），先請我貼規格選單上的機型清單；不看手機機型的通用品（例如掛繩、支架、線材），照規則的品類快查表寫。',
       '',
       '【寫作規則】照下面這份寫。四欄的寫法、品類快查表、自我檢查清單都在裡面。',
@@ -1256,7 +1274,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
   function seoDraft(s, R) {
     const f = seoFacts(s), o = s.seo || {};
-    const mp = compatPhrase(s);
+    const mp = seoIn(s).mp;
     const brand = seoBrand(f.name), rest = clean(brand ? f.name.slice(brand.length) : f.name);
     const cat = R.cats.find(c => c.name === o.cat) || seoGuessCat(f.name, R.cats);
     const noun = cat ? cat.kws[0].replace(/^iPhone\s*/i, '') : '';
@@ -1344,7 +1362,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const thin = !m.name || m.feats < 2 || dtw < L.title[0] || dkw < L.kw[0];
     if (!m.name) add('all', 'title', 'sugg', '資料不夠：Hero 的商品名還沒填，四欄都會缺品牌和品名。建議先填商品名。');
     else if (thin)
-      add('all', 'title', 'sugg', `資料不夠：${[m.feats < 2 ? `賣點只有 ${m.feats} 個` : '', dtw < L.title[0] ? `工具產的標題只有 ${fmtW(dtw)} 字` : '', dkw < L.kw[0] ? `關鍵字只有 ${dkw} 個` : ''].filter(Boolean).join('、')}。表單裡沒有賣點和適用機型，請直接在下面的格子補字，或用「給 Claude 的指令」讓 Claude 先問你。不改也能複製。`);
+      add('all', 'title', 'sugg', `資料不夠：${[m.feats < 2 ? `賣點只有 ${m.feats} 個` : '', dtw < L.title[0] ? `工具產的標題只有 ${fmtW(dtw)} 字` : '', dkw < L.kw[0] ? `關鍵字只有 ${dkw} 個` : ''].filter(Boolean).join('、')}。請在上面的「適用機型」「賣點」補資料，或直接在下面的格子補字。不改也能複製。`);
     if (!m.brand && m.name) add('all', 'title', 'sugg', '建議：商品名開頭看不出品牌（例如 YU、Londonimg）。品牌是顧客會搜的字，可以在標題和關鍵字自己補上。');
     if (!m.cat) add('all', 'kw', 'sugg', '建議：工具猜不出這是什麼品類。請在上面選「品類」，關鍵字和網址才會完整。');
     if (m.mag && !m.both && m.saysBoth) add('all', 'magsafe', 'sugg', '建議：賣點寫了有一般版和 MagSafe 版，勾上面的「這個賣場有一般版和 MagSafe 版」，標題和簡介會改寫成「可選 MagSafe 版」。不勾的話，標題會寫成每一款都支援 MagSafe。');
@@ -2252,7 +2270,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     return notes;
   }
 
-  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, oldDraftFaq, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, WEB_STATES, trainWebList, trainWebSet, trainWebLoad, compatHits, httpsOnly, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, FAQ_MAX, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, oldDraftFaq, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, WEB_STATES, trainWebList, trainWebSet, trainWebLoad, compatHits, httpsOnly, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, FAQ_MAX, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoIn, seoModelList, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
@@ -2323,6 +2341,11 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       { q: '不用支架時，背板會不會凸起、不好平放？', a: '不會。YU 360°無段支架手機殼的支架收合後不突出，背板是平的。放在桌上可以直接操作，放口袋也不卡。' },
       { q: '適用哪些 iPhone？', a: 'YU 360°無段支架手機殼適用 iPhone 18 Pro、18 Pro Max、17、17 Pro、17 Pro Max、iPhone Air、16、16 Plus、16 Pro、16 Pro Max、16e、15、15 Plus、15 Pro、15 Pro Max、14、14 Plus、14 Pro、14 Pro Max、13、13 Pro、13 Pro Max、12、12 Pro、12 Pro Max。各系列 mini、17e 不適用。實際可選機型以購買區的規格選單為準。' },
     ],
+
+    seo: {
+      models: 'iPhone 18 Pro\niPhone 18 Pro Max\niPhone 17\niPhone 17 Pro\niPhone 17 Pro Max\niPhone Air\niPhone 16\niPhone 16 Plus\niPhone 16 Pro\niPhone 16 Pro Max\niPhone 16e\niPhone 15\niPhone 15 Plus\niPhone 15 Pro\niPhone 15 Pro Max\niPhone 14\niPhone 14 Plus\niPhone 14 Pro\niPhone 14 Pro Max\niPhone 13\niPhone 13 Pro\niPhone 13 Pro Max\niPhone 12\niPhone 12 Pro\niPhone 12 Pro Max',
+      feats: '全機邊框墊高，防摔也保護手機鏡頭。\n360度環繞支架，追劇、滑手機都能立著用。\n獨家PU觸感材質，防汙耐髒。\n支援 MagSafe 磁吸充電，一殼多用。\n平放時背板穩固、不突出，操作不受影響。',
+    },
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = SAMPLE; else root.LN_SAMPLE_B67 = SAMPLE;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -2421,7 +2444,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
     faq: [faq0()],
 
-    seo: { cat: '', both: false, url: '', edit: { title: null, desc: null, kw: null, url: null } },
+    seo: { cat: '', both: false, url: '', models: '', feats: '', edit: { title: null, desc: null, kw: null, url: null } },
   });
   const clone = o => JSON.parse(JSON.stringify(o));
 
@@ -3328,6 +3351,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     $('#seo-cat').addEventListener('change', e => { state.seo.cat = e.target.value; changed(); });
     $('#seo-both').addEventListener('change', e => { state.seo.both = e.target.checked; changed(); });
     $('#seo-words').addEventListener('input', e => { state.seo.url = e.target.value; changed(); });
+    $('#seo-models').addEventListener('input', e => { state.seo.models = e.target.value; changed(); });
+    $('#seo-feats').addEventListener('input', e => { state.seo.feats = e.target.value; changed(); });
   }
   function paintSeoDirect() {
     const all = $('#seo-all'); if (!all) return;
@@ -3347,6 +3372,11 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     $('#seo-cat-note').textContent = '品類決定關鍵字的品類詞和網址結尾。猜錯了就自己選。';
     $('#seo-both').checked = !!o.both;
     const u = $('#seo-words'); if (document.activeElement !== u && u.value !== o.url) u.value = o.url;
+    [['#seo-models', o.models], ['#seo-feats', o.feats]].forEach(([sel, v]) => { const ta = $(sel); if (document.activeElement !== ta && ta.value !== v) ta.value = v; });
+
+    const unk = [...new Set(G.seoIn(state).mp.unknown.map(x => x.name))];
+    const mn = $('#seo-models-note'), mt = unk.length ? `工具不認得：${unk.join('、')}，沒有算進四欄。看一下有沒有打錯，或請工具負責人加進機型表。` : '';
+    if (mn.textContent !== mt) { mn.textContent = mt; mn.className = 'small seo-wide' + (mt ? ' seo-miss' : ''); }
     u.placeholder = seoD.meta.words.length && !seoD.meta.wordsFromUser ? `沒填就用工具猜的：${seoD.meta.words.join('-')}` : '例如極地冰岩殼可以填 ice-rock';
     SEO_KEYS.forEach(k => {
       const ed = o.edit[k];
@@ -3403,7 +3433,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     box.replaceChildren(...[
       h('p', { class: 'small' }, '指令會帶這些資料（從左邊表單來，要改就回表單改）：'),
       row('商品名', f.name, '沒填：Claude 會先問你'),
-      h('p', { class: 'small' }, '賣點和適用機型表單裡沒有：Claude 會先問你，再寫四欄。'),
+      row('賣點', f.feats.join('｜'), '沒填：Claude 會先問你（上面的「賣點」可以填）'),
+      row('適用機型', f.model, '沒填：要挑機型的商品，Claude 會請你貼規格選單上的機型（上面的「適用機型」可以填）'),
     ].filter(Boolean));
   }
 

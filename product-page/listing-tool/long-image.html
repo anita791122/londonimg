@@ -304,6 +304,10 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .seo-opt.seo-cb input { margin: 0; flex: none; }
 .seo-opts #seo-cat-note { grid-column: 1 / -1; margin: 0; }
 .seo-opts .seo-opt:nth-child(3) { grid-column: 1 / -1; }
+.seo-opts .seo-wide { grid-column: 1 / -1; margin: 0; }
+
+.codebox .seo-opt textarea { flex: none; height: auto; border: 1px solid var(--field-line); border-radius: 7px; padding: 6px 8px; background: #fff; width: 100%; box-sizing: border-box; font: 14px/1.55 -apple-system, "PingFang TC", "Noto Sans TC", sans-serif; color: var(--ink); white-space: pre-wrap; word-break: normal; overflow-wrap: anywhere; resize: vertical; }
+#seo-models-note:empty { display: none; }
 .seo-all:empty { display: none; }
 .seo-all { border-radius: 8px; padding: 8px 10px; font-size: 13.5px; line-height: 1.6; background: var(--hint-bg); color: var(--hint); }
 .seo-all p { margin: 0 0 4px; } .seo-all p:last-child { margin: 0; }
@@ -1124,15 +1128,25 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     return lines.join('\n');
   }
 
+  const seoModelList = t => String(t || '').split(/[\n、,，;；／/]+/).map(clean).filter(Boolean);
+  function seoIn(s) {
+    const o = s.seo || {};
+    const feats = String(o.feats || '').split('\n').map(stripBullet).filter(Boolean);
+    const models = seoModelList(o.models);
+    return {
+      feats: feats.length ? feats : ((s.summary || {}).feats || []).map(stripBullet).filter(Boolean),
+      mp: models.length ? modelPhrase({ rows: [{ names: models.join('／'), ok: true }] }) : compatPhrase(s),
+      fromSeo: models.length > 0,
+    };
+  }
   function seoFacts(s) {
     const name = clean((s.hero || {}).name);
-    const feats = ((s.summary || {}).feats || []).map(stripBullet).filter(Boolean);
-    const mp = compatPhrase(s);
+    const src = seoIn(s), feats = src.feats, mp = src.mp;
     const model = mp.text, unknown = [...new Set(mp.unknown.map(u => u.name))];
-    const menu = !mp.any && clean((s.compat || {}).menu) !== '';
+    const menu = src.fromSeo || (!mp.any && clean((s.compat || {}).menu) !== '');
     const specs = (s.specs || []).filter(r => r.sum && !isModelLabel(r.label) && clean(r.label) && clean(r.value)).map(r => clean(r.label) + '：' + clean(r.value));
     const cond = mp.any ? (condLine(s) || {}).a || '' : '';
-    return { name, feats, model, unknown, menu, specs, any: !!mp.any, cond };
+    return { name, feats, model, unknown, menu, specs, any: !!mp.any, cond, fromSeo: src.fromSeo };
   }
   const SEO_RULES_BEGIN = '===== 寫作規則（開始）=====', SEO_RULES_END = '===== 寫作規則（結束）=====';
   function seoPrompt(s, rules) {
@@ -1158,7 +1172,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
           ? '2. 適用範圍：這個商品不看手機機型。上面那句使用條件是工具照品類組的，寫簡介的適用範圍就照這句，不要自己補機型，也不用貼規格選單。'
           : '2. 適用範圍：這個商品不看手機機型，但工具裡還沒有使用條件。照規則的品類快查表，缺什麼就先問我，不要自己補機型或規格。')
         : f.model
-        ? '2. 適用機型：上面那一行是工具從適用機型表算的' + (f.menu ? '，表已經跟規格選單對過' : '') + '，就是規則裡說的「適用機型那一行」。照抄，不要自己補或改，也不要從商品名或賣點另外推機型。'
+        ? '2. 適用機型：上面那一行是工具從' + (f.fromSeo ? '規格選單上的機型算的' : '適用機型表算的' + (f.menu ? '，表已經跟規格選單對過' : '')) + '，就是規則裡說的「適用機型那一行」。照抄，不要自己補或改，也不要從商品名或賣點另外推機型。'
         : '2. 適用機型：工具裡沒有這一行。不要從商品名或賣點推算機型，也不要自己補「iPhone 12–18 系列」這種範圍。這個商品要挑機型的話（例如手機殼、玻璃貼、鏡頭貼），先請我貼規格選單上的機型清單；不看手機機型的通用品（例如掛繩、支架、線材），照規則的品類快查表寫。',
       '',
       '【寫作規則】照下面這份寫。四欄的寫法、品類快查表、自我檢查清單都在裡面。',
@@ -1228,7 +1242,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   function seoDraft(s, R) {
     const f = seoFacts(s), o = s.seo || {};
-    const mp = compatPhrase(s);
+    const mp = seoIn(s).mp;
     const brand = seoBrand(f.name), rest = clean(brand ? f.name.slice(brand.length) : f.name);
     const cat = R.cats.find(c => c.name === o.cat) || seoGuessCat(f.name, R.cats);
     const noun = cat ? cat.kws[0].replace(/^iPhone\s*/i, '') : '';
@@ -1316,7 +1330,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     const thin = !m.name || m.feats < 2 || dtw < L.title[0] || dkw < L.kw[0];
     if (!m.name) add('all', 'title', 'sugg', '資料不夠：Hero 的商品名還沒填，四欄都會缺品牌和品名。建議先填商品名。');
     else if (thin)
-      add('all', 'title', 'sugg', `資料不夠：${[m.feats < 2 ? `賣點只有 ${m.feats} 個` : '', dtw < L.title[0] ? `工具產的標題只有 ${fmtW(dtw)} 字` : '', dkw < L.kw[0] ? `關鍵字只有 ${dkw} 個` : ''].filter(Boolean).join('、')}。表單裡沒有賣點和適用機型，請直接在下面的格子補字，或用「給 Claude 的指令」讓 Claude 先問你。不改也能複製。`);
+      add('all', 'title', 'sugg', `資料不夠：${[m.feats < 2 ? `賣點只有 ${m.feats} 個` : '', dtw < L.title[0] ? `工具產的標題只有 ${fmtW(dtw)} 字` : '', dkw < L.kw[0] ? `關鍵字只有 ${dkw} 個` : ''].filter(Boolean).join('、')}。請在上面的「適用機型」「賣點」補資料，或直接在下面的格子補字。不改也能複製。`);
     if (!m.brand && m.name) add('all', 'title', 'sugg', '建議：商品名開頭看不出品牌（例如 YU、Londonimg）。品牌是顧客會搜的字，可以在標題和關鍵字自己補上。');
     if (!m.cat) add('all', 'kw', 'sugg', '建議：工具猜不出這是什麼品類。請在上面選「品類」，關鍵字和網址才會完整。');
     if (m.mag && !m.both && m.saysBoth) add('all', 'magsafe', 'sugg', '建議：賣點寫了有一般版和 MagSafe 版，勾上面的「這個賣場有一般版和 MagSafe 版」，標題和簡介會改寫成「可選 MagSafe 版」。不勾的話，標題會寫成每一款都支援 MagSafe。');
@@ -2224,7 +2238,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     return notes;
   }
 
-  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, oldDraftFaq, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, WEB_STATES, trainWebList, trainWebSet, trainWebLoad, compatHits, httpsOnly, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, FAQ_MAX, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
+  const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, oldDraftFaq, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, WEB_STATES, trainWebList, trainWebSet, trainWebLoad, compatHits, httpsOnly, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, FAQ_MAX, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoIn, seoModelList, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
     slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
