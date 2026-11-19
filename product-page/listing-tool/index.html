@@ -674,7 +674,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
   const addonOn = s => !(s.on && s.on.addon === false);
 
-  const addonFromDraft = d => !(d && d.askedAddon === true && d.on && d.on.addon === false);
+  const addonFromDraft = d => !(d && d.addonBox === true && d.on && d.on.addon === false);
 
   function addonItems(t) {
     return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {
@@ -2437,7 +2437,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     on: { addon: true, intro: true, features: true, videos: true, hero: true, train: true },
 
     addon: '',
-    askedAddon: true,
+    addonBox: true,
     addonExtra: {},
     hero: { img: img0(), name: '', sub: '', pos: 'bl', size: 'm', focus: '' },
     intro: ['', '', ''],
@@ -2464,7 +2464,6 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const b = blank(), s = fill(d, b);
 
     s.on.addon = G.addonFromDraft(d);
-    s.askedAddon = true;
 
     const ex = d && d.addonExtra && typeof d.addonExtra === 'object' && !Array.isArray(d.addonExtra) ? d.addonExtra : {};
     s.addonExtra = {};
@@ -2613,7 +2612,6 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       show(cb.checked);
       cb.onchange = () => {
         state.on[o.toggle] = cb.checked; show(cb.checked); secEls[code].classList.toggle('off', !cb.checked);
-        if (o.onToggle) o.onToggle(cb.checked);
         if (cb.checked && folded.has(code)) setFold(code, false);
         changed();
       };
@@ -2755,7 +2753,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
       const secA = section('A', '加價購區', '貼加價購商品的網址', [rest], { badge: 'A', toggle: 'addon',
         offNote: h('span', null, '這個商品不放加價購區。這個商品原本的頁面如果有加價購區，貼上新描述會把它蓋掉。要保留：貼完描述，到工具網站的', addonLink(), '產生語法，貼回描述最上面。'),
-        onToggle: () => { state.askedAddon = true; } });
+      });
       form.append(secA);
     }
 

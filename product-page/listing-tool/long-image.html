@@ -642,7 +642,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   const addonOn = s => !(s.on && s.on.addon === false);
 
-  const addonFromDraft = d => !(d && d.askedAddon === true && d.on && d.on.addon === false);
+  const addonFromDraft = d => !(d && d.addonBox === true && d.on && d.on.addon === false);
 
   function addonItems(t) {
     return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {

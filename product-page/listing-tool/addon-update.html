@@ -311,7 +311,7 @@ window.LN_ADDON_HIDDEN = {"【加價購】n08":true,"b147-1":true,"z19-8":true,"
 
   const addonOn = s => !(s.on && s.on.addon === false);
 
-  const addonFromDraft = d => !(d && d.askedAddon === true && d.on && d.on.addon === false);
+  const addonFromDraft = d => !(d && d.addonBox === true && d.on && d.on.addon === false);
 
   function addonItems(t) {
     return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {
