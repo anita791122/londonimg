@@ -458,7 +458,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 <a class="skip" id="skip" href="#copy">跳到預覽與複製</a>
 <header class="top">
   <h1><a class="home" href="guide.html">倫敦印象｜長條圖版用上架工具</a></h1>
-  <span class="ver">2026-11-18</span>
+  <span class="ver">2026-11-19</span>
   <a class="btn guide-link" href="guide.html"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4h6a4 4 0 0 1 4 4v12a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v12a3 3 0 0 1 3-3h7z"/></svg>使用說明</a>
   <span class="sp"></span>
   <span class="draftnote" id="draftnote"></span>
@@ -1655,7 +1655,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     const parts = [OUTER];
     const addon = addonHtml(s);
     if (addon) parts.push(addon);
-    parts.push(hero(s.hero));
+    if (on.hero !== false) parts.push(hero(s.hero));
 
     const segs = s.grid.filter(g => g.on);
     const wall = on.intro !== false || segs.length > 0;
@@ -1669,7 +1669,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (on.features) parts.push(features(s.features, wall));
     if (on.videos) parts.push(videos(s.videos, on.features || wall));
 
-    const cards = trainCards(s);
+    const cards = on.train !== false ? trainCards(s) : [];
     if (cards.length) parts.push(beforeBuy(cards, on.videos || on.features || wall ? '0' : SEC_TOP));
     parts.push('</div></div>');
     return parts.join('');
@@ -1729,7 +1729,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     s.grid.forEach((g, i) => { if (g.on) out.push(['D', 'E', 'F', 'G'][i]); });
     if (on.features) out.push('H');
     if (on.videos) out.push('C');
-    if (trainCards(s).length) out.push('Train');
+    if (on.train !== false && trainCards(s).length) out.push('Train');
     return out;
   }
 
@@ -2071,11 +2071,12 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       }
     }
 
-    img('hero.img', s.hero.img, 'hero', 'Hero');
+    const heroOn = (s.on || {}).hero !== false;
+    if (heroOn) img('hero.img', s.hero.img, 'hero', 'Hero');
 
-    if (!empty(s.hero.focus)) { const n = parseFloat(s.hero.focus); if (!Number.isFinite(n) || n < 0 || n > 100) add('hero.focus', 'red', '桌機版裁切位置只能填 0 到 100 的數字（空白＝置中）', 'Hero'); }
+    if (heroOn && !empty(s.hero.focus)) { const n = parseFloat(s.hero.focus); if (!Number.isFinite(n) || n < 0 || n > 100) add('hero.focus', 'red', '桌機版裁切位置只能填 0 到 100 的數字（空白＝置中）', 'Hero'); }
     need('hero.name', s.hero.name, '商品名', 'Hero'); over('hero.name', s.hero.name, LIMIT.heroName, '商品名', 'Hero');
-    need('hero.sub', s.hero.sub, '主標', 'Hero'); over('hero.sub', s.hero.sub, LIMIT.heroSub, '主標', 'Hero');
+    if (heroOn) { need('hero.sub', s.hero.sub, '主標', 'Hero'); over('hero.sub', s.hero.sub, LIMIT.heroSub, '主標', 'Hero'); }
 
     if ((s.on || {}).intro !== false) {
       const filled = s.intro.filter(x => !empty(x)).length;
@@ -2123,7 +2124,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       });
     }
 
-    trainChecks(s, add, need, over);
+    if ((s.on || {}).train !== false) trainChecks(s, add, need, over);
 
     const html = safeGenerate(s);
     if (html) {
@@ -2147,6 +2148,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
         (/^grid\.(\d+)\./.test(p) && !(s.grid[+p.split('.')[1]] || {}).on) ||
         (/^intro\./.test(p) && on.intro === false) ||
         (/^features\./.test(p) && !on.features) || (/^videos\./.test(p) && !on.videos) ||
+        (/^hero\./.test(p) && p !== 'hero.name' && on.hero === false) || (/^faq\./.test(p) && on.train === false) ||
         (/^cmp\./.test(p) && s.compare !== 'yes') || (/^compat\./.test(p) && (s.compat || {}).any) ||
 
         (/^train\.([\w-]+)$/.test(p) && !trainQs((s.train || {}).set, (s.train || {}).cat).some(q => p === 'train.' + q.id || p === 'train.' + trainMore(q)) && p !== 'train.name') ||
@@ -2300,7 +2302,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       ...items,
       h('div', { class: 'addrow' }, st.faq.length < MAX ? steady(addBtn('＋ 再加一題', () => { st.faq.push({ q: '', a: '' }); rebuild(); changed(); })) : null, h('span', { class: 'small' }, `${st.faq.length}／${MAX} 題`)),
       addMsg,
-    ], { badge: '選購前先看' })];
+    ], { badge: '選購前先看', toggle: c.long ? undefined : 'train' })];
+
   }
 
   root.LNTrainForm = { build, ADVICE, keepFocus };
