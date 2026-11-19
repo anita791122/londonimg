@@ -1659,6 +1659,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (addon) parts.push(addon);
     if (on.hero !== false) parts.push(hero(s.hero));
 
+    if (on.videos) parts.push(videos(s.videos, false));
+
     const segs = s.grid.filter(g => g.on);
     const wall = on.intro !== false || segs.length > 0;
     if (wall) {
@@ -1668,8 +1670,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       parts.push('</div></div>');
     }
     parts.push(`<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px ${R(56, 88)}">`);
-    if (on.features) parts.push(features(s.features, wall));
-    if (on.videos) parts.push(videos(s.videos, on.features || wall));
+
+    if (on.features) parts.push(features(s.features, wall || !!on.videos));
 
     const cards = on.train !== false ? trainCards(s) : [];
     if (cards.length) parts.push(beforeBuy(cards, on.videos || on.features || wall ? '0' : SEC_TOP));
@@ -1727,10 +1729,10 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   function blockOrder(s) {
     const on = s.on || {};
     const out = [];
+    if (on.videos) out.push('C');
     if (on.intro !== false) out.push('B');
     s.grid.forEach((g, i) => { if (g.on) out.push(['D', 'E', 'F', 'G'][i]); });
     if (on.features) out.push('H');
-    if (on.videos) out.push('C');
     if (on.train !== false && trainCards(s).length) out.push('Train');
     return out;
   }

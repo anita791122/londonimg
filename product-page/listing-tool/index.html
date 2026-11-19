@@ -1691,6 +1691,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     if (addon) parts.push(addon);
     if (on.hero !== false) parts.push(hero(s.hero));
 
+    if (on.videos) parts.push(videos(s.videos, false));
+
     const segs = s.grid.filter(g => g.on);
     const wall = on.intro !== false || segs.length > 0;
     if (wall) {
@@ -1700,8 +1702,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       parts.push('</div></div>');
     }
     parts.push(`<div style="box-sizing:border-box;max-width:${COL};margin:0 auto;padding:0 20px ${R(56, 88)}">`);
-    if (on.features) parts.push(features(s.features, wall));
-    if (on.videos) parts.push(videos(s.videos, on.features || wall));
+
+    if (on.features) parts.push(features(s.features, wall || !!on.videos));
 
     const cards = on.train !== false ? trainCards(s) : [];
     if (cards.length) parts.push(beforeBuy(cards, on.videos || on.features || wall ? '0' : SEC_TOP));
@@ -1759,10 +1761,10 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   function blockOrder(s) {
     const on = s.on || {};
     const out = [];
+    if (on.videos) out.push('C');
     if (on.intro !== false) out.push('B');
     s.grid.forEach((g, i) => { if (g.on) out.push(['D', 'E', 'F', 'G'][i]); });
     if (on.features) out.push('H');
-    if (on.videos) out.push('C');
     if (on.train !== false && trainCards(s).length) out.push('Train');
     return out;
   }
@@ -2787,6 +2789,23 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       field('hero.sub', '主標（一句話）', { max: L.heroSub }),
     ], { toggle: 'hero', keep: [heroName], offNote: '這個商品不放 Hero 大圖。商品名還是要填：網路搜尋最佳化的指令和草稿檔名會用到，不會出現在商品描述裡。' }));
 
+    {
+      const items = state.videos.map((v, i) => {
+        const k = 'videos.' + i;
+        return h('div', { class: 'item' },
+          h('div', { class: 'ih' }, h('b', null, '第 ' + (i + 1) + ' 支'), h('span', { class: 'sp' }),
+            state.videos.length > 1 ? removeBtn(() => removeAt(state.videos, i, `影片第 ${i + 1} 支`), `刪掉第 ${i + 1} 支`) : null),
+          field(k + '.url', 'YouTube 網址', { hint: '貼瀏覽器網址列的整串，或「分享」給的短連結都可以。這一版只支援直式（9:16，Shorts）影片。' }),
+          h('div', { class: 'pair' },
+            field(k + '.caption', '影片下方的小標', { max: L.videoCaption, req: false }),
+            field(k + '.title', '影片名稱（輔助說明用，不會顯示）', { req: false, hint: '空白就用小標。' })));
+      });
+      const add = h('div', { class: 'addrow' }, state.videos.length < 3 ? addBtn('＋ 再加一支', () => { state.videos.push(video0()); buildForm(); changed(); }) : null, h('span', { class: 'small' }, '1 到 3 支'));
+      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
+      reg['videos.add'] = { msg: addMsg };
+      form.append(section('C', '影片', 'In Action', [...items, add, addMsg], { toggle: 'videos' }));
+    }
+
     form.append(section('B', '介紹段', '2 到 3 句，每句整塊置中', [
       h('p', { class: 'note' }, '第 2 句寫給人看的用途，不寫機型。'),
       field('intro.0', '第 1 句', { area: true, max: L.intro }),
@@ -2839,23 +2858,6 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       form.append(section('H', '其他特色', '灰底整排卡片，可左右滑', [...items, add, addMsg], { toggle: 'features' }));
     }
 
-    {
-      const items = state.videos.map((v, i) => {
-        const k = 'videos.' + i;
-        return h('div', { class: 'item' },
-          h('div', { class: 'ih' }, h('b', null, '第 ' + (i + 1) + ' 支'), h('span', { class: 'sp' }),
-            state.videos.length > 1 ? removeBtn(() => removeAt(state.videos, i, `影片第 ${i + 1} 支`), `刪掉第 ${i + 1} 支`) : null),
-          field(k + '.url', 'YouTube 網址', { hint: '貼瀏覽器網址列的整串，或「分享」給的短連結都可以。這一版只支援直式（9:16，Shorts）影片。' }),
-          h('div', { class: 'pair' },
-            field(k + '.caption', '影片下方的小標', { max: L.videoCaption, req: false }),
-            field(k + '.title', '影片名稱（輔助說明用，不會顯示）', { req: false, hint: '空白就用小標。' })));
-      });
-      const add = h('div', { class: 'addrow' }, state.videos.length < 3 ? addBtn('＋ 再加一支', () => { state.videos.push(video0()); buildForm(); changed(); }) : null, h('span', { class: 'small' }, '1 到 3 支'));
-      const addMsg = h('div', { class: 'msg', 'data-qmsg': '1' });
-      reg['videos.add'] = { msg: addMsg };
-      form.append(section('C', '影片', 'In Action', [...items, add, addMsg], { toggle: 'videos' }));
-    }
-
     window.LNTrainForm.build({ G, h, field, section, removeBtn, removeAt, addBtn, changed, rebuild: buildForm, reg, state: () => state, long: false })
       .forEach(el => form.append(el));
 
@@ -2868,7 +2870,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   const SEC_NAMES = { top: '最上面', A: 'A 加價購', Hero: 'Hero', B: 'B 介紹段', D: 'D 棋盤格', E: 'E 棋盤格', F: 'F 棋盤格', G: 'G 棋盤格', H: 'H 其他特色', C: 'C 影片', FAQ: '選購前先看' };
 
   const NAV_NAMES = { A: 'A 加購', Hero: 'Hero 大圖', B: 'B 介紹', D: 'D 棋盤', E: 'E 棋盤', F: 'F 棋盤', G: 'G 棋盤', H: 'H 特色', C: 'C 影片', FAQ: '選購前先看' };
-  const ORDER = ['top', 'A', 'Hero', 'B', 'D', 'E', 'F', 'G', 'H', 'C', 'FAQ'];
+  const ORDER = ['top', 'A', 'Hero', 'C', 'B', 'D', 'E', 'F', 'G', 'H', 'FAQ'];
   const sevOf = i => i.level === 'red' ? (i.kind === 'todo' ? 'todo' : 'red') : 'orange';
   const isSample = i => i.kind === 'sample';
   const isSoft = i => i.kind === 'sampleSoft';
@@ -3188,20 +3190,24 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const outer = d && d.body && d.body.firstElementChild; if (!outer) return null;
     const col = outer.lastElementChild;
     const wall = col && pvOrder.some(c => /^[BDEFG]$/.test(c)) ? col.previousElementSibling : null;
-    const prev = (wall || col) && (wall || col).previousElementSibling;
+
+    const vid = col && pvOrder.includes('C') ? (wall || col).previousElementSibling : null;
+    const prev = (vid || wall || col) && (vid || wall || col).previousElementSibling;
     const hero = (state.on || {}).hero !== false ? prev : null;
     if (code === 'Hero') return hero;
     if (code === 'A') return hero ? (outer.firstElementChild !== hero ? outer.firstElementChild : null) : prev;
+    const order = pvOrder.filter(c => c !== 'C');
     const inWall = wall && wall.firstElementChild ? [...wall.firstElementChild.children] : [];
     const kids = col ? inWall.concat([...col.children]) : [];
-    if (kids.length !== pvOrder.length) {
+    if (kids.length !== order.length || (vid && !vid.textContent.includes('In Action'))) {
 
       pvIframe.dataset.sync = 'mismatch';
       if (!pvWarned) { pvWarned = true; console.warn('預覽區塊對不上：內容欄有', kids.length, '個子元素，blockOrder 是', pvOrder); }
       return null;
     }
     pvIframe.dataset.sync = 'ok';
-    const i = pvOrder.indexOf(TRAIN_SECS.has(code) ? 'Train' : code);
+    if (code === 'C') return vid;
+    const i = order.indexOf(TRAIN_SECS.has(code) ? 'Train' : code);
     return i < 0 ? null : kids[i];
   }
 
