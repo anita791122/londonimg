@@ -672,7 +672,9 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
 
   const codeOf = c => { const m = c.name.match(/【([A-Za-z0-9]+)】/); return m ? m[1].toLowerCase() : null; };
 
-  const addonOn = s => (s.on && typeof s.on.addon === 'boolean') ? s.on.addon : addonMode(s.addon) !== 'none';
+  const addonOn = s => !(s.on && s.on.addon === false);
+
+  const addonFromDraft = d => !(d && d.askedAddon === true && d.on && d.on.addon === false);
 
   function addonItems(t) {
     return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {
@@ -2060,11 +2062,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       }
     };
 
-    const ask = s.on ? s.on.addon : undefined;
-
-    if (ask === null || (ask !== true && ask !== false && addonMode(s.addon) === 'none')) add('addon.ask', 'red', '先回答：這個商品頁要放加價購區嗎？', 'A', 'todo');
     const addon = String(s.addon || ''), addonM = addonOn(s) ? addonMode(addon) : 'off';
-    if (addonM === 'none') add('addon', 'red', '加價購商品網址還沒貼（這個商品沒有加價購，就在上面那題選「不要」）', 'A', 'todo');
+    if (addonM === 'none') add('addon', 'red', '加價購商品網址還沒貼（這個商品沒有加價購，就把上面「這個商品要放這一區」的勾拿掉）', 'A', 'todo');
     else if (addonM === 'html') {
       const norm = normalize(addonText(addon)), stray = strayText(norm);
       if (stray) add('addon', 'red', `整段語法外面還有別的字：「${stray.length > 40 ? stray.slice(0, 40) + '…' : stray}」。一格只能放一種：要用網址，就把整段語法刪掉；要用整段語法，就把多的字刪掉`, 'A');
@@ -2273,7 +2272,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   }
 
   const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, oldDraftFaq, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, WEB_STATES, trainWebList, trainWebSet, trainWebLoad, compatHits, httpsOnly, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, FAQ_MAX, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoIn, seoModelList, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
-    slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
+    addonFromDraft, slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
 })(typeof window !== 'undefined' ? window : globalThis);
@@ -2435,10 +2434,10 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   const faq0 = () => ({ q: '', a: '' });
   const blank = () => ({
 
-    on: { addon: null, intro: true, features: true, videos: true, hero: true, train: true },
+    on: { addon: true, intro: true, features: true, videos: true, hero: true, train: true },
 
     addon: '',
-    askedAddon: false,
+    askedAddon: true,
     addonExtra: {},
     hero: { img: img0(), name: '', sub: '', pos: 'bl', size: 'm', focus: '' },
     intro: ['', '', ''],
@@ -2464,11 +2463,8 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
   function normalizeState(d) {
     const b = blank(), s = fill(d, b);
 
-    if (d && d.askedAddon !== true) {
-      const was = d.on && 'addon' in d.on ? d.on.addon : true;
-      s.on.addon = was === true && G.addonMode(s.addon) !== 'none' ? true : null;
-      s.askedAddon = false;
-    }
+    s.on.addon = G.addonFromDraft(d);
+    s.askedAddon = true;
 
     const ex = d && d.addonExtra && typeof d.addonExtra === 'object' && !Array.isArray(d.addonExtra) ? d.addonExtra : {};
     s.addonExtra = {};
@@ -2607,7 +2603,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     const offNote = o.offNote ? h('p', { class: 'note' }, o.offNote) : null;
     const body = h('div', { class: 'body', id: 'secbody-' + code }, ...(offNote ? [offNote] : []), ...bodyEls);
     const show = on => {
-      if (!keep.length) { body.hidden = !on; return; }
+      if (!keep.length && !offNote) { body.hidden = !on; return; }
       bodyEls.forEach(e => { if (!keep.includes(e)) e.hidden = !on; });
       if (offNote) offNote.hidden = on;
     };
@@ -2617,6 +2613,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
       show(cb.checked);
       cb.onchange = () => {
         state.on[o.toggle] = cb.checked; show(cb.checked); secEls[code].classList.toggle('off', !cb.checked);
+        if (o.onToggle) o.onToggle(cb.checked);
         if (cb.checked && folded.has(code)) setFold(code, false);
         changed();
       };
@@ -2746,31 +2743,19 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
           h('p', { class: 'addon-src' }, '手機殼這一組照 B67 定版樣式，錶帶這一組跟錶帶組的語法一樣；其他的卡，圖是賣場的第一張圖，名稱是縮短過的賣場名稱。')),
         h('p', { class: 'addon-src' + (checked ? '' : ' warn') },
           checked ? `清單上的價格 ${kit.check.at} 對過商城${kit.cards.some(c => G.ADDON_HOLD[c.slug]) ? '（標「先不放」的沒有對）' : ''}。` : '這一版工具做的時候沒有對過商城的價格，用之前先確認。'));
-
-      const ask = h('div', { class: 'q' + (typeof state.on.addon === 'boolean' ? ' answered' : ''), id: 'q-addon-wrap' },
-        h('h2', { id: 'q-addon' }, '這個商品頁要放加價購區嗎？'),
-        h('div', { class: 'opts', role: 'radiogroup', 'aria-labelledby': 'q-addon' },
-          ...[[true, '要放'], [false, '不要']].map(([v, t]) => {
-            const r = h('input', { type: 'radio', name: 'addon-ask' });
-            r.checked = state.on.addon === v;
-            r.onchange = () => { state.on.addon = v; state.askedAddon = true; if (v && folded.has('A')) setFold('A', false); buildForm(); changed(); };
-            return h('label', { class: 'opt' }, r, t);
-          })),
-        h('div', { class: 'msg', 'data-qmsg': '1' }),
-        state.on.addon === false ? h('p', { class: 'small', style: 'margin:8px 0 0' },
-          '這個商品原本的頁面如果有加價購區，貼上新描述會把它蓋掉。要保留：貼完描述，到工具網站的', addonLink(), '產生語法，貼回描述最上面。') : null);
-      reg['addon.ask'] = { msg: ask.querySelector('[data-qmsg]'), wrap: ask };
       addonNewBox = h('div', { class: 'addon-new-list' });
       addonNewNodes = {};
-      const rest = h('div', { hidden: state.on.addon !== true },
+      const rest = h('div', null,
         h('p', { class: 'note' }, '一行貼一個加價購商品的網址，貼的順序就是卡片的順序；也可以打開下面的清單按「加入」。'),
         field('addon', '加價購商品網址', { area: true, rows: 4,
           ph: '一行一個，例如：\nhttps://www.londonimg.tw/products/b51-2',
           hint: '下面清單裡沒有的商品也可以貼：網址框下面會出現一張表格，填商品名、圖片網址和價格。' }),
         addonNewBox,
         pick);
-      const secA = section('A', '加價購區', '貼加價購商品的網址', [ask, rest], { badge: 'A' });
-      secA.classList.toggle('off', state.on.addon === false);
+
+      const secA = section('A', '加價購區', '貼加價購商品的網址', [rest], { badge: 'A', toggle: 'addon',
+        offNote: h('span', null, '這個商品不放加價購區。這個商品原本的頁面如果有加價購區，貼上新描述會把它蓋掉。要保留：貼完描述，到工具網站的', addonLink(), '產生語法，貼回描述最上面。'),
+        onToggle: () => { state.askedAddon = true; } });
       form.append(secA);
     }
 

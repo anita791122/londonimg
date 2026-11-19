@@ -640,7 +640,9 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
 
   const codeOf = c => { const m = c.name.match(/【([A-Za-z0-9]+)】/); return m ? m[1].toLowerCase() : null; };
 
-  const addonOn = s => (s.on && typeof s.on.addon === 'boolean') ? s.on.addon : addonMode(s.addon) !== 'none';
+  const addonOn = s => !(s.on && s.on.addon === false);
+
+  const addonFromDraft = d => !(d && d.askedAddon === true && d.on && d.on.addon === false);
 
   function addonItems(t) {
     return addonText(t).split(/\r?\n/).flatMap((ln, i) => ln.split(/[\s,，、]+/).filter(Boolean).map(raw => {
@@ -2028,11 +2030,8 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
       }
     };
 
-    const ask = s.on ? s.on.addon : undefined;
-
-    if (ask === null || (ask !== true && ask !== false && addonMode(s.addon) === 'none')) add('addon.ask', 'red', '先回答：這個商品頁要放加價購區嗎？', 'A', 'todo');
     const addon = String(s.addon || ''), addonM = addonOn(s) ? addonMode(addon) : 'off';
-    if (addonM === 'none') add('addon', 'red', '加價購商品網址還沒貼（這個商品沒有加價購，就在上面那題選「不要」）', 'A', 'todo');
+    if (addonM === 'none') add('addon', 'red', '加價購商品網址還沒貼（這個商品沒有加價購，就把上面「這個商品要放這一區」的勾拿掉）', 'A', 'todo');
     else if (addonM === 'html') {
       const norm = normalize(addonText(addon)), stray = strayText(norm);
       if (stray) add('addon', 'red', `整段語法外面還有別的字：「${stray.length > 40 ? stray.slice(0, 40) + '…' : stray}」。一格只能放一種：要用網址，就把整段語法刪掉；要用整段語法，就把多的字刪掉`, 'A');
@@ -2241,7 +2240,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
   }
 
   const api = { FEATS_MIN, FEATS_MAX, FEAT_EX, BB_WORD_LIST, COND_KINDS, COND_SLOTS, condLine, oldDraftNotes, oldDraftFaq, generate, pretty, beforeBuy, longImageGenerate, longImageValidate, trainCards, trainImport, trainLinkParse, trainFromLink, LINK_PAGE, WEB_STATES, trainWebList, trainWebSet, trainWebLoad, compatHits, httpsOnly, TRAIN_Q, TRAIN_SETS, TRAIN_CATS, TRAIN0, trainMore, trainQs, trainPickAnswer, trainAddName, trainHasName, trainOldDraft, YES_ONLY, SENT_MIN, FAQ_MAX, nbModel, HERO_POS, HERO_SIZE, heroImgHint, blockOrder, summary, seoFacts, seoIn, seoModelList, seoPrompt, SEO_RULES_BEGIN, SEO_RULES_END, seoRules, seoDraft, seoCheck, seoUnmapped, seoWordHits, seoW, seoSlug, SEO_CHECKS, modelPhrase, validate, normalize, width, youtubeId, clean, esc, IMG_SPEC, LIMIT, SHOPLINE_IMG, get, secOf,
-    slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
+    addonFromDraft, slugOf, addonKitFrom, useAddonKit, useAddonMore, addonMore: () => MORE, addonCardOf, useAddonHeadCheck, addonAssemble, addonCardFrom, addonOldCheck, addonFindIn, addonSwap, addonLogRow, addonSetRows, ADDON_COUNT8, addonKit: () => KIT, addonMode, addonOn, addonItems, addonHtml, ADDON_HOLD,
     addonNewCheck, addonNewReady, addonNear, ADDON_NEW0, today };
   if (typeof module !== 'undefined' && module.exports) module.exports = api; else root.LNGen = api;
 })(typeof window !== 'undefined' ? window : globalThis);
