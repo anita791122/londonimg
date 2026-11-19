@@ -1659,7 +1659,7 @@ table.spec th { background: #f2f3f6; font-weight: 600; }
     if (addon) parts.push(addon);
     if (on.hero !== false) parts.push(hero(s.hero));
 
-    if (on.videos) parts.push(videos(s.videos, false));
+    if (on.videos) parts.push(videos(s.videos, on.hero !== false));
 
     const segs = s.grid.filter(g => g.on);
     const wall = on.intro !== false || segs.length > 0;

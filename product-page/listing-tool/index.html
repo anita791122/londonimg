@@ -1691,7 +1691,7 @@ window.LN_SEO_RULES = "# 商品頁設定：四欄的寫法\n\n> 後台「網路�
     if (addon) parts.push(addon);
     if (on.hero !== false) parts.push(hero(s.hero));
 
-    if (on.videos) parts.push(videos(s.videos, false));
+    if (on.videos) parts.push(videos(s.videos, on.hero !== false));
 
     const segs = s.grid.filter(g => g.on);
     const wall = on.intro !== false || segs.length > 0;
